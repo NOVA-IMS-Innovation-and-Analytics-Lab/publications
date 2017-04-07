@@ -1,4 +1,7 @@
-# Self-Organizing Map Oversampling (SOMO) for imbalanced data set learning (http://www.sciencedirect.com/science/article/pii/S0957417417302324)
+# Self-Organizing Map Oversampling (SOMO) for imbalanced data set learning
+
+### Links
+[ScienceDirect](http://www.sciencedirect.com/science/article/pii/S0957417417302324)
 
 ### Highlights
 * New method for generating artificial data using self-organizing maps.
