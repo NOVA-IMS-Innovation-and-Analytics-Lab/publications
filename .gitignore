@@ -1,5 +1,4 @@
 *.pdf
 *.docx
 tables/
-figures/
 .DS_Store
