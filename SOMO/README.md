@@ -14,3 +14,7 @@ Learning from imbalanced datasets is challenging for standard algorithms, as the
 
 ### Figures
 ![alt text](figures/fig1.png)
+![alt text](figures/fig2.png)
+![alt text](figures/fig3.png)
+![alt text](figures/fig4.png)
+![alt text](figures/fig5.png)
