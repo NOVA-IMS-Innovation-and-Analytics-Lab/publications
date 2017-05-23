@@ -11,3 +11,6 @@ Learning from imbalanced datasets is challenging for standard algorithms, as the
 
 ### Link to paper
 [ScienceDirect](http://www.sciencedirect.com/science/article/pii/S0957417417302324)
+
+### Link to GitHub code
+[Experimental results](https://github.com/gdouzas/ml-notebooks/blob/master/experiment.ipynb)
