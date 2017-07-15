@@ -1,4 +1,4 @@
-List of various publications
+## Various publications
 
 - [Coset space dimensional reduction and classification of semi-realistic particle physics models](http://onlinelibrary.wiley.com/doi/10.1002/prop.200710515/abstract)
 
@@ -8,4 +8,4 @@ List of various publications
 
 - [Effective data generation for imbalanced learning using Conditional Generative Adversarial Networks](https://github.com/gdouzas/publications/tree/master/CGAN)
 
-![update](https://static.wixstatic.com/media/1771a9_955086a818af45d3a9a8a3ba362b5fc0.jpg)
+![update](http://skshlaw.com/wp-content/uploads/2015/01/To-be-Updated-Soon1.jpg)
