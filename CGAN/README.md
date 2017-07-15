@@ -11,3 +11,6 @@ Learning from imbalanced datasets is a challenging task for standard classificat
 
 ### Link to GAN and cGAN
 [TensorFlow implementation](https://github.com/gdouzas/generative-adversarial-nets)
+
+### Link to the implemented oversampling algorithm
+[Oversampling algorithm](https://github.com/gdouzas/imbalanced-tools/blob/master/imbtools/algorithms/cgan_oversampler.py)
