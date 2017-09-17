@@ -6,7 +6,7 @@
 
 - [Self-Organizing Map Oversampling (SOMO) for imbalanced data set learning](https://github.com/gdouzas/publications/tree/master/SOMO)
 
-- [Effective data generation for imbalanced learning using Conditional Generative Adversarial Networks]()
+- [Effective data generation for imbalanced learning using Conditional Generative Adversarial Networks](https://github.com/gdouzas/publications/tree/master/CGAN)
 
 - [Geometric SMOTE: Effective oversampling for imbalanced learning through a geometric extension of SMOTE](https://github.com/gdouzas/publications/tree/master/G-SMOTE)
 
