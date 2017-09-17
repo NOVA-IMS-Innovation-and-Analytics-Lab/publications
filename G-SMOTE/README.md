@@ -9,5 +9,5 @@ Learning from imbalanced datasets is a challenging problem for standard classifi
 ### Link to the experimental procedure
 *To be updated soon...*
 
-### Links to implementatios of algorithms
+### Links to implementation of algorithms
 [G-SMOTE](https://github.com/gdouzas/imbalanced-tools/blob/master/imbtools/algorithms/geometric_smote.py)

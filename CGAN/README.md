@@ -15,7 +15,7 @@ Learning from imbalanced datasets is a frequent but challenging task for standar
 ### Link to the experimental procedure
 *To be updated soon...*
 
-### Links to implementatios of algorithms
+### Links to implementation of algorithms
 [GAN and CGAN TensorFlow implementation](https://github.com/gdouzas/generative-adversarial-nets)
 
 [CGAN oversampler](https://github.com/gdouzas/imbalanced-tools/blob/master/imbtools/algorithms/cgan_oversampler.py)

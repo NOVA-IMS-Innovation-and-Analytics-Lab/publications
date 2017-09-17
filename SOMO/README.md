@@ -15,5 +15,5 @@ Learning from imbalanced datasets is challenging for standard algorithms, as the
 ### Link to the experimental procedure
 *To be updated soon...*
 
-### Links to implementatios of algorithms
+### Links to implementation of algorithms
 *To be updated soon...*
