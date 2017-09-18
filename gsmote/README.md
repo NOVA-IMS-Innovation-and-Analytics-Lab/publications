@@ -7,7 +7,7 @@ Learning from imbalanced datasets is a challenging problem for standard classifi
 *To be updated soon...*
 
 ### Experimental procedure
-*To be updated soon...*
+[Preprint](https://github.com/gdouzas/reproducible-research/blob/master/gsmote/preprint/experiment.ipynb)
 
 ### Implementation of algorithms
 [G-SMOTE](https://github.com/gdouzas/imbalanced-tools/blob/master/imbtools/algorithms/geometric_smote.py)
