@@ -28,6 +28,7 @@ Links
 
 - Script
 
+- Results
 
 Effective data generation for imbalanced learning using conditional generative adversarial networks
 ===================================================================================================
@@ -54,6 +55,8 @@ Links
 
 - Script
 
+- Results
+
 Improving imbalanced learning through a heuristic oversampling method based on k-means and SMOTE
 ================================================================================================
 
@@ -74,6 +77,8 @@ Links
 - `Journal  <https://www.sciencedirect.com/science/article/pii/S0020025518304997>`_
 
 - Script
+
+- Results
 
 Geometric SMOTE: A geometrically enhanced drop-in replacement for SMOTE
 =======================================================================
@@ -99,6 +104,8 @@ Links
 - Journal
 
 - `Script <https://github.com/IMS-ML-Lab/publications/blob/master/scripts/gsmote_journal.py>`_
+
+- `Results <https://github.com/IMS-ML-Lab/publications/blob/master/data/results/gsmote_journal.csv>`_
 
 Oversampling for Imbalanced Learning Based on K-Means and SMOTE
 ===============================================================
@@ -126,6 +133,8 @@ Links
 
 - Script
 
+- Results
+
 Geometric SMOTE: Effective oversampling for imbalanced learning through a geometric extension of SMOTE
 ======================================================================================================
 
@@ -151,6 +160,8 @@ Links
 - `Preprint <https://arxiv.org/abs/1709.07377>`_
 
 - Script
+
+- Results
 
 ==============
 Software tools
