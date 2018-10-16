@@ -13,7 +13,7 @@ saves them as csv files.
 
 .. code-block::
 
-  $ python download_imbalanced_data.py --path data/binary-numerical-imbalanced
+  $ python download_imbalanced_data.py --path ../data/binary-numerical-imbalanced
 
 ===========
 Experiments
