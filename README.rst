@@ -96,9 +96,9 @@ available in the Python programming language.
 Links
 -----
 
-- `Journal <>`_
+- Journal
 
-- Script
+- `Script <https://github.com/IMS-ML-Lab/publications/blob/master/scripts/gsmote_journal.py>`_
 
 Oversampling for Imbalanced Learning Based on K-Means and SMOTE
 ===============================================================
