@@ -26,7 +26,7 @@ Links
 
 - `Journal <https://www.sciencedirect.com/science/article/pii/S0957417417302324>`_
 
-- `Script <>`_
+- Script
 
 
 Effective data generation for imbalanced learning using conditional generative adversarial networks
@@ -52,7 +52,7 @@ Links
 
 - `Journal  <https://www.sciencedirect.com/science/article/pii/S0957417417306346>`_
 
-- `Script <>`_
+- Script
 
 Improving imbalanced learning through a heuristic oversampling method based on k-means and SMOTE
 ================================================================================================
@@ -73,7 +73,7 @@ Links
 
 - `Journal  <https://www.sciencedirect.com/science/article/pii/S0020025518304997>`_
 
-- `Script <>`_
+- Script
 
 Geometric SMOTE: A geometrically enhanced drop-in replacement for SMOTE
 =======================================================================
@@ -98,7 +98,7 @@ Links
 
 - `Journal <>`_
 
-- `Script <>`_
+- Script
 
 Oversampling for Imbalanced Learning Based on K-Means and SMOTE
 ===============================================================
@@ -124,7 +124,7 @@ Links
 
 - `Preprint <https://arxiv.org/abs/1711.00837>`_
 
-- `Script <>`_
+- Script
 
 Geometric SMOTE: Effective oversampling for imbalanced learning through a geometric extension of SMOTE
 ======================================================================================================
@@ -150,7 +150,7 @@ Links
 
 - `Preprint <https://arxiv.org/abs/1709.07377>`_
 
-- `Script <>`_
+- Script
 
 ==============
 Software tools
@@ -161,5 +161,3 @@ Software tools
 
 * The `scripts <scripts>`_ directory contains various Python scripts that are used to download, transform and simulate 
   imbalanced classification data as well as run the experiments included in the above published papers.
-
-
