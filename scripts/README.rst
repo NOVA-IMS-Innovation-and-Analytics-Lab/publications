@@ -19,8 +19,7 @@ saves them as csv files.
 Experiments
 ===========
 
-The following scripts execute the experimental procedure of the corresponding 
-papers.
+The following commands execute the experimental procedure of the various papers.
 
 Geometric SMOTE: A geometrically enhanced drop-in replacement for SMOTE
 =======================================================================
