@@ -24,9 +24,19 @@ The following commands execute the experimental procedure of the various papers.
 Geometric SMOTE: A geometrically enhanced drop-in replacement for SMOTE
 =======================================================================
 
+Run experiment
+--------------
+
 .. code-block::
 
-  $ python gsmote_journal.py
+  $ python gsmote_journal_experiment.py
+
+Analyse results
+---------------
+
+.. code-block::
+
+  $ python gsmote_journal_analysis.py
 
 
 
