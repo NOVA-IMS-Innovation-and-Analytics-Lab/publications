@@ -7,7 +7,7 @@ Geometric SMOTE journal paper.
 # License: MIT
 
 # Imports
-from os.path import join
+from os.path import join, dirname
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -17,8 +17,8 @@ from sklearnext.tools import evaluate_binary_imbalanced_experiments, read_csv_di
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, GeometricSMOTE
 
 # Paths
-datasets_path = join('..', 'data', 'binary-numerical-imbalanced')
-results_path = join('..', 'data', 'results', 'gsmote-journal')
+datasets_path = join(dirname(__file__), '..', 'data', 'binary-numerical-imbalanced')
+results_path = join(dirname(__file__), '..', 'data', 'results', 'gsmote-journal')
 
 # Oversamplers and classifiers
 oversamplers = [
