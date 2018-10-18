@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearnext.over_sampling import RandomOverSampler, SMOTE, GeometricSMOTE
+from sklearnext.over_sampling import RandomOverSampler, SMOTE, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import SOM
 from sklearnext.tools import evaluate_binary_imbalanced_experiments, read_csv_dir, summarize_binary_datasets
 
