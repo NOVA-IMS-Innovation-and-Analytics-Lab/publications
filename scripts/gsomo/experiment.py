@@ -1,6 +1,6 @@
 """
 Run the experimental procedure of the
-GOMO paper.
+G-SOMO paper.
 """
 
 # Author: Georgios Douzas <gdouzas@icloud.com>
@@ -28,7 +28,7 @@ oversamplers = [
     ('RANDOM OVERSAMPLING', RandomOverSampler(random_state=0)),
     ('SMOTE', SMOTE(random_state=1), {'k_neighbors': [3, 5]}),
     ('BORDERLINE-SMOTE', SMOTE(random_state=2, kind='borderline1'), {'k_neighbors': [3, 5], 'm_neighbors': [6, 8, 10]}),
-    ('GSOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor(), random_state=3), {
+    ('G-SOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor(), random_state=3), {
         'selection_strategy': ['combined', 'minority', 'majority'],
         'k_neighbors': [3, 4, 5],
         'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
