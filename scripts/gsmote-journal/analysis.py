@@ -21,7 +21,7 @@ from bokeh.transform import factor_cmap
 from bokeh.palettes import Category20, Spectral
 
 # Paths
-results_path = join(dirname(__file__), '..', 'data', 'results', 'gsmote-journal')
+results_path = join(dirname(__file__), '..', '..', 'data', 'results', 'gsmote-journal')
 csv_filenames = [
     'aggregated',
     'wide_optimal',
