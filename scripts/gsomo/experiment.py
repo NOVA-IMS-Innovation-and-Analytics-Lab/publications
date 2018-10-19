@@ -27,16 +27,12 @@ oversamplers = [
     ('NO OVERSAMPLING', None),
     ('RANDOM OVERSAMPLING', RandomOverSampler(random_state=0)),
     ('SMOTE', SMOTE(random_state=1), {'k_neighbors': [3, 5]}),
-    ('BORDERLINE-SMOTE', SMOTE(random_state=2, kind='borderline1'), {'k_neighbors': [3, 5], 'm_neighbors': [6, 8, 10]}),
-    ('G-SOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor(), random_state=3), {
-        'selection_strategy': ['combined', 'minority', 'majority'],
-        'k_neighbors': [3, 4, 5],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
-        'deformation_factor': [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
-        'clusterer__n_clusters': [0.0, 0.25, 0.5, 0.75, 1.0],
-        'distributor__distances_exponent': [0, 1, 2],
-        'distributor__filtering_threshold': [0.5, 1.0],
-        'distributor__distribution_ratio': [0.5, 0.75, 1.0]
+    ('G-SOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor(distances_exponent=2, filtering_threshold=1.0), random_state=3), {
+        'k_neighbors': [3, 5],
+        'truncation_factor': [-1.0, 0.0, 0.25, 1.0],
+        'deformation_factor': [0.0, 0.5, 1.0],
+        'clusterer__n_clusters': [0.2, 0.5],
+        'distributor__distribution_ratio': [0.75, 1.0]
         }
     ) 
 ]
@@ -44,7 +40,7 @@ classifiers = [
     ('LR', LogisticRegression()),
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(random_state=3), {'max_depth': [3, 6]}),
-    ('GBC', GradientBoostingClassifier(random_state=4), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
+    ('GBC', GradientBoostingClassifier(random_state=4), {'max_depth': [3, 6]})
 ]
 
 # Load datasets
