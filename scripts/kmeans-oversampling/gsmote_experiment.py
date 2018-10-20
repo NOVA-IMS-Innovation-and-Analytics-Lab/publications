@@ -27,17 +27,15 @@ results_path = join(dirname(__file__), '..', '..', 'data', 'results', 'kmeans-ov
 oversamplers = [
     ('NO OVERSAMPLING', None),
     ('G-SMOTE', GeometricSMOTE(random_state=0), {
-        'selection_strategy':['combined', 'minority', 'majority'],
-        'k_neighbors':[3, 4, 5],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
-        'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
+        'k_neighbors': [3, 5],
+        'truncation_factor': [-1.0, 0.0, 1.0],
+        'deformation_factor': [0.0, 0.5, 1.0]
         }
     ),
     ('K-MEANS G-SMOTE', GeometricSMOTE(clusterer=KMeans(random_state=1, n_init=1), distributor=DensityDistributor(), random_state=0), {
-        'selection_strategy':['combined', 'minority', 'majority'],
-        'k_neighbors':[3, 4, 5],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
-        'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
+        'k_neighbors': [3, 5],
+        'truncation_factor': [-1.0, 0.0, 1.0],
+        'deformation_factor': [0.0, 0.5, 1.0],
         'clusterer__n_clusters': [0.0, 0.25, 0.5, 0.75, 1.0],
         'distributor__distances_exponent': [0, 1, 2],
         'distributor__filtering_threshold': [0.5, 1.0]
@@ -64,7 +62,8 @@ results = evaluate_binary_imbalanced_experiments(datasets=imbalanced_datasets,
                                                  scoring=['roc_auc', 'f1', 'geometric_mean_score'],
                                                  n_splits=3,
                                                  n_runs=2,
-                                                 random_state=4)
+                                                 random_state=4,
+                                                 scheduler='multiprocessing')
 
 # Save various datasets 
 imbalanced_datasets_summary.to_csv(join(results_path, 'imbalanced_datasets_summary.csv'), index=False)
