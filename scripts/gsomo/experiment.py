@@ -56,7 +56,8 @@ results = evaluate_binary_imbalanced_experiments(datasets=imbalanced_datasets,
                                                  scoring=['roc_auc', 'f1', 'geometric_mean_score'],
                                                  n_splits=3,
                                                  n_runs=2,
-                                                 random_state=5)
+                                                 random_state=5,
+                                                 scheduler='multiprocessing')
 
 # Save various datasets 
 imbalanced_datasets_summary.to_csv(join(results_path, 'imbalanced_datasets_summary.csv'), index=False)
