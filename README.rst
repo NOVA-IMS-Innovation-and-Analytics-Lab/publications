@@ -105,7 +105,7 @@ Links
 
 - `Script <https://github.com/IMS-ML-Lab/publications/tree/master/scripts/gsmote-journal>`_
 
-- `Results <https://github.com/IMS-ML-Lab/publications/blob/master/data/results/gsmote_journal.csv>`_
+- `Results <https://github.com/IMS-ML-Lab/publications/tree/master/data/results/gsmote-journal>`_
 
 Oversampling for Imbalanced Learning Based on K-Means and SMOTE
 ===============================================================
