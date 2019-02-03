@@ -6,7 +6,6 @@ Geometric SMOTE journal paper.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-# Imports
 from os.path import join, dirname
 from collections import Counter
 from re import match, sub
@@ -20,90 +19,46 @@ from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from bokeh.palettes import Category20, Spectral
 
-# Paths
-results_path = join(dirname(__file__), '..', '..', 'data', 'results', 'gsmote-journal')
-csv_filenames = [
-    'aggregated',
-    'wide_optimal',
-    'mean_ranking',
-    'friedman_test'
-]
+RESULTS_PATH = join(dirname(__file__), '..', '..', 'data', 'results', 'gsmote-journal')
 
-# Load datasets
-imbalanced_datasets_summary = pd.read_csv(join(results_path, '%s.csv' % 'imbalanced_datasets_summary'))
-results = {}
-for name in csv_filenames:
-    if name != 'aggregated':
-        results[name] = pd.read_csv(join(results_path, '%s.csv' % name))
-    else:
-        results[name] = pd.read_csv(join(results_path, '%s.csv' % name), header =[0,1], index_col=[0,1,2,3])
 
-# Parameters
-metric_map = [('AUC', 'ROC AUC'), ('F-SCORE', 'F1'), ('G-MEAN', 'GEOMETRIC MEAN SCORE')]
-_, metrics_names = zip(*metric_map)
-classifiers_names = ['LR', 'KNN', 'DT', 'GBC']
-oversamplers_names = ['NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'G-SMOTE']
+def rename_metrics(df):
+    metrics_names_mapping = {'roc_auc': 'AUC', 'f1': 'F-SCORE', 'geometric_mean_score': 'G-MEAN'}
+    df['Metric'] = df['Metric'].apply(lambda metric: metrics_names_mapping[metric])
+    return df
 
-# Transfom results
-def transform_results(results, metric_map, imbalanced_datasets_summary):
-
-    # Extract results
-    wide_optimal = results['wide_optimal']
-    mean_ranking = results['mean_ranking']
-    friedman_test = results['friedman_test']
-    
-    # Format friedman test p-value
-    friedman_test['p-value'] = friedman_test['p-value'].apply(lambda p_value: '%.1e' % p_value)
-    
-    # Rename metrics
-    for result in [wide_optimal, mean_ranking, friedman_test]:
-        result['Metric'] = result['Metric'].apply(lambda row: dict(metric_map)[row])
-
-    # Sort optimal results by IR
-    wide_optimal['Dataset'] = pd.Categorical(wide_optimal['Dataset'], imbalanced_datasets_summary['Dataset name'])
-    wide_optimal.sort_values(['Dataset', 'Classifier', 'Metric'], inplace=True)
-    
-    return wide_optimal, mean_ranking, friedman_test
-
-# Calculate and plot mean score of oversamplers by classifier and metric
 def calculate_mean_score(wide_optimal):
+    
+    # Sort classifier and metric
+    categories = {}
+    for column in ['Classifier', 'Metric']:
+        categories.update({column: wide_optimal[column].unique()})
+        wide_optimal[column] = pd.Categorical(wide_optimal[column], categories=categories[column])
+
+    # Rename metrics
+    wide_optimal = rename_metrics(wide_optimal)
+
+    # Calculate mean score
     mean_score_clf_metric = wide_optimal.groupby(['Classifier', 'Metric']).mean().reset_index()
+
     return mean_score_clf_metric
 
-def plot_mean_score(mean_score_clf_metric):
-    x = [(clf, smpl) for clf in classifiers_names for smpl in oversamplers_names]
-    for name in metrics_names:
-        data = {'classifiers_names': classifiers_names}
-        data.update(dict(mean_score_clf_metric.loc[mean_score_clf_metric.Metric == name, oversamplers_names].items()))
-        counts = sum(zip(data['NO OVERSAMPLING'], data['RANDOM OVERSAMPLING'], data['SMOTE'], data['G-SMOTE']), ())
-        source = ColumnDataSource(data=dict(x=x, counts=counts))
 
-        p = figure(x_range=FactorRange(*x), y_range=(0.0, 1.0001), plot_height=650, plot_width=1500,
-                   title='Mean %s' % name, toolbar_location=None, tools='')
-        p.vbar(x='x', top='counts', width=0.9, source=source,
-               fill_color=factor_cmap('x', palette=Category20[4], factors=oversamplers_names, start=1, end=2))
-        p.y_range.start = 0
-        p.x_range.range_padding = 0.1
-        p.xaxis.major_label_orientation = 1.2
-        p.title.text_font_size = '20pt'
-        p.xaxis.major_label_text_font_size = '11pt'
-        p.xaxis.group_text_font_size = '14pt'
-        p.output_backend = 'svg'
-        export_svgs(p, filename=join(results_path, '%s.svg' % name))
-
-# Calculate and plot percentage difference in mean scores between SMOTE and G-SMOTE by classifier and metric
 def calculate_perc_diff_mean_scores(mean_score_clf_metric):
     perc_diff_mean_scores = pd.DataFrame((100 * (mean_score_clf_metric['G-SMOTE'] - mean_score_clf_metric['SMOTE']) /
                                           mean_score_clf_metric['NO OVERSAMPLING']), columns=['Difference %'])
     perc_diff_mean_scores = pd.concat([mean_score_clf_metric.iloc[:, :2], perc_diff_mean_scores], axis=1)
     return perc_diff_mean_scores
 
+
 def plot_perc_diff_mean_scores(perc_diff_mean_scores):
+    classifiers_names = perc_diff_mean_scores['Classifier'].unique().tolist()
+    metrics_names = perc_diff_mean_scores['Metric'].unique().tolist()
     data = {'classifiers_names': classifiers_names}
     for name in metrics_names:
         data[name] = perc_diff_mean_scores.loc[perc_diff_mean_scores.Metric == name, 'Difference %']
     x = [(clf, name) for clf in classifiers_names for name in metrics_names]
-    counts = sum(zip(data['ROC AUC'], data['F1'], data['GEOMETRIC MEAN SCORE']), ())
+    counts = sum(zip(data['AUC'], data['F-SCORE'], data['G-MEAN']), ())
     source = ColumnDataSource(data=dict(x=x, counts=counts))
     p = figure(x_range=FactorRange(*x), y_range=(0.0, 8.001), plot_height=650, plot_width=1500,
                title='G-SMOTE and SMOTE percentage difference', toolbar_location=None, tools='')
@@ -116,11 +71,10 @@ def plot_perc_diff_mean_scores(perc_diff_mean_scores):
     p.xaxis.major_label_text_font_size = '11pt'
     p.xaxis.group_text_font_size = '14pt'
     p.output_backend = 'svg'
-    export_svgs(p, filename=join(results_path, 'percentage_difference.svg'))
+    export_svgs(p, filename=join(RESULTS_PATH, 'percentage_difference.svg'))
 
-# Plot hyperparameters analysis
-def plot_hyperparameters_analysis(results):
-    aggregated = results['aggregated'] 
+
+def plot_hyperparameters_analysis(aggregated):
     aggregated = aggregated.iloc[:, ::2].reset_index()
     aggregated.columns = aggregated.columns.get_level_values(0)
     cols = aggregated.columns.tolist()
@@ -171,7 +125,7 @@ def plot_hyperparameters_analysis(results):
         p.xaxis.major_label_text_font_size = '11pt'
         p.xaxis.group_text_font_size = '14pt'
         p.output_backend = 'svg'
-        export_svgs(p, filename=join(results_path, '%s.svg' % param_name))
+        export_svgs(p, filename=join(RESULTS_PATH, '%s.svg' % param_name))
 
     x = cases_rank['case'].values
     p = figure(x_range=x, plot_height=550, title='Rank', toolbar_location=None, tools="")
@@ -186,14 +140,31 @@ def plot_hyperparameters_analysis(results):
     p.xaxis.major_label_text_font_size = '11pt'
     p.xaxis.group_text_font_size = '14pt'
     p.output_backend = 'svg'
-    export_svgs(p, filename=join(results_path, 'cases_rank.svg'))
+    export_svgs(p, filename=join(RESULTS_PATH, 'cases_rank.svg'))
 
-# Extract results
-wide_optimal, mean_ranking, friedman_test = transform_results(results, metric_map, imbalanced_datasets_summary)
-mean_score_clf_metric = calculate_mean_score(wide_optimal)
-perc_diff_mean_scores = calculate_perc_diff_mean_scores(mean_score_clf_metric)
 
-# Plots
-plot_mean_score(mean_score_clf_metric)
-plot_perc_diff_mean_scores(perc_diff_mean_scores)
-plot_hyperparameters_analysis(results)
+if __name__ == '__main__':
+
+    # Load datasets
+    datasets = {}
+    csv_filenames = ['imbalanced_datasets_summary', 'aggregated', 'wide_optimal', 'mean_ranking', 'friedman_test', 'adjusted_pvalues']
+    for name in csv_filenames: 
+        datasets[name] = pd.read_csv(
+            join(RESULTS_PATH, '%s.csv' % name), 
+            header='infer' if name != 'aggregated' else [0, 1],
+            index_col=None if name != 'aggregated' else [0, 1, 2, 3]
+        )
+
+    # Extract results
+    mean_score_clf_metric = calculate_mean_score(datasets['wide_optimal'])
+    perc_diff_mean_scores = calculate_perc_diff_mean_scores(mean_score_clf_metric)
+    for name in csv_filenames[3:]:
+        datasets[name] = rename_metrics(datasets[name])
+    
+    # Save tables and plots
+    mean_score_clf_metric.to_csv(join(RESULTS_PATH, 'mean_score_clf_metric_table.csv'), index=False)
+    plot_perc_diff_mean_scores(perc_diff_mean_scores)
+    datasets['mean_ranking'].to_csv(join(RESULTS_PATH, 'mean_ranking_table.csv'), index=False)
+    datasets['friedman_test'].to_csv(join(RESULTS_PATH, 'friedman_test_table.csv'), index=False)
+    datasets['adjusted_pvalues'].to_csv(join(RESULTS_PATH, 'adjusted_pvalues_table.csv'), index=False)
+    plot_hyperparameters_analysis(datasets['aggregated'])
