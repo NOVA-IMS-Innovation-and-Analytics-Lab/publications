@@ -172,3 +172,43 @@ Software tools
 
 * The `scripts <scripts>`_ directory contains various Python scripts that are used to download, transform and simulate 
   imbalanced classification data as well as run the experiments included in the above published papers.
+
+======================
+Highlighted references
+======================
+
+These are basic bibliographic references. A full list can be found in the references
+section of any of our publications.
+
+- `SMOTE: Synthetic Minority Over-sampling Technique <https://arxiv.org/pdf/1106.1813.pdf>`_
+
+- `Statistical comparisons of classifiers over multiple data sets <http://www.jmlr.org/papers/volume7/demsar06a/demsar06a.pdf>`_
+
+- `Analysing the Classification of Imbalanced Data-sets with Multiple Classes <http://sci2s.ugr.es/multi-imbalanced>`_
+
+- `Benchmarking state-of-the-art classification algorithms for credit scoring: An update of research. <https://www.sciencedirect.com/science/article/pii/S0377221715004208#tbl0003>`_
+
+================
+Research roadmap
+================
+
+- The effect of using various clusterers and SMOTE. The various experiments will 
+  include a comparison between no oversampling, SMOTE, KMeans/SMOTE,  SOM/SMOTE 
+  and any other clustering algorithm/SMOTE.
+
+- The effect of using KMeans clustering on the input space and applying any standard overampler. The 
+  various experiments will include a comparison between no oversampling, KMeans/Random Overampling, 
+  KMeans/SMOTE, KMeans/Borderline SMOTE and KMeans/Geometric SMOTE.
+
+- GSOMO as the combination of SOM and Geometric SMOTE. The various experiments will include a 
+  comparison between no oversampling, Random Overampling, SMOTE, Borderline SMOTE and GSOMO.
+
+- Theoretical analysis of oversampling.
+
+- Application of regression oversampling.
+
+- Oversampling for categorical variables.
+
+- Application of clustering oversampling tot credit scoring and anomaly detection.
+
+- Application of CGANs variations and generative models to oversampling.

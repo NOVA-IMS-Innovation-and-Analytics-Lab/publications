@@ -1,4 +1,12 @@
 .DS_Store
-content
 .vscode
 __pycache__
+resources
+*.aux
+*.bbl
+*.blg
+*.out
+*.log
+*.synctex.gz
+*.pdf
+*.docx
