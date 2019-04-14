@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!usr/bin/env python
 
 """
 Downloads, transforms and simulates imbalanced data.
@@ -8,9 +8,7 @@ Downloads, transforms and simulates imbalanced data.
 # License: MIT
 
 import os
-from os.path import join
-import requests
-from argparse import ArgumentParser
+from os.path import join, dirname
 from re import match, sub
 from collections import Counter
 from itertools import product
@@ -18,26 +16,23 @@ from urllib.parse import urljoin
 from string import ascii_lowercase
 from zipfile import ZipFile
 from io import BytesIO, StringIO
+from sqlite3 import connect
+
+from tqdm import tqdm
+import requests
 import numpy as np
 import pandas as pd
 from sklearn.utils import check_X_y
 from sklearn.datasets import make_classification
 from imblearn.datasets import make_imbalance
 
-
 UCI_ML_DBS = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 KEEL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
 OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff'
-GITHUB_URL = 'https://raw.githubusercontent.com/georgedouzas/scripts/master/data/default/pima-indians-diabetes.csv'
+GITHUB_URL = 'https://raw.githubusercontent.com/georgedouzas/scripts/master/data/default/pima.csv'
 MULTIPLICATION_FACTORS = [1, 2, 3]
 RANDOM_STATE = 0
-
-
-def parse_path():
-    """Parse command line arguments."""
-    parser = ArgumentParser()
-    parser.add_argument('--path', help='the directory path to save imbalanced data', default='.')
-    return vars(parser.parse_args()).get('path')
+DB_CONNECTION = join(dirname(__file__), 'imbalanced_data.db')
 
 
 def _calculate_ratio(multiplication_factor, y):
@@ -471,13 +466,14 @@ def fetch_mandelon_2():
 
 
 if __name__ == '__main__':
-    path = parse_path()
     fetch_functions = {key: value for key, value in locals().items() if match('fetch', key)}
-    datasets = [(sub('fetch_', '', func_name), fetch_data()) for func_name, fetch_data in fetch_functions.items()]
-    for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
-        filename = name.upper().replace('_', ' ')
-        filepath = os.path.join(path, '%s (%s).csv' % (filename, factor) if factor > 1.0 else '%s.csv' % filename)
-        ratio = _calculate_ratio(factor, data.target)
-        if ratio[1] >= 15:
-            data = _make_imbalance(data, factor)
-            data.to_csv(filepath, index=False)
+    datasets = []
+    for func_name, fetch_data in tqdm(fetch_functions.items()):
+        print(func_name)
+        datasets.append((sub('fetch_', '', func_name), fetch_data()))
+    # for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
+    #     tbl_name = f'{name}_{factor}' if factor > 1.0 else name
+    #     ratio = _calculate_ratio(factor, data.target)
+    #     if ratio[1] >= 15:
+    #         data = _make_imbalance(data, factor)
+    #     data.to_sql(tbl_name, DB_CONNECTION, index=False)
