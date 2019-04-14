@@ -29,10 +29,10 @@ from imblearn.datasets import make_imbalance
 UCI_ML_DBS = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 KEEL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
 OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff'
-GITHUB_URL = 'https://raw.githubusercontent.com/georgedouzas/scripts/master/data/default/pima.csv'
+GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/data/pima.csv'
 MULTIPLICATION_FACTORS = [1, 2, 3]
 RANDOM_STATE = 0
-DB_CONNECTION = join(dirname(__file__), 'imbalanced_data.db')
+DB_CONNECTION = connect(join(dirname(__file__), 'imbalanced_data.db'))
 
 
 def _calculate_ratio(multiplication_factor, y):
@@ -47,11 +47,18 @@ def _make_imbalance(data, multiplication_factor):
     X_columns = [col for col in data.columns if col != 'target']
     X, y = check_X_y(data.loc[:, X_columns], data.target)
     if multiplication_factor > 1.0:
-        ratio = _calculate_ratio(multiplication_factor, y)
-        X, y = make_imbalance(X, y, ratio=ratio, random_state=RANDOM_STATE)
+        sampling_strategy = _calculate_ratio(multiplication_factor, y)
+        X, y = make_imbalance(X, y, sampling_strategy=sampling_strategy, random_state=RANDOM_STATE)
     data = pd.DataFrame(np.column_stack((X, y)))
     data.iloc[:, -1] = data.iloc[:, -1].astype(int)
     return data
+
+
+def _modifiy_columns(data):
+    """Rename and reorder columns of dataframe."""
+    X, y = data.drop(columns='target'), data.target
+    X.columns = range(len(X.columns))
+    return pd.concat([X, y], axis=1)
 
 
 def fetch_breast_tissue():
@@ -187,10 +194,8 @@ def fetch_pima():
 
     https://www.kaggle.com/uciml/pima-indians-diabetes-database
     """
-    url = GITHUB_URL
-    data = pd.read_csv(url, header=None)
-    data.rename(columns={8: 'target'}, inplace=True)
-    data['target'] = data['target'].isin([1]).astype(int)
+    data = pd.read_csv(GITHUB_URL)
+    data.rename(columns={'8': 'target'}, inplace=True)
     return data
 
 
@@ -468,12 +473,13 @@ def fetch_mandelon_2():
 if __name__ == '__main__':
     fetch_functions = {key: value for key, value in locals().items() if match('fetch', key)}
     datasets = []
-    for func_name, fetch_data in tqdm(fetch_functions.items()):
-        print(func_name)
-        datasets.append((sub('fetch_', '', func_name), fetch_data()))
-    # for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
-    #     tbl_name = f'{name}_{factor}' if factor > 1.0 else name
-    #     ratio = _calculate_ratio(factor, data.target)
-    #     if ratio[1] >= 15:
-    #         data = _make_imbalance(data, factor)
-    #     data.to_sql(tbl_name, DB_CONNECTION, index=False)
+    for func_name, fetch_data in tqdm(fetch_functions.items(), desc='Datasets'):
+        name = sub('fetch_', '', func_name)
+        data = _modifiy_columns(fetch_data())
+        datasets.append((name, data))
+    for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
+        tbl_name = f'{name}_{factor}' if factor > 1.0 else name
+        ratio = _calculate_ratio(factor, data.target)
+        if ratio[1] >= 15:
+            data = _make_imbalance(data, factor)
+            data.to_sql(tbl_name, DB_CONNECTION, index=False, if_exists='replace')
