@@ -7,7 +7,6 @@ Downloads, transforms and simulates imbalanced data.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-import os
 from os.path import join, dirname
 from re import match, sub
 from collections import Counter
@@ -17,6 +16,7 @@ from string import ascii_lowercase
 from zipfile import ZipFile
 from io import BytesIO, StringIO
 from sqlite3 import connect
+from argparse import ArgumentParser
 
 from tqdm import tqdm
 import requests
@@ -32,7 +32,6 @@ OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.ar
 GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/data/pima.csv'
 MULTIPLICATION_FACTORS = [1, 2, 3]
 RANDOM_STATE = 0
-DB_CONNECTION = connect(join(dirname(__file__), 'imbalanced_data.db'))
 
 
 def _calculate_ratio(multiplication_factor, y):
@@ -470,16 +469,39 @@ def fetch_mandelon_2():
     return data
 
 
-if __name__ == '__main__':
-    fetch_functions = {key: value for key, value in locals().items() if match('fetch', key)}
+def download(fetch_functions):
+    """Download datasets."""
     datasets = []
     for func_name, fetch_data in tqdm(fetch_functions.items(), desc='Datasets'):
-        name = sub('fetch_', '', func_name)
+        name = sub('fetch_', '', func_name).upper().replace('_', ' ')
         data = _modifiy_columns(fetch_data())
         datasets.append((name, data))
-    for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
-        tbl_name = f'{name}_{factor}' if factor > 1.0 else name
-        ratio = _calculate_ratio(factor, data.target)
-        if ratio[1] >= 15:
-            data = _make_imbalance(data, factor)
-            data.to_sql(tbl_name, DB_CONNECTION, index=False, if_exists='replace')
+    return datasets
+
+
+def save(path, datasets):
+    """Save datasets."""
+    with connect(join(path, 'imbalanced_data.db')) as connection:
+        for (name, data), factor in list(product(datasets, MULTIPLICATION_FACTORS)):
+            tbl_name = f'{name} ({factor})' if factor > 1.0 else name
+            ratio = _calculate_ratio(factor, data.target)
+            if ratio[1] >= 15:
+                data = _make_imbalance(data, factor)
+                data.to_sql(tbl_name, connection, index=False)
+
+
+def parse_path():
+    """Parse path from command-line arguments."""
+    parser = ArgumentParser('Download and save datasets.')
+    parser.add_argument('path', nargs='?', default='.', help='The relative or absolute path to save the datasets.')
+    path = join(dirname(__file__), parser.parse_args().path)
+    return path
+
+
+if __name__ == '__main__':
+
+    # Download datasets
+    datasets = download({key: value for key, value in locals().items() if match('fetch', key)})
+
+    # Save datasets
+    save(parse_path(), datasets)
