@@ -10,3 +10,5 @@ resources
 *.synctex.gz
 *.pdf
 *.docx
+*.fls
+*.fdb_latexmk
