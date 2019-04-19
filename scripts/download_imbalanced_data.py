@@ -29,7 +29,7 @@ from imblearn.datasets import make_imbalance
 UCI_ML_DBS = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 KEEL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
 OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff'
-GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/data/pima.csv'
+GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/pima.csv'
 MULTIPLICATION_FACTORS = [1, 2, 3]
 RANDOM_STATE = 0
 
