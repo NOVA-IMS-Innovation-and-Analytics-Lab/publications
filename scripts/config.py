@@ -14,7 +14,6 @@ from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM, AgglomerativeClustering, Birch, SpectralClustering
-from sklearnext.tools import BinaryExperiment
 
 
 CONFIGURATIONS = {
