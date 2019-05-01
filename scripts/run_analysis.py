@@ -47,12 +47,11 @@ def generate_pvalues_tbl(experiment, name):
     return tbl
 
 
-def generate_optimal_hyperparameters_tbl(experiment, parameters=None):
+def generate_cases_frequency_tbl(experiment, cases_func):
     """Generate a table of optimal hyperparameters for each dataset."""
 
     oversampler_name = experiment.oversamplers_names_[-1]
-    if parameters is None:
-        parameters = list(experiment.oversamplers[-1][-1].keys())
+    parameters = list(experiment.oversamplers[-1][-1].keys())
     full_parameters = [f'{oversampler_name}__{param}' for param in parameters]
     
     results = experiment.results_.iloc[:, ::2].reset_index()
@@ -72,8 +71,11 @@ def generate_optimal_hyperparameters_tbl(experiment, parameters=None):
         optimal_values_metric[parameters] = pd.DataFrame(optimal_values_metric['params'].apply(lambda item: [literal_eval(item)[param] for param in full_parameters]).values.tolist())
         optimal_values_metric = optimal_values_metric.assign(Ratio=lambda df: df.Instances / df.Features).drop(columns=['Oversampler', 'params', 'Dataset name', 'Features', 'Instances', 'Minority instances', 'Majority instances'] + [metric])
         optimal_params = optimal_params.append(optimal_values_metric)
+    optimal_params['Case'] = optimal_params.apply(cases_func, axis=1)
+    cases_frequency = optimal_params.groupby('Case').size().reset_index().rename(columns={0: 'Frequency'}).sort_values('Frequency', ascending=False)
+    cases_frequency.loc[-1] = ['Total experiments', cases_frequency.Frequency.sum()]
 
-    return optimal_params
+    return cases_frequency.reset_index(drop=True)
 
 
 def generate_mean_perc_diff_scores_plot(experiment):
@@ -98,73 +100,6 @@ def generate_mean_perc_diff_scores_plot(experiment):
     p.xaxis.group_text_font_size = '14pt'
     p.output_backend = 'svg'
     return p
-
-
-def generate_hyperparameters_analysis_plot(experiment):
-    aggregated = experiment.results_.iloc[:, ::2].reset_index()
-    aggregated.columns = aggregated.columns.get_level_values(0)
-    cols = aggregated.columns.tolist()
-    agg_measures = {score: max for score in cols[4:]}
-    optimal_params = aggregated.groupby(cols[:3]).agg(agg_measures).reset_index()
-    params = pd.Series()
-    for metric in cols[4:]:
-        group_cols = cols[:3] + [metric]
-        optimal_params_group = pd.merge(optimal_params[group_cols], aggregated[group_cols + ['params']], on=group_cols, how='left')
-        optimal_params_group = optimal_params_group.loc[optimal_params_group.Oversampler == 'G-SMOTE', 'params']
-        params = params.append(optimal_params_group)
-    params = params.apply(literal_eval).reset_index(drop=True)
-    hyperparameters = ['selection_strategy', 'truncation_factor', 'deformation_factor', 'k_neighbors']
-    params = params.apply(lambda grid: {sub('G-SMOTE__', '', param): value for param, value in grid.items() if match('G-SMOTE', param)})
-    params = params.apply(lambda grid: [grid[param] for param in hyperparameters])
-    params = pd.DataFrame(params.values.tolist(), columns=hyperparameters)
-    param_values_map = {
-        'selection_strategy': ['Minority', 'Majority', 'Combined'],
-        'truncation_factor': ['-1.0', '-0.5', '0.0', '0.25', '0.5', '0.75', '1.0'],
-        'deformation_factor': ['0.0', '0.2', '0.4', '0.5', '0.6', '0.8', '1.0']
-    }
-    characteristic_cases = pd.DataFrame(
-        {
-            'case': ['SMOTE', 'Majority selection SMOTE', 'Combined selection SMOTE', 'Inverse SMOTE',
-                     'Hyper-sphere SMOTE', 'Half hyper-sphere SMOTE'],
-            'selection_strategy': ['minority', 'majority', 'combined', 'minority', 'minority', 'minority'],
-            'truncation_factor': [1.0, 1.0, 1.0, -1.0, 0.0, 1.0],
-            'deformation_factor': [1.0, 1.0, 1.0, 1.0, 0.0, 0.0]
-        }
-    )
-    params_ranking = params.groupby(params.columns[:-1].tolist()).size().reset_index()
-    params_ranking['rank'] = rankdata(params_ranking[0], 'min')
-    cases_rank = pd.merge(characteristic_cases, params_ranking).loc[:, ['case', 'rank']]
-
-    for param_name in params.columns[:-1]:
-        param_count = Counter(params[param_name])
-        x = param_values_map[param_name]
-        p = figure(x_range=x, y_range=(0, 100.01), plot_height=250,
-                   title=sub('_', ' ', param_name).capitalize(),
-                   toolbar_location=None, tools="")
-        p.vbar(x=x,
-               top=[100 * param_count[value.lower() if param_name == 'selection_strategy' else float(value)] / len(params) for value in x],
-               width=0.9)
-        p.y_range.start = 0
-        p.x_range.range_padding = 0.1
-        p.xaxis.major_label_orientation = 1.0
-        p.title.text_font_size = '12pt'
-        p.xaxis.major_label_text_font_size = '11pt'
-        p.xaxis.group_text_font_size = '14pt'
-        p.output_backend = 'svg'
-
-    x = cases_rank['case'].values
-    p = figure(x_range=x, plot_height=550, title='Rank', toolbar_location=None, tools="")
-    p.vbar(x=x, top=cases_rank['rank'], width=0.9)
-    max_rank = round(cases_rank['rank'].max(), -1)
-    ticker = list(range(0, max_rank + 10, 10))
-    p.yaxis.ticker = ticker
-    p.yaxis.major_label_overrides = {tick: str(max_rank - tick) for tick in ticker}
-    p.x_range.range_padding = 0.1
-    p.xaxis.major_label_orientation = 1.0
-    p.title.text_font_size = '12pt'
-    p.xaxis.major_label_text_font_size = '11pt'
-    p.xaxis.group_text_font_size = '14pt'
-    p.output_backend = 'svg'
 
 
 def parse_arguments():
@@ -198,7 +133,7 @@ if __name__ == '__main__':
     generate_mean_std_tbl(experiment, 'ranking').to_csv(join(resources_path, 'ranking.csv'), index=False)
     generate_pvalues_tbl(experiment, 'friedman').to_csv(join(resources_path, 'friedman_test.csv'), index=False)
     generate_pvalues_tbl(experiment, 'holms').to_csv(join(resources_path, 'holms_test.csv'), index=False)
-    generate_optimal_hyperparameters_tbl(experiment).to_csv(join(resources_path, 'optimal_hyperparameters.csv'), index=False)
+    generate_cases_frequency_tbl(experiment, configuration['cases_func']).to_csv(join(resources_path, 'cases_frequency.csv'), index=False)
     
     # Generate plots
     export_svgs(generate_mean_perc_diff_scores_plot(experiment), filename=join(resources_path, 'mean_perc_diff_scores.svg'))

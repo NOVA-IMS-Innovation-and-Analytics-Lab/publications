@@ -34,6 +34,7 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{booktabs}
 \usepackage{pgfplotstable}
+\pgfplotsset{compat=1.14}
 \usepackage{longtable}
 \usepackage{tabu}
 \usepackage{hyperref}
@@ -834,15 +835,12 @@ can be described in detail as follows:
 
 \end{enumerate}
 
-\section{Research methodology and experimental results}
+\section{Research methodology}
 
 This section describes the evaluation process of G-SMOTE using a variety of
-classifiers, datasets and metrics. An extensive performance comparison of
-G-SMOTE to Random Oversampling and SMOTE is presented, using a cross validation
-procedure where the significance of the results is verified through appropriate
-statistical tests. Additionally, an analysis of the G-SMOTE hyper-parameters is
-included as well as guidelines for their tuning relative to the IR of the
-dataset.
+classifiers, datasets and metrics. A description of the experimental data, the
+evaluation measures, the classification algorithms, the experimental procedure
+as well as the software implementation is provided.
 
 \subsection{Experimental data}
 
@@ -867,8 +865,8 @@ datasets:
  datasets. For each one of them, its initial IR was multiplied by a factor of 2
  and 3 but the resulting dataset was used for the experiments only if the total
  number of minority samples was not less than 15. Table 1 shows a summary of the
- final 69 data sets that can be found at
- \url{https://github.com/IMS-ML-Lab/research-showcase/tree/master/data/binary-numerical-imbalanced}.
+ final 69 data sets that can be download from 
+ \url{https://github.com/IMS-ML-Lab/publications/raw/master/assets/data/imbalanced_data.db}.
  The multiplication factor is appended in parentheses to the dataset's names
  while the table is sorted by ascending IR:
 
@@ -944,9 +942,7 @@ The implementation of the classifiers and standard oversampling algorithms was
 based on the Python libraries Scikit-Learn \cite{Pedregosa2011} and
 Imbalanced-Learn \cite{Lemaitre2016}.
 
-\subsection{Experimental results}
-
-\subsubsection{Experimental procedure}
+\subsection{Experimental procedure}
 
 In order to evaluate the performance of each combination of oversampler and
 classifier, \( n \)-fold cross validation was applied with \( n = 5 \). Let
@@ -991,9 +987,9 @@ test is a non-parametric version of the t-test, where the null hypothesis is
 whether the proposed G-SMOTE algorithm outperforms the other methods as the
 control method.
 
-\subsubsection{Software implementation}
+\subsection{Software implementation}
 
-As it was mentioned above, the implementation of the experimental procedure is
+As it was mentioned above, the implementation of the experimental procedure 
 based on the Python programming language and Scikit-Learn/Imbalanced-Learn
 libraries. Specifically, the function that prepares and runs any comparative
 experiment can be found at
@@ -1003,10 +999,17 @@ while the G-SMOTE implementation is available at
 Being fully integrated with the Scikit-Learn ecosystem they can be adjusted and
 used for a variety of custom comparative studies. The experiments reported in
 this paper as well as the analysis of their results are reproducible using the
-scripts provided at
-\url{https://github.com/IMS-ML-Lab/publications/tree/master/scripts/gsmote-journal}.
+scripts provided at \url{https://github.com/IMS-ML-Lab/publications}.
 
-\subsubsection{Comparative presentation}
+\section{Results and discussion}
+
+In this section the performance of the different oversamplers is presented. The
+results are analysed, by applying various statistical tests, to establish their
+significance. Additionally, a taxonomy of G-SMOTE hyper-parameters is presented
+as well as guidelines for their tuning relative to the characteristics of the
+imbalanced datasets.
+
+\subsection{Comparative presentation}
 
 The mean and standard error of cross validation scores across datasets for each combination of
 classifiers, metrics and oversamplers are presented in Table 2:
@@ -1022,14 +1025,12 @@ columns/Metric/.style={column type=l,string type},
 columns/NO OVERSAMPLING/.style={column type=l,string type}, 
 columns/RANDOM OVERSAMPLING/.style={column type=l,string type}, 
 columns/SMOTE/.style={column type=l,string type}, 
-columns/G-SMOTE/.style={column type=l,string type}, 
+columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
 every last row/.style={after row=\bottomrule \caption{Results for mean cross validation scores of oversamplers across the datasets.}}
 ] 
 {./resources/scores.csv}
 
-The table of full results is available at
-\url{https://github.com/IMS-ML-Lab/publications/blob/master/data/results/gsmote-journal/wide_optimal.csv}.
 Table 2 shows that G-SMOTE systematically performs better on average than the
 rest of the methods. Particularly, the mean and standard error of percentage
 difference between G-SMOTE and SMOTE is presented in Table 3:
@@ -1070,7 +1071,7 @@ every last row/.style={after row=\bottomrule \caption{Results for mean ranking o
 ]
 {./resources/ranking.csv}
 
-\subsubsection{Statistical analysis}
+\subsection{Statistical analysis}
 
 The results of the application of the Friedman test are shown in Table 5:
 
@@ -1114,27 +1115,16 @@ every last row/.style={after row=\bottomrule \caption{Adjusted p-values using th
 
 Therefore, the null hypothesis of the Holm's test is rejected for all
 oversamplers at a significance level of a = 0.05, indicating that the proposed
-method outperforms all other methods.
+method outperforms all other methods. 
 
-\subsubsection{Analysis of optimal hyper-parameters}
+\subsection{G-SMOTE taxonomy}
 
 The G-SMOTE hyper-parameters \( \alpha_{trunc} \), \( \alpha_{def} \) and
-\(\alpha_{sel} \) control the characteristics of the data generation process. An
-analysis of the relation between optimal hyper-parameters and IR shows that
-lower \( \alpha_{def} \) values should be selected as the dataset's IR
-increases. An explanation for this finding is the following: The SMOTE data
-generation mechanism, which corresponds to high \( \alpha_{def} \) values, for
-highly imbalanced datasets  creates nearly duplicate examples.  Therefore when
-low \( \alpha_{def} \) values are selected, the variety of generated samples is
-increased.
-
-The G-SMOTE hyper-parameters \( \alpha_{trunc} \), \( \alpha_{def} \) and \(
-\alpha_{sel} \) control the characteristics of the data generation process,
-allowing to identify some special cases that can be considered as extensions of
-the SMOTE algorithm with a simple geometrical interpretation. All these cases
-are tested during the experimental procedure and compared to the rest of the
-oversampling methods as well as the optimal choice of hyper-parameters for
-G-SMOTE. A short description is provided below:
+\(\alpha_{sel} \), called geometric hyper-parameters, allow to create a taxonomy
+of different hyper-parameters' configurations with a simple geometric
+interpretation. The various categories are tested during the experimental
+procedure and compared to the rest of the oversampling methods. A short
+description is provided below:
 
 \begin{itemize}
 	
@@ -1142,114 +1132,95 @@ G-SMOTE. A short description is provided below:
 
 	\item SMOTE algorithm.
 
-	The choice of hyper-parameters that reproduces the SMOTE algorithm is \(
-	\alpha_{def} = 1.0 \), \( \alpha_{trunc} = 1.0 \) and \( \alpha_{sel} =
+	The choice of hyper-parameters that reproduces the SMOTE algorithm is
+	\(\alpha_{def} = 1.0 \), \( \alpha_{trunc} = 1.0 \) and \( \alpha_{sel} =
 	minority \). The first of them ensures that the initial hypersphere is
 	deformed in to a line segment, the second truncates the half of the
 	resulting line segment and the third chooses the SMOTE selection strategy.
 
-	\item Majority selection SMOTE algorithm.
+	\item Modified SMOTE algorithm.
 
-	The geometry of the permissible data generation areas is identical to SMOTE,
-	thus the hyper-parameters \( \alpha_{trunc} \), \( \alpha_{def} \) are
-	identical too, but instead of the minority selection strategy, it uses the
-	majority one.
+	The permissible data generation area remains a line segment as the above
+	case. Therefore \( \alpha_{def} = 1.0 \) but with no further restriction on
+	the \(\alpha_{trunc} \) values. Also instead of the \( minority \) selection
+	strategy, it uses either the \( majority \) or \( combined \) one. This case
+	can be considered as a modification of the SMOTE mechanism where the line
+	segment is either truncated, expanded or rotated.
 
-	\item Combined selection SMOTE algorithm.
+	\item Pure G-SMOTE algorithm.
 
-	Similar to the previous case except the selection strategy is the combined
-	one.
-
-	\item Inverse SMOTE algorithm.
-
-	Similar to case 1 except the truncation of the line segment occurs at the
-	opposite direction. This requires a modification of \( \alpha_{trunc} \)
-	value to \( \alpha_{trunc} = -1.0 \).
-
-	\item Hyper-sphere SMOTE algorithm.
-
-	This extension of SMOTE generates artificial data inside a hyper-ball with
-	center a minority class instance and a radius equal to the distance of it
-	with one of its minority class \( k \) nearest neighbors. The choice of
-	hyper-parameters in this case is \( \alpha_{def} = 0.0 \), \( \alpha_{trunc}
-	= 0.0 \) and \( \alpha_{sel} = minority \).
-
-	\item Half hyper-sphere SMOTE algorithm.
-
-	Similar to the previous case except only half of the hyper-sphere is used as
-	a permissible data generation area. This requires \( \alpha_{trunc} = 1.0
-	\).
+	This includes any hyper-parameters' configuration where the permissible data
+	generation area is expanded from a line segment of the above cases into a
+	hyper-spheroid. The choice of hyper-parameters in this case is
+	\(\alpha_{def} < 1.0 \) with no further restriction on the rest of the
+	geometrical hyper-parameters.
 
 \end{itemize}
 
-As it was described in section 5.4.1, the generated hyper-parameter space for
-G-SMOTE was 4-dimensional and included the following dimensions:
+Table 7 shows the frequency of the above 3 cases as an optimal configuration
+across the total 26391 experiments:
+
+\pgfplotstabletypeset[
+begin table=\begin{longtable},
+	end table=\end{longtable},
+col sep=comma,
+header=true,
+columns={Case,Frequency},
+columns/Case/.style={column type=l,string type},
+columns/Frequency/.style={ zerofill,precision=0,column type=r, dec sep align},
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule \caption{Optimal configuartion frequency for the three G-SMOTE cases.}}
+]
+{./resources/cases_frequency.csv}
+
+Therefore pure G-SMOTE represents the configuration with the highest frequency
+and ranking among the 3 cases, covering the majority of optimal hyper-parameter
+configurations. Additionally, SMOTE represents a small fraction of the optimal
+cases while its modification improves significantly the original data generation
+mechanism.
+
+\subsection{Analysis and tuning of optimal hyper-parameters}
+
+As it was explained on the above section, the G-SMOTE geometric
+hyper-parameters control the characteristics of the data generation process.
+More specifically, the \( majority \) selection strategy expands aggressively
+the minority class area, increasing the variety of generated samples. Lower 
+absolute values of the truncation and deformation factors have a similar effect. On
+the other hand, the \( minority \) selection strategy and higher absolute values
+of the truncation and deformation factors result in a data generation process
+that resembles the SMOTE mechanism. 
+
+An analysis of the G-SMOTE geometric hyper-parameters dependence on Imbalance
+Ratio (IR) and number of samples over number of features ratio (R) shows the
+following: 
 
 \begin{itemize}
 	
 	\renewcommand\labelitemi{--}
 
-	\item Selection strategy.
+	\item High IR or low R.
+	
+	The \( majority \) (or \( combined \)) selection strategy and lower absolute
+	values of the truncation and deformation factors dominate as optimal
+	hyper-parameters.
 
-	\item Truncation factor.
-
-	\item Deformation factor.
-
-	\item Number of nearest neighbors.
+	\item Low IR or high R. 
+	
+	The \( minority \) selection strategy and higher absolute values of the
+	truncation and deformation factors dominate as optimal hyper-parameters.
 
 \end{itemize}
 
- The first three of them, called geometric hyper-parameters, adjust the
- geometric configuration of G-SMOTE. Their percentage contribution to the
- optimal hyper-parameter settings is shown in Fig. 17:
+Therefore datasets with higher IR or lower R values favor the generation of
+diverse synthetic samples. The explanation for this finding is that for high IR
+values the SMOTE data generation process creates either nearly duplicate or
+noisy examples, while in sparse input spaces, where R is low, the linear
+interpolation mechanism of SMOTE generates samples on a special direction of the
+input space that effectively makes them nearly duplicate or noisy. Contrary to
+the above, for lower IR or higher R values, the input space contains enough
+information to avoid the above shortcomings of the SMOTE mechanism.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=14cm, keepaspectratio]{./resources/selection_strategy}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=14cm, keepaspectratio]{./resources/truncation_factor}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=14cm, keepaspectratio]{./resources/deformation_factor}
-	\captionbelow{Percentage contribution of geometric hyper-parameters to 
-	the optimal configurations of experiments.}
-\end{figure}
-
-The majority of optimal values for the \( \alpha_{sel} \) hyper-parameter are
-split between the minority and combined selection strategies, while the majority
-selection strategy has a lower but not negligible contribution. On the other
-hand, the distribution of optimal values for the \( \alpha_{trunc} \) and \(
-\alpha_{def} \) hyper-parameters is approximately uniform.
-
-The number of points in the hyper-parameter subspace \( H_{sub} \), formed only
-by the geometric hyper-parameters is equal to $N(\{ minority, majority, combined
-\}) \times N(\{ -1.0, -0.5, 0.0, 0.25, 0.5, 0.75 , 1.0 \}) \times N(\{ 0.0, 0.2,
-0.4, 0.5, 0.6, 0.8, 1.0 \}) = 147$. Therefore a ranking score between 1 to 147
-can be assigned to each point of \( H_{sub} \), by counting the number of times
-it appears as the optimal configuration across all the experiments. Fig. 18
-shows the ranking of the above special cases:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=14cm, keepaspectratio]{./resources/cases_rank}
-	\captionbelow{Frequency ranking of the 6 special cases.}
-\end{figure}
-
-SMOTE, inverse SMOTE and half hyper-sphere SMOTE, as described above, represent
-the configurations with the highest frequency ranking among the 6 special cases.
-It is important to notice that Fig. 18 shows only  6 of the 147 possible
-configurations. On the other hand, Fig. 17 shows that there is an approximately
-uniform distribution of the optimal hyper-parameters values, meaning that all
-the points of the generated hyper-parameter space are important. Also a
-non-intuitive observation is that inverse SMOTE appears to be an effective
-approach having a high ranking score.
-
-\subsection{Discussion}
+\section{Conclusions}
 
 In this paper we presented G-SMOTE, a new oversampling algorithm, that extends
 the SMOTE data generation mechanism. G-SMOTE selects a safe radius around each
