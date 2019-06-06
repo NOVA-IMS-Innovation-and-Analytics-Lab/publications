@@ -34,12 +34,7 @@ CONFIGURATIONS = {
         'scoring': ['roc_auc', 'f1', 'geometric_mean_score'],
         'n_splits': 5,
         'n_runs': 3,
-        'random_state': 0,
-        'cases_func': lambda row: (
-            'SMOTE' if (row.selection_strategy == 'minority' and row.deformation_factor == 1.0 and row.truncation_factor == 1.0) else 
-            'Modified SMOTE' if (row.selection_strategy in ['majority', 'combined'] and row.deformation_factor == 1.0) else 
-            'Pure G-SMOTE'
-            )
+        'random_state': 0
     },
     'Clustering-SMOTE': {
         'db_name': 'imbalanced_data.db',
