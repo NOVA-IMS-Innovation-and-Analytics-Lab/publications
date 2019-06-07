@@ -65,101 +65,102 @@ results is proven.
 
 \section{Introduction}
 
-Learning from imbalanced datasets remains a challenge for supervised machine
-learning classifiers and therefore needs to be addressed by the research
-community. Class imbalance refers to classification problems where the target
-class is unequally distributed and therefore algorithms trained with imbalanced
-data tend to be heavily biased towards the majority class \cite{Hoens2013}. In
-this paper we will present an effective way to deal with imbalanced datasets,
-the focus hereby is set on highly skewed binary datasets. Commonly known domains
-dealing with these challenges are fraud detection, medical diagnosis, risk
-management, airborne imagery, face recognition and forecasting of ozone levels
-\cite{Akbani2004}.
+Learning from imbalanced datasets is a pervasive and challenging problem in
+supervised machine learning. Imbalanced datasets are common in many application
+domains such as are fraud detection, medical diagnosis, risk management,
+airborne imagery, face recognition and forecasting of ozone levels
+\cite{Akbani2004}, and can be seen as a form of data scarcity. The recent growth
+in the number of research papers on the topic (REF) suggests that it continues
+to be a relevant and important topic for the research community.
 
-Datasets with an unequally distributed target class are identified by their
-Imbalance Ratio (IR). The class represented by most of the instances is named
-the majority class, while the other class is the minority class
-\cite{Chawla2003}. The IR is defined as the ratio between the majority class and
-each of the minority classes. It is important to notice that the data imbalance
-is an integral part of the problem itself and usually the cost of a false
-negative prediction is much larger than the cost of a false positive.
-Considering a machine learning based system to make medical decisions, if the
-model predicts a patient to carry a disease, even though the patient is healthy,
-the wrong decision will be revealed in further medical examinations. On the
-other hand, if the model classifies the patient to be healthy, even though the
-individual carries a disease, tremendous harm is caused
-\cite{Wan2014LearningTI}. Therefore, we can see that the correct classification
-of the minority class is usually more important than the correct prediction of
-the majority class.
+The imbalanced learning problem can be defined as a classification problem where
+there is a substantial asymmetry between the number of instances of the classes.
+The dominant class is called the majority class while the other classes are
+called the minority classes \cite{Chawla2003}. The Imbalance Ratio (IR) is the
+measure commonly used to assess the imbalance severity in datasets. The IR is
+defined as the ratio between the majority class and the minority class, and it’s
+frequent to find values between 100 and 100.000 \cite{Chawla2002},
+\cite{Barua2014}.
 
-There are two main explanations for the poor ability to learn from imbalanced
-data sets. The first reason to explain this behavior is, that during the
-training process of the model the instances of the minority classes contribute
-less to the minimization of the algorithms cost function. As a result, the model
-has a higher incentive to classify new instances as majority instances, since
-there is a higher chance of a correct classification. Second, due to the limited
-number of samples, the model faces difficulties to differentiate between
-outliers and relevant minority instances. This implies that the ability to
-create a decent model is not just dependent on the machine learning algorithm
-and its parameters, but also from the data itself and its imbalance ratio.
+Imbalanced datasets constitute a problem insofar as standard machine learning
+methods induce a bias in favor of the majority class during training. This
+happens because the minority classes contributes less to the minimization of
+accuracy, the commonly used objective function. It is well known that accuracy
+is heavily biased towards the majority class, and can be misleading when
+assessing the performance of a classifier. For instance, assuming a dataset with
+\( 99\% \) majority instances and only \( 1\% \) minority instances, the model
+accuracy would still be \( 99\% \) without classifying a single minority
+instance correctly.
 
-Inexperienced practitioners who trained models on imbalanced data might be lead to
-false conclusions while validating their models based on their accuracy.
-Accuracy is a measure that is heavily biased towards the majority class, the
-metric might imply a decent score, even though none of the minority classes are
-correctly classified. Assuming a dataset with \( 99\% \)  majority instances and
-only \( 1\% \) minority instances, the model accuracy would still be \( 99\% \)
-without classifying a single minority instance correctly. To address this
-concern, other validation metrics have to be selected that consider the
-importance of the minority class. A more detailed outline of the chosen metrics
-follows in section 5.1 'Metrics'.
+It is also important to note that most methods assume equal costs in the
+misclassification of minority and majority instances, but this is seldom the
+case. Very often, the misclassification costs associated with the
+misclassification of minority instances (false negatives) is much higher than
+the misclassification of majority instances (false positives)
+\cite{Domingos1999}, \cite{Ting2002}. Diseases screening tests are just an
+example of the situation in which false negatives involve a much higher cost
+than the false positives \cite{Wan2014LearningTI}.
 
-In general, there are three different options to handle an imbalanced data set
-\cite{Fernandez2013}. The first option is the modification of the dataset
-itself, hereby one can create new synthetic data instances to the minority
-classes by oversampling or remove existing data instances from the majority
-instances through undersampling. Both approaches can also be combined to a
-hybrid approach, the general objective of the approaches is to minimize the
-skewed distribution of the classes within the dataset and to shift the classes
-towards an equal distribution. The second option is to adjust the cost function
-of the supervised learning algorithm. During the training process, the model
-will be heavily penalized for falsely classified minority class instances. This
-option implies the modification the training process and the creation of
-explicit algorithms to handle the class imbalance. The third approach focuses on
-the modification of algorithms that reinforce the learning towards the minority
-class. We decided to tackle the challenge of imbalanced datasets by
-oversampling. The reasons to modify the dataset and not the algorithm is that
-after the dataset modification any supervised machine learning algorithm can be
-used, without any further modification. In this paper we focus on oversampling
-since it provides the advantage that none of the majority instances need to be
-removed and no valuable information is deleted, as it might happen through
-undersampling.
+In general, there are three different options to handle an imbalanced datasets
+\cite{Fernandez2013}. One is to adjust the cost function of the algorithm, which
+means that during the training process, the model will be heavily penalized for
+misclassifying minority instances (false negatives). This can be a laborious
+process as it involves the modification of the training process for every
+algorithm the user applies. Another option is to focuses on the modification of
+algorithms reinforcing the learning towards the minority class. Again, this can
+be a complex and lengthy procedure, possibly restricting the algorithm options
+available to the user. Finally, the last option is to modify the data. This can
+be done by generating new synthetic data instances of the minority classes,
+known as oversampling, or by removing instances from the majority class, known
+as undersampling. The objective of both, oversampling and undersampling, is to
+balance the dataset, minimizing the skewness of the data distribution.
+
+In this paper we adopt this last option, and tackle imbalanced learning problem
+by re-balancing class distribution through oversampling. This is a more general
+approach, because once the distribution is balanced any supervised machine
+learning algorithm can be used, without any further modification. Additionally,
+by using oversampling, and contrary to undersampling, no data is wasted, as none
+of the majority instances need to be removed.
+
+The oversampling process can be divided into two steps: a) the process of
+choosing where to generate the synthetic minority instances; b) the actual
+process of generating the synthetic minority instances. Both of these processes
+are essential for a successful oversampling process. These two steps should
+prevent the generation of synthetic minority instances in areas of the input
+space dominated by majority instances.
 
 The method presented in this paper extends the Self-Organizing Map Oversampling
-algorithm (SOMO) by making use of the Geometric SMOTE algorithm (G-SMOTE). SOMO
-is a clustering based algorithm that leverages the Self-Organizing map algorithm
-and manages to outperform related algorithms over various datasets
-\cite{Douzas2017B}. The algorithm preserves the topology while reducing the
-dimensionality to a two-dimensional representation. The emerging clusters are
-used to create minority instances within, but also between neighboring minority
-clusters by applying the SMOTE algorithm. The algorithm presented in this paper
-utilizes the procedure of the SOMO algorithm and replaces the SMOTE with the
-G-SMOTE data generation mechanism. G-SMOTE generates synthetic samples in a
-geometric region of the input space, around each selected minority instance.
-G-SMOTE also makes significant improvements in the generated data quality
-\cite{Douzas2017}. Due to the combination of both algorithms, the naming choice
-of the algorithm proposed is Geometric Self-Organizing Map Oversampling
-(G-SOMO).
+algorithm (SOMO) \cite{Douzas2017B}, shown to be particularly efficient in
+identifying areas where the synthetic minority instances should be generated, by
+coupling it with the Geometric SMOTE algorithm (G-SMOTE) \cite{Douzas2017}, used
+as the generation process of the minority instances.
 
-Following this introduction, we will outline related methods that proved to be
-efficient in the second chapter. Subsequently, we will expound the shortcomings
-of classifiers and explain the motivation for the oversampling method G-SOMO in
-chapter three. In the fourth chapter, G-SOMO algorithm is discussed in detail
-and each step is presented individually while the chapter 'Research Methodology
-‘ covers our experimental pipeline to validate the performance of the proposed
-method. The results and their statistical analysis is presented in chapter six.
-The last chapter summarizes our findings and provides a prospect for further
-research.
+SOMO is a clustering based oversampling algorithm based on the Self-Organizing
+Map (SOM) algorithm and as been shown to outperform related algorithms over
+various datasets. The algorithm preserves the topology of the input space, while
+reducing the dimensionality to a two-dimensional representation. The emerging
+clusters are then used as a map to guide the generation of minority instances
+within, but also between neighboring minority clusters. In the original SOMO
+paper the generation process was done through the application of the SMOTE
+algorithm.
+
+The new algorithm presented in this paper (G-SOMO) uses SOMO to identify the
+areas to populate with synthetic minority instances, but replaces SMOTE with
+G-SMOTE as the data generation mechanism. G-SMOTE generates synthetic samples in
+a geometric region of the input space, around each selected minority instance.
+It has been shown that G-SMOTE produces significant improvements in the
+generated data quality. We evaluate G-SOMO performance using 69 datasets, 4
+different classifiers and 3 different performance measures and compare it with
+random oversampling and SMOTE.
+
+In the next section we will outline related methods that proved to be efficient.
+In section 3, we explain some of the shortcomings of classifiers and other
+oversampling methods and explain the motivation for using G-SOMO. Next, we
+explain in detail the G-SOMO algorithm, followed by a presentation of
+experimental setup used to produce the results and validate the performance of
+the different methods. In section 6 the results and their statistical analysis
+are presented. The last section summarizes our findings and provides some ideas
+for further research.
 
 \section{Related work}
 
