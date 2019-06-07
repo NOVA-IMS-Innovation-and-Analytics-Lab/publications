@@ -1,12 +1,9 @@
 """
-Run the experimental procedure of the
-Geometric SMOTE journal paper.
+Define configurations of experiments.
 """
 
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
-
-from os.path import join
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
