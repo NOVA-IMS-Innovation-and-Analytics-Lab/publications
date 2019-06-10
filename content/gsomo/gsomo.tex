@@ -2,7 +2,7 @@
 
 \pdfoutput=1
 
-\title{G-SOMO \\ \LARGE{An Oversampling Approach based on Self-Organized Map Oversampling and Geometric SMOTE}}
+\title{G-SOMO \\ \LARGE{An Oversampling Approach based on Self-Organized Maps and Geometric SMOTE}}
 
 \author{
 	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Rene Rauch\(^{1}\)
@@ -68,10 +68,11 @@ results is proven.
 Learning from imbalanced datasets is a pervasive and challenging problem in
 supervised machine learning. Imbalanced datasets are common in many application
 domains such as are fraud detection, medical diagnosis, risk management,
-airborne imagery, face recognition and forecasting of ozone levels
-\cite{Akbani2004}, and can be seen as a form of data scarcity. The recent growth
-in the number of research papers on the topic (REF) suggests that it continues
-to be a relevant and important topic for the research community.
+airborne imagery, face recognition and forecasting of ozone levels and can be
+seen as a form of data scarcity \cite{Vong2014}, \cite{He2009}. The recent
+growth in the number of research papers on the topic \cite{Haixiang2017},
+\cite{Fernandez2018},  suggests that it continues to be a relevant and important
+topic for the research community.
 
 The imbalanced learning problem can be defined as a classification problem where
 there is a substantial asymmetry between the number of instances of the classes.
@@ -99,7 +100,7 @@ misclassification of minority instances (false negatives) is much higher than
 the misclassification of majority instances (false positives)
 \cite{Domingos1999}, \cite{Ting2002}. Diseases screening tests are just an
 example of the situation in which false negatives involve a much higher cost
-than the false positives \cite{Wan2014LearningTI}.
+than the false positives \cite{Wan2014}.
 
 In general, there are three different options to handle an imbalanced datasets
 \cite{Fernandez2013}. One is to adjust the cost function of the algorithm, which
@@ -130,9 +131,9 @@ prevent the generation of synthetic minority instances in areas of the input
 space dominated by majority instances.
 
 The method presented in this paper extends the Self-Organizing Map Oversampling
-algorithm (SOMO) \cite{Douzas2017B}, shown to be particularly efficient in
+algorithm (SOMO) \cite{Douzas2017}, shown to be particularly efficient in
 identifying areas where the synthetic minority instances should be generated, by
-coupling it with the Geometric SMOTE algorithm (G-SMOTE) \cite{Douzas2017}, used
+coupling it with the Geometric SMOTE algorithm (G-SMOTE) \cite{Douzas2019}, used
 as the generation process of the minority instances.
 
 SOMO is a clustering based oversampling algorithm based on the Self-Organizing
@@ -196,7 +197,7 @@ neighbors from the \( k \) nearest neighbors are randomly chosen. Figure
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{./resources/fig1.png}
-	\captionbelow{SMOTE Algorithm, inspired by \cite{Schubach}}
+	\captionbelow{SMOTE Algorithm, inspired by \cite{Schubach2017}}
 	\label{fig:Schubach}
 \end{figure}
 
@@ -215,12 +216,12 @@ from safe areas \cite{Bunkhumpornpat2009}.
 To tackle the problems of SMOTE several modifications were created. SMOTE +
 Edited Nearest Neighbor removes any misclassified instances after the creation
 of synthetic samples, by applying the edited nearest neighbor rule
-\cite{Maria2004}. Safe-Level SMOTE applies a weight degree to differentiate
+\cite{Batista2004}. Safe-Level SMOTE applies a weight degree to differentiate
 between noisy and safe instances \cite{Bunkhumpornpat2009}. Furthermore, G-SMOTE
 manages to extend the linear interpolation of SMOTE by introducing a geometric
 region where the data generation process occurs. Thereby, the algorithm
 increases the data variability and prevents additional correlation between the
-created samples \cite{Douzas2017}. Further algorithms like Borderline-SMOTE
+created samples \cite{Douzas2019}. Further algorithms like Borderline-SMOTE
 \cite{Han2005}, MWMOTE (Majority Weighted Minority Oversampling Technique for
 Imbalanced Data Set Learning) \cite{Barua2014}, ADASYN and its variation
 KernelADASYN \cite{Tang2015} are trying to avoid noisy samples and focus on hard
@@ -228,7 +229,7 @@ to learn instances. Hereby, the borderline samples of the classes are identified
 to use the informative minority class instances.
 
 The prior algorithms focus exclusively on between-class imbalance
-\cite{Nekooeimehr2015}. The second challenge is an informed approach, the
+\cite{Nekooeimehr2016}. The second challenge is an informed approach, the
 within-class-imbalance. Within-class-imbalance refers to identifying sparse or
 dense clusters of minority or majority instances. To tackle this challenge,
 different clustering based oversampling methods have been proposed to identify
@@ -238,7 +239,7 @@ segment.
 
 Cluster SMOTE utilizes the k-means cluster algorithm, to identify clusters with
 a specific threshold of minority instances, before applying SMOTE within these
-clusters \cite{CieslakCS06}. In addition, K-means and SMOTE applies a similar
+clusters \cite{Cieslak2006}. In addition, K-means and SMOTE applies a similar
 approach, but also considers the density within the clusters by assigning
 samples weights. A high sampling weight corresponds to a low density of minority
 samples and yields more generated samples \cite{Douzas2018}. Furthermore, multiple
@@ -246,15 +247,15 @@ suggestions for the hyper-parameter selection are provided. DBSMOTE provides
 another approach to cluster based oversampling, by applying the density-based
 DBSCAN algorithm to discover arbitrarily shaped clusters to create artificial
 data instances along the shortest path from each minority class instance to a
-pseudo-centroid of the cluster \cite{Bunkhumpornpat2011}. A-SUWO uses a
+pseudo-centroid of the cluster \cite{Bunkhumpornpat2012}. A-SUWO uses a
 hierarchical clustering approach and adaptively determines the size to
 oversample each sub-cluster using its classification complexity and
-cross-validation \cite{Nekooeimehr2015}. 
+cross-validation \cite{Nekooeimehr2016}. 
 
 The Self Organizing Map Oversampling (SOMO) algorithm applies a self-organizing
 map to create a two-dimensional representation of the multidimensional input
 space and creates inter-cluster and intra-cluster synthetic samples based on the
-underlying manifold structure \cite{Douzas2017B}. The algorithm transforms the
+underlying manifold structure \cite{Douzas2017}. The algorithm transforms the
 input in a two-dimensional space of clusters and applies the SMOTE oversampling
 algorithm to generate synthetic instances in the minority clusters and between
 neighboring minority clusters. The densities in and between the clusters are
@@ -276,27 +277,27 @@ oversampling methods and clarifies the motivation for our proposed algorithm
 G-SOMO.
 
 A classifiers performance is significantly influenced by the positioning of the
-instances in the dataset. As outlined in figure \ref{fig:Saez}, the instances of
+instances in the dataset. As outlined in figure \ref{fig:Sez}, the instances of
 a class can be spread over the boundaries of the majority class, which
-complicates the classifiers task \cite{Tang}. This is a common challenge in
+complicates the classifiers task \cite{Tang2007}. This is a common challenge in
 real-world problems. The different types of instances can be seen as safe and
 unsafe instances, while the latter also differentiate between borderline and
-outlier instances \cite{Saez}.
+outlier instances \cite{Sez2016}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm,height=7cm, keepaspectratio]{./resources/fig2.png}
-	\captionbelow{Challenging data formations, inspired by \cite{Saez}.}
-	\label{fig:Saez}
+	\captionbelow{Challenging data formations, inspired by \cite{Sez2016}.}
+	\label{fig:Sez}
 \end{figure}
 
 Safe instances are located in the homogeneous regions and populated by the
-examples from one class only \cite{rodriguez2012hybrid}. They are clearly
+examples from one class only \cite{rodriguez2012}. They are clearly
 separated from examples of other classes. Most classifiers are able to correctly
 identify those instances \cite{Prati2004B}. Instances that are not clearly
 separated are considered unsafe ones like borderline instances and outliers
-\cite{Kubat2000}. Borderline instances are placed in the boundary region between
-classes, where instances of multiple classes overlap \cite{Saez}. Outliers are
+\cite{Kubat1997}. Borderline instances are placed in the boundary region between
+classes, where instances of multiple classes overlap \cite{Sez2016}. Outliers are
 isolated distinct instances, also termed as noise. 
 
 Learning algorithms are challenged when they are confronted with overlapping
@@ -317,7 +318,7 @@ is too high and individuals from another cluster are selected.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{./resources/fig3.png}
-	\captionbelow{Shortcomings of SMOTE, inspired by \cite{Douzas2017B}}
+	\captionbelow{Shortcomings of SMOTE, inspired by \cite{Douzas2017}}
 \end{figure}
 
 The Self-Organizing Map Oversampling (SOMO) algorithm improved the selection
@@ -325,7 +326,7 @@ criteria of the minority class samples, which are used to generate synthetic
 examples. Through the synthetic data generation in and between neighboring
 minority clusters, as well as the consideration of the density, the algorithm
 also manages to generate the synthetic instances in more productive areas of the
-data space \cite{Douzas2017B}. Therefore, the generation of noisy examples is
+data space \cite{Douzas2017}. Therefore, the generation of noisy examples is
 avoided. SOMO manages to identify efficient oversampling areas, the generation
 of synthetic instances is then handled by the SMOTE algorithm, which still
 provides several drawbacks. Challenges, as outlined in figure 3d, are prevented
@@ -335,7 +336,7 @@ synthetic instances that are on the line segment between two instances.
 
 Geometric SMOTE (G-SMOTE) extends the linear interpolation mechanism by
 introducing a geometric region, in which the data generation process occurs
-\cite{Douzas2017}. Therefore, the algorithm extends the linear interpolation
+\cite{Douzas2019}. Therefore, the algorithm extends the linear interpolation
 mechanism and provides a geometric region in which the data generation occurs.
 Figure \ref{fig:GSMOTE} illustrates the idea behind the data generation based on a geometric
 region, instead of on the line segment. 
@@ -343,7 +344,7 @@ region, instead of on the line segment.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{./resources/fig4.png}
-	\captionbelow{Synthetic data generation based on a geometric region, inspired by \cite{Douzas2017}}
+	\captionbelow{Synthetic data generation based on a geometric region, inspired by \cite{Douzas2019}}
 	\label{fig:GSMOTE}
 \end{figure}
 
@@ -385,7 +386,7 @@ The proposed method consists of three stages:
 		  input data set. The SOM algorithm creates a mapping of the high
 		  dimensional data space into a low-dimensional space in such a way that
 		  the topological relations of the input patterns are preserved
-		  \cite{KOKUER2007}. To train a SOM, the Euclidean distance between the
+		  \cite{Kker2007}. To train a SOM, the Euclidean distance between the
 		  input vector and all neural weights has to be calculated. The neuron
 		  that has the shortest distance to the input vector (the winner) is
 		  chosen and its weights are slightly modified to the direction
@@ -415,7 +416,7 @@ The proposed method consists of three stages:
 \subsection{G-SOMO Algorithm}
 
 The G-SOMO algorithm is the efficient combination of the SOMO and G-SMOTE
-algorithm, introduced in \cite{Douzas2017B} and \cite{Douzas2017}. The complete
+algorithm, introduced in \cite{Douzas2017} and \cite{Douzas2019}. The complete
 G-SOMO algorithm is listed below:
 
 \begin{algorithm}[H]
@@ -591,7 +592,7 @@ artificial samples are created through the intra-cluster process.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=18cm,height=13cm, keepaspectratio]{./resources/fig5.png}
-	\captionbelow{Overview of identified filtered clusters and neighboring relations, inspired by \cite{Douzas2017B}}
+	\captionbelow{Overview of identified filtered clusters and neighboring relations, inspired by \cite{Douzas2017}}
 	\label{fig:Somo_Overview}
 \end{figure}
 
@@ -628,7 +629,7 @@ $x_{gen}$ based on $x_{center}$ and the radius $R$.
 	\centering
 	\includegraphics[width=15cm,height=10cm, keepaspectratio]{./resources/fig6.png}
 	\captionbelow{Constructing the geometric region, based on the unit hyper sphere, truncation and 
-	deformation, inspired by \cite{Douzas2017B}}
+	deformation, inspired by \cite{Douzas2017}}
 	\label{fig:Hypersphere}
 \end{figure}
 
@@ -716,9 +717,9 @@ Different classifier algorithms are chosen to evaluate the performance of the
 oversampling methods. It is crucial to ensure that the obtained results are
 generalizable to different classifiers and not only to specific ones, due to the
 different algorithms characteristics. The chosen classifiers are Logistic
-Regression (LR) \cite{McCullagh1984}, K-Nearest Neighbors (KNN)
-\cite{Suguna2010}, Decision Tree (DT) \cite{Salzberg1994} and Gradient Boosting
-Classifier (GBC) \cite{Huang2007}.
+Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN)
+\cite{Cover1967}, Decision Tree (DT) \cite{Salzberg1994} and Gradient Boosting
+Classifier (GBC) \cite{Friedman2001}.
 
 \subsection{Experimental procedure}
 
@@ -955,11 +956,11 @@ ratio (R). Specifically we can conclude the following:
 
 In this paper, we proposed a new oversampling algorithm G-SOMO. The algorithm
 observes the characteristics of the multidimensional data input while grouping
-the input data to identify filtered clusters, where minority instances dominate.
-Within these filtered clusters, as well as between neighboring filtered clusters
-we create synthetic instances. During the creation of synthetic instances, we
-apply the combined selection strategy, that also takes majority instances into
-account. The synthetic instances are created in a safe hyper-spheroid. 
+the input data to identify filtered clusters where minority instances dominate.
+Within these filtered clusters, as well as between neighboring filtered
+clusters, we create synthetic minority class instances. During their creation,
+we apply the combined selection strategy, that also takes majority instances
+into account. The synthetic instances are created in a safe hyper-spheroid.
 
 G-SOMO was evaluated on 69 different datasets and compared to popular
 oversampling methods. We validated the performance with different metrics, such
