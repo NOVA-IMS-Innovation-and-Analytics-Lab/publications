@@ -53,7 +53,7 @@ issue are proposed by researchers. The modification of the data set has become a
 common practice since the procedure is generalizable to all classifiers. Various
 algorithms to rebalance the data distribution through the creation of synthetic
 instances were proposed in the past.  In this paper, we propose a new
-oversampling algorithm named G-SOMO, a method that is inspired by our previous
+oversampling algorithm named G-SOMO, a method that is adopted from our previous
 research. The algorithm identifies optimal areas to create artificial data
 instances in an informed manner and utilizes a geometric region during the data
 generation to increase variability and to avoid correlation. Our empirical
@@ -197,7 +197,7 @@ neighbors from the \( k \) nearest neighbors are randomly chosen. Figure
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{./resources/fig1.png}
-	\captionbelow{SMOTE Algorithm, inspired by \cite{Schubach2017}}
+	\captionbelow{SMOTE Algorithm, adopted from \cite{Schubach2017}}
 	\label{fig:Schubach}
 \end{figure}
 
@@ -287,7 +287,7 @@ outlier instances \cite{Sez2016}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm,height=7cm, keepaspectratio]{./resources/fig2.png}
-	\captionbelow{Challenging data formations, inspired by \cite{Sez2016}.}
+	\captionbelow{Challenging data formations, adopted from  \cite{Sez2016}.}
 	\label{fig:Sez}
 \end{figure}
 
@@ -318,7 +318,7 @@ is too high and individuals from another cluster are selected.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{./resources/fig3.png}
-	\captionbelow{Shortcomings of SMOTE, inspired by \cite{Douzas2017}}
+	\captionbelow{Shortcomings of SMOTE, adopted from \cite{Douzas2017}}
 \end{figure}
 
 The Self-Organizing Map Oversampling (SOMO) algorithm improved the selection
@@ -344,7 +344,7 @@ region, instead of on the line segment.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{./resources/fig4.png}
-	\captionbelow{Synthetic data generation based on a geometric region, inspired by \cite{Douzas2019}}
+	\captionbelow{Synthetic data generation based on a geometric region, adopted from \cite{Douzas2019}}
 	\label{fig:GSMOTE}
 \end{figure}
 
@@ -592,7 +592,7 @@ artificial samples are created through the intra-cluster process.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=18cm,height=13cm, keepaspectratio]{./resources/fig5.png}
-	\captionbelow{Overview of identified filtered clusters and neighboring relations, inspired by \cite{Douzas2017}}
+	\captionbelow{Overview of identified filtered clusters and neighboring relations, adopted from \cite{Douzas2017}}
 	\label{fig:Somo_Overview}
 \end{figure}
 
@@ -629,7 +629,7 @@ $x_{gen}$ based on $x_{center}$ and the radius $R$.
 	\centering
 	\includegraphics[width=15cm,height=10cm, keepaspectratio]{./resources/fig6.png}
 	\captionbelow{Constructing the geometric region, based on the unit hyper sphere, truncation and 
-	deformation, inspired by \cite{Douzas2017}}
+	deformation, adopted from \cite{Douzas2017}}
 	\label{fig:Hypersphere}
 \end{figure}
 
@@ -825,7 +825,7 @@ every last row/.style={after row=\bottomrule \caption{Results for percentage dif
 ]
 {./resources/perc_diff_scores.csv}
 
-For the purpose of a clear distinguishing between the oversampling methods, a
+For the purpose of a clear distinction between the oversampling methods, a
 ranking score is introduced, ranging from 1 to 4. More precisely, 1 represents
 the best performance, 4 the worst. Table 4 below illustrates the mean rank of
 each oversampler on each metric and each classifier averaged across datasets: 
@@ -847,13 +847,15 @@ every last row/.style={after row=\bottomrule \caption{Results for mean ranking o
 ]
 {./resources/ranking.csv} 
 
-Based on the insights from the above tables we can conclude, that G-SOMO successfully
-outperforms other oversampling methods, proven in combination with various
-Metrics and Classifiers, averaged over all datasets. Figure
+Based on the insights from the above tables we can conclude, that G-SOMO
+successfully outperforms other oversampling methods, proven in combination with
+various Metrics and Classifiers, averaged over all datasets. Figure
 \ref{fig:MeanRanking} underlines the dominance of G-SOMO, the graph provides the
-aggregated results of each classifier. We can see that throughout all
-experiments G-SOMO demonstrates the best performance. Moreover, it highlights
-the previously mentioned ranking between all oversampling methods. 
+ranking results of each oversampler for any combination of classifier and
+metric. We can see that throughout all experiments G-SOMO demonstrates the best
+performance, significantly improving the results for all classifiers. Moreover,
+it highlights the previously mentioned ranking between all oversampling methods.
+
 
 \begin{figure}[H]
 	\centering
@@ -904,9 +906,10 @@ every last row/.style={after row=\bottomrule \caption{Adjusted p-values using th
 ]
 {./resources/holms_test.csv}
 
-Therefore, the null hypothesis of the Holm's test is rejected for all
-oversamplers at a significance level of a = 0.05, indicating that the proposed
-method outperforms all other methods.  
+Therefore, the null hypothesis of the Holm's test is rejected at a significance
+level of a = 0.05 for 27 out of 36 total cases. It is important to note that the
+search in the hyper-parameter space was very limited due to time and
+computational restrictions, given that we used 69 datasets.
 
 \subsection{Analysis and tuning of optimal hyper-parameters}
 
@@ -972,12 +975,11 @@ appropriate statistical tests.
 
 In particular, our empirical results highlight the need for oversampling
 algorithms. Utilizing no oversampling method produced the worst results in our
-mean ranking, simple methods like random oversampling already increased the
-performance. The popular method SMOTE performed better than the previous ones,
-whereas G-SOMO dominated the ranking and outperformed other oversamplers. 
-
-We are confident that G-SOMO is a new appealing approach for researcher and
-practitioners working with imbalanced datasets. 
+mean ranking, while simple methods like random oversampling increased the
+performance when compared with it. The popular method SMOTE performed better
+than the previous ones, whereas G-SOMO dominated the ranking and outperformed
+other oversamplers.  Therefore, we are confident that G-SOMO is a new appealing
+approach for researchers and practitioners working with imbalanced datasets. 
 
 Future work will focus on a more efficient estimation of the algorithms
 hyper-parameter. During our experiments we noticed the issue to be challenging,
