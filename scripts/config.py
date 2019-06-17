@@ -13,7 +13,7 @@ from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, 
 from sklearnext.cluster import KMeans, SOM
 
 CLASSIFIERS = [
-    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4)),
+    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto')),
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
     ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
@@ -87,7 +87,14 @@ IMBALANCED_CONFIGURATION = {
     'classifiers': CLASSIFIERS,
     'scoring': ['roc_auc', 'f1', 'geometric_mean_score'],
     'n_splits': 5,
-    'n_runs': 5,
+    'n_runs': 3,
+    'random_state': 0
+}
+REMOTE_SENSING_CONFIGURATION = {
+    'db_name': 'remote_sensing_data.db',
+    'scoring': ['f1_macro'],
+    'n_splits': 3,
+    'n_runs': 3,
     'random_state': 0
 }
 CONFIGURATIONS = {
@@ -102,7 +109,8 @@ CONFIGURATIONS = {
     'kmeans_borderline_smote': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[8]]}),
     'kmeans_gsmote': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[9]]}),
     'somo': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[10]]}),
-    'gsomo': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[11]]})
+    'gsomo': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[11]]}),
+    'remote_sensing': dict(REMOTE_SENSING_CONFIGURATION, **{'classifiers': CLASSIFIERS[1:], 'oversamplers': OVERSAMPLERS[0:6]})
 }
 
 
