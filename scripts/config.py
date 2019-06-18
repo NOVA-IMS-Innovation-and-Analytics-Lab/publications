@@ -9,11 +9,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.preprocessing import MinMaxScaler
+from imblearn.pipeline import Pipeline
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
 
 CLASSIFIERS = [
-    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto')),
+    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
     ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
@@ -92,8 +94,25 @@ IMBALANCED_CONFIGURATION = {
 }
 REMOTE_SENSING_CONFIGURATION = {
     'db_name': 'remote_sensing_data.db',
+    'classifiers': CLASSIFIERS[1:], 
+    'oversamplers': OVERSAMPLERS[0:6],
     'scoring': ['f1_macro'],
     'n_splits': 3,
+    'n_runs': 3,
+    'random_state': 0
+}
+INSURANCE_CONFIGURATION = {
+    'db_name': 'insurance_data.db',
+    'classifiers': [
+        (
+            clf_name, 
+            Pipeline([ ('scaler', MinMaxScaler()), ('clf', clf) ]), 
+            {f'clf__{param}':val for param, val in param_grid.items()}
+        ) for clf_name, clf, param_grid in CLASSIFIERS
+    ],
+    'oversamplers': OVERSAMPLERS[0:6],
+    'scoring': ['roc_auc', 'f1', 'geometric_mean_score'],
+    'n_splits': 5,
     'n_runs': 3,
     'random_state': 0
 }
@@ -110,7 +129,8 @@ CONFIGURATIONS = {
     'kmeans_gsmote': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[9]]}),
     'somo': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[10]]}),
     'gsomo': dict(IMBALANCED_CONFIGURATION, **{'oversamplers': [OVERSAMPLERS[11]]}),
-    'remote_sensing': dict(REMOTE_SENSING_CONFIGURATION, **{'classifiers': CLASSIFIERS[1:], 'oversamplers': OVERSAMPLERS[0:6]})
+    'remote_sensing': REMOTE_SENSING_CONFIGURATION,
+    'insurance': INSURANCE_CONFIGURATION
 }
 
 
