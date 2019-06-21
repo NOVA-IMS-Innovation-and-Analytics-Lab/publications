@@ -1,14 +1,12 @@
-#!usr/bin/env python
-
 """
-Downloads, transforms and simulates imbalanced data.
+Download, transform and simulate various datasets.
 """
 
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-from os.path import join, dirname, abspath
-from re import match, sub
+from os.path import join
+from re import sub
 from collections import Counter
 from itertools import product
 from urllib.parse import urljoin
@@ -528,33 +526,3 @@ class BinaryClassDatasets(Datasets):
         data.rename(columns={57: 'target'}, inplace=True)
         return data
 
-
-MAPPING = {'imbalanced_binary_class': ImbalancedBinaryClassDatasets, 'binary_class': BinaryClassDatasets}
-
-
-def parse_path():
-    """Parse path from command-line arguments."""
-    parser = ArgumentParser('Download and save datasets.')
-    parser.add_argument('datasets_name', help=f'The name of datasets to download. It should be one of {", ".join(MAPPING.keys())}.')
-    parser.add_argument('--path', default='.', help='The relative or absolute path to save the database.')
-    parsed_args = parser.parse_args()
-    return parsed_args.datasets, abspath(parsed_args.path)
-
-
-def check_datasets(datasets):
-    """Validate input and return datasets class."""
-    if datasets not in MAPPING:
-        raise ValueError(f'Argument `datasets` should be one of {", ".join(MAPPING.keys())}.')
-    return MAPPING[datasets]()
-
-
-if __name__ == '__main__':
-
-    # Parse arguments
-    datasets_name, path = parse_path()
-
-    # Check datasets
-    datasets = check_datasets(datasets_name)
-    
-    # Download and save datasets
-    datasets.download().save(path, datasets_name)
