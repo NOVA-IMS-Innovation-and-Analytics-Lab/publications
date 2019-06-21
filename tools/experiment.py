@@ -5,9 +5,8 @@ Configure and run the experimental procedure.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-from os.path import join, dirname, exists, abspath
+from os.path import join, exists
 from sqlite3 import connect
-from argparse import ArgumentParser
 
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -16,7 +15,6 @@ from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import MinMaxScaler
 from imblearn.pipeline import Pipeline
-from sklearnext.tools import BinaryExperiment
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
 
