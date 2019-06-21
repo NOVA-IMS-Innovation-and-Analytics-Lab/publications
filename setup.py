@@ -8,6 +8,6 @@ setup(
         'sklearnext @ https://github.com/IMS-ML-Lab/scikit-learn-extensions'
     ],
     entry_points={
-        'console_scripts':['run=tools.experiment:run']
+        'console_scripts':['run=tools.cli:run']
     }
 )
