@@ -6,6 +6,7 @@ Download, transform and simulate various datasets.
 # License: MIT
 
 from os.path import join
+from os import remove
 from re import sub
 from collections import Counter
 from itertools import product
@@ -59,7 +60,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
     KEEL_URL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
     OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff'
-    GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/pima.csv'
+    GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/various.db'
     MULTIPLICATION_FACTORS = [2, 3]
     RANDOM_STATE = 0
 
@@ -217,8 +218,13 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://www.kaggle.com/uciml/pima-indians-diabetes-database
         """
-        data = pd.read_csv(self.GITHUB_URL)
+        database = requests.get(self.GITHUB_URL).content
+        with open('temp.db', 'wb') as file:
+            file.write(database)
+        with connect('temp.db') as con:
+            data = pd.read_sql('select * from pima', con)
         data.rename(columns={'8': 'target'}, inplace=True)
+        remove('temp.db')
         return data
 
     def fetch_segmentation(self):

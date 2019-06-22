@@ -5,10 +5,6 @@ Configure and run the experimental procedure.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-from os.path import join, exists
-from sqlite3 import connect
-
-import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
@@ -17,30 +13,6 @@ from sklearn.preprocessing import MinMaxScaler
 from imblearn.pipeline import Pipeline
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
-
-from . import DATA_PATH
-
-
-def load_datasets(db_name, datasets_names):
-    """Load datasets from sqlite database."""
-
-    path = join(DATA_PATH, f'{db_name}.db')
-    if not exists(path):
-        raise FileNotFoundError(f'Database {db_name} was not found.')
-
-    with connect(path) as connection:
-
-        if datasets_names == 'all':
-            datasets_names = [name[0] for name in connection.execute("SELECT name FROM sqlite_master WHERE type='table';")]
-
-        datasets = []
-
-        for dataset_name in datasets_names:
-            ds = pd.read_sql(f'select * from "{dataset_name}"', connection)
-            X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
-            datasets.append((dataset_name, (X, y)))
-    
-    return datasets
 
 
 def generate_configuration(db_name, datasets_names='all', classifiers_names='all', oversamplers_names='all', 
@@ -55,8 +27,8 @@ def generate_configuration(db_name, datasets_names='all', classifiers_names='all
     ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
     ]
     oversamplers = [
-        ('NO OVERSAMPLING', None),
-        ('RANDOM OVERSAMPLING', RandomOverSampler()),
+        ('NO OVERSAMPLING', None, {}),
+        ('RANDOM OVERSAMPLING', RandomOverSampler(), {}),
         ('SMOTE', SMOTE(), {'k_neighbors': [3, 5]}),
         ('BORDERLINE SMOTE', BorderlineSMOTE(), {'k_neighbors': [3, 5]}),
         ('ADASYN', ADASYN(), {'n_neighbors': [2, 3]}),
@@ -124,23 +96,20 @@ def generate_configuration(db_name, datasets_names='all', classifiers_names='all
     n_runs = 3
     random_state = 0
 
-    # Select datasets
-    datasets = load_datasets(db_name, datasets_names)
-
     # Select classifiers and oversamplers
     if classifiers == 'scaled':
         classifiers = [(
             name, Pipeline([ ('scaler', MinMaxScaler()), ('clf', clf) ]), 
             {f'clf__{param}':val for param, val in param_grid.items()}) for name, clf, param_grid in classifiers]
     elif classifiers_names != 'all':
-        classifiers = [(name, clf) for name, clf in classifiers if name in classifiers_names]
+        classifiers = [(name, clf, param_grid) for name, clf, param_grid in classifiers if name in classifiers_names]
     
     if oversamplers_names != 'all':
         if oversamplers_names == 'basic':
             oversamplers_names = ('NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'BORDERLINE SMOTE', 'ADASYN', 'G-SMOTE')
-        oversamplers = [(name, oversampler) for name, oversampler in oversamplers if name in oversamplers_names]
+        oversamplers = [(name, oversampler, param_grid) for name, oversampler, param_grid in oversamplers if name in oversamplers_names]
     
-    return dict(datasets=datasets, classifiers=classifiers, oversamplers=oversamplers, scoring=scoring, n_splits=n_splits, n_runs=n_runs, random_state=random_state)
+    return dict(db_name=db_name, datasets_names=datasets_names, classifiers=classifiers, oversamplers=oversamplers, scoring=scoring, n_splits=n_splits, n_runs=n_runs, random_state=random_state)
 
 
 CONFIG = {
