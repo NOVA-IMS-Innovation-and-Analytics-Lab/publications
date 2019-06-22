@@ -12,3 +12,4 @@ resources
 *.docx
 *.fls
 *.fdb_latexmk
+*.egg-info
