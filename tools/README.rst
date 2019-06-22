@@ -1,37 +1,52 @@
-=======
-Scripts
-=======
+=====
+Tools
+=====
 
 Installation
 ============
 
-The provided scripts require Python 3 and `Scikit-Learn-Extensions <https://github.com/georgedouzas/scikit-learn-extensions>`_.
-
-Data sets
-=========
-
-The following command downloads and transforms various imbalanced datasets and
-saves them as an SQLite database.
+Activate a Python virtual environment and from the current directory run the following command:
 
 .. code-block::
 
-  $ python data.py [path]
+  $ pip install .
 
-Experiments
-===========
+The ``run`` command is then installed and includes various options.
 
-The following commands execute the experimental procedure of the various papers.
+Usage
+=====
+
+The basic usage of the ``run`` command is described below: 
+
+Download database
+#################
+
+The following command downloads various datasets and
+saves them as an SQLite database:
+
+.. code-block::
+
+  $ run downloading name
+
+The argument ``name`` corresponds to the name of the database. For more information: 
+
+.. code-block::
+
+  $ run downloading --help
+
+Run experiment
+##############
+
+The following command executes an experimental procedure and saves the outcome:
 
 Run experimental procedure:
 
 .. code-block::
 
-  $ python experiment.py name
+  $ run experiment name
 
-Analyze the results of experiment:
+The argument ``name`` corresponds to the name of the experiment. For more information: 
 
 .. code-block::
 
-  $ python analysis.py name
-
-Both commands include various options. Add the ``-h`` flag for help. 
+  $ run experiment --help
