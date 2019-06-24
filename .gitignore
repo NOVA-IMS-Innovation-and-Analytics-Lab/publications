@@ -13,3 +13,4 @@ resources
 *.fls
 *.fdb_latexmk
 *.egg-info
+.*venv
