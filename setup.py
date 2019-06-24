@@ -5,7 +5,7 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        'sklearnext @ https://github.com/IMS-ML-Lab/scikit-learn-extensions'
+        'sklearnext @ git+http://git@github.com/IMS-ML-Lab/scikit-learn-extensions.git#egg=sklearnext'
     ],
     entry_points={
         'console_scripts':['run=tools.cli:run']
