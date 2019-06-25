@@ -21,10 +21,10 @@ def generate_configuration(db_name, datasets_names='all', classifiers_names='all
 
     # Define classifiers and oversamplers
     classifiers = [
-    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
-    ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
-    ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
-    ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
+        ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
+        ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
+        ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
+        ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
     ]
     oversamplers = [
         ('NO OVERSAMPLING', None, {}),
@@ -97,7 +97,7 @@ def generate_configuration(db_name, datasets_names='all', classifiers_names='all
     random_state = 0
 
     # Select classifiers and oversamplers
-    if classifiers == 'scaled':
+    if classifiers_names == 'scaled':
         classifiers = [(
             name, Pipeline([ ('scaler', MinMaxScaler()), ('clf', clf) ]), 
             {f'clf__{param}':val for param, val in param_grid.items()}) for name, clf, param_grid in classifiers]
@@ -126,6 +126,11 @@ CONFIG = {
     'somo_imbalanced': generate_configuration('imbalanced_binary_class', oversamplers_names=['SOMO']),
     'gsomo_imbalanced': generate_configuration('imbalanced_binary_class', oversamplers_names=['G-SOMO']),
     'lucas': generate_configuration('remote_sensing', datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names='basic', scoring=['f1_macro'], n_splits=3),
-    'insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names='basic'),
-    'small_data': generate_configuration('binary_class', oversamplers_names='basic', scoring=['accuracy']),
+    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['NO OVERSAMPLING']),
+    'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['RANDOM OVERSAMPLING']),
+    'smote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['SMOTE']),
+    'borderline_smote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['BORDERLINE SMOTE']),
+    'adasyn_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['ADASYN']),
+    'gsmote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['G-SMOTE']),
+    'small_data': generate_configuration('binary_class', oversamplers_names='basic', scoring=['accuracy'])
 }
