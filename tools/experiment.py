@@ -5,27 +5,61 @@ Configure and run the experimental procedure.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
+from collections import Counter
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import MinMaxScaler
-from imblearn.pipeline import Pipeline
+from imblearn.pipeline import make_pipeline
+from imblearn.under_sampling import RandomUnderSampler
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
 
 
-def generate_configuration(db_name, datasets_names='all', classifiers_names='all', oversamplers_names='all', 
-                           scoring='imbalanced', n_splits=5, n_runs=3, random_state=0):
-    """Generate configuration dictionary for an experiment."""
+def generate_sampling_strategy(y, ratio):
+    """"Generate a dictionary of the sampling strategy.""" 
+    sampling_strategy = {k:int(v / ratio) for k,v in Counter(y).items()}
+    return sampling_strategy
 
-    # Define classifiers and oversamplers
+
+def append_transformer(transformer, oversamplers):
+    """Append transformer to oversamplers."""
+    names, ovs, param_grids = zip(*oversamplers)
+    ovs_names = [ov.__class__.__name__.lower() if ov is not None else None for ov in ovs]
+    param_grids = [{f'{ovs_name}__{param}': values for param, values in param_grid.items()} for ovs_name, param_grid in zip(ovs_names, param_grids)]
+    oversamplers = [(name, (make_pipeline(transformer, ov) if ov is not None else ov), param_grid) for name, ov, param_grid in zip(names, ovs, param_grids)]
+    return oversamplers
+
+
+def set_sampling_strategy(value, oversamplers):
+    """Set sampling strategy to oversamplers."""
+    oversamplers = [(name, ov.set_params(sampling_strategy=value) if ov is not None else None, param_grid) for name, ov, param_grid in oversamplers]
+    return oversamplers
+
+
+def select_pipelines(pipelines, names):
+    """Filter pipelines given a list of names"""
+    return [(name, pipeline, param_grid) for name, pipeline, param_grid in pipelines if name in names]
+
+
+def generate_classifiers(classifiers_names):
+    """Generate classifiers."""
     classifiers = [
         ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
         ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
         ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
         ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
     ]
+    if classifiers_names != 'all':
+        classifiers = select_pipelines(classifiers, classifiers_names)
+
+    return classifiers
+    
+
+def generate_oversamplers(oversamplers_names):
+    "Generate oversamplers."
     oversamplers = [
         ('NO OVERSAMPLING', None, {}),
         ('RANDOM OVERSAMPLING', RandomOverSampler(), {}),
@@ -90,25 +124,27 @@ def generate_configuration(db_name, datasets_names='all', classifiers_names='all
             }
         )
     ]
+    if oversamplers_names in ('basic', 'scaled', 'undersampled'):
+        oversamplers = select_pipelines(oversamplers, ('NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'BORDERLINE SMOTE', 'ADASYN', 'G-SMOTE'))
+    if oversamplers_names == 'scaled':
+        oversamplers = append_transformer(MinMaxScaler(), oversamplers)
+    elif oversamplers_names == 'undersampled':
+        oversamplers = set_sampling_strategy(lambda y: generate_sampling_strategy(y, 1/3), oversamplers)
+        oversamplers = append_transformer(RandomUnderSampler(sampling_strategy=lambda y: generate_sampling_strategy(y, 3)), oversamplers)
+
+    return oversamplers
+
+
+def generate_configuration(db_name, datasets_names='all', classifiers_names='all', oversamplers_names='all', 
+                           scoring='imbalanced', n_splits=5, n_runs=3, random_state=0):
+    """Generate configuration dictionary for an experiment."""
     if scoring == 'imbalanced':
         scoring = ['roc_auc', 'f1', 'geometric_mean_score']
     n_splits = 5
     n_runs = 3
     random_state = 0
-
-    # Select classifiers and oversamplers
-    if classifiers_names == 'scaled':
-        classifiers = [(
-            name, Pipeline([ ('scaler', MinMaxScaler()), ('clf', clf) ]), 
-            {f'clf__{param}':val for param, val in param_grid.items()}) for name, clf, param_grid in classifiers]
-    elif classifiers_names != 'all':
-        classifiers = [(name, clf, param_grid) for name, clf, param_grid in classifiers if name in classifiers_names]
-    
-    if oversamplers_names != 'all':
-        if oversamplers_names == 'basic':
-            oversamplers_names = ('NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'BORDERLINE SMOTE', 'ADASYN', 'G-SMOTE')
-        oversamplers = [(name, oversampler, param_grid) for name, oversampler, param_grid in oversamplers if name in oversamplers_names]
-    
+    classifiers = generate_classifiers(classifiers_names)
+    oversamplers = generate_oversamplers(oversamplers_names)
     return dict(db_name=db_name, datasets_names=datasets_names, classifiers=classifiers, oversamplers=oversamplers, scoring=scoring, n_splits=n_splits, n_runs=n_runs, random_state=random_state)
 
 
@@ -126,11 +162,6 @@ CONFIG = {
     'somo_imbalanced': generate_configuration('imbalanced_binary_class', oversamplers_names=['SOMO']),
     'gsomo_imbalanced': generate_configuration('imbalanced_binary_class', oversamplers_names=['G-SOMO']),
     'lucas': generate_configuration('remote_sensing', datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names='basic', scoring=['f1_macro'], n_splits=3),
-    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['NO OVERSAMPLING']),
-    'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['RANDOM OVERSAMPLING']),
-    'smote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['SMOTE']),
-    'borderline_smote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['BORDERLINE SMOTE']),
-    'adasyn_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['ADASYN']),
-    'gsmote_insurance': generate_configuration('various', datasets_names=['insurance'], classifiers_names='scaled', oversamplers_names=['G-SMOTE']),
-    'small_data': generate_configuration('binary_class', oversamplers_names='basic', scoring=['accuracy'])
+    'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names='scaled'),
+    'small_data': generate_configuration('binary_class', oversamplers_names='undersampled', scoring=['accuracy'])
 }
