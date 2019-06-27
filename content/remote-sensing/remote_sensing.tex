@@ -64,28 +64,85 @@ Python programming language.
 
 \section{Introduction}
 
-Accurate Land Use/Land Cover (LULC) classification maps play an important role in the remote-sensing domain \cite{Cenggoro2018} and are a crucial source of information for natural resource land managers and forest monitoring programs \cite{Mellor2015}. This data is being used for a variety of applications, ranging from environmental monitoring, land change detection, natural hazard assessment up to agriculture and water/wetland monitoring \cite{Khatami2016}.
+Accurate Land Use/Land Cover (LULC) classification maps play an important role
+in the remote-sensing domain \cite{Cenggoro2018} and are a crucial source of
+information for natural resource land managers and forest monitoring programs
+\cite{Mellor2015}. This data is being used for a variety of applications,
+ranging from environmental monitoring, land change detection, natural hazard
+assessment up to agriculture and water/wetland monitoring \cite{Khatami2016}.
 
 % check if this part is 100% correct
-While the human eye is based on three colour bands (red, green and blue), spectral imaging divides the vision into many more. The multi/hyper-spectral context of LULC maps allow the discrimination of pixels among classes with similar spectral signatures \cite{Marconcini2009}, proving especially useful for classification tasks. However, datasets that serve this purpose often suffer from the class imbalanced problem \cite{Feng2019}. In multiclass classification tasks, this problem is considerably more difficult to address when compared to binary classification problems, making it one of the most important challenges in the machine learning research community \cite{Garcia2018}.
+While the human eye is based on three color bands (red, green and blue),
+spectral imaging divides the vision into many more. The multi/hyper-spectral
+context of LULC maps allow the discrimination of pixels among classes with
+similar spectral signatures \cite{Marconcini2009}, proving especially useful for
+classification tasks. However, datasets that serve this purpose often suffer
+from the class imbalanced problem \cite{Feng2019}. In multi-class classification
+tasks, this problem is considerably more difficult to address when compared to
+binary classification problems, making it one of the most important challenges
+in the machine learning research community \cite{Garcia2018}.
 
-In remote-sensing classification problems, the number of targets present is often very small compared with the remaining classes, especially when using LULC data \cite{Williams2009, Cenggoro2018}. As an example, in land-mine detection applications, it is common to have 100 false alarms for each real mine present.
+In remote-sensing classification problems, the number of targets present is
+often very small compared with the remaining classes, especially when using LULC
+data \cite{Williams2009, Cenggoro2018}. As an example, in land-mine detection
+applications, it is common to have 100 false alarms for each real mine present.
 
-An imbalanced learning problem refers to a skewed distribution of data across classes in both binary and multiclass classification problems \cite{Abdi2016}. In this situation, the minority classes contribute less to the minimisation of the objective function, which induces a bias towards the majority class during the learning process \cite{Douzas2019}. Consequently, as typical classifier learning methods are designed to work with reasonably balanced datasets, finding meaningful boundaries becomes a very difficult task \cite{Saez2016}.
+An imbalanced learning problem refers to a skewed distribution of data across
+classes in both binary and multi-class classification problems \cite{Abdi2016}.
+In this situation, the minority classes contribute less to the minimization of
+the objective function, which induces a bias towards the majority class during
+the learning process \cite{Douzas2019}. Consequently, as typical classifier
+learning methods are designed to work with reasonably balanced datasets, finding
+meaningful boundaries becomes a very difficult task \cite{Saez2016}.
 
 % How to justify the usage of the third method? Is it okay this way?
-Possible approaches to deal with class imbalance can be divided into three main groups \cite{Fernandez2013}. 1) Cost-sensitive solutions: adaptations at algorithmic and/or data level by applying higher misclassification costs for the examples of the minority class. 2) Algorithmic level solutions: classification algorithms are adapted or created to reinforce the learning of the positive class. 3) Data level solutions: A more general approach where class distributions are rebalanced through the sampling of the data space, thus diminishing class imbalance. Because this latter method is more general, it is used for a wide range of applications, thus making it of particular interest. Regardless, data level solutions carry the disadvantage of yielding an increased search space \cite{Fernandez2013}.
+Possible approaches to deal with class imbalance can be divided into three main
+groups \cite{Fernandez2013}. 1) Cost-sensitive solutions: adaptations at
+algorithmic and/or data level by applying higher misclassification costs for the
+examples of the minority class. 2) Algorithmic level solutions: classification
+algorithms are adapted or created to reinforce the learning of the positive
+class. 3) Data level solutions: A more general approach where class
+distributions are rebalanced through the sampling of the data space, thus
+diminishing class imbalance. Because this latter method is more general, it is
+used for a wide range of applications, thus making it of particular interest.
+Regardless, data level solutions carry the disadvantage of yielding an increased
+search space \cite{Fernandez2013}.
 
-There are several data level solutions to deal with the imbalanced learning problem, which can be divided into three groups. Undersampling algorithms reduce the size of the majority classes, whereas oversampling algorithms attempt to attribute a higher weight to minority classes by generating artificial data \cite{Mellor2015}. A hybrid approach, on the other hand, uses both oversampling and undersampling techniques.
+There are several data level solutions to deal with the imbalanced learning
+problem, which can be divided into three groups. Undersampling algorithms reduce
+the size of the majority classes, whereas oversampling algorithms attempt to
+attribute a higher weight to minority classes by generating artificial data
+\cite{Mellor2015}. A hybrid approach, on the other hand, uses both oversampling
+and undersampling techniques.
 
 % can't find source for oversampling/undersampling methods frequently used...
 % should we include MS-cSV in our experiment, or in this paragraph at all?
 % should I include the limitations of each oversampler?
-Studies suggest that the usage of data level solutions in remote sensing problems to balance class distribution seem to outperform the ones models trained by randomly drawn samples \cite{Wang2019, Mellor2015}.  Studies employing oversampling methods such as the Synthetic Minority Over-sampling Technique (SMOTE) \cite{Chawla2002} seem to consistently yield better results \cite{Johnson2013, Geib2015} compared to no oversampling. Other studies employ active learning methods such as Margin Sample by Closest Support Vector (MS-cSV), as it benefits from avoiding oversampling in dense regions close to the margin and samples all the feature space equivalently \cite{Tuia2009}. Although, studies employing data level solutions within the remote sensing domain seem sparse.
+Studies suggest that the usage of data level solutions in remote sensing
+problems to balance class distribution seem to outperform the ones models
+trained by randomly drawn samples \cite{Wang2019, Mellor2015}.  Studies
+employing oversampling methods such as the Synthetic Minority Over-sampling
+Technique (SMOTE) \cite{Chawla2002} seem to consistently yield better results
+\cite{Johnson2013, Geib2015} compared to no oversampling. Other studies employ
+active learning methods such as Margin Sample by Closest Support Vector
+(MS-cSV), as it benefits from avoiding oversampling in dense regions close to
+the margin and samples all the feature space equivalently \cite{Tuia2009}.
+Although, studies employing data level solutions within the remote sensing
+domain seem sparse.
 
-In this paper, we test the performance of oversampling techniques on an imbalanced dataset using different types of classifiers. The effectiveness of the Geometric SMOTE (G-SMOTE) \cite{Douzas2019} is demonstrated using SMOTE \cite{Chawla2002}, Borderline SMOTE \cite{Han2005}, ADASYN \cite{HaiboHe2008}, Random Oversampling and no oversampling as baseline methods. Preliminary results show that G-SMOTE outperforms any other oversampling technique, for both overall prediction power and minority class prediction power.
+In this paper, we test the performance of oversampling techniques on an
+imbalanced dataset using different types of classifiers. The effectiveness of
+the Geometric SMOTE (G-SMOTE) \cite{Douzas2019} is demonstrated using SMOTE
+\cite{Chawla2002}, Borderline SMOTE \cite{Han2005}, ADASYN \cite{HaiboHe2008},
+Random Oversampling and no oversampling as baseline methods. Preliminary results
+show that G-SMOTE outperforms any other oversampling technique, for both overall
+prediction power and minority class prediction power.
 
-Oversamplers' performance is evaluated through an experimental analysis using the publicly available Lucas Soil dataset \cite{Toth2013}. This dataset contains multispectral reflectance data from European soil, filtered for a region in Portugal. The experimental procedure includes a comparison of the different oversamplers using 4 classifiers and \textbf{(...)} evaluation metrics.
+Oversamplers' performance is evaluated through an experimental analysis using
+the publicly available Lucas Soil dataset \cite{Toth2013}. This dataset contains
+multispectral reflectance data from European soil, filtered for a region in
+Portugal. The experimental procedure includes a comparison of the different
+oversamplers using 4 classifiers and \textbf{(...)} evaluation metrics.
 
 This paper is organized in \textbf{(...)} sections: \textbf{(...)}
 
