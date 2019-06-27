@@ -7,6 +7,7 @@ Configure and run the experimental procedure.
 
 from collections import Counter
 
+from sklearn.base import clone
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
@@ -16,12 +17,38 @@ from imblearn.pipeline import make_pipeline
 from imblearn.under_sampling import RandomUnderSampler
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
+from sklearnext.over_sampling.base import BaseClusterOverSampler
 
 
-def generate_sampling_strategy(y, ratio):
-    """"Generate a dictionary of the sampling strategy.""" 
-    sampling_strategy = {k:int(v / ratio) for k,v in Counter(y).items()}
-    return sampling_strategy
+class UnderOverSampler(BaseClusterOverSampler):
+    """A class that applies random undersampling and oversampling."""
+
+    def __init__(self,
+                 sampling_strategy='auto',
+                 clusterer=None,
+                 distributor=None,
+                 random_state=None,
+                 oversampler=None,
+                 factor=3):
+        super(UnderOverSampler, self).__init__(sampling_strategy=sampling_strategy, clusterer=clusterer, distributor=distributor)
+        self.random_state = random_state
+        self.oversampler = oversampler
+        self.factor = factor
+
+    @staticmethod
+    def _generate_sampling_strategy(y, factor):
+        """"Generate a dictionary of the sampling strategy.""" 
+        sampling_strategy = {k:int(v / factor) for k,v in Counter(y).items()}
+        return sampling_strategy
+
+    def _basic_sample(self, X, y):
+        oversampler = clone(self.oversampler)
+        pipeline = make_pipeline(
+            RandomUnderSampler(random_state=self.random_state, sampling_strategy=self._generate_sampling_strategy(y, self.factor)), 
+            oversampler.set_params(random_state=self.random_state, sampling_strategy=self._generate_sampling_strategy(y, 1 / self.factor))
+        )
+        X_resampled, y_resampled = pipeline.fit_resample(X, y)
+        return X_resampled, y_resampled
 
 
 def append_transformer(transformer, oversamplers):
@@ -163,5 +190,5 @@ CONFIG = {
     'gsomo_imbalanced': generate_configuration('imbalanced_binary_class', oversamplers_names=['G-SOMO']),
     'lucas': generate_configuration('remote_sensing', datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names='basic', scoring=['f1_macro'], n_splits=3),
     'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names='scaled'),
-    'small_data': generate_configuration('binary_class', oversamplers_names='undersampled', scoring=['accuracy'])
+    'small_data_oversampling': generate_configuration('binary_class', oversamplers_names='undersampled', scoring=['accuracy'])
 }
