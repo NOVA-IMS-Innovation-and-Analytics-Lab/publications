@@ -148,6 +148,34 @@ This paper is organized in \textbf{(...)} sections: \textbf{(...)}
 
 
 
+\section{State of the Art}
+%(as I assumed this  exists in the intro, so might be paraphrased or removed depending on preferences).
+In the existing literature there are different approaches to handle with class imbalance problem which can be classified into three main categories: algorithm-level (includes cost-sensitive method), data-level (data resampling) and hybrid methods (integration of the other two) \citep{ji2018identifying}. 
+
+\subsection{algorithm-level methods}
+The review of related literature reveals implementation of all three approaches to handle with imbalance data (class imbalance) problem existing in remote sensing and Earth observation datasets. A number of researches focus on the development of such algorithms that force the model to learn towards the minority classes \citep{wang2018imbalanced}, \citep{chen2010semisupervised}, \citep{williams2009mine}, \citep{ji2018identifying}. Chen et al. \citep{chen2010semisupervised} uses object-oriented Asymmetrically Local Discriminant Selection (ALDS) classification method for future extraction from very high resolution (VHR) imagery. The semi-supervised algorithm uses the spectral, geometric and textural information of the objects as features, also incorporates the class size information into weight matrix. Williams et al. \citep{williams2009mine} use Infinitely Imbalanced Logistic Regression (IILR) semi-supervised classification to detect the mining spots on the Synthetic Aperture Radar (SAR) imagery while working with naturally imbalanced datasets. This algorithm explicitly addresses the class imbalance problem and performs the minority class classification in two steps: minority class border detection and feature extraction. 
+
+
+\subsection{Data-level methods}
+As in the data science generally \citep{douzas2019geometric}, also in remote sensing particualrly  \citep{feng2019imbalanced}, the data modification through a resampling methods are more general and are the most used approaches for imbalanced learning methods. Since these approaches balance the data in the preprocessing step and there is no need of modification of learning algorithm, thus these models are easy to be implemented for multiclass imbalance learning tasks  \citep{feng2019imbalanced}. 
+
+\textbf{Downsamplin}.Some of the researches implement undersampling methods by randomly reducing the number of training samples of majority class. However, this method has an disadvantage of loosing important information when discarding samples form the majority class \citep{feng2019imbalanced}.  Weske et al. \citep{waske2009classifying} propose bootstrap aggregating method with an ensemble of Support Vector Machines (SVM) for performing remotely sensed high resolution image classification. In this research they use random undersamling (RUS) to balance the data in between the majority and minority classes.
+
+% here another repetition of intro- baseline estimators
+\textbf{Oversamplin}.In the contrast of RUS, random oversampling (ROS) algorithms could avoid from information loss, however it brings a risk of over-fitting as it simply replicates randomly selected instances in of the minority class in the trainig phase \citep{douzas2019geometric}. Still, Feng et al. \citep{feng2019imbalanced} states ROS to be the most popular resampling method used for dealing with multiclass imbalance learning in remote sensing. Thus, this paper uses unmodified data (No Oversampling) and ROS as so-called baseline for comparison of different oversampling methods implemented together with different classifiers. Synthetic minority oversampling technique (SMOTE) is another famous method in imbalanced learning which can avoid from over-fitting but has a disadvantage of generating noisy data. There have been developed many variations of SMOTE (Borderline-SMOTE, Majority Weighted Minority Oversampling Technique for Imbalanced Data Set Learning, ADASYN, KernelADASYN etc.) with the same objective of preventing noisy data generation \citep{douzas2019geometric}, \citep{feng2019imbalanced}. Recently, Douzas and Bacao have developed Geometric-SMOTE oversampling technique which is the core focus of this paper. In order to avoid from noisy data generation, Geometric-SMOTE algorithm defines safe areas around the minority instances. Then it expands the minority class area for more informative synthetic sample generation \citep{douzas2019geometric}. 
+
+Cenggoro et al. implements variational semi-supervised learning (VSSL) algorithm to solve class imbalance problem in remote sensing data for LULC mapping. VSSL is a semi-supervised learning framework for deep generative model which allows the model to learn both form lebelled and unlebelled data. For this analysis they implemented SMOTE oversampler to balance the data \citep{cenggoro2017classification}. 
+
+\subsection{Ensemble Learning}
+Ensemble learning together with oversampling algorithms have been successfully implemented for remote sensing image classification in several studies. Feng et al. in their research apply Rotation forest (RoF) ensemble leaning algorithm to handle with class imbalance problem \citep{feng2019imbalanced}. Han et al. \citep{han2012remote} implements ensemble algorithm based on Diversity Ensemble Creation by Oppositional Relabeling of Artificial Training Examples (DECORATEs) and Random Forest (RF) classifier. This ensemble algorithm uses Radial Basis Function Neural Network (RBFNN) as a base classifier. Both studies use SMOTE oversamling method for synthetic data generation.
+
+Ji et al. in their study of detecting collapsed buildings with SqueezeNet method (a small CNN architecture) from high resolution satellite imagery, they also carry out a comparison of imbalance learn methods by implementing, namely, random oversampling, random undersampling, and cost-sensitive methods while dealing with imbalanced data \citep{ji2018identifying}. The experiment results show the cost-sensitive algorithm-level model to outperfrom ROS and RUS resumpling methods with highest overall accuracy (OA) and Kappa statistics.
+
+% here is also repetition with intro, should be intergrated
+However, the review of related studies show there is a big lack of studies comparing the classification accuracy of imbalanced learning methods towards the minority classes for remote sensing natural imbalanced datasets. This article carries the study of implementation of different oversampling algorithms together with Geometric-SMOTE oversampler (which is the first time being applied for remote sensing imbalance data) in order to reveal the best classification results for the minority classes for LUCAS dataset.  To acheave the goals k-nearest neighbors (KNN), decision tree (DT) and gradient boosting classifier (GBC) supervised classifiers have been deployed.
+
+
+
 \bibliography{references}
 \bibliographystyle{apalike}
 
