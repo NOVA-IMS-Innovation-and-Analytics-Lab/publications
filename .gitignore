@@ -1,7 +1,6 @@
 .DS_Store
 .vscode
 __pycache__
-resources
 *.aux
 *.bbl
 *.blg
