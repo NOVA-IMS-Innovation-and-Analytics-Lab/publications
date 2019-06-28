@@ -214,7 +214,7 @@ CONFIG = {
     'gsmote_lucas': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE'], scoring=['f1_macro'], n_splits=3),
     
     # Insurance data
-    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['NO OVERSAMPLING']),
+    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='basic', oversamplers_names=['NO OVERSAMPLING']),
     'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['RANDOM OVERSAMPLING']),
     'smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['SMOTE']),
     'borderline_smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['BORDERLINE SMOTE']),
