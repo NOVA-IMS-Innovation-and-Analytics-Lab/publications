@@ -43,7 +43,6 @@ def test_under_oversampler():
     ('basic', CLASSIFIERS_MAPPING),
     ('basic', OVERSAMPLERS_MAPPING),
     ('clustering', OVERSAMPLERS_MAPPING),
-    ('scaled', OVERSAMPLERS_MAPPING),
     ('undersampled', OVERSAMPLERS_MAPPING)
 ])
 def test_default_check_estimators(category, mapping):
@@ -61,7 +60,6 @@ def test_default_check_estimators(category, mapping):
     ('basic', ['KNN', 'LR'], CLASSIFIERS_MAPPING),
     ('basic', ['NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE'], OVERSAMPLERS_MAPPING),
     ('clustering', ['K-MEANS SMOTE'], OVERSAMPLERS_MAPPING),
-    ('scaled', ['ADASYN', 'SMOTE'], OVERSAMPLERS_MAPPING),
     ('undersampled', ['BENCHMARK METHOD', 'NO OVERSAMPLING'], OVERSAMPLERS_MAPPING)
 ])
 def test_subset_check_estimators(category, names, mapping):
@@ -78,7 +76,6 @@ def test_subset_check_estimators(category, names, mapping):
     ('Basic', None, CLASSIFIERS_MAPPING),
     ('basic', ['knn'], CLASSIFIERS_MAPPING),
     ('Clustering', ['K-MEANS SMOTE'], OVERSAMPLERS_MAPPING),
-    ('scaled', ['ADASYN', 'smote'], OVERSAMPLERS_MAPPING),
     ('undersampled', 'BENCHMARK METHOD', OVERSAMPLERS_MAPPING)
 ])
 def test_check_estimators_raise_error(category, names, mapping):

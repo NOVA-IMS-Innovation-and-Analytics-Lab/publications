@@ -12,7 +12,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.preprocessing import MinMaxScaler
 from imblearn.pipeline import make_pipeline
 from imblearn.under_sampling import RandomUnderSampler
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
@@ -138,20 +137,6 @@ OVERSAMPLERS_CLUSTERING = [
         }
     )
 ]
-OVERSAMPLERS_SCALED = [
-    ('NO OVERSAMPLING', None, {}),
-    ('RANDOM OVERSAMPLING', make_pipeline(MinMaxScaler(), RandomOverSampler()), {}),
-    ('SMOTE', make_pipeline(MinMaxScaler(), SMOTE()), {'smote__k_neighbors': [3, 5]}),
-    ('BORDERLINE SMOTE', make_pipeline(MinMaxScaler(), BorderlineSMOTE()), {'borderlinesmote__k_neighbors': [3, 5]}),
-    ('ADASYN', make_pipeline(MinMaxScaler(), ADASYN()), {'adasyn__n_neighbors': [2, 3]}),
-    ('G-SMOTE', make_pipeline(MinMaxScaler(), GeometricSMOTE()), {
-        'geometricsmote__k_neighbors': [3, 5], 
-        'geometricsmote__selection_strategy': ['combined', 'minority', 'majority'], 
-        'geometricsmote__truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
-        'geometricsmote__deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
-        }
-    )
-]
 OVERSAMPLERS_UNDERSAMPLED = [
     ('BENCHMARK METHOD', None, {}),
     ('NO OVERSAMPLING', RandomUnderSampler(), {}),
@@ -173,7 +158,6 @@ CLASSIFIERS_MAPPING = {
 OVERSAMPLERS_MAPPING = {
     'basic': OVERSAMPLERS_BASIC,
     'clustering': OVERSAMPLERS_CLUSTERING,
-    'scaled': OVERSAMPLERS_SCALED,
     'undersampled': OVERSAMPLERS_UNDERSAMPLED
 }
 
@@ -214,12 +198,12 @@ CONFIG = {
     'gsmote_lucas': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE'], scoring=['f1_macro'], n_splits=3),
     
     # Insurance data
-    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='basic', oversamplers_names=['NO OVERSAMPLING']),
-    'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['RANDOM OVERSAMPLING']),
-    'smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['SMOTE']),
-    'borderline_smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['BORDERLINE SMOTE']),
-    'adasyn_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['ADASYN']),
-    'gsmote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_category='scaled', oversamplers_names=['G-SMOTE']),
+    'no_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['NO OVERSAMPLING']),
+    'random_oversampling_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['RANDOM OVERSAMPLING']),
+    'smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['SMOTE']),
+    'borderline_smote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['BORDERLINE SMOTE']),
+    'adasyn_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['ADASYN']),
+    'gsmote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['G-SMOTE']),
     
     # Small data oversampling
     'benchmark_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy']),
