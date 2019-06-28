@@ -57,11 +57,11 @@ def create_parser():
     
     # Downloading subparser
     downloading_parser = subparsers.add_parser('downloading', help='Download data as sqlite database.', formatter_class=RawTextHelpFormatter)
-    downloading_parser.add_argument('name', help=f'The name of the database. It should be one of the following:\n{databases_names}', choices=DATABASES_MAPPING.keys())
+    downloading_parser.add_argument('name', help=f'The name of the database. It should be one of the following:\n\n{databases_names}')
 
     # Add arguments
     experiment_parser = subparsers.add_parser('experiment', help='Run experiment from available experimental configurations.', formatter_class=RawTextHelpFormatter)
-    experiment_parser.add_argument('name', help=f'The name of the experiment. It should be one of the following:\n{experiments_names}', choices=CONFIG.keys())
+    experiment_parser.add_argument('name', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
     experiment_parser.add_argument('--n-jobs', type=int, default=-1, help='Number of jobs to run in parallel. -1 means using all processors.')
     experiment_parser.add_argument('--verbose', type=int, default=0, help='Controls the verbosity: the higher, the more messages.')
     experiment_parser.add_argument('--compared-oversamplers', nargs=2, default=None, help='Pair of oversamplers to compare when percentage difference of performance is calculated.')
@@ -80,6 +80,8 @@ def run():
     if args.subcommand == 'downloading':
 
         # Select database
+        if args.name not in DATABASES_MAPPING.keys():
+            raise ValueError(f'Database {args.name} not available to download. Select one from {list(DATABASES_MAPPING.keys())}.')
         datasets = DATABASES_MAPPING[args.name]()
 
         # Download and save database
@@ -88,6 +90,8 @@ def run():
     elif args.subcommand == 'experiment':
         
         # Get configuration
+        if args.name not in CONFIG.keys():
+            raise ValueError(f'Experiment {args.name} not available to run. Select one from {list(CONFIG.keys())}.')
         configuration = CONFIG[args.name]
 
         # Load datasets from database

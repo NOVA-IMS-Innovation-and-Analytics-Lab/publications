@@ -25,10 +25,46 @@ from sklearn.utils import check_X_y
 from sklearn.datasets import make_classification
 from imblearn.datasets import make_imbalance
 
+UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
+KEEL_URL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
+FETCH_URLS = {
+    'breast_tissue': urljoin(UCI_URL, '00192/BreastTissue.xls'),
+    'ecoli': urljoin(UCI_URL, 'ecoli/ecoli.data'),
+    'eucalyptus': 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff',
+    'glass': urljoin(UCI_URL, 'glass/glass.data'),
+    'haberman': urljoin(UCI_URL, 'haberman/haberman.data'),
+    'heart': urljoin(UCI_URL, 'statlog/heart/heart.dat'),
+    'iris': urljoin(UCI_URL, 'iris/bezdekIris.data'),
+    'libras': urljoin(UCI_URL, 'libras/movement_libras.data'),
+    'liver': urljoin(UCI_URL, 'liver-disorders/bupa.data'),
+    'pima': 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/various.db',
+    'segmentation': urljoin(UCI_URL, 'statlog/segment/segment.dat'),
+    'vehicle': urljoin(UCI_URL, 'statlog/vehicle/'),
+    'wine': urljoin(UCI_URL, 'wine/wine.data'),
+    'new_thyroid_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid1.zip'),
+    'new_thyroid_2': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid2.zip'),
+    'cleveland': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'cleveland-0_vs_4.zip'),
+    'dermatology': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p3/'), 'dermatology-6.zip'),
+    'led': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'led7digit-0-2-4-5-6-7-8-9_vs_1.zip'),
+    'page_blocks_0': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'page-blocks0.zip'),
+    'page_blocks_1_3': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'page-blocks-1-3_vs_4.zip'),
+    'vowel': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'vowel0.zip'),
+    'yeast_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'yeast1.zip'),
+    'yeast_3': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'yeast3.zip'),
+    'yeast_4': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast4.zip'),
+    'yeast_5': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast4.zip'),
+    'yeast_6': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast5.zip'),
+    'banknote_authentication': urljoin(UCI_URL, '00267/data_banknote_authentication.txt'),
+    'arcene': urljoin(UCI_URL, 'arcene/'),
+    'audit': urljoin(UCI_URL, '00475/audit_data.zip'),
+    'spambase': urljoin(UCI_URL, 'spambase/spambase.data')
+}
+MULTIPLICATION_FACTORS = [2, 3]
+RANDOM_STATE = 0
+
 
 class Datasets:
-
-    UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
+    """Class to download and save datasets."""
 
     @staticmethod
     def _modify_columns(data):
@@ -57,12 +93,6 @@ class Datasets:
 
 class ImbalancedBinaryClassDatasets(Datasets):
     """Class to download, transform and save binary class imbalanced datasets."""
-
-    KEEL_URL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
-    OPENML_URL = 'https://www.openml.org/data/get_csv/3625/dataset_194_eucalyptus.arff'
-    GITHUB_URL = 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/various.db'
-    MULTIPLICATION_FACTORS = [2, 3]
-    RANDOM_STATE = 0
 
     @staticmethod
     def _calculate_ratio(multiplication_factor, y):
@@ -101,8 +131,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://archive.ics.uci.edu/ml/datasets/breast+tissue
         """
-        url = urljoin(self.UCI_URL, '00192/BreastTissue.xls')
-        data = pd.read_excel(url, sheet_name='Data')
+        data = pd.read_excel(FETCH_URLS['breast_tissue'], sheet_name='Data')
         data = data.drop(columns='Case #').rename(columns={'Class': 'target'})
         data['target'] = data['target'].isin(['car', 'fad']).astype(int)
         return data
@@ -114,8 +143,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/ecoli
         """
-        url = urljoin(self.UCI_URL, 'ecoli/ecoli.data')
-        data = pd.read_csv(url, header=None, delim_whitespace=True)
+        data = pd.read_csv(FETCH_URLS['ecoli'], header=None, delim_whitespace=True)
         data = data.drop(columns=0).rename(columns={8: 'target'})
         data['target'] = data['target'].isin(['pp']).astype(int)
         return data
@@ -127,7 +155,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://www.openml.org/d/188
         """
-        data = pd.read_csv(self.OPENML_URL)
+        data = pd.read_csv(FETCH_URLS['eucalyptus'])
         data = data.iloc[:, -9:].rename(columns={'Utility': 'target'})
         data = data[data != '?'].dropna()
         data['target'] = data['target'].isin(['best']).astype(int)
@@ -140,8 +168,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/glass+identification
         """
-        url = urljoin(self.UCI_URL, 'glass/glass.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['glass'], header=None)
         data = data.drop(columns=0).rename(columns={10: 'target'})
         data['target'] = data['target'].isin([1]).astype(int)
         return data
@@ -153,8 +180,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Haberman's+Survival
         """
-        url = urljoin(self.UCI_URL, 'haberman/haberman.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['haberman'], header=None)
         data.rename(columns={3: 'target'}, inplace=True)
         data['target'] = data['target'].isin([2]).astype(int)
         return data
@@ -166,8 +192,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://archive.ics.uci.edu/ml/datasets/statlog+(heart)
         """
-        url = urljoin(self.UCI_URL, 'statlog/heart/heart.dat')
-        data = pd.read_csv(url, header=None, delim_whitespace=True)
+        data = pd.read_csv(FETCH_URLS['heart'], header=None, delim_whitespace=True)
         data.rename(columns={13: 'target'}, inplace=True)
         data['target'] = data['target'].isin([2]).astype(int)
         return data
@@ -179,8 +204,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/iris
         """
-        url = urljoin(self.UCI_URL, 'iris/bezdekIris.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['iris'], header=None)
         data.rename(columns={4: 'target'}, inplace=True)
         data['target'] = data['target'].isin(['Iris-setosa']).astype(int)
         return data
@@ -192,8 +216,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Libras+Movement
         """
-        url = urljoin(self.UCI_URL, 'libras/movement_libras.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['libras'], header=None)
         data.rename(columns={90: 'target'}, inplace=True)
         data['target'] = data['target'].isin([1]).astype(int)
         return data
@@ -205,8 +228,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/liver+disorders
         """
-        url = urljoin(self.UCI_URL, 'liver-disorders/bupa.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['liver'], header=None)
         data.rename(columns={6: 'target'}, inplace=True)
         data['target'] = data['target'].isin([1]).astype(int)
         return data
@@ -218,7 +240,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://www.kaggle.com/uciml/pima-indians-diabetes-database
         """
-        database = requests.get(self.GITHUB_URL).content
+        database = requests.get(FETCH_URLS['pima']).content
         with open('temp.db', 'wb') as file:
             file.write(database)
         with connect('temp.db') as con:
@@ -234,8 +256,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Statlog+%28Image+Segmentation%29
         """
-        url = urljoin(self.UCI_URL, 'statlog/segment/segment.dat')
-        data = pd.read_csv(url, header=None, delim_whitespace=True)
+        data = pd.read_csv(FETCH_URLS['segmentation'], header=None, delim_whitespace=True)
         data = data.drop(columns=[2, 3, 4]).rename(columns={19: 'target'})
         data['target'] = data['target'].isin([1]).astype(int)
         return data
@@ -249,8 +270,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
         """
         data = pd.DataFrame()
         for letter in ascii_lowercase[0:9]:
-            url = urljoin(self.UCI_URL, 'statlog/vehicle/xa%s.dat') % letter
-            partial_data = pd.read_csv(url, header=None, delim_whitespace=True)
+            partial_data = pd.read_csv(urljoin(FETCH_URLS['vehicle'], 'xa%s.dat'% letter), header=None, delim_whitespace=True)
             partial_data = partial_data.rename(columns={18: 'target'})
             partial_data['target'] = partial_data['target'].isin(['van']).astype(int)
             data = data.append(partial_data)
@@ -263,8 +283,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/wine
         """
-        url = urljoin(self.UCI_URL, 'wine/wine.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['wine'], header=None)
         data.rename(columns={0: 'target'}, inplace=True)
         data['target'] = data['target'].isin([2]).astype(int)
         return data
@@ -276,8 +295,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=145
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid1.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['new_thyroid_1']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('new-thyroid1.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None, sep=', ', engine='python')
         data.rename(columns={5: 'target'}, inplace=True)
@@ -291,8 +309,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=146
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid2.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['new_thyroid_2']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('newthyroid2.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None, sep=', ', engine='python')
         data.rename(columns={5: 'target'}, inplace=True)
@@ -306,8 +323,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=980
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p2/'), 'cleveland-0_vs_4.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['cleveland']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('cleveland-0_vs_4.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={13: 'target'}, inplace=True)
@@ -321,8 +337,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=1330
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p3/'), 'dermatology-6.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['dermatology']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('dermatology-6.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={34: 'target'}, inplace=True)
@@ -336,8 +351,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=998
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p2/'), 'led7digit-0-2-4-5-6-7-8-9_vs_1.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['led']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('led7digit-0-2-4-5-6-7-8-9_vs_1.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={7: 'target'}, inplace=True)
@@ -351,8 +365,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=147
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRlowerThan9/'), 'page-blocks0.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['page_blocks_0']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('page-blocks0.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={10: 'target'}, inplace=True)
@@ -366,8 +379,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=124
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p1/'), 'page-blocks-1-3_vs_4.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['page_blocks_1_3']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('page-blocks-1-3_vs_4.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={10: 'target'}, inplace=True)
@@ -381,8 +393,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=127
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p1/'), 'vowel0.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['vowel']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('vowel0.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={13: 'target'}, inplace=True)
@@ -396,8 +407,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=153
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRlowerThan9/'), 'yeast1.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['yeast_1']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast1.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
@@ -411,8 +421,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=154
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRlowerThan9/'), 'yeast3.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['yeast_3']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast3.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
@@ -426,8 +435,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=133
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast4.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['yeast_4']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast4.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
@@ -441,8 +449,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=134
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast5.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['yeast_5']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast5.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
@@ -456,8 +463,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         http://sci2s.ugr.es/keel/dataset.php?cod=135
         """
-        url = urljoin(join(self.KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast6.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['yeast_6']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast6.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
@@ -489,8 +495,7 @@ class BinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/banknote+authentication
         """
-        url = urljoin(self.UCI_URL, '00267/data_banknote_authentication.txt')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['banknote_authentication'], header=None)
         data.rename(columns={4: 'target'}, inplace=True)
         return data
 
@@ -499,11 +504,11 @@ class BinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Arcene
         """
-        url = urljoin(self.UCI_URL, 'arcene')
+        url = FETCH_URLS['arcene']
         data, labels = [], []
         for data_type in ('train', 'valid'):
-            data.append(pd.read_csv(join(url, f'ARCENE/arcene_{data_type}.data'), header=None, sep=' ').drop(columns=list(range(1999, 10001))))
-            labels.append(pd.read_csv(join(url, ('ARCENE/' if data_type == 'train' else '') + f'arcene_{data_type}.labels'), header=None).rename(columns={0:'target'}))
+            data.append(pd.read_csv(urljoin(url, f'ARCENE/arcene_{data_type}.data'), header=None, sep=' ').drop(columns=list(range(1999, 10001))))
+            labels.append(pd.read_csv(urljoin(url, ('ARCENE/' if data_type == 'train' else '') + f'arcene_{data_type}.labels'), header=None).rename(columns={0:'target'}))
         data = pd.concat(data, ignore_index=True)
         labels = pd.concat(labels, ignore_index=True)
         data = pd.concat([data, labels], axis=1)
@@ -515,8 +520,7 @@ class BinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Audit+Data
         """
-        url = urljoin(self.UCI_URL, '00475/audit_data.zip')
-        zipped_data = requests.get(url).content
+        zipped_data = requests.get(FETCH_URLS['audit']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('audit_data/audit_risk.csv').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), engine='python')
         data = data.rename(columns={'Risk': 'target'}).dropna()
@@ -527,8 +531,7 @@ class BinaryClassDatasets(Datasets):
 
         https://archive.ics.uci.edu/ml/datasets/Spambase
         """
-        url = urljoin(self.UCI_URL, 'spambase/spambase.data')
-        data = pd.read_csv(url, header=None)
+        data = pd.read_csv(FETCH_URLS['spambase'], header=None)
         data.rename(columns={57: 'target'}, inplace=True)
         return data
 
