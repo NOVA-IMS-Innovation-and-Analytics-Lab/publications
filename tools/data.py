@@ -116,7 +116,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
         """Download the datasets and append undersampled versions of them."""
         super(ImbalancedBinaryClassDatasets, self).download()
         undersampled_datasets = []
-        for (name, data), factor in list(product(self.datasets_, self.MULTIPLICATION_FACTORS)):
+        for (name, data), factor in list(product(self.datasets_, MULTIPLICATION_FACTORS)):
             ratio = self._calculate_ratio(factor, data.target)
             if ratio[1] >= 15:
                 data = self._make_imbalance(data, factor)
