@@ -107,7 +107,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
         X, y = check_X_y(data.loc[:, X_columns], data.target)
         if multiplication_factor > 1.0:
             sampling_strategy = self._calculate_ratio(multiplication_factor, y)
-            X, y = make_imbalance(X, y, sampling_strategy=sampling_strategy, random_state=self.RANDOM_STATE)
+            X, y = make_imbalance(X, y, sampling_strategy=sampling_strategy, random_state=RANDOM_STATE)
         data = pd.DataFrame(np.column_stack((X, y)))
         data.iloc[:, -1] = data.iloc[:, -1].astype(int)
         return data
@@ -472,7 +472,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
     def fetch_mandelon_1(self):
         """Simulate a variation of the MANDELON Data Set."""
-        X, y = make_classification(n_samples=4000, n_features=20, weights=[0.97, 0.03], random_state=self.RANDOM_STATE)
+        X, y = make_classification(n_samples=4000, n_features=20, weights=[0.97, 0.03], random_state=RANDOM_STATE)
         data = pd.DataFrame(np.column_stack([X, y]))
         data.rename(columns={20: 'target'}, inplace=True)
         data.target = data.target.astype(int)
@@ -480,7 +480,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
     def fetch_mandelon_2(self):
         """Simulate a variation of the MANDELON Data Set."""
-        X, y = make_classification(n_samples=3000, n_features=200, weights=[0.97, 0.03], random_state=self.RANDOM_STATE)
+        X, y = make_classification(n_samples=3000, n_features=200, weights=[0.97, 0.03], random_state=RANDOM_STATE)
         data = pd.DataFrame(np.column_stack([X, y]))
         data.rename(columns={200: 'target'}, inplace=True)
         data.target = data.target.astype(int)
