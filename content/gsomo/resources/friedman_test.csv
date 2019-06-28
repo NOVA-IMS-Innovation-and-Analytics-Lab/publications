@@ -1,0 +1,13 @@
+Classifier,Metric,p-value,Significance
+LR,AUC,3.0e-09,True
+LR,F-SCORE,1.6e-21,True
+LR,G-MEAN,1.2e-18,True
+KNN,AUC,1.6e-24,True
+KNN,F-SCORE,1.3e-20,True
+KNN,G-MEAN,1.9e-22,True
+DT,AUC,4.5e-18,True
+DT,F-SCORE,3.6e-18,True
+DT,G-MEAN,4.4e-23,True
+GBC,AUC,3.7e-25,True
+GBC,F-SCORE,1.2e-20,True
+GBC,G-MEAN,6.0e-21,True
