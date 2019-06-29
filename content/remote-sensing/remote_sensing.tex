@@ -185,7 +185,7 @@ preprocessing step and there is no need of modification of learning algorithm,
 thus these models are easy to be implemented for multi-class imbalance learning
 tasks  \cite{feng2019imbalanced}. 
 
-\textbf{Downsampling}.Some of the researches implement undersampling methods by
+\textbf{Undersampling}.Some of the researches implement undersampling methods by
 randomly reducing the number of training samples of majority class. However,
 this method has an disadvantage of loosing important information when discarding
 samples form the majority class \cite{feng2019imbalanced}.  Weske et al.
@@ -243,15 +243,107 @@ show the cost-sensitive algorithm-level model to outperform ROS and RUS
 resampling methods with highest overall accuracy (OA) and Kappa statistics.
 
 % here is also repetition with intro, should be integrated
-However, the review of related studies show there is a big lack of studies
+However, the review of related studies show there is a big lack of researches
 comparing the classification accuracy of imbalanced learning methods towards the
-minority classes for remote sensing natural imbalanced datasets. This article
+minority classes for remote sensing natural imbalanced dataset. This article
 carries the study of implementation of different oversampling algorithms
 together with Geometric-SMOTE oversampler (which is the first time being applied
 for remote sensing imbalance data) in order to reveal the best classification
 results for the minority classes for LUCAS dataset.  To achieve the goals
 k-nearest neighbors (KNN), decision tree (DT) and gradient boosting classifier
 (GBC) supervised classifiers have been deployed.
+
+
+\subsection{Research methodology}
+
+\subsubsection{Lucas data}
+%to be written
+
+\subsubsection{Evaluation measures}
+Amongst the many evaluation metrics existing for classifier's performance 
+evaluation, there are several measures that are considered to be preliminary 
+and fundamental for LULC classification accuracy assessment with remotely sensed 
+dataset. Those measures are classification overall accuracy (OA), user's accuracy 
+(UA) and producer's accuracy (PA) and are calculated form classification confusion 
+matrix \cite{liu2007}. Together with those basic ones another very popular and 
+widely used for remote sensing imbalanced data classification measure is Kappa 
+statistics \cite{du2015}, \cite{wang2018}, \cite{foody2002}. Producer's Kappa 
+and area under the curve (AUC) are being used also for multiclass imbalanced d
+ataset in order to evaluate classifier's performance for each class 
+\cite{freeman2012}, \cite{mellor2015}. 
+% Here I will describe each metric once we decide which ones will be used
+
+\subsubsection{To be deleted}
+The assumption after the review of numbers of articles is that in Remote Sensing 
+LCLU multiclass classification they do not usually focus on a particular class's 
+prediction accuracy, so they simply go for OA, UA, PA and Kappa statistics 
+(rarely AUC). A few papers that did per class accuracy evaluation \cite{mellor2015}, 
+\cite{freeman2012}, they use producer's Kappa and AUC measure \cite{freeman2012}. 
+Even if the researches in the data science domain often use f1 measure for  
+classification accuracy assessment for multiclass imbalanced data, it is not 
+popular in the remote sensing domain. However, as one of the target's for this 
+research is to increase the minority class prediction accuracy, we might implement 
+it for this research.
+
+Review of some relevant papers for accuracy assessment tools:
+
+OA, UA, Kappa \cite{du2015}
+
+Kappa (weirp paper) \cite{wang2018}
+
+OA, UA, PA, Kappa- overall/per class \cite{foody2002}
+
+OA, UA, PA, Kappa statistics  \cite{ji2018}
+
+OA, UA, PA, Kappa, User's Kappa, Produser's Kappa \cite{liu2007}
+
+per class AUC, Kappa statistics \cite{freeman2012}
+
+Per class Kappa \cite{mellor2015}
+
+Here is remarked/highlighted the accuracy measure related thoughts form the 
+papers:
+
+\cite{olofsson2014}
+"The error matrix is a simple cross-tabulation of the class labels allocated 
+by the classification of the remotely sensed data against the reference data for 
+the sample sites. The error matrix organizes the acquired sample data in a way 
+that summarizes key results and aids the quantification of accuracy and area. 
+The main diagonal of the error matrix highlights correct classifications while 
+the off-diagonal elements show omission and commission errors. The cell entries 
+and marginal values of the error matrix are fundamental to both accuracy 
+assessment and area estimation".
+
+Liu et al. \cite{liu2007} offers different measures (14 for category-level measures 
+and 20 for map-level measures) that can be calculated form the prediction confusion 
+matrix. However, he underlies that the primary measures are OA, UA, PA, Kappa, 
+User's Kappa, Producer's Kappa. The rest of the measures are either supplementary 
+information or not advised to use at all for the classification accuracy assessment. 
+
+
+OA, UA, PA, (doubts the Kappa statistics for land cover change map estimation) 
+\cite{olofsson2013}
+"Because accuracy measures are typically estimated from a sample, these 
+estimates are subject to uncertainty. The uncertainty of an estimate can be 
+represented by computing its standard error or by reporting a confidence interval. 
+A confidence interval provides a range of values for a parameter taking into 
+account the uncertainty of the sample-based estimate".
+
+
+Mellor et al. \cite{mellor2015} as a model performance evaluation used 2500 
+Samples (1250 per class) as test data for binary classification experiments, 
+and 25,000 (5000 per class) for multiclass experiments. Test data were used to 
+calculate overall and per-class accuracies and Kappa coefficient. Kappa is a 
+measure of accuracy adjusted for chance agreement. For multiclass model 
+they use Producer's Kappa measure (per class). and Overall Kappa statistics
+
+Freeman et al. \cite{freeman2012} uses AUC and Kappa statistics to measure the 
+classification accuracy for each class (tree species). They used downsampling 
+implemented with Random Forest classifier. The result show for downsampling 
+to be counterproductive and dropping the prediction accuracy for some classes 
+while not increasing much the others.
+
+
 
 \bibliography{references}
 \bibliographystyle{apalike}
