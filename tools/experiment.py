@@ -16,7 +16,6 @@ from imblearn.under_sampling import RandomUnderSampler
 from imblearn.over_sampling.base import BaseOverSampler
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
-from sklearnext.utils.validation import _TrivialOversampler
 
 
 class UnderOverSampler(BaseOverSampler):
@@ -25,7 +24,7 @@ class UnderOverSampler(BaseOverSampler):
     def __init__(self,
                  random_state=None,
                  oversampler=None,
-                 factor=3):
+                 factor=10):
         super(UnderOverSampler, self).__init__(sampling_strategy='auto')
         self.random_state = random_state
         self.oversampler = oversampler
@@ -40,9 +39,10 @@ class UnderOverSampler(BaseOverSampler):
     def _fit_resample(self, X, y):
         counts = Counter(y)
         self.undersampler_ = RandomUnderSampler(random_state=self.random_state, sampling_strategy={k:int(v / self.factor) for k,v in counts.items()})
-        self.oversampler_ = clone(self.oversampler).set_params(random_state=self.random_state, sampling_strategy=dict(counts))
         X_resampled, y_resampled = self.undersampler_.fit_resample(X, y)
-        X_resampled, y_resampled = self.oversampler_.fit_resample(X_resampled, y_resampled)
+        if self.oversampler is not None:
+            self.oversampler_ = clone(self.oversampler).set_params(random_state=self.random_state, sampling_strategy=dict(counts))
+            X_resampled, y_resampled = self.oversampler_.fit_resample(X_resampled, y_resampled)
         return X_resampled, y_resampled
 
 
@@ -134,11 +134,10 @@ OVERSAMPLERS_CLUSTERING = [
 ]
 OVERSAMPLERS_UNDERSAMPLED = [
     ('BENCHMARK METHOD', None, {}),
-    ('NO OVERSAMPLING', UnderOverSampler(oversampler=_TrivialOversampler()), {}),
+    ('NO OVERSAMPLING', UnderOverSampler(oversampler=None), {}),
     ('RANDOM OVERSAMPLING', UnderOverSampler(oversampler=RandomOverSampler()), {}),
     ('SMOTE', UnderOverSampler(oversampler=SMOTE()), {'oversampler__k_neighbors': [3, 5]}),
     ('BORDERLINE SMOTE', UnderOverSampler(oversampler=BorderlineSMOTE()), {'oversampler__k_neighbors': [3, 5]}),
-    ('ADASYN', UnderOverSampler(oversampler=ADASYN()), {'oversampler__n_neighbors': [2, 3]}),
     ('G-SMOTE', UnderOverSampler(oversampler=GeometricSMOTE()), {
         'oversampler__k_neighbors': [3, 5], 
         'oversampler__selection_strategy': ['combined', 'minority', 'majority'], 
@@ -201,12 +200,11 @@ CONFIG = {
     'gsmote_insurance': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['G-SMOTE']),
     
     # Small data oversampling
-    'benchmark_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy']),
-    'no_oversampling_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy']),
-    'random_oversampling_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy']),
-    'smote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['SMOTE'], scoring=['accuracy']),
-    'borderline_smote_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy']),
-    'adasyn_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['ADASYN'], scoring=['accuracy']),
-    'gsmote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['G-SMOTE'], scoring=['accuracy'])
+    'benchmark_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
+    'no_oversampling_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+    'random_oversampling_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+    'smote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+    'borderline_smote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+    'gsmote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
 
 }
