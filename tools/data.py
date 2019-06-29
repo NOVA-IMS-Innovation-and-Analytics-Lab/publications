@@ -523,7 +523,7 @@ class BinaryClassDatasets(Datasets):
         zipped_data = requests.get(FETCH_URLS['audit']).content
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('audit_data/audit_risk.csv').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), engine='python')
-        data = data.rename(columns={'Risk': 'target'}).dropna()
+        data = data.drop(columns=['LOCATION_ID']).rename(columns={'Risk': 'target'}).dropna()
         return data
 
     def fetch_spambase(self):
