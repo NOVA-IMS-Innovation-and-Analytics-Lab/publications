@@ -12,42 +12,37 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from imblearn.pipeline import make_pipeline
 from imblearn.under_sampling import RandomUnderSampler
+from imblearn.over_sampling.base import BaseOverSampler
 from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
 from sklearnext.cluster import KMeans, SOM
-from sklearnext.over_sampling.base import BaseClusterOverSampler
+from sklearnext.utils.validation import _TrivialOversampler
 
 
-class UnderOverSampler(BaseClusterOverSampler):
+class UnderOverSampler(BaseOverSampler):
     """A class that applies random undersampling and oversampling."""
 
     def __init__(self,
                  random_state=None,
                  oversampler=None,
                  factor=3):
-        super(UnderOverSampler, self).__init__(sampling_strategy='auto', clusterer=None, distributor=None)
+        super(UnderOverSampler, self).__init__(sampling_strategy='auto')
         self.random_state = random_state
         self.oversampler = oversampler
         self.factor = factor
-    
+
     def fit(self, X, y):
         self._deprecate_ratio()
         X, y, _ = self._check_X_y(X, y)
-        counts = Counter(y)
-
-        # Overwrite default sampling strategy
-        self.sampling_strategy_ = OrderedDict([(list(counts.keys())[0], 0)])
-
-        # Create undersampler, oversampler and pipeline
-        self.undersampler_ = RandomUnderSampler(random_state=self.random_state, sampling_strategy={k:int(v / self.factor) for k,v in counts.items()})
-        self.oversampler_ = clone(self.oversampler).set_params(random_state=self.random_state, sampling_strategy=dict(counts))
-        self.pipeline_ = make_pipeline(self.undersampler_, self.oversampler_)
-        
+        self.sampling_strategy_ = OrderedDict([(list(Counter(y).keys())[0], 0)])
         return self
 
-    def _basic_sample(self, X, y):
-        X_resampled, y_resampled = self.pipeline_.fit_resample(X, y)
+    def _fit_resample(self, X, y):
+        counts = Counter(y)
+        self.undersampler_ = RandomUnderSampler(random_state=self.random_state, sampling_strategy={k:int(v / self.factor) for k,v in counts.items()})
+        self.oversampler_ = clone(self.oversampler).set_params(random_state=self.random_state, sampling_strategy=dict(counts))
+        X_resampled, y_resampled = self.undersampler_.fit_resample(X, y)
+        X_resampled, y_resampled = self.oversampler_.fit_resample(X_resampled, y_resampled)
         return X_resampled, y_resampled
 
 
@@ -139,7 +134,7 @@ OVERSAMPLERS_CLUSTERING = [
 ]
 OVERSAMPLERS_UNDERSAMPLED = [
     ('BENCHMARK METHOD', None, {}),
-    ('NO OVERSAMPLING', RandomUnderSampler(), {}),
+    ('NO OVERSAMPLING', UnderOverSampler(oversampler=_TrivialOversampler()), {}),
     ('RANDOM OVERSAMPLING', UnderOverSampler(oversampler=RandomOverSampler()), {}),
     ('SMOTE', UnderOverSampler(oversampler=SMOTE()), {'oversampler__k_neighbors': [3, 5]}),
     ('BORDERLINE SMOTE', UnderOverSampler(oversampler=BorderlineSMOTE()), {'oversampler__k_neighbors': [3, 5]}),
@@ -212,6 +207,6 @@ CONFIG = {
     'smote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['SMOTE'], scoring=['accuracy']),
     'borderline_smote_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy']),
     'adasyn_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['ADASYN'], scoring=['accuracy']),
-    'gsmote_method_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['G-SMOTE'], scoring=['accuracy'])
+    'gsmote_small_data': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['G-SMOTE'], scoring=['accuracy'])
 
 }

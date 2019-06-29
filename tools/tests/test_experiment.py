@@ -28,12 +28,12 @@ def test_under_oversampler():
     underoversampler.fit(X, y)
     assert len(underoversampler.sampling_strategy_) == 1
     assert set(underoversampler.sampling_strategy_.values()) == set([0]) 
-    assert underoversampler.undersampler_.random_state == 1
-    assert underoversampler.undersampler_.sampling_strategy == {0: 40, 1:10}
-    assert underoversampler.oversampler_.sampling_strategy == {0: 80, 1:20}
 
     # Test sample
     X_resampled, y_resampled = underoversampler.fit_resample(X, y)
+    assert underoversampler.undersampler_.random_state == 1
+    assert underoversampler.undersampler_.sampling_strategy == {0: 40, 1:10}
+    assert underoversampler.oversampler_.sampling_strategy == {0: 80, 1:20}
     assert X.shape == X_resampled.shape
     assert y.shape == y_resampled.shape
     assert Counter(y) == Counter(y_resampled)
