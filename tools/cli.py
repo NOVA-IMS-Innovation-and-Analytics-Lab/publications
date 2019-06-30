@@ -11,7 +11,7 @@ from pickle import load
 from sqlite3 import connect
 
 import pandas as pd
-from sklearnext.tools import BinaryExperiment
+from sklearnext.tools import ImbalancedExperiment
 
 from . import DATA_PATH, EXPERIMENTS_PATH
 from .data import ImbalancedBinaryClassDatasets, BinaryClassDatasets
@@ -64,9 +64,6 @@ def create_parser():
     experiment_parser.add_argument('name', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
     experiment_parser.add_argument('--n-jobs', type=int, default=-1, help='Number of jobs to run in parallel. -1 means using all processors.')
     experiment_parser.add_argument('--verbose', type=int, default=0, help='Controls the verbosity: the higher, the more messages.')
-    experiment_parser.add_argument('--compared-oversamplers', nargs=2, default=None, help='Pair of oversamplers to compare when percentage difference of performance is calculated.')
-    experiment_parser.add_argument('--alpha', type=float, default=0.05, help='Significance level of the Friedman test.')
-    experiment_parser.add_argument('--control-oversampler', default=None, help='Control oversampler of the Holms method.')
 
     return parser
 
@@ -99,7 +96,6 @@ def run():
         datasets = load_datasets(db_name, datasets_names)
     
         # Run and save experiment
-        experiment = BinaryExperiment(args.name, datasets, **configuration)
+        experiment = ImbalancedExperiment(args.name, datasets, **configuration)
         experiment.run(args.n_jobs, args.verbose)
-        experiment.calculate_results(args.compared_oversamplers, args.alpha, args.control_oversampler)
         experiment.dump(join(dirname(__file__), EXPERIMENTS_PATH))
