@@ -160,7 +160,7 @@ The review of related literature reveals implementation of all three approaches
 to handle with imbalance data (class imbalance) problem existing in remote
 sensing and Earth observation datasets. A number of researches focus on the
 development of such algorithms that force the model to learn towards the
-minority classes \cite{Wang2018}, \cite{Chen2010}, \cite{Williams2009},
+minority classes \cite{Wang2019}, \cite{Chen2010}, \cite{Williams2009},
 \cite{Ji2018}. Chen et al. \cite{Chen2010} uses object-oriented Asymmetrically
 Local Discriminant Selection (ALDS) classification method for future extraction
 from very high resolution (VHR) imagery. The semi-supervised algorithm uses the
@@ -216,7 +216,7 @@ Cenggoro et al. implements variational semi-supervised learning (VSSL) algorithm
 to solve class imbalance problem in remote sensing data for LULC mapping. VSSL
 is a semi-supervised learning framework for deep generative model which allows
 the model to learn both form labelled and unlabelled data. For this analysis
-they implemented SMOTE oversampler to balance the data \cite{Cenggoro2017}. 
+they implemented SMOTE oversampler to balance the data \cite{Cenggoro2018}. 
 
 \subsection{Ensemble Learning}
 Ensemble learning together with oversampling algorithms have been successfully
@@ -255,17 +255,36 @@ k-nearest neighbors (KNN), decision tree (DT) and gradient boosting classifier
 % To be written
 
 \subsubsection{Evaluation measures}
-Amongst the many evaluation metrics existing for classifier's performance
-evaluation, there are several measures that are considered to be preliminary and
-fundamental for LULC classification accuracy assessment with remotely sensed
-dataset. Those measures are classification overall accuracy (OA), user's
-accuracy (UA) and producer's accuracy (PA) and are calculated form
-classification confusion matrix \cite{Liu2007}. Together with those basic ones
-another very popular and widely used for remote sensing imbalanced data
-classification measure is Kappa statistics \cite{Du2015}, \cite{Wang2018},
-\cite{Foody2002}. Producer's Kappa and area under the curve (AUC) are being used
-also for multi-class imbalanced dataset in order to evaluate classifier's
-performance for each class \cite{Freeman2012}, \cite{Mellor2015}.
+Amongst the many evaluation metrics existing for classifier's performance evaluation, 
+there are several indices that are considered to be preliminary and fundamental for 
+LULC classification accuracy assessment with remotely sensed dataset. Those measures 
+are classification overall accuracy (OA), user's accuracy or precision (UA) and 
+producer's accuracy or recall (PA) and are calculated from classification confusion 
+matrix \cite{Liu2007}. However, the Lucas soil dataset has huge inter-class 
+variability and hence, the minority classes can be difficult to account for by the 
+classifiers that are designed to maximize the overall accuracy, as the majority 
+classes are receiving more wight \cite{Inglada2017}. Therefore, to summarize all 
+the information from the confusion matrix, Kappa statistics and F-score metrics were 
+selected for this study. 
+
+\textbf{Kappa statistics}
+
+Kappa statistics (k) measures the proportion of correctly classified units after 
+considering the probability of chance agreement and is well correlated to area 
+under the curve of ROC \cite{Freeman2012}. In other words, Kappa coefficient indicates 
+the agreement between observed agreement and the random agreement, that might be 
+expected in case of random classifier.
+
+\textbf{F-score}
+
+F-score (or F-measure) is the harmonic mean of UA (fraction of correctly classified 
+instances with regard to all instances classified as this certain class in the 
+confusion matrix) and PA (fraction of correctly classified instances with regard 
+to all instances of that reference class). F-score can be calculated as for the all 
+classification as well as for each class. The worst result is at 0 and the best at 
+the value of 1 \cite{Inglada2017}.
+
+
 
 \bibliography{references}
 \bibliographystyle{apalike}
