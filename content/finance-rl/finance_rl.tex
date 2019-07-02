@@ -49,6 +49,120 @@ Abstract.
 
 \section{Appendix}
 
+This section will be used internal mainly\par
+
+Here we will find a group of decisions that will help us to define the problem and the \textit{reproducibility} of the article
+\textbf{An adaptive portfolio trading system: A risk-return portfolio optimization using recurrent reinforcement learning with expected maximum drawdown. Almahdi, Yang 2017 }\\
+
+
+The Sharpe Ratio is our basis metric once it measures both profitability and risk exposure. It is defined as $ Shrp = \frac{\gamma}{\sigma}$\\
+
+Where $\gamma$ is the mean of the returns and $\sigma$ is the standard deviation of the returns.\\
+% How many n returns? a decision to be made
+
+The trading Signal is $F_t \in \{-1,1\}$\\
+The relevance of the trading signal is the discount of the transactions, for sake of simplicity we may ignore them bu in real world, typically, a fee is applied
+
+The log return is defined as $ r_t = log(price_t) - log(price_{t-1})$\\
+
+Return Calculation (at time $ t $)
+$ R_t = \mu \times [F_{t-1}.r_t - \delta|F_t-F_{t-1}|]$\\
+where $\mu$ is the number of shares\\
+$\delta$ is the transaction cost\\
+
+Goal maximize the Sharpe Ratio which can be rewritten as $ S_T = \dfrac{E[R_T]}{\sigma}$\\
+
+Based on Moody et al 1998 and Almahdi, Yang 2017\\
+
+$ A = \frac{1}{T}\sum_{t=1}^{T}R_t $\\
+
+$ B = \frac{1}{T}\sum_{t=1}^{T}R_{t}^{2} $\\
+
+As eq. 5 in Almahdi and Yang 2017, I will repeat it to the Calmar Ratio\\
+
+$$ \frac{dC_t}{d\theta} = \sum_{t=1}^{T}  \{\frac{dC_T}{dA}\frac{dA}{dR_t}+\frac{dC_T}{dB}\frac{dB}{dR_t}\}.\{\frac{dR_t}{dF_t}\frac{dF_t}{d\theta}+\frac{dR_t}{dF_{t-1}}\frac{dF_{t-1}}{d\theta}\} $$\\
+
+The derivatives here are the following:\\
+
+$ \dfrac{dR_t}{dF_t} = -\mu\delta.sgn(F_t - F_{t-1}) $\\
+
+$ \dfrac{dR_t}{dF_{t-1}} = -\mu.r_t+\mu\delta.sgn(F_t - F_{t-1}) $\\
+
+$ \dfrac{dF_t}{d\theta} = (1-tanh(x_{t}^{'}\theta)^2).(x_t + \theta_{M+2}\frac{dF_{t-1}}{d\theta}) $\\
+
+equivalent to\\
+
+$ \dfrac{dF_t}{d\theta} = (1-\bigg(\dfrac{\mathrm{e}^{2x_{t}^{'}\theta}-1}{\mathrm{e}^{2x_{t}^{'}\theta}+1}\bigg)^2).(x_t + \theta_{M+2}\frac{dF_{t-1}}{d\theta}) $\\
+
+Knowing that $ C_T  = \dfrac{TShrp^2}{0.63519 + 0.5\log T + \log Shrp}$\\
+
+and Sharpe Ratio\\
+
+$ S_T = \dfrac{\text{Average}(R_t)}{\text{Standard deviation}(R_t)} $\\
+
+Our Sharpe Ratio for $ n $ returns is (Moody 1998)\\
+
+$ S_n = \dfrac{A_n}{K_n\sqrt{B_n - A_{n}^{2}}} $ with\\
+
+$ A_n = \dfrac{1}{n}\sum_{i=1}^{n}R_i $	$ B_n = \dfrac{1}{n}\sum_{i=1}^{n}R_{i}^{2} $	$ K_n = \bigg(\dfrac{n}{n-1}\bigg)^{\frac{1}{2}} $\\
+
+The Calmar Ratio will be (drop $K_n$ for sake of simplicity), we ca rewrite it as\\
+
+
+
+$$ C_T  = \dfrac{T\bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)^2}{0.63519 + 0.5\log T + \log \bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)}$$\\
+
+So, $\dfrac{dC_T}{dA_n} = \dfrac{d\Bigg(\dfrac{T\bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)^2}{0.63519 + 0.5\log T + \log \bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)}\Bigg)}{dA_n}$\\
+\\
+
+Simplifing the Calmar Ratio $C_T$\\
+
+$\dfrac{T\bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)^2}{0.63519 + 0.5\log T + \log \bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)}$\\
+$ \equiv$
+$\dfrac{TA_{n}^{2}}{(B_n - A_{n}^{2})\bigg(\log \bigg(\dfrac{A_n}{\sqrt{B_n - A_{n}^{2}}}\bigg)+ 0.5\log T + 0.63519\bigg)}$\\
+
+Through the chain rule application, we obtain:\\
+
+$$ \dfrac{dC_T}{dA_n} = \dfrac{200000TB_nA_n\left(100000\ln\left(\frac{A_n}{\sqrt{B_n-A_{n}^{2}}}\right)+50000\ln\left(T\right)+13519\right)}{\left(A_{n}^{2}-B_n\right)^2\left(100000\ln\left(\frac{A_n}{\sqrt{B_n-A_{n}^{2}}}\right)+50000\ln\left(T\right)+63519\right)^2} $$\\
+
+$$ \dfrac{dC_T}{dB_n} = -\dfrac{100000TA_{n}^{2}\left(100000\ln\left(\frac{A_n}{\sqrt{B_n-A_{n}^{2}}}\right)+50000\ln\left(T\right)+13519\right)}{\left(B_n-A_{n}^{2}\right)^2\left(100000\ln\left(\frac{A_n}{\sqrt{B_n-A_{n}^{2}}}\right)+50000\ln\left(T\right)+63519\right)^2}$$\\
+
+
+$ \dfrac{dA_n}{dR_t} = \dfrac{1}{n}$\\
+
+$ \dfrac{dB_n}{dR_t} = \dfrac{2R_t}{n}$\\
+
+
+In order to update the weights $\theta$ we apply the following equation:\\
+
+
+$ \theta_{i+1} = \theta_{i} + \rho.\frac{dC_t}{d\theta}$ the $\rho $ is the learning rate
+
+\subsection{Expected Maximum Drawdown}
+
+The equation $$ C_T  = ... \xrightarrow{T \to \infty}  \dfrac{TShrp^2}{0.63519 + 0.5\log T + \log Shrp}$$ presents some flaws particularly when the rewards are negative or negative denominators\\
+
+In order to solve them we will use the solutions provided by Almahdi and Yang (2017)\\
+
+if $ \gamma > 1 $\\
+
+The previous assumption is correct\\
+
+if $ \gamma = 0 $ we have\\
+
+$$C_T  = \dfrac{\gamma T}{1.2533\sigma\sqrt{T}} \equiv \dfrac{Shrp\sqrt{T}}{1.2533} \equiv   \dfrac{A_n\sqrt{T}}{1.2533\sqrt{B_n - A_{n}^{2}}} $$\\
+
+% A workaround must be provided due to the 0 denominator
+
+if $ \gamma < 1 $ we have\\
+
+$$C_T  = \dfrac{\gamma T}{-\gamma T - \sigma^2/\gamma} \equiv \dfrac{\gamma^2T}{-\gamma^2T - \sigma^2} \equiv   \dfrac{A_n^2T}{-A_n^2T-\sqrt{B_n - A_{n}^{2}}^2} \equiv \dfrac{A_n^2T}{A_n^2(1-T)-B_n}$$\\
+
+$\dfrac{dC_T}{dA_n} =-\dfrac{2TB_nA_N}{\left(\left(T-1\right)A_{n}^{2}+B_n\right)^2}
+$\\
+
+$\dfrac{dC_T}{dB_n} =\dfrac{TA_{n}^{2}}{\left(B_n+\left(T-1\right)A_{n}^{2}\right)^2}
+$\\
 
 \bibliography{references}
 \bibliographystyle{apalike}
