@@ -51,23 +51,19 @@ Abstract
 \section{Introduction}
 One of the key problems in supervised learning is the insufficient size of data
 sets \cite{Niyogi.1998}. The limited availability of training sample sets can be
-caused by different factors. Data is becoming an increasingly expensive resource
+caused by different factors. First, data is becoming an increasingly expensive resource
 \cite{Li.2007} as the process to retain data is getting more complex due to
 strict privacy regulations such as the General Data Protection Regulation (GDPR)
 \cite{EuropeanCommission.2019}. Additionally, the small dataset problem can be
 found in numerous industries where organizations simply do not have access to a
-reasonable amount of data: manufacturing industries are usually dealing with
-small data in early stages of product developments; health care organizations
-have to work with different kinds of rare diseases, where very few records
-around the world are available; and in financial industries, fraud detection is
-an important issue with only few examples for cases of violence
+reasonable amount of data, for example: manufacturing industries are usually dealing with small data in early stages of product developments; health care organizations have to work with different kinds of rare diseases, where very few records around the world are available; and in financial industries, fraud detection is an important issue with only few examples for cases of violence
 \cite{AbdulLateh.2017}.
 
 A sufficient training sample set is one of the basic assumptions in Machine
 Learning \cite{Ivanescu.2006}. However, in the context of computational learning
-theory, small sample size is one of the encountered difficulties among
+theory, small sample size is one of the most encountered difficulties among
 measurement error, model fitting and characteristics of predictors
-\cite{AbdulLateh.2017}. Small datasets do not provide an unbiased representation
+\cite{AbdulLateh.2017}. The issue with small datasets is that they do not provide an unbiased representation
 of the reality due to a loose data structure with many information gaps. This
 lack of learning information causes a major issue in the performance of the
 machine learning algorithm \cite{Lin.2018}. Consequently, the knowledge gained
@@ -75,15 +71,14 @@ from prediction models with small sample sizes is considered unreliable as well
 as imprecise and does not lead to a robust classification performance
 \cite{AbdulLateh.2017}.
 
-The size of data is considered in two ways: first, the insufficiency of data
+Considering the size of data there are two types of measurements: first, the insufficiency of data
 belonging to one class (imbalance data problem); and second, the insufficiency
 in the whole data (small dataset problem) \cite{Sezer.2014}. In both cases, a
 small training sample set does not provide enough information to a machine
 learning model to obtain a stable learning accuracy \cite{Tsai.2008}. A
 theoretical explanation of “small” can be found in statistical learning theory
 by Vapnik. A sample size is defined as small, if the ratio between the number of
-training samples and Vapnik-Chervonenkis (VC) dimensions is less than 20. Where
-the VC dimension is the maximum number of vectors that can be separated into two
+training samples and Vapnik-Chervonenkis (VC) dimensions is less than 20. Where VC dimensions are determined as the maximum number of vectors that can be separated into two
 classes in all possible ways by a set of functions \cite{Vapnik.2008}. 
 
 \begin{figure}[h]
@@ -99,15 +94,7 @@ demonstrated in the graph on the right side, the vectors z{\tiny 2} and z{\tiny
 4} cannot be separated by a line from the vectors z{\tiny 1} and z{\tiny 3}
 \cite{Vapnik.2008}.
 
-Under-representation in the sample set can be solved in different ways, whereas
-the use of synthetic data derived from existing (real) observations is a
-promising approach \cite{Sezer.2014}. Thus, techniques to artificially add
-hidden information to extend the sample size and eventually improve
-classification results of the algorithm are strongly requested. However, it is
-important to consider that virtual data samples are not necessarily representing
-the population, as they are artificially created. Taking this into
-consideration, the challenge in virtual data generation is to create data which
-extends the actual data without creating noise \cite{Li.2006}. 
+Under-representation of observations in the sample set can be solved in different ways. The use of synthetic data derived from existing (real) observations is a promising approach to the given problem \cite{Sezer.2014}. As a result, techniques to artificially add hidden information to extend the sample size and eventually improve classification results of the algorithm are strongly requested. However, it is important to consider that virtual data samples are not necessarily representatives of the population, as they are artificially created. Taking this into consideration, the challenge in virtual data generation is to create data which extends the actual data without creating noise \cite{Li.2006}. 
 
 \begin{figure}[h]
 	\centering
@@ -117,10 +104,7 @@ extends the actual data without creating noise \cite{Li.2006}.
 \end{figure}
 
 The next sections will describe an effective way to tackle this problem. First,
-the previously studied solutions are reviewed. The related work in Chapter 2 is
-followed by the detailed description of the proposed method, the research
-methodology and the experimental results. Finally, the paper is concluded by an
-analysis of the experiments in Section 6.
+the previously studied solutions are reviewed. Second, a detailed description of the proposed method is presented. This is followed by the research methodology and the experimental results in Chapter 4 and 5. Finally, the paper is concluded with an analysis of the experiments in Section 6.
 
 \section{Related Work}
 Several data pre-processing methods to handle small dataset problems have been
@@ -390,11 +374,82 @@ Adapted GSMOTE for Small Dataset Learning (describe algorithm)
 
 \section{Research Methodology}
 
+The main objective of this work is to compare G-SMOTE with other oversampling techniques when it comes to the small dataset problem. Therefore, we use a variety of datasets, evaluation measures and classifiers to evaluate the performance. A description of this set-up, the experimental procedure as well as the software implementation is provided in the following section.
+
 \subsubsection{Experimental Data}
+
+Ten datasets are used to test the performance of G-SMOTE which are retrieved from UCI Machine Learning Repository \cite{Dua:2019}. The focus on the selection of the data lies on binary classification problems with a highly balanced distribution of the two classes. In order to assure generalizability of the results, the data sets include different topics such as health care, finance, business and physics as well as different sample sizes. Details of the datasets are presented in the following table:
+
+\begin{table}
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Dataset} & \textbf{Number of samples} & \textbf{Number of attributes} & \textbf{Area} \\
+		\hline
+		Arcene & 900 & 10.000 & Health Care \\
+		\hline
+		Audit & 776 & 18 & Business \\
+		\hline
+		Banknote Authentication & 1.372 & 5 & Finance \\
+		\hline
+		Spambase & 4.610 & 57 & Business\\
+		\hline
+		Breast Cancer & 699 & 10 & Health Care\\
+		\hline
+		Indian Liver Patient & 583 & 10 & Health Care\\
+		\hline
+		Ionosphere & 351 & 34 & Physics\\
+		\hline
+		MAGIC Gamma Telescope & 19.020 & 11 & Physics\\
+		\hline
+		Musk & 6.598 & 168 & Physics\\
+		\hline
+		Parkinsons & 197 & 23 & Health Care\\
+		\hline
+	\end{tabular}
+\caption{\label{tab:datasets}Description of the datasets}
+\end{table}
+
 \subsubsection{Evaluation Measures}
+
+To evaluate the performance of G-SMOTE, the experiment includes two different measures. First, accuracy is used as one of the most common metrics for evaluating classification models \cite{M.2015}. Informally, accuracy measures the ratio of correct predictions over the total number of instances evaluated. The accuracy metric can be stated mathematically as
+
+\[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\],
+
+where TP/TN denote the number of correctly classified positive as well as negative instances and FP/FN denote the number of misclassified negative and positive instances, respectively. The accuracy metric might be negligible for datasets with a significant disparity between the number of positive and negative label. As pointed out by many studies, accuracy has limitations in the discrimination process since rare classes have only few impacts on the measure compared to majority classes. To make sure the accuracies of the two classes stay relatively balanced, we include the geometric mean as a second measure. G-Mean measures the trade-off between sensitivity (true positive rate) and specificity (true negative rate) by the following:
+
+\[G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} \times \dfrac{TN}{TN + FP}}\]
+
+The objective of both measures is to be maximized since a classifier is performing well if it provides high classification accuracy and a high ratio of positive and negative accuracy \cite{Han.2012}. 
+
 \subsubsection{Machine Learning Algorithms}
+
+The experiment is conducted with several classifiers to make sure the results are not dependent on the machine learning algorithm. We use the following four classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient Boosting (GBC) \cite{Friedman.2001}. Descriptions of these algorithms are provided in the given studies.
+
 \subsubsection{Experimental Procedure}
+
+The main concept of the experimental procedure is to randomly under-sample medium to big sized datasets, increase them artificially and eventually compare the results with the original dataset which is considered to be the benchmark. This method allows us to directly compare the quality of the artificial generated sample set with the observed data. In order to evaluate if the proposed method can improve artificial data generation, we compare G-SMOTE with SMOTE, random oversampling and no oversampling. 
+
+We use k-fold cross-validation with k = 5 as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset D is randomly split into k subsets (folds) D1, D2, … Dk of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with k iterations. This procedure is repeated until each k have been used as a validation set [Data Mining]. Based on this technique, the experiment is conducted in the following steps within one iteration:
+
+\begin{enumerate}
+	\item 
+	Splitting dataset into k-fold cross-validation sets where k = 5
+	\item 
+	Undersampling n – 1 folds such that the class frequency remains the same as the original
+	\item 
+	Synthetic oversampling of n – 1 folds to the original size of the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Random Oversampling and undersampled data (No oversampling)
+	\item 
+	Training the model with the classifiers LR, KNN, DT and GBC
+	\item 
+	Testing the model with the remaining, original fold
+	\item 
+	Computation of results
+\end{enumerate}	
+
 \subsubsection{Software Implementation}
+
+The implementation of the experimental procedure is based on Python programming language with the Scikit-Learn \cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011} library. All functions, algorithms, experiments and results reported are provided at https://github.com/AlgoWit/publications/content/small-data-oversampling. They can be adjusted and implemented in comparative studies as the procedure is fully integrated with the Scikit-Learn ecosystem.    
 
 \section{Results and Discussion}
 \subsection{Comparative Presentation}
