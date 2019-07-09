@@ -81,7 +81,7 @@ by Vapnik. A sample size is defined as small, if the ratio between the number of
 training samples and Vapnik-Chervonenkis (VC) dimensions is less than 20. Where VC dimensions are determined as the maximum number of vectors that can be separated into two
 classes in all possible ways by a set of functions \cite{Vapnik.2008}. 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{"./resources/vc_dimension"}
 	\caption{Example of VC Dimension \cite{Vapnik.2008}}
@@ -96,7 +96,7 @@ demonstrated in the graph on the right side, the vectors z{\tiny 2} and z{\tiny
 
 Under-representation of observations in the sample set can be solved in different ways. The use of synthetic data derived from existing (real) observations is a promising approach to the given problem \cite{Sezer.2014}. As a result, techniques to artificially add hidden information to extend the sample size and eventually improve classification results of the algorithm are strongly requested. However, it is important to consider that virtual data samples are not necessarily representatives of the population, as they are artificially created. Taking this into consideration, the challenge in virtual data generation is to create data which extends the actual data without creating noise \cite{Li.2006}. 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\linewidth]{./Resources/relationship}
 	\caption{Relationship between population, actual data and virtual data \cite{Li.2006}}
@@ -136,7 +136,7 @@ of training sets \cite{AbdulLateh.2017}. Thus, the gaps between observations
 population to feed the algorithm with a more complete representation of the
 reality.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{"./Resources/small_data_distribution"}
 	\caption{Distribution of a small dataset}
@@ -195,7 +195,7 @@ figure 3 represents the membership function which shows the similarities between
 samples. M and n are the samples and their heights are the possible values of
 the membership function.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{"./Resources/mtd_function"}
 	\caption{MTD function}
@@ -286,7 +286,7 @@ neighbors. It generates synthetic data around vectors between the minority
 class instances and their nearest neighbors \cite{Chawla.2002}. A visual
 representation of the concept can be found in figure 5.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{./Resources/smote}
 	\caption{Concept of SMOTE}
@@ -304,7 +304,7 @@ definable. Thus, noisy samples may be generated when a minority sample lies in
 the region of the majority classes. Figure 7 presents a scenario where a
 minority instance is generated within the majority region (noisy sample).
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{"./resources/noisy_examples"}
 	\caption{Generation of noisy examples}
@@ -317,7 +317,7 @@ overfitting. Figure 8 demonstrates an example where a minority class instance is
 generated in a dense minority class. This new observation belongs to the same
 dense cluster as the original and is therefore less useful. 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{"./Resources/redundant_examples"}
 	\caption{Generation of redundant examples}
@@ -341,7 +341,7 @@ the minority sample and its nearest neighbor with a line segment (hypersphere),
 the instances are generated in a geometrical region (hyper-spheroid) around the
 minority sample. 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{./resources/gsmote}
 	\caption{Concept of G-SMOTE}
@@ -378,9 +378,9 @@ The main objective of this work is to compare G-SMOTE with other oversampling te
 
 \subsubsection{Experimental Data}
 
-Ten datasets are used to test the performance of G-SMOTE which are retrieved from UCI Machine Learning Repository \cite{Dua:2019}. The focus on the selection of the data lies on binary classification problems with a highly balanced distribution of the two classes. In order to assure generalizability of the results, the data sets include different topics such as health care, finance, business and physics as well as different sample sizes. Details of the datasets are presented in the following table:
+Ten datasets are used to test the performance of G-SMOTE which are retrieved from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the selection of the data lies on binary classification problems with a highly balanced distribution of the two classes. In order to assure generalizability of the results, the data sets include different topics such as health care, finance, business and physics as well as different sample sizes. Details of the datasets are presented in the following table:
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
@@ -416,7 +416,7 @@ To evaluate the performance of G-SMOTE, the experiment includes two different me
 
 \[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\],
 
-where TP/TN denote the number of correctly classified positive as well as negative instances and FP/FN denote the number of misclassified negative and positive instances, respectively. The accuracy metric might be negligible for datasets with a significant disparity between the number of positive and negative label. As pointed out by many studies, accuracy has limitations in the discrimination process since rare classes have only few impacts on the measure compared to majority classes. To make sure the accuracies of the two classes stay relatively balanced, we include the geometric mean as a second measure. G-Mean measures the trade-off between sensitivity (true positive rate) and specificity (true negative rate) by the following:
+where $\mathit{TP/TN}$ denote the number of correctly classified positive as well as negative instances and $\mathit{FP/FN}$ denote the number of misclassified negative and positive instances, respectively. The accuracy metric might be negligible for datasets with a significant disparity between the number of positive and negative label. As pointed out by many studies, accuracy has limitations in the discrimination process since rare classes have only few impacts on the measure compared to majority classes. To make sure the accuracies of the two classes stay relatively balanced, we include the geometric mean as a second measure. G-Mean measures the trade-off between sensitivity (true positive rate) and specificity (true negative rate) by the following:
 
 \[G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} \times \dfrac{TN}{TN + FP}}\]
 
@@ -430,15 +430,15 @@ The experiment is conducted with several classifiers to make sure the results ar
 
 The main concept of the experimental procedure is to randomly under-sample medium to big sized datasets, increase them artificially and eventually compare the results with the original dataset which is considered to be the benchmark. This method allows us to directly compare the quality of the artificial generated sample set with the observed data. In order to evaluate if the proposed method can improve artificial data generation, we compare G-SMOTE with SMOTE, random oversampling and no oversampling. 
 
-We use k-fold cross-validation with k = 5 as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset D is randomly split into k subsets (folds) D1, D2, … Dk of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with k iterations. This procedure is repeated until each k have been used as a validation set [Data Mining]. Based on this technique, the experiment is conducted in the following steps within one iteration:
+We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ subsets (folds) $\mathit{D1, D2, … Dk}$ of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with $\mathit{k}$ iterations. This procedure is repeated until each $\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this technique, the experiment is conducted in the following steps within one iteration:
 
 \begin{enumerate}
 	\item 
-	Splitting dataset into k-fold cross-validation sets where k = 5
+	Splitting dataset into $\mathit{k}$-fold cross-validation sets where $\mathit{k = 5}$
 	\item 
-	Undersampling n – 1 folds such that the class frequency remains the same as the original
+	Undersampling $\mathit{k - 1}$ folds such that the class frequency remains the same as the original
 	\item 
-	Synthetic oversampling of n – 1 folds to the original size of the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Random Oversampling and undersampled data (No oversampling)
+	Synthetic oversampling of $\mathit{k - 1}$ folds to the original size of the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Random Oversampling and undersampled data (No oversampling)
 	\item 
 	Training the model with the classifiers LR, KNN, DT and GBC
 	\item 
@@ -447,13 +447,15 @@ We use k-fold cross-validation with k = 5 as a technique for assessing the perfo
 	Computation of results
 \end{enumerate}	
 
+This procedure is repeated three times and the highest cross validation score for each combination of dataset, classifier, oversampler and evaluation metric is reported. The presented numbers are the average values computed from the three runs. In order to confirm the statistical significance of the experimental results, the Friedman test \cite{Sheldon.1996} as well as the Holms test \cite{JanezDemsar.2006} are applied. The Friedman test is a non-parametric procedure to test hypothesis an ordinal scaled variables. Additionally, it can also be applied with interval data when normality and homogeneity assumption does not hold. We use the Friedman test to evaluate the data generation algorithms on each dataset separately. Ranking scores are assigned to each oversampling method with scores of 1 to 4 for the best and worst performing methods, respectively. The procedure compares the average ranks of the algorithms under the null hypothesis, which states that the independent variable has no effect on the dependent variable. In our case, the null hypothesis assumes that all four algorithms show identical performance independent of the oversampling method and evaluation metric used. If the null-hypothesis is rejected to our favour, we proceed with the Holms test. The Holms test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method and not between themselves. This non-parametric test is very powerful in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed G-SMOTE method and is tested under the null hypothesis whether G-SMOTE yields an improved performance over other oversampling methods.
+
 \subsubsection{Software Implementation}
 
-The implementation of the experimental procedure is based on Python programming language with the Scikit-Learn \cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011} library. All functions, algorithms, experiments and results reported are provided at https://github.com/AlgoWit/publications/content/small-data-oversampling. They can be adjusted and implemented in comparative studies as the procedure is fully integrated with the Scikit-Learn ecosystem.    
+The implementation of the experimental procedure is based on Python programming language with the Scikit-Learn \cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011} library. All functions, algorithms, experiments and results reported are provided at https://github.com/AlgoWit/publications. They can be adjusted and implemented in comparative studies as the procedure is fully integrated with the Scikit-Learn ecosystem.    
 
 \section{Results and Discussion}
 \subsection{Comparative Presentation}
-\subsection{Statistical analysis}
+\subsection{Statistical Analysis}
 
 \section{Conclusions}
 
