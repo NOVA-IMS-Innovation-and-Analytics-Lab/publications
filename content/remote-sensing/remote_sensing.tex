@@ -196,8 +196,8 @@ the majority and minority classes.
 % Here another repetition of introduction
 \textbf{Oversampling} - Contrary to RUS, the Random Oversampling method (ROS)
 benefits from avoiding information loss. However, ROS simply replicates
-randomly selected instances of the minority class \cite{Douzas2019}.
-Consequently, it carries the risk of over-fitting. Regardless, \cite{Feng2019}
+randomly selected instances of the minority class. Consequently, it carries the 
+risk of over-fitting. Regardless, \cite{Feng2019}
 considers ROS to be the most popular resampling method in the remote sensing
 domain. Thus, this paper uses unmodified data (No Oversampling) and ROS (along
 with other commonly used oversamplers) as the baseline to compare different
@@ -207,34 +207,29 @@ learning which can avoid over-fitting but has the disadvantage of generating
 noisy data. There are many variations of SMOTE (such as Borderline-SMOTE,
 Majority Weighted Minority Oversampling Technique for Imbalanced Data Set
 Learning, ADASYN, KernelADASYN etc.) with the objective of preventing noisy
-data generation \cite{Douzas2019, Feng2019}. Recently, \cite{Douzas2019}
+data generation \cite{Feng2019}. Recently, \cite{Douzas2019}
 proposed Geometric-SMOTE oversampling technique, which is the core focus of
 this paper. In order to avoid from noisy data generation, Geometric-SMOTE
 algorithm defines safe areas around the minority instances. Afterwards, it
 expands the minority class area for more informative synthetic sample
 generation.
-% removed Douzas2019 reference at the end of this sentence, since it's been
-% already referenced in the previous sentences
 
 The variational semi-supervised learning (VSSL) proposed in \cite{Cenggoro2018}
 aims to fix the class imbalance problem in LULC mapping. VSSL is a semi-
 supervised learning framework consisting of a deep generative model which
-allows the model to learn both form labelled and unlabelled data. For this
+allows the model to learn both form labeled and unlabeled data. For this
 analysis they used SMOTE to balance the data.
-% removed Cenggoro2018 reference at the end of this sentence, since it's been
-% already referenced in the previous sentence
 
 % this subsection conflicts with the Introduction
-\subsection{Ensemble Learning}
-Ensemble learning together with oversampling algorithms have been successfully
-implemented for remote sensing image classification in several studies. Feng et
-al. in their research apply Rotation forest (RoF) ensemble leaning algorithm to
-handle with class imbalance problem \cite{Feng2019}. Han et al. \cite{Han2012}
-implements ensemble algorithm based on Diversity Ensemble Creation by
-Oppositional Relabeling of Artificial Training Examples (DECORATEs) and Random
-Forest (RF) classifier. This ensemble algorithm uses Radial Basis Function
-Neural Network (RBFNN) as a base classifier. Both studies use SMOTE oversampling
-method for synthetic data generation.
+Ensemble learning method together with oversampling algorithms have been
+successfully implemented for remote sensing image classification in several
+studies. Feng et al. in their research apply Rotation forest (RoF) ensemble
+leaning algorithm to handle with class imbalance problem \cite{Feng2019}. Han
+et al. \cite{Han2012} implements ensemble algorithm based on Diversity Ensemble
+Creation by Oppositional Relabeling of Artificial Training Examples (DECORATEs)
+and Random Forest (RF) classifier. This ensemble algorithm uses Radial Basis
+Function Neural Network (RBFNN) as a base classifier. Both studies use SMOTE
+oversampling method for synthetic data generation.
 
 Ji et al. in their study of detecting collapsed buildings with SqueezeNet method
 (a small CNN architecture) from high resolution satellite imagery, they also
@@ -244,6 +239,14 @@ dealing with imbalanced data \cite{Ji2018}. The experiment results show the
 cost-sensitive algorithm-level model to outperform ROS and RUS resampling
 methods with highest overall accuracy (OA) and Kappa statistics.
 
+In the contrast to the above-discussed examples, \cite{Maxwell2018} reports
+that balancing data with RO reduces the overall classification accuracy for
+most of the classifiers (DT, ANN, k-NN, Boosted DT) and slightly increases the
+overall accuracy for RF and SVM classifiers. The paper shows, that even if for
+some minority classes RO can affect positively and on the prediction of
+minority classes, however it can corrupt the prediction accuracy of a majority
+class.
+
 % Here is also repetition with intro, should be integrated
 However, the review of related studies show there is a big lack of researches
 comparing the classification accuracy of imbalanced learning methods towards the
@@ -251,7 +254,7 @@ minority classes for remote sensing natural imbalanced dataset. This article
 carries the study of implementation of different oversampling algorithms
 together with Geometric-SMOTE oversampler (which is the first time being applied
 for remote sensing imbalance data) in order to reveal the best classification
-results for the minority classes for LUCAS dataset.  To achieve the goals
+results for the minority classes for LUCAS dataset. To achieve the goals
 k-nearest neighbors (KNN), decision tree (DT) and gradient boosting classifier
 (GBC) supervised classifiers have been deployed.
 
@@ -264,7 +267,22 @@ k-nearest neighbors (KNN), decision tree (DT) and gradient boosting classifier
 \subsubsection{Evaluation measures}
 Amongst the many evaluation metrics existing for classifier's performance
 evaluation, there are several indices that are considered to be preliminary and
-fundamental for LULC classification accuracy assessment. Those measures are classification overall accuracy (OA), user's accuracy or precision (UA) and producer's accuracy or recall (PA) and are calculated using the classification confusion matrix \cite{Liu2007}. However, the Lucas soil dataset presents high inter-class variability. Hence, the minority classes can be difficult to account for by the classifiers that are designed to maximise the overall accuracy, as the majority classes are receiving more weight \cite{Inglada2017}. As it is important to consider class imbalance and classification accuracy in the minority classes, the information from the confusion matrix will be summarised using Kappa statistics and F-score metrics.
+fundamental for LULC classification accuracy assessment. Those measures are
+classification overall accuracy (OA), user's accuracy or precision (UA) and
+producer's accuracy or recall (PA) and are calculated using the classification
+confusion matrix \cite{Liu2007}. However, the Lucas soil dataset presents high
+inter-class variability. Hence, the minority classes can be difficult to
+account for by the classifiers that are designed to maximise the overall
+accuracy, as the majority classes are receiving more weight \cite{Inglada2017}.
+As it is important to consider class imbalance and classification accuracy in
+the minority classes, Overall Accuracy together with Kappa statistics and
+F-score metrics will be summarized using the information from the confusion
+matrix.
+
+% Formulas to be added once the metrics are selected 
+\textbf{Overall Accuracy}
+Classification Overall Accuracy is the proportion of the all samples classified
+correctly.
 
 \textbf{Kappa statistics}
 
