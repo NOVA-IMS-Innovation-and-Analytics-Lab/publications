@@ -21,6 +21,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage[colorinlistoftodos]{todonotes}
 \geometry{
 	a4paper,
 	total={170mm,257mm},
@@ -332,45 +333,103 @@ results within the study.
 
 \subsubsection{G-SMOTE}
 
-In consideration of the limitations of SMOTE, the novel data generation
-procedure Geometric SMOTE (G-SMOTE) has been presented by \cite{Douzas.2017}.
-G-SMOTE is an extension of the SMOTE data generation mechanism and can be seen
-as a substitute. The main difference to SMOTE is that the novel method
-significantly broadens the options for data generation. Instead of connecting
-the minority sample and its nearest neighbor with a line segment (hypersphere),
-the instances are generated in a geometrical region (hyper-spheroid) around the
-minority sample. 
+A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been presented with the objective to improve the above mentioned limitations of the SMOTE algorithm \cite{Douzas.2019b}. G-SMOTE is an extension of SMOTE can be seen as a substitute. The main difference to SMOTE is that the novel method significantly broadens the options for data generation and prevents the creation of noise. Instead of connecting the minority sample and its nearest neighbour with a line segment (hypersphere), the instances are generated in a geometrical region (hyper-spheroid) around the minority sample. Furthermore, G-SMOTE is designed to avoid the generation of noisy samples by some restrictions in the selection strategy. Figure 8 demonstrated the distribution of artificially created samples by SMOTE versus G-SMOTE. With an increased number of k neighbors, SMOTE tends to generate noisy samples, whereas Geometric SMOTE avoids this scenario.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\linewidth]{./resources/gsmote}
-	\caption{Concept of G-SMOTE}
-	\label{fig:gsmote}
+	\includegraphics[width=0.8\linewidth]{resources/smote_vs_gsmote}
+	\caption{SMOTE versus G-SMOTE \cite{Douzas.2019}}
+	\label{fig:smotevsgsmote}
 \end{figure}
 
-Hence, it is recognized as a generalization of SMOTE, as it significantly
-extends the input space for data generation. The main achievement of the novel
-algorithm is that it solves the limitations of SMOTE mentioned above. G-SMOTE
-defines a safe area around each minority class instance which prevents the
-algorithm from creating noisy samples. Also, it increases the variety of
-generated samples by expanding the minority class area with a hyper-spheroid
-instead of a hypersphere. These modifications proof their refinement in
-experiments with 69 imbalanced datasets and four classifiers such as Logistic
-Regression (LR), K-Nearest Neighbors (KNN), Decision Tree (DT) and Gradient
-Boosting (GBC). The results show that G-SMOTE is outperforming SMOTE, Random
-Oversampling and the case of no oversampling, across all classifiers and
-performance metrics.  
+These modifications of SMOTE proof their refinement in experiments with 69 imbalanced datasets and four classifiers such as Logistic Regression (LR), K-Nearest Neighbours (KNN), Decision Tree (DT) and Gradient Boosting (GBC). The results show that G-SMOTE is outperforming SMOTE, Random Oversampling and the case of no oversampling, across all datasets, classifiers and performance metrics.    
 
-Various methods to deal with small datasets or a small representation of a class
-have been presented in this section. It has been proven, that all cases with
-artificially increased sample size seem to enhance the prediction performance of
-the conventional classifier. Thus, data pre-processing of a small or imbalanced
-dataset by increasing the sample size is an important task in the area of
-Machine Learning \cite{Ruparel.2013}.
+Various methods to deal with small datasets as well as small representation within a class label have been presented in this section. It has been proven, that all cases with artificially increased sample size seem to enhance the prediction performance of the conventional classifier. Thus, we can conclude that data pre-processing of a small or imbalanced dataset by increasing the sample size is an important task in the area of Machine Learning \cite{Ruparel.2013}.
 
 \section{Proposed Method}
 
-Adapted GSMOTE for Small Dataset Learning (describe algorithm)
+In the following section, we propose G-SMOTE as novel data generation procedure for small sample sets. Originally developed for imbalanced datasets, we slightly adapt the algorithm to not only increase the minority class, but the entire sample set independent from class occurrences. 
+
+\subsection{G-SMOTE for small data}
+
+As mentioned above, the G-SMOTE algorithm randomly generates artificial data within a geometrical region of the input space. The size of this area is derived from the distance of the selected sample to the nearest neighbour, whereas the shape is determined by the hyperparameters truncation factor and deformation factor. Additionally, the direction of the new input area is defined by the selection strategy of G-SMOTE. The main concept can be adapted from the original method. However, the selection strategy requires some minor adjustments for the small dataset problem which will be described in the following.
+
+The selection strategy $\alpha$\textsubscript{sel} determines the data points of the $\mathit{k}$ nearest neighbors. This mechanism allows the positive or negative class area to expand into a direction where it prevents the algorithm from creating noisy samples. In G-SMOTE for small data both classes are selected in two individual runs to introduce new observations. In the first run, a random sample called x\textsubscript{surface} is selected which belongs to the positive class. Similarly, x\textsubscript{surface} is assigned to the negative class samples in the second run. Both runs are based on the defined selection strategy where $\alpha$\textsubscript{sel} can have three different values: positive class selection S\textsubscript{pos}, negative class selection S\textsubscript{neg} and combined selection S\textsubscript{com}. We describe the cases referring to first run of randomly selecting a positive sample. In the second run, a negative class example is randomly chosen and the process is repeated reversely. 
+
+\begin{enumerate}[label=($\alph*$)]
+
+\item Positive class selection
+
+With the hyperparameter selection\_strategy = 'positive', a second positive class sample is selected as one of the k nearest neighbors. This indicates that the selection strategy is based only on the positive class and works like the selection strategy of SMOTE. As SMOTE may lead to the generation of data penetrating the opposite class area, this drawback also applies on the selection strategy here.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{resources/positive_class_selection_strategy}
+	\caption{Example of positive class selection strategy: A positive class instance is defined as the center and one of its $\mathit{k = 4}$ positive class nearest neighbors is selected as the surface point. The radius $\mathit{R}$ is equal to the distance of these instances.}
+	\label{fig:positiveclassselectionstrategy}
+\end{figure}
+
+\item Negative class selection
+
+When selection\_strategy = 'negative', the second sample is its nearest negative class neighbor. This scenario prevents the algorithm from creating noisy samples. More specifically, as the radius is drawn from the selected positive class instance to the nearest neighbour of the negative class, it does not allow the data generation mechanism to penetrate the opposite area.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{resources/negative_class_selection_strategy}
+	\caption{Example of negative class selection strategy: A positive class instance is defined as the center and its closest negative class neighbor is selected as the surface point. The radius R is defined to be equal to the distance of these instances.}
+	\label{fig:negativeclassselectionstrategy}
+\end{figure}
+
+\item Combined selection
+
+The combined selection strategy initially applies the positive and negative selection strategies. Once x\textsubscript{pos} and x\textsubscript{neg} are identified, the point with the minimum distance to the center x\textsubscript{center} is defined as the surface point x\textsubscript{surface}. Figure 11 presents an example when x\textsubscript{surface} is identified as a negative class instance.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{resources/combined_class_selection_strategy}
+	\caption{The closest point to the center positive class sample is identified as the surface point since it is closer to the center than the selected instance from the k nearest positive class neighbors of the center.}
+	\label{fig:combinedclassselectionstrategy}
+\end{figure}
+\todo{graphic has to be changed}
+
+\end{enumerate}
+
+%More adjustments?
+
+\subsection{Adapted G-SMOTE algorithm}
+
+The adapted G-SMOTE algorithm can be generally described in the following steps:
+
+\begin{enumerate}
+	\item 
+	An empty set S\textsubscript{gen} is initialized
+	\item 
+	The S\textsubscript{pos} elements are shuffled and the process described below is repeated $\mathit{N}$ times until $\mathit{N}$ artificial points have been generated.
+	\item 
+	A positive class instance x\textsubscript{center} is selected as the center of the geometric region.
+	\item 
+	Depending on the values of $\alpha$\textsubscript{sel} (positive, negative or both), this step results in a randomly selected sample x\textsubscript{surface} which belongs either to the positive or negative sample set
+	\item 
+	A random point e\textsubscript{sphere} is generated on the surface of a unit hypersphere centered at the origin of the input space. This point is transformed to a randomly generated point x\textsubscript{gen} inside the unit hypersphere. 
+	\item 
+	The geometrical transformations are applied to define the admissible area for x\textsubscript{gen}. These are defined as truncation $\alpha$\textsubscript{trunc}, which defines the subarea of the hypersphere and deform $\alpha$\textsubscript{def}, which deforms the hypersphere. 
+	
+	\begin{enumerate}[label=($\alph*$)]
+		\item 
+		The truncation factor $\alpha$\textsubscript{trunc} defines the degree of truncation that is applied to the geometric area and can be specified between zero and one, where truncation\_factor=0.0 corresponds to a circle and truncation\_factor=1.0 becomes a half-hypersphere around the selected sample. 
+		
+		\item 
+		The formation of the area is defined by the so-called deformation factor. If the parameter of the deformation factor is equal to 0, the data generation area obtains a circle. On the opposite, if the parameter is set to 1, the area deforms to a line segment. 
+		For a graphical example of these hyperparameters the reader is referred to (Douzas, 2019).
+	\end{enumerate}
+
+	\item 
+	The generated point x\textsubscript{gen} is translated
+	\item 
+	x\textsubscript{gen} is added to S\textsubscript{gen}
+	\item 
+	Once this process is repeated $\mathit{N}$ times: S\textsubscript{neg} elements are shuffled, a negative class instance is selected as x\textsubscript{center} and the algorithm starts again with step 4 until $\mathit{N}$ negative samples are introduced
+\end{enumerate}
 
 \section{Research Methodology}
 
@@ -430,7 +489,7 @@ The experiment is conducted with several classifiers to make sure the results ar
 
 The main concept of the experimental procedure is to randomly under-sample medium to big sized datasets, increase them artificially and eventually compare the results with the original dataset which is considered to be the benchmark. This method allows us to directly compare the quality of the artificial generated sample set with the observed data. In order to evaluate if the proposed method can improve artificial data generation, we compare G-SMOTE with SMOTE, random oversampling and no oversampling. 
 
-We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ subsets (folds) $\mathit{D1, D2, … Dk}$ of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with $\mathit{k}$ iterations. This procedure is repeated until each $\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this technique, the experiment is conducted in the following steps within one iteration:
+We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ subsets (folds) $\mathit{D_1, D_2, … D_k}$ of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with $\mathit{k}$ iterations. This procedure is repeated until each $\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this technique, the experiment is conducted in the following steps within one iteration:
 
 \begin{enumerate}
 	\item 
