@@ -5,7 +5,7 @@
 \title{Imbalanced Learning in Land Cover Classification  \\ \LARGE{Improving minority class' prediction accuracy using the Geometric SMOTE algorithm}}
 
 \author{
-	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), João Fonseca\(^{1}\), Manvel Khudinyan\(^{1}\)
+	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Joao Fonseca\(^{1}\), Manvel Khudinyan\(^{1}\)
 	\\
 	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
 	\\
@@ -20,6 +20,7 @@
 \usepackage{breakcites}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{geometry}
 \geometry{
 	a4paper,
@@ -64,38 +65,45 @@ Python programming language.
 
 \section{Introduction}
 
-Accurate Land Use/Land Cover (LULC) classification maps play an important role
-in the remote-sensing domain \cite{Cenggoro2018} and are a crucial source of
-information for natural resource land managers and forest monitoring programs
-\cite{Mellor2015}. This data is being used for a variety of applications,
-ranging from environmental monitoring, land change detection, natural hazard
-assessment up to agriculture and water/wetland monitoring \cite{Khatami2016}.
+The production of accurate Land Use/Land Cover maps offer unique monitoring
+capabilities within the remote-sensing domain \cite{Mellor2015}. LULC maps are
+being used for a variety of applications, ranging from environmental
+monitoring, land change detection, natural hazard assessment up to agriculture
+and water/wetland monitoring \cite{Khatami2016}.
 
-% Check if this part
-While the human eye is based on three color bands (red, green and blue),
-spectral imaging divides the vision into many more. The multi/hyper-spectral
-context of LULC maps allow the discrimination of pixels among classes with
-similar spectral signatures \cite{Marconcini2009}, proving especially useful for
-classification tasks. However, datasets that serve this purpose often suffer
-from the class imbalanced problem \cite{Feng2019}. In multi-class classification
-tasks, this problem is considerably more difficult to address when compared to
-binary classification problems, making it one of the most important challenges
-in the machine learning research community \cite{Garcia2018}.
+Multispectral images are an important resource to build LULC maps, allowing for
+the use of classification algorithms, both supervised and unsupervised, to
+automate the production of these maps. Although significant progress has been
+made in the use of supervised learning techniques for automatic image
+classification \cite{Tewkesbury2015}, the acquisition of labeled training sets
+continues to be a bottleneck \cite{Rajan2008}. To build  good and robust
+supervised classifiers it is crucial to have a large enough training dataset.
+Often, the problem is that different land use classes have very different
+levels of coverage, while some are frequent in the training dataset, other can
+be limited \cite{Feng2019}. In remote-sensing classification problems, the
+number of instances of some classes is often very small when compared with the
+dominant classes, this is especially true in LULC data \cite{Williams2009,
+Cenggoro2018}.
 
-In remote-sensing classification problems, the number of targets present is
-often very small compared with the remaining classes, especially when using LULC
-data \cite{Williams2009, Cenggoro2018}. As an example, in land-mine detection
-applications, it is common to have 100 false alarms for each real mine present.
+This imbalance in the representation of the different classes constitutes a
+problem for the development of accurate classifiers. This problem is usually
+referred to, in the machine learning community, as the imbalanced learning
+problem \cite{Chawla2004}. The imbalanced learning problem is even more
+difficult to address in multi-class problems, making it one of the most
+important challenges in the machine learning research community
+\cite{Garcia2018}. Improvements in the representation of small classes in
+training datasets can have a significant impact in improving the accuracy and
+robustness of classifiers for the production of LULC maps.
 
 An imbalanced learning problem refers to a skewed distribution of data across
 classes in both binary and multi-class classification problems \cite{Abdi2016}.
 In this situation, the minority classes contribute less to the minimization of
-the objective function, which induces a bias towards the majority class during
-the learning process \cite{Douzas2019}. Consequently, as typical classifier
-learning methods are designed to work with reasonably balanced datasets, finding
-meaningful boundaries becomes a very difficult task \cite{Saez2016}.
+accuracy, the typical objective function, inducing a bias towards the majority
+class during the learning process \cite{Douzas2019}. Consequently, as typical
+classifier learning methods are designed to work with reasonably balanced
+datasets, finding meaningful boundaries becomes a very difficult task
+\cite{Saez2016}.
 
-% How to justify the usage of the third method? Is it okay this way?
 Possible approaches to deal with class imbalance can be divided into three main
 groups \cite{Fernandez2013}. 1) Cost-sensitive solutions: adaptations at
 algorithmic and/or data level by applying higher misclassification costs for the
@@ -106,12 +114,12 @@ distributions are rebalanced through the sampling of the data space, thus
 diminishing class imbalance. Because this latter method is more general, it is
 used for a wide range of applications, thus making it of particular interest.
 Regardless, data level solutions carry the disadvantage of yielding an increased
-search space. % \cite{Fernandez2013}.
+search space.
 
 There are several data level solutions to deal with the imbalanced learning
-problem, which can be divided into three groups. Undersampling algorithms reduce
-the size of the majority classes, whereas oversampling algorithms attempt to
-attribute a higher weight to minority classes by generating artificial data
+problem, which can be divided into three groups. While Undersampling algorithms
+reduce the size of the majority classes, oversampling algorithms attempt to
+even the distributions by generating artificial data for the minority class
 \cite{Mellor2015}. A hybrid approach, on the other hand, uses both oversampling
 and undersampling techniques.
 
@@ -119,7 +127,7 @@ and undersampling techniques.
 % Should we include MS-cSV in our experiment, or in this paragraph at all?
 % Should I include the limitations of each oversampler?
 Studies suggest that the usage of data level solutions in remote sensing
-problems to balance class distribution seem to outperform the ones models
+problems to balance class distribution seem to outperform models
 trained by randomly drawn samples \cite{Wang2019, Mellor2015}.  Studies
 employing oversampling methods such as the Synthetic Minority Over-sampling
 Technique (SMOTE) \cite{Chawla2002} seem to consistently yield better results
@@ -196,7 +204,7 @@ the majority and minority classes.
 % Here another repetition of introduction
 \textbf{Oversampling} - Contrary to RUS, the Random Oversampling method (ROS)
 benefits from avoiding information loss. However, ROS simply replicates
-randomly selected instances of the minority class. Consequently, it carries the 
+randomly selected instances of the minority class. Consequently, it carries the
 risk of over-fitting. Regardless, \cite{Feng2019}
 considers ROS to be the most popular resampling method in the remote sensing
 domain. Thus, this paper uses unmodified data (No Oversampling) and ROS (along
@@ -279,7 +287,7 @@ the minority classes, Overall Accuracy together with Kappa statistics and
 F-score metrics will be summarized using the information from the confusion
 matrix.
 
-% Formulas to be added once the metrics are selected 
+% Formulas to be added once the metrics are selected
 \textbf{Overall Accuracy}
 Classification Overall Accuracy is the proportion of the all samples classified
 correctly.
