@@ -46,7 +46,14 @@
 \maketitle
 
 \begin{abstract}
-Abstract
+Many small data set learning tasks are limited due to an incomplete data 
+structure where information for decision making is missing. This research aims 
+to improve predictive performance by artificially adding samples in the 
+pre-processing phase of the data analysis process. Based on the oversampling 
+technique G-SMOTE, the new application of the algorithm generates artificial 
+samples to enhance crisp data structures. The results of the experiments show a 
+significant improvement on the prediction capability when comparing with other 
+oversampling techniques such as SMOTE and random oversampling. 
 \end{abstract}
 
 \section{Introduction}
@@ -120,8 +127,11 @@ create data which extends the observed data without creating noise
 	\label{fig:relationship}
 \end{figure}
 
-The next sections will describe an effective way to tackle this problem. First,
-the previously studied solutions are reviewed. Second, a detailed description of the proposed method is presented. This is followed by the research methodology and the experimental results in Chapter 4 and 5. Finally, the paper is concluded with an analysis of the experiments in Section 6.
+The next sections will describe an effective way to tackle this problem. First, 
+the previously studied solutions are reviewed. Second, a detailed description 
+of the proposed method is presented. This is followed by the research 
+methodology and the experimental results in Chapter 4 and 5. Finally, the paper 
+is concluded with an analysis of the experiments in Section 6.
 
 \section{Related Work}
 Several data pre-processing methods to handle small dataset problems have been
@@ -135,8 +145,15 @@ valuable option to increase the sample size in small datasets.
 
 \subsection{Fuzzy Theories}
 
-In order to build an accurate prediction model, a large sample of the population
-is required to train the model. One of the most effective methods to improve the learning performance of prediction models is artificial sample generation. It is proven that the accuracy of the learning algorithm is improved, when increasing the sample size of training sets \cite{AbdulLateh.2017}. Thus, the objective is to fill the gaps between observations (information gaps) with synthetic samples that are derived from the original population to feed the algorithm with a more complete representation of the reality.
+In order to build an accurate prediction model, a large sample of the 
+population is required to train the model. One of the most effective methods to 
+improve the learning performance of prediction models is artificial sample 
+generation. It is proven that the accuracy of the learning algorithm is 
+improved, when increasing the sample size of training sets 
+\cite{AbdulLateh.2017}. Thus, the objective is to fill the gaps between 
+observations (information gaps) with synthetic samples that are derived from 
+the original population to feed the algorithm with a more complete 
+representation of the reality.
 
 \begin{figure}[H]
 	\centering
@@ -173,7 +190,12 @@ create a number of virtual samples within of a newly defined domain range. The
 method involves a highly manual process, however, the application of FVP
 dramatically improved the classification accuracy of a Neural Network. 
 
-In 2004, the idea of fuzzifying information to extend a small dataset was used to develop the Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. It combines the principle of information diffusion by \cite{Huang.1997} with traditional Neural Networks to estimate functions. The information diffusion method partially fills the information gaps by using fuzzy theories to represent the similarities between samples and subsequently derive new samples. 
+In 2004, the idea of fuzzifying information to extend a small dataset was used 
+to develop the Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. I 
+combines the principle of information diffusion by \cite{Huang.1997} with 
+traditional Neural Networks to estimate functions. The information diffusion 
+method partially fills the information gaps by using fuzzy theories to 
+represent the similarities between samples and subsequently derive new samples. 
 
 The researchers \cite{Li.2006b} further examined possible methods to learn
 scheduling knowledge with rare data in early stages of manufacturing systems.
@@ -192,7 +214,15 @@ over-estimation, their concept is to combine data trend estimation with a mega
 diffusion technique to estimate the domain range. The method is called
 Mega-Trend-Diffusion (MTD) and diffuses a set of data instead of each sample
 individually. For example, two samples m and n (Figure 4) are diffused
-simultaneously into one function with their borders $\mathit{a}$ and $\mathit{b}$. To estimate $\mathit{a}$ and $\mathit{b}$, the algorithm takes the minimum and maximum values of the dataset and counts the number of data points which are smaller or greater than the average of the values. This takes the skewness in the distribution of the data and the domain range into consideration when calculating new samples. The triangular shape of figure 4 represents the membership function which shows the similarities between samples. $\mathit{M}$ and $\mathit{n}$ are the samples and their heights are the possible values of the membership function.
+simultaneously into one function with their borders $\mathit{a}$ and 
+$\mathit{b}$. To estimate $\mathit{a}$ and $\mathit{b}$, the algorithm takes 
+the minimum and maximum values of the dataset and counts the number of data 
+points which are smaller or greater than the average of the values. This takes 
+the skewness in the distribution of the data and the domain range into 
+consideration when calculating new samples. The triangular shape of figure 4 
+represents the membership function which shows the similarities between 
+samples. $\mathit{M}$ and $\mathit{n}$ are the samples and their heights are 
+the possible values of the membership function.
 
 \begin{figure}[H]
 	\centering
@@ -201,7 +231,16 @@ simultaneously into one function with their borders $\mathit{a}$ and $\mathit{b}
 	\label{fig:mtd-function}
 \end{figure}
 
-After estimating the domain range between $\mathit{a}$ and $\mathit{b}$, samples are randomly produced within this area by using a common diffusion function. The artificial samples are then trained with a Back-propagation Neural Network (BPNN) like \cite{Huang.2004} originally proposed. This technique is seen as an improvement of DNN and was initially developed to improve early flexible manufacturing system scheduling accuracy. In further research, MTD is widely used as a synthetic sample generation method and is recognized as an effective way to deal with small dataset problems \cite{AbdulLateh.2017}. However, MTD only considers the data for independent attributes and does not deal with their relationships. 
+After estimating the domain range between $\mathit{a}$ and $\mathit{b}$, 
+samples are randomly produced within this area by using a common diffusion 
+function. The artificial samples are then trained with a Back-propagation 
+Neural Network (BPNN) like \cite{Huang.2004} originally proposed. This 
+technique is seen as an improvement of DNN and was initially developed to 
+improve early flexible manufacturing system scheduling accuracy. In further 
+research, MTD is widely used as a synthetic sample generation method and is 
+recognized as an effective way to deal with small dataset problems 
+\cite{AbdulLateh.2017}. However, MTD only considers the data for independent 
+attributes and does not deal with their relationships. 
 
 A genetic algorithm based virtual sample generation (GABVSG) was also proposed. 
 The method takes the relationship among the attributes into account and 
@@ -213,7 +252,11 @@ Finally, the average error of these new samples is calculated. The results
 outperformed the ones using MTD and also showed better performance in 
 prediction than in case of no generation of synthetic samples \cite{Li.2014}.
 
-The above presented fuzzy-based algorithms are limited on numerical attributes. When the dataset contains nominal features, resampling mechanisms have to be considered such as Bootstrap. Although it is possible to transform nominal values into binary ones, the relationship between the values of the attributes would get lost \cite{Tsai.2008}. 
+The above presented fuzzy-based algorithms are limited on numerical attributes. 
+When the dataset contains nominal features, resampling mechanisms have to be 
+considered such as Bootstrap. Although it is possible to transform nominal 
+values into binary ones, the relationship between the values of the attributes 
+would get lost \cite{Tsai.2008}. 
 
 \subsection{Resampling Mechanism}
 
@@ -330,7 +373,19 @@ results within the study.
 
 \subsubsection{G-SMOTE}
 
-A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been presented with the objective to improve the above mentioned limitations of the SMOTE algorithm \cite{Douzas.2019b}. G-SMOTE is an extension of SMOTE can be seen as a substitute. The main difference to SMOTE is that the novel method significantly broadens the options for data generation and prevents the creation of noise. Instead of connecting the minority sample and its nearest neighbour with a line segment (hypersphere), the instances are generated in a geometrical region (hyper-spheroid) around the minority sample. Furthermore, G-SMOTE is designed to avoid the generation of noisy samples by some restrictions in the selection strategy. Figure 8 demonstrated the distribution of artificially created samples by SMOTE versus G-SMOTE. With an increased number of k neighbors, SMOTE tends to generate noisy samples, whereas Geometric SMOTE avoids this scenario.
+A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been 
+presented with the objective to improve the above mentioned limitations of the 
+SMOTE algorithm \cite{Douzas.2019b}. G-SMOTE is an extension of SMOTE can be 
+seen as a substitute. The main difference to SMOTE is that the novel method 
+significantly broadens the options for data generation and prevents the 
+creation of noise. Instead of connecting the minority sample and its nearest 
+neighbour with a line segment (hypersphere), the instances are generated in a 
+geometrical region (hyper-spheroid) around the minority sample. Furthermore, 
+G-SMOTE is designed to avoid the generation of noisy samples by some 
+restrictions in the selection strategy. Figure 8 demonstrated the distribution 
+of artificially created samples by SMOTE versus G-SMOTE. With an increased 
+number of k neighbors, SMOTE tends to generate noisy samples, whereas Geometric 
+SMOTE avoids this scenario.
 
 \begin{figure}[H]
 	\centering
@@ -339,7 +394,12 @@ A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been present
 	\label{fig:smotevsgsmote}
 \end{figure}
 
-These modifications of SMOTE proof their refinement in experiments with 69 imbalanced datasets and four classifiers such as Logistic Regression (LR), K-Nearest Neighbours (KNN), Decision Tree (DT) and Gradient Boosting (GBC). The results show that G-SMOTE is outperforming SMOTE, Random Oversampling and the case of no oversampling, across all datasets, classifiers and performance metrics.    
+These modifications of SMOTE proof their refinement in experiments with 69 
+imbalanced datasets and four classifiers such as Logistic Regression (LR), 
+K-Nearest Neighbours (KNN), Decision Tree (DT) and Gradient Boosting (GBC). The 
+results show that G-SMOTE is outperforming SMOTE, Random Oversampling and the 
+case of no oversampling, across all datasets, classifiers and performance 
+metrics.    
 
 Various methods to deal with small datasets as well as small representation 
 within a class label have been presented in this section. It has been proven, 
@@ -355,46 +415,93 @@ data and provide a framework for an easy implementation of the algorithm.
 
 \section{Proposed Method}
 
-In the following section, we propose G-SMOTE as novel data generation procedure for small sample sets. Originally developed for imbalanced datasets, we slightly adapt the algorithm to not only increase the minority class, but the entire sample set independent from class occurrences. 
+In the following section, we propose G-SMOTE as novel data generation procedure 
+for small sample sets. Originally developed for imbalanced datasets, we 
+slightly adapt the algorithm to not only increase the minority class, but the 
+entire sample set independent from class occurrences. 
 
 \subsection{G-SMOTE for small data}
 
-As mentioned above, the G-SMOTE algorithm randomly generates artificial data within a geometrical region of the input space. The size of this area is derived from the distance of the selected sample to the nearest neighbour, whereas the shape is determined by the hyperparameters truncation factor and deformation factor. Additionally, the direction of the new input area is defined by the selection strategy of G-SMOTE. The main concept can be adapted from the original method. However, the selection strategy requires some minor adjustments for the small dataset problem which will be described in the following.
+As mentioned above, the G-SMOTE algorithm randomly generates artificial data 
+within a geometrical region of the input space. The size of this area is 
+derived from the distance of the selected sample to the nearest neighbour, 
+whereas the shape is determined by the hyperparameters truncation factor and 
+deformation factor. Additionally, the direction of the new input area is 
+defined by the selection strategy of G-SMOTE. The main concept can be adapted 
+from the original method. However, the selection strategy requires some minor 
+adjustments for the small dataset problem which will be described in the 
+following.
 
-The selection strategy $\alpha$\textsubscript{sel} determines the data points of the $\mathit{k}$ nearest neighbors. This mechanism allows the positive or negative class area to expand into a direction where it prevents the algorithm from creating noisy samples. In G-SMOTE for small data both classes are selected in two individual runs to introduce new observations. In the first run, a random sample called x\textsubscript{surface} is selected which belongs to the positive class. Similarly, x\textsubscript{surface} is assigned to the negative class samples in the second run. Both runs are based on the defined selection strategy where $\alpha$\textsubscript{sel} can have three different values: positive class selection S\textsubscript{pos}, negative class selection S\textsubscript{neg} and combined selection S\textsubscript{com}. We describe the cases referring to first run of randomly selecting a positive sample. In the second run, a negative class example is randomly chosen and the process is repeated reversely. 
+The selection strategy $\alpha$\textsubscript{sel} determines the data points 
+of the $\mathit{k}$ nearest neighbors. This mechanism allows the positive or 
+negative class area to expand into a direction where it prevents the algorithm 
+from creating noisy samples. In G-SMOTE for small data both classes are 
+selected in two individual runs to introduce new observations. In the first 
+run, a random sample called x\textsubscript{surface} is selected which belongs 
+to the positive class. Similarly, x\textsubscript{surface} is assigned to the 
+negative class samples in the second run. Both runs are based on the defined 
+selection strategy where $\alpha$\textsubscript{sel} can have three different 
+values: positive class selection S\textsubscript{pos}, negative class selection 
+S\textsubscript{neg} and combined selection S\textsubscript{com}. We describe 
+the cases referring to first run of randomly selecting a positive sample. In 
+the second run, a negative class example is randomly chosen and the process is 
+repeated reversely. 
 
 \begin{enumerate}[label=($\alph*$)]
 
 \item Positive class selection
 
-With the hyperparameter selection\_strategy = 'positive', a second positive class sample is selected as one of the k nearest neighbors. This indicates that the selection strategy is based only on the positive class and works like the selection strategy of SMOTE. As SMOTE may lead to the generation of data penetrating the opposite class area, this drawback also applies on the selection strategy here.
+With the hyperparameter selection\_strategy = 'positive', a second positive 
+class sample is selected as one of the k nearest neighbors. This indicates that 
+the selection strategy is based only on the positive class and works like the 
+selection strategy of SMOTE. As SMOTE may lead to the generation of data 
+penetrating the opposite class area, this drawback also applies on the 
+selection strategy here.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{resources/positive_class_selection_strategy}
-	\caption{Example of positive class selection strategy: A positive class instance is defined as the center and one of its $\mathit{k = 4}$ positive class nearest neighbors is selected as the surface point. The radius $\mathit{R}$ is equal to the distance of these instances.}
+	\caption{Example of positive class selection strategy: A positive class 
+	instance is defined as the center and one of its $\mathit{k = 4}$ positive 
+	class nearest neighbors is selected as the surface point. The radius 
+	$\mathit{R}$ is equal to the distance of these instances.}
 	\label{fig:positiveclassselectionstrategy}
 \end{figure}
 
 \item Negative class selection
 
-When selection\_strategy = 'negative', the second sample is its nearest negative class neighbor. This scenario prevents the algorithm from creating noisy samples. More specifically, as the radius is drawn from the selected positive class instance to the nearest neighbour of the negative class, it does not allow the data generation mechanism to penetrate the opposite area.
+When selection\_strategy = 'negative', the second sample is its nearest 
+negative class neighbor. This scenario prevents the algorithm from creating 
+noisy samples. More specifically, as the radius is drawn from the selected 
+positive class instance to the nearest neighbour of the negative class, it does 
+not allow the data generation mechanism to penetrate the opposite area.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{resources/negative_class_selection_strategy}
-	\caption{Example of negative class selection strategy: A positive class instance is defined as the center and its closest negative class neighbor is selected as the surface point. The radius R is defined to be equal to the distance of these instances.}
+	\caption{Example of negative class selection strategy: A positive class 
+	instance is defined as the center and its closest negative class neighbor 
+	is selected as the surface point. The radius R is defined to be equal to 
+	the distance of these instances.}
 	\label{fig:negativeclassselectionstrategy}
 \end{figure}
 
 \item Combined selection
 
-The combined selection strategy initially applies the positive and negative selection strategies. Once x\textsubscript{pos} and x\textsubscript{neg} are identified, the point with the minimum distance to the center x\textsubscript{center} is defined as the surface point x\textsubscript{surface}. Figure 11 presents an example when x\textsubscript{surface} is identified as a negative class instance.
+The combined selection strategy initially applies the positive and negative 
+selection strategies. Once x\textsubscript{pos} and x\textsubscript{neg} are 
+identified, the point with the minimum distance to the center 
+x\textsubscript{center} is defined as the surface point 
+x\textsubscript{surface}. Figure 11 presents an example when 
+x\textsubscript{surface} is identified as a negative class instance.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{resources/combined_class_selection_strategy}
-	\caption{The closest point to the center positive class sample is identified as the surface point since it is closer to the center than the selected instance from the k nearest positive class neighbors of the center.}
+	\caption{The closest point to the center positive class sample is 
+	identified as the surface point since it is closer to the center than the 
+	selected instance from the k nearest positive class neighbors of the 
+	center.}
 	\label{fig:combinedclassselectionstrategy}
 \end{figure}
 \todo{graphic has to be changed}
@@ -411,23 +518,43 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 	\item 
 	An empty set S\textsubscript{gen} is initialized
 	\item 
-	The S\textsubscript{pos} elements are shuffled and the process described below is repeated $\mathit{N}$ times until $\mathit{N}$ artificial points have been generated.
+	The S\textsubscript{pos} elements are shuffled and the process described 
+	below is repeated $\mathit{N}$ times until $\mathit{N}$ artificial points 
+	have been generated.
 	\item 
-	A positive class instance x\textsubscript{center} is selected as the center of the geometric region.
+	A positive class instance x\textsubscript{center} is selected as the center 
+	of the geometric region.
 	\item 
-	Depending on the values of $\alpha$\textsubscript{sel} (positive, negative or both), this step results in a randomly selected sample x\textsubscript{surface} which belongs either to the positive or negative sample set
+	Depending on the values of $\alpha$\textsubscript{sel} (positive, negative 
+	or both), this step results in a randomly selected sample 
+	x\textsubscript{surface} which belongs either to the positive or negative 
+	sample set
 	\item 
-	A random point e\textsubscript{sphere} is generated on the surface of a unit hypersphere centered at the origin of the input space. This point is transformed to a randomly generated point x\textsubscript{gen} inside the unit hypersphere. 
+	A random point e\textsubscript{sphere} is generated on the surface of a 
+	unit hypersphere centered at the origin of the input space. This point is 
+	transformed to a randomly generated point x\textsubscript{gen} inside the 
+	unit hypersphere. 
 	\item 
-	The geometrical transformations are applied to define the admissible area for x\textsubscript{gen}. These are defined as truncation $\alpha$\textsubscript{trunc}, which defines the subarea of the hypersphere and deform $\alpha$\textsubscript{def}, which deforms the hypersphere. 
+	The geometrical transformations are applied to define the admissible area 
+	for x\textsubscript{gen}. These are defined as truncation 
+	$\alpha$\textsubscript{trunc}, which defines the subarea of the hypersphere 
+	and deform $\alpha$\textsubscript{def}, which deforms the hypersphere. 
 	
 	\begin{enumerate}[label=($\alph*$)]
 		\item 
-		The truncation factor $\alpha$\textsubscript{trunc} defines the degree of truncation that is applied to the geometric area and can be specified between zero and one, where truncation\_factor=0.0 corresponds to a circle and truncation\_factor=1.0 becomes a half-hypersphere around the selected sample. 
+		The truncation factor $\alpha$\textsubscript{trunc} defines the degree 
+		of truncation that is applied to the geometric area and can be 
+		specified between zero and one, where truncation\_factor=0.0 
+		corresponds to a circle and truncation\_factor=1.0 becomes a 
+		half-hypersphere around the selected sample. 
 		
 		\item 
-		The formation of the area is defined by the so-called deformation factor. If the parameter of the deformation factor is equal to 0, the data generation area obtains a circle. On the opposite, if the parameter is set to 1, the area deforms to a line segment. 
-		For a graphical example of these hyperparameters the reader is referred to (Douzas, 2019).
+		The formation of the area is defined by the so-called deformation 
+		factor. If the parameter of the deformation factor is equal to 0, the 
+		data generation area obtains a circle. On the opposite, if the 
+		parameter is set to 1, the area deforms to a line segment. 
+		For a graphical example of these hyperparameters the reader is referred 
+		to (Douzas, 2019).
 	\end{enumerate}
 
 	\item 
@@ -435,22 +562,36 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 	\item 
 	x\textsubscript{gen} is added to S\textsubscript{gen}
 	\item 
-	Once this process is repeated $\mathit{N}$ times: S\textsubscript{neg} elements are shuffled, a negative class instance is selected as x\textsubscript{center} and the algorithm starts again with step 4 until $\mathit{N}$ negative samples are introduced
+	Once this process is repeated $\mathit{N}$ times: S\textsubscript{neg} 
+	elements are shuffled, a negative class instance is selected as 
+	x\textsubscript{center} and the algorithm starts again with step 4 until 
+	$\mathit{N}$ negative samples are introduced
 \end{enumerate}
 
 \section{Research Methodology}
 
-The main objective of this work is to compare G-SMOTE with other oversampling techniques when it comes to the small dataset problem. Therefore, we use a variety of datasets, evaluation measures and classifiers to evaluate the performance. A description of this set-up, the experimental procedure as well as the software implementation is provided in the following section.
+The main objective of this work is to compare G-SMOTE with other oversampling 
+techniques when it comes to the small dataset problem. Therefore, we use a 
+variety of datasets, evaluation measures and classifiers to evaluate the 
+performance. A description of this set-up, the experimental procedure as well 
+as the software implementation is provided in the following section.
 
 \subsubsection{Experimental Data}
 
-Ten datasets are used to test the performance of G-SMOTE which are retrieved from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the selection of the data lies on binary classification problems with a highly balanced distribution of the two classes. In order to assure generalizability of the results, the data sets include different topics such as health care, finance, business and physics as well as different sample sizes. Details of the datasets are presented in the following table:
+Ten datasets are used to test the performance of G-SMOTE which are retrieved 
+from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the 
+selection of the data lies on binary classification problems with a highly 
+balanced distribution of the two classes. In order to assure generalizability 
+of the results, the data sets include different topics such as health care, 
+finance, business and physics as well as different sample sizes. Details of the 
+datasets are presented in the following table:
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
-		\textbf{Dataset} & \textbf{Number of samples} & \textbf{Number of attributes} & \textbf{Area} \\
+		\textbf{Dataset} & \textbf{Number of samples} & \textbf{Number of 
+		attributes} & \textbf{Area} \\
 		\hline
 		Arcene & 900 & 10.000 & Health Care \\
 		\hline
@@ -478,33 +619,73 @@ Ten datasets are used to test the performance of G-SMOTE which are retrieved fro
 
 \subsubsection{Evaluation Measures}
 
-To evaluate the performance of G-SMOTE, the experiment includes two different measures. First, accuracy is used as one of the most common metrics for evaluating classification models \cite{M.2015}. Informally, accuracy measures the ratio of correct predictions over the total number of instances evaluated. The accuracy metric can be stated mathematically as
+To evaluate the performance of G-SMOTE, the experiment includes two different 
+measures. First, accuracy is used as one of the most common metrics for 
+evaluating classification models \cite{M.2015}. Informally, accuracy measures 
+the ratio of correct predictions over the total number of instances evaluated. 
+The accuracy metric can be stated mathematically as
 
 \[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\],
 
-where $\mathit{TP/TN}$ denote the number of correctly classified positive as well as negative instances and $\mathit{FP/FN}$ denote the number of misclassified negative and positive instances, respectively. The accuracy metric might be negligible for datasets with a significant disparity between the number of positive and negative label. As pointed out by many studies, accuracy has limitations in the discrimination process since rare classes have only few impacts on the measure compared to majority classes. To make sure the accuracies of the two classes stay relatively balanced, we include the geometric mean as a second measure. G-Mean measures the trade-off between sensitivity (true positive rate) and specificity (true negative rate) by the following:
+where $\mathit{TP/TN}$ denote the number of correctly classified positive as 
+well as negative instances and $\mathit{FP/FN}$ denote the number of 
+misclassified negative and positive instances, respectively. The accuracy 
+metric might be negligible for datasets with a significant disparity between 
+the number of positive and negative label. As pointed out by many studies, 
+accuracy has limitations in the discrimination process since rare classes have 
+only few impacts on the measure compared to majority classes. To make sure the 
+accuracies of the two classes stay relatively balanced, we include the 
+geometric mean as a second measure. G-Mean measures the trade-off between 
+sensitivity (true positive rate) and specificity (true negative rate) by the 
+following:
 
-\[G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} \times \dfrac{TN}{TN + FP}}\]
+\[G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} 
+\times \dfrac{TN}{TN + FP}}\]
 
-The objective of both measures is to be maximized since a classifier is performing well if it provides high classification accuracy and a high ratio of positive and negative accuracy \cite{Han.2012}. 
+The objective of both measures is to be maximized since a classifier is 
+performing well if it provides high classification accuracy and a high ratio of 
+positive and negative accuracy \cite{Han.2012}. 
 
 \subsubsection{Machine Learning Algorithms}
 
-The experiment is conducted with several classifiers to make sure the results are not dependent on the machine learning algorithm. We use the following four classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient Boosting (GBC) \cite{Friedman.2001}. Descriptions of these algorithms are provided in the given studies.
+The experiment is conducted with several classifiers to make sure the results 
+are not dependent on the machine learning algorithm. We use the following four 
+classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest 
+Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and 
+Gradient Boosting (GBC) \cite{Friedman.2001}. Descriptions of these algorithms 
+are provided in the given studies.
 
 \subsubsection{Experimental Procedure}
 
-The main concept of the experimental procedure is to randomly under-sample medium to big sized datasets, increase them artificially and eventually compare the results with the original dataset which is considered to be the benchmark. This method allows us to directly compare the quality of the artificial generated sample set with the observed data. In order to evaluate if the proposed method can improve artificial data generation, we compare G-SMOTE with SMOTE, random oversampling and no oversampling. 
+The main concept of the experimental procedure is to randomly under-sample 
+medium to big sized datasets, increase them artificially and eventually compare 
+the results with the original dataset which is considered to be the benchmark. 
+This method allows us to directly compare the quality of the artificial 
+generated sample set with the observed data. In order to evaluate if the 
+proposed method can improve artificial data generation, we compare G-SMOTE with 
+SMOTE, random oversampling and no oversampling. 
 
-We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique for assessing the performance of the models for each combination of oversampler and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ subsets (folds) $\mathit{D_1, D_2, … D_k}$ of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model with $\mathit{k}$ iterations. This procedure is repeated until each $\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this technique, the experiment is conducted in the following steps within one iteration:
+We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique 
+for assessing the performance of the models for each combination of oversampler 
+and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ 
+subsets (folds) $\mathit{D_1, D_2, … D_k}$ of approximately equal size. Each 
+fold is used as a validation set and the remaining folds are used to train the 
+model with $\mathit{k}$ iterations. This procedure is repeated until each 
+$\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this 
+technique, the experiment is conducted in the following steps within one 
+iteration:
 
 \begin{enumerate}
 	\item 
-	Splitting dataset into $\mathit{k}$-fold cross-validation sets where $\mathit{k = 5}$
+	Splitting dataset into $\mathit{k}$-fold cross-validation sets where 
+	$\mathit{k = 5}$
 	\item 
-	Undersampling $\mathit{k - 1}$ folds such that the class frequency remains the same as the original
+	Undersampling $\mathit{k - 1}$ folds such that the class frequency remains 
+	the same as the original
 	\item 
-	Synthetic oversampling of $\mathit{k - 1}$ folds to the original size of the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Random Oversampling and undersampled data (No oversampling)
+	Synthetic oversampling of $\mathit{k - 1}$ folds to the original size of 
+	the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Random 
+	Oversampling and undersampled data (No oversampling)
 	\item 
 	Training the model with the classifiers LR, KNN, DT and GBC
 	\item 
@@ -513,11 +694,40 @@ We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique f
 	Computation of results
 \end{enumerate}	
 
-This procedure is repeated three times and the highest cross validation score for each combination of dataset, classifier, oversampler and evaluation metric is reported. The presented numbers are the average values computed from the three runs. In order to confirm the statistical significance of the experimental results, the Friedman test \cite{Sheldon.1996} as well as the Holms test \cite{JanezDemsar.2006} are applied. The Friedman test is a non-parametric procedure to test hypothesis an ordinal scaled variables. Additionally, it can also be applied with interval data when normality and homogeneity assumption does not hold. We use the Friedman test to evaluate the data generation algorithms on each dataset separately. Ranking scores are assigned to each oversampling method with scores of 1 to 4 for the best and worst performing methods, respectively. The procedure compares the average ranks of the algorithms under the null hypothesis, which states that the independent variable has no effect on the dependent variable. In our case, the null hypothesis assumes that all four algorithms show identical performance independent of the oversampling method and evaluation metric used. If the null-hypothesis is rejected to our favour, we proceed with the Holms test. The Holms test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method and not between themselves. This non-parametric test is very powerful in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed G-SMOTE method and is tested under the null hypothesis whether G-SMOTE yields an improved performance over other oversampling methods.
+This procedure is repeated three times and the highest cross validation score 
+for each combination of dataset, classifier, oversampler and evaluation metric 
+is reported. The presented numbers are the average values computed from the 
+three runs. In order to confirm the statistical significance of the 
+experimental results, the Friedman test \cite{Sheldon.1996} as well as the 
+Holms test \cite{JanezDemsar.2006} are applied. The Friedman test is a 
+non-parametric procedure to test hypothesis an ordinal scaled variables. 
+Additionally, it can also be applied with interval data when normality and 
+homogeneity assumption does not hold. We use the Friedman test to evaluate the 
+data generation algorithms on each dataset separately. Ranking scores are 
+assigned to each oversampling method with scores of 1 to 4 for the best and 
+worst performing methods, respectively. The procedure compares the average 
+ranks of the algorithms under the null hypothesis, which states that the 
+independent variable has no effect on the dependent variable. In our case, the 
+null hypothesis assumes that all four algorithms show identical performance 
+independent of the oversampling method and evaluation metric used. If the 
+null-hypothesis is rejected to our favour, we proceed with the Holms test. The 
+Holms test acts as a post-hoc test for the Friedman test for controlling the 
+family-wise error rate when all algorithms are compared to a control method and 
+not between themselves. This non-parametric test is very powerful in situations 
+where we want to test whether a newly proposed method is better than existing 
+ones. The control method in our case is the proposed G-SMOTE method and is 
+tested under the null hypothesis whether G-SMOTE yields an improved performance 
+over other oversampling methods.
 
 \subsubsection{Software Implementation}
 
-The implementation of the experimental procedure is based on Python programming language with the Scikit-Learn \cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011} library. All functions, algorithms, experiments and results reported are provided at https://github.com/AlgoWit/publications. They can be adjusted and implemented in comparative studies as the procedure is fully integrated with the Scikit-Learn ecosystem.    
+The implementation of the experimental procedure is based on Python programming 
+language with the Scikit-Learn 
+\cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011}
+ library. All functions, algorithms, experiments and results reported are 
+provided at https://github.com/AlgoWit/publications. They can be adjusted and 
+implemented in comparative studies as the procedure is fully integrated with 
+the Scikit-Learn ecosystem.    
 
 \section{Results and Discussion}
 \subsection{Comparative Presentation}
