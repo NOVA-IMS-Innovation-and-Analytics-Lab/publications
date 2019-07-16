@@ -52,35 +52,41 @@ Abstract
 \section{Introduction}
 One of the key problems in supervised learning is the insufficient size of data
 sets \cite{Niyogi.1998}. The limited availability of training sample sets can be
-caused by different factors. First, data is becoming an increasingly expensive resource
-\cite{Li.2007} as the process to retain data is getting more complex due to
-strict privacy regulations such as the General Data Protection Regulation (GDPR)
-\cite{EuropeanCommission.2019}. Additionally, the small dataset problem can be
-found in numerous industries where organizations simply do not have access to a
-reasonable amount of data, for example: manufacturing industries are usually dealing with small data in early stages of product developments; health care organizations have to work with different kinds of rare diseases, where very few records around the world are available; and in financial industries, fraud detection is an important issue with only few examples for cases of violence
-\cite{AbdulLateh.2017}.
+caused by different factors. First, data is becoming an increasingly expensive 
+resource \cite{Li.2007} as the process to retain data is getting more complex 
+due to strict privacy regulations such as the General Data Protection 
+Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the small 
+dataset problem can be found in numerous industries where organizations simply 
+do not have access to a reasonable amount of data, for example: manufacturing 
+industries are usually dealing with small data in early stages of product 
+developments; health care organizations have to work with different kinds of 
+rare diseases, where very few records around the world are available; and in 
+financial industries, fraud detection is an important issue with only few 
+examples for cases of violence \cite{AbdulLateh.2017}.
 
 A sufficient training sample set is one of the basic assumptions in Machine
 Learning \cite{Ivanescu.2006}. However, in the context of computational learning
-theory, small sample size is one of the most encountered difficulties among
+theory, small sample size is one of the most frequent difficulties among
 measurement error, model fitting and characteristics of predictors
-\cite{AbdulLateh.2017}. The issue with small datasets is that they do not provide an unbiased representation
-of the reality due to a loose data structure with many information gaps. This
-lack of learning information causes a major issue in the performance of the
-machine learning algorithm \cite{Lin.2018}. Consequently, the knowledge gained
-from prediction models with small sample sizes is considered unreliable as well
-as imprecise and does not lead to a robust classification performance
-\cite{AbdulLateh.2017}.
+\cite{AbdulLateh.2017}. The issue with small datasets is that they do not 
+provide an unbiased representation of reality due to a loose data structure 
+with many information gaps. This lack of learning information negatively 
+impacts the performance of the machine learning algorithms \cite{Lin.2018}. 
+Consequently, the knowledge gained from prediction models trained with small 
+sample sizes is considered unreliable as well as imprecise and does not lead to 
+a robust classification performance \cite{AbdulLateh.2017}.
 
-Considering the size of data there are two types of measurements: first, the insufficiency of data
-belonging to one class (imbalance data problem); and second, the insufficiency
-in the whole data (small dataset problem) \cite{Sezer.2014}. In both cases, a
-small training sample set does not provide enough information to a machine
-learning model to obtain a stable learning accuracy \cite{Tsai.2008}. A
-theoretical explanation of “small” can be found in statistical learning theory
-by Vapnik. A sample size is defined as small, if the ratio between the number of
-training samples and Vapnik-Chervonenkis (VC) dimensions is less than 20. Where VC dimensions are determined as the maximum number of vectors that can be separated into two
-classes in all possible ways by a set of functions \cite{Vapnik.2008}. 
+Considering the size of data there are two types of measurements: first, the 
+insufficiency of data belonging to one class (imbalance data problem); and 
+second, the insufficiency in the whole data (small dataset problem) 
+\cite{Sezer.2014}. In both cases, a small training sample set does not provide 
+enough information to a machine learning model to obtain a stable learning 
+accuracy \cite{Tsai.2008}. A theoretical explanation of “small” can be found in 
+statistical learning theory by Vapnik. A sample size is defined as small, if 
+the ratio between the number of training samples and Vapnik-Chervonenkis (VC) 
+dimensions is less than 20. Where VC dimensions are determined as the maximum 
+number of vectors that can be separated into two classes in all possible ways 
+by a set of functions \cite{Vapnik.2008}. 
 
 \begin{figure}[H]
 	\centering
@@ -95,7 +101,17 @@ demonstrated in the graph on the right side, the vectors z{\tiny 2} and z{\tiny
 4} cannot be separated by a line from the vectors z{\tiny 1} and z{\tiny 3}
 \cite{Vapnik.2008}.
 
-Under-representation of observations in the sample set can be solved in different ways. The use of synthetic data derived from existing (real) observations is a promising approach to the given problem \cite{Sezer.2014}. As a result, techniques to artificially add hidden information to extend the sample size and eventually improve classification results of the algorithm are strongly requested. However, it is important to consider that virtual data samples are not necessarily representatives of the population, as they are artificially created. Taking this into consideration, the challenge in virtual data generation is to create data which extends the actual data without creating noise \cite{Li.2006}. 
+Under-representation of observations in the sample set can be solved in 
+different ways. The use of synthetic data derived from existing (real) 
+observations is a promising approach to the problem \cite{Sezer.2014}. As a 
+result, techniques to artificially add information by extending the sample size 
+and eventually improving classification results of the algorithms can translate 
+into significant improvements in many application domains. However, it is 
+important to consider that virtual data samples are not necessarily 
+representatives of the population, as they are artificially created. Taking 
+this into consideration, the challenge in artificial data generation is to 
+create data which extends the observed data without creating noise 
+\cite{Li.2006}. 
 
 \begin{figure}[H]
 	\centering
@@ -109,33 +125,18 @@ the previously studied solutions are reviewed. Second, a detailed description of
 
 \section{Related Work}
 Several data pre-processing methods to handle small dataset problems have been
-presented in the research community. In this section, the most important
+presented by the research community. In this section, the most important
 approaches are reviewed and the state-of-the-art to improve small dataset
-learning is pointed out. In the first section fuzzy theory is presented, which
-is the most mentioned group of techniques to solve a small dataset problem.
-Furthermore, Resampling Mechanisms are pointed out which mainly address
-bootstrapping techniques. Finally, oversampling techniques are reviewed which
-can be a potential solution for increasing the sample size of small datasets.
+learning is reported. We start by presenting fuzzy theories, which have 
+historically been the most used approach to mitigate the small dataset problem. 
+Next, we look at resampling mechanisms, which mainly consist of bootstrapping 
+techniques, and finally, we review oversampling techniques that can be a 
+valuable option to increase the sample size in small datasets.
 
 \subsection{Fuzzy Theories}
-In order to build an accurate prediction model, a large sample of the population
-is required to train the model. When the dataset is small, artificial data
-generation approaches can be employed to increase the sample size.  Many
-techniques presented in the literature are based on fuzzy theories
-\cite{AbdulLateh.2017}. The fuzzy set theory provides a strict mathematical
-framework to generalize the classical notion of a dataset. It gives a wider
-scope of applicability, especially in the fields of information processing and
-pattern classification \cite{Zimmermann.2010}. Based on this concept, several
-methods have emerged in the last decade to estimate or approximate functions
-which are generating more samples for sparse training sets.
 
-One of the most effective methods to improve the learning performance of
-prediction models is artificial sample generation. It is proven that the
-accuracy of the learning algorithm is improved, when increasing the sample size
-of training sets \cite{AbdulLateh.2017}. Thus, the gaps between observations
-(information gaps) will be filled with artificial samples derived from the
-population to feed the algorithm with a more complete representation of the
-reality.
+In order to build an accurate prediction model, a large sample of the population
+is required to train the model. One of the most effective methods to improve the learning performance of prediction models is artificial sample generation. It is proven that the accuracy of the learning algorithm is improved, when increasing the sample size of training sets \cite{AbdulLateh.2017}. Thus, the objective is to fill the gaps between observations (information gaps) with synthetic samples that are derived from the original population to feed the algorithm with a more complete representation of the reality.
 
 \begin{figure}[H]
 	\centering
@@ -144,42 +145,46 @@ reality.
 	\label{fig:small-data-distribution}
 \end{figure}
 
-The concept of artificially creating data, called Virtual Sample Generation
-(VSG), was originally proposed by \cite{Niyogi.1998}. The idea is to create
-additional examples from the current set of real-life examples by using prior
-information gained from the available data. The introduction of virtual examples
-expands the effective training set size and can therefore solve the learning
-problem. \cite{Niyogi.1998} proved that the process of creating artificial
-samples is mathematically equivalent to incorporating prior knowledge. They
-demonstrate the concept on object recognition by mathematically transforming the
-views of 3D-objects. These new views are called ‘virtual samples’ which
-application extends information and results in successful generalization. 
+Many techniques presented in the literature are based on fuzzy theories
+\cite{AbdulLateh.2017}. The fuzzy set theory provides a strict mathematical
+framework to generalize the classical notion of a dataset. It gives a wider
+scope of applicability, especially in the fields of information processing and
+pattern classification \cite{Zimmermann.2010}. Based on this concept, several
+methods have emerged in the last decade to estimate or approximate functions
+which are generating more samples for sparse training sets.
+
+The fundamental concept of artificially creating data is called Virtual Sample 
+Generation (VSG) and was originally proposed by \cite{Niyogi.1998}. The idea is 
+to create additional examples based on the current set of real-life examples by 
+using prior information gained from the available data. The introduction of 
+virtual examples expands the effective training set size and can therefore help 
+to mitigate the learning problem. \cite{Niyogi.1998} proved that the process of 
+creating artificial samples is mathematically equivalent to incorporating prior 
+knowledge. They demonstrate the concept on object recognition by mathematically 
+transforming the views of 3D-objects. These new views are called ‘virtual 
+samples’ and its application extends information and results in successful 
+generalization. 
 
 Based on this theory, several closely related studies were developed for
 manufacturing environments. The first method to overcome scheduling problems due
 to the lack of data in early stages of manufacturing systems was the creation of
-a Functional Virtual Population (FVP) by \cite{Li.2003}.  Their study expands
-the original sample size instead of simply adding new data. The idea is to
+a Functional Virtual Population (FVP) \cite{Li.2003}. The idea is to
 create a number of virtual samples within of a newly defined domain range. The
 method involves a highly manual process, however, the application of FVP
-dramatically improved the classification accuracy of a Neural Network. In 2004,
-the idea of fuzzifying information to extend a small dataset was used to develop
-the Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. It combines the
-principle of information diffusion by \cite{Huang.1997} with traditional Neural
-Networks to estimate functions. The information diffusion method partially fills
-the information gaps by using fuzzy theories to represent the similarities
-between samples and subsequently derive new samples. 
+dramatically improved the classification accuracy of a Neural Network. 
+
+In 2004, the idea of fuzzifying information to extend a small dataset was used to develop the Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. It combines the principle of information diffusion by \cite{Huang.1997} with traditional Neural Networks to estimate functions. The information diffusion method partially fills the information gaps by using fuzzy theories to represent the similarities between samples and subsequently derive new samples. 
 
 The researchers \cite{Li.2006b} further examined possible methods to learn
 scheduling knowledge with rare data in early stages of manufacturing systems.
 They developed a new data fuzzification technique called mega-fuzzification and
 combined it with a data trend estimation procedure to systematically expand the
 small dataset. The method fuzzifies the dataset as a whole and expands it in
-regard of a previously defined data trend. The results of this study show high
-learning accuracy and denote the method as a reliable and applicable approach in
-the business marketplace. However, it is considered as an unfavorable
-technique, because there is a lack of theoretical basis in the determination of
-domain ranges. 
+consideration of a previously defined data trend. The results of this study 
+show high learning accuracy and denote the method as a reliable and applicable 
+approach in the business marketplace. However, the difficulty in establishing 
+the domain ranges and the lack of a theoretical basis explain its lack of 
+popularity and limited interest. 
 
 In order to fully fill the information gaps, a technique which diffuses the
 sample set one for one was introduced by \cite{Li.2007}. To avoid the
@@ -187,14 +192,7 @@ over-estimation, their concept is to combine data trend estimation with a mega
 diffusion technique to estimate the domain range. The method is called
 Mega-Trend-Diffusion (MTD) and diffuses a set of data instead of each sample
 individually. For example, two samples m and n (Figure 4) are diffused
-simultaneously into one function with their borders a and b. To estimate a and
-b, the algorithm takes the minimum and maximum values of the dataset and counts
-the number of data points which are smaller or greater than the average of the
-values. This takes the skewness in the distribution of the data and the domain
-range into consideration when calculating new samples. The triangular shape of
-figure 3 represents the membership function which shows the similarities between
-samples. M and n are the samples and their heights are the possible values of
-the membership function.
+simultaneously into one function with their borders $\mathit{a}$ and $\mathit{b}$. To estimate $\mathit{a}$ and $\mathit{b}$, the algorithm takes the minimum and maximum values of the dataset and counts the number of data points which are smaller or greater than the average of the values. This takes the skewness in the distribution of the data and the domain range into consideration when calculating new samples. The triangular shape of figure 4 represents the membership function which shows the similarities between samples. $\mathit{M}$ and $\mathit{n}$ are the samples and their heights are the possible values of the membership function.
 
 \begin{figure}[H]
 	\centering
@@ -203,80 +201,79 @@ the membership function.
 	\label{fig:mtd-function}
 \end{figure}
 
-After estimating the domain range between a and b, samples are randomly produced
-within this area by using a common diffusion function. The artificial samples
-are then trained with a Back-propagation Neural Network (BPNN) like
-\cite{Huang.2004} originally proposed. This technique is seen as an improvement
-of DNN and was initially developed to improve early flexible manufacturing
-system scheduling accuracy. In further research, MTD is widely used as a
-synthetic sample generation method and is recognized as an effective way to deal
-with small dataset problems \cite{AbdulLateh.2017}. However, MTD only considers
-the data for independent attributes and does not deal with their relationships. 
+After estimating the domain range between $\mathit{a}$ and $\mathit{b}$, samples are randomly produced within this area by using a common diffusion function. The artificial samples are then trained with a Back-propagation Neural Network (BPNN) like \cite{Huang.2004} originally proposed. This technique is seen as an improvement of DNN and was initially developed to improve early flexible manufacturing system scheduling accuracy. In further research, MTD is widely used as a synthetic sample generation method and is recognized as an effective way to deal with small dataset problems \cite{AbdulLateh.2017}. However, MTD only considers the data for independent attributes and does not deal with their relationships. 
 
-Therefore, a genetic algorithm based virtual sample generation (GABVSG) was
-developed. The novel method takes the relationship among the attributes into
-account and explores the integrated effects of attributes instead of dealing
-with them individually. This algorithm is performed in three steps: Samples are
-randomly selected to determine the range of each attribute by using MTD
-functions. Next, a Genetic Algorithm is applied to find the most feasible
-virtual samples. Finally, the average error of these new samples is calculated.
-The results outperformed the ones using MTD and also showed better performance
-in prediction than in case of no generation of synthetic samples \cite{Li.2014}.
+A genetic algorithm based virtual sample generation (GABVSG) was also proposed. 
+The method takes the relationship among the attributes into account and 
+explores the integrated effects of attributes instead of dealing with them 
+individually. This algorithm is performed in three steps: Samples are randomly 
+selected to determine the range of each attribute by using MTD functions. Next, 
+a Genetic Algorithm is applied to find the most feasible virtual samples. 
+Finally, the average error of these new samples is calculated. The results 
+outperformed the ones using MTD and also showed better performance in 
+prediction than in case of no generation of synthetic samples \cite{Li.2014}.
 
-The above presented fuzzy-based algorithms can only deal with numeric
-attributes. When the dataset contains nominal features, resampling mechanisms
-have to be considered such as Bootstrap. Although it is possible to transform
-nominal values into binary ones, the relationship between the values of the
-attributes would get lost \cite{Tsai.2008}. 
+The above presented fuzzy-based algorithms are limited on numerical attributes. When the dataset contains nominal features, resampling mechanisms have to be considered such as Bootstrap. Although it is possible to transform nominal values into binary ones, the relationship between the values of the attributes would get lost \cite{Tsai.2008}. 
 
 \subsection{Resampling Mechanism}
 
-An alternative approach to fuzzy theories is the statistical method called
-Bootstrap to increase the amount of observations. Bootstrap is the most
-well-known synthetic sample generation method which uses a statistical
-resampling mechanism to create new observations \cite{AbdulLateh.2017}. It forms
-new training sets by replacing the original datasets, which is the main
-difference to the previously presented techniques. Thus, the amount of
-information is not increased since the Bootstrap procedure only enlarges the
-number of obtained observations. According to \cite{Tsai.2015}, it is seen as a
-not very favorable technique, because it aims to increase the amount of
-obtained observations rather than filling the information gaps. However, it was
-successfully applied when solving the limited data problem in batch process
-industries \cite{Ivanescu.2006} and in improving the prediction accuracy of
-bladder cancer cells \cite{Chao.2011} for example. \cite{Ivanescu.2006} use the
-principle of Bootstrap for generating additional job sets. In general, Bootstrap
-implies randomly re-sampling the original observations with replacement.
-However, rather than re-sampling the job sets, this technique uses the
-individual jobs to construct new job sets. After generating artificial job sets,
-the original job sets are joined which forms the new training set. Their study
-shows that this approach works better than the traditional Artificial Neural
-Network (ANN).
+An alternative approach to fuzzy theories is a statistical method called the 
+Bootstrapping procedure (BP), which is the most well-known artificial sample 
+generation method \cite{AbdulLateh.2017}. The main difference to the previously 
+presented techniques is that BP creates new training sets by resampling 
+instances from the measured data with replacement. This means that after a data 
+point is selected for a new sample set, it is still available for further 
+selection \cite{Efron.1993}. It allows the algorithms to use the same sample 
+more than one time to gradually revise the identified patterns in order to 
+improve predictive accuracy. Although this can double the number of 
+observations from the training sets (shown in Fig. 5.a.), Bootstrapping can 
+cause overfitting when applied to small data because it only represents a few 
+observations. Also, since the amount of information provided by small data is 
+minimal, any missing observations in the new, bootstrapped training sets are a 
+loss of valuable information (see Fig. 5.b.). In general, the amount of 
+information does not increase by performing Bootstrapping, because the 
+increased information is the same information provided by the same observations 
+\cite{Li.2018}. As a result, it is seen as a unfavourable technique, because it 
+aims to increase the amount of observations used for training, rather than 
+filling the information gaps with missing data \cite{Tsai.2015}. However, 
+\cite{Ivanescu.2006} applied BP in batch process industries where they proofed 
+that the bootstrapping procedure can indeed solve the limited data problem.
 
-On the other hand, \cite{Chao.2011} use Bootstrap to increase the sample size on
-a subset of the original dataset. The algorithm splits the dataset into only
-five to 30 data points for training. Then the Bootstrap procedure is applied to
-acquire a virtual sample for each datapoint of the subset. Subsequently, this
-step it is repeated until it reaches 100 new artificial samples. The original
-subset is joined with the new bootstrapped 100 samples and used to train the
-ANN. The entire remaining data of the original subset (5 to 30 observations) is
-used for validation afterwards. This technique outperforms the ANN.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{resources/bootstrapping_example}
+	\caption{Example of bootstrapping sets, where a) is the set for which the 
+	observations are doubled and b) are two possible sets}
+	\label{fig:bootstrappingexample}
+\end{figure}
+
+In further studies of \cite{Tsai.2008} and \cite{Chao.2011}, the bootstrap 
+procedure was applied to actually generate virtual samples in order to fill the 
+information gaps. Instead of resampling observations, they execute the BP once 
+for each input factor which results in a newly shuffled training set. After 
+generating new instances, they are combined with the original dataset to train 
+a Neural Network. The results show that this method significantly decreases the 
+prediction error rate in modelling manufacturing systems as well as in the 
+prediction to radiotherapy of bladder cancer cells.
 
 \subsection{Oversampling Techniques}
 
 A different approach to fill information gaps is synthetic oversampling of the
 training set. Oversampling is an artificial data generation strategy originally
-developed for imbalanced datasets. The research community is different to the
-one mentioned in the previously presented methods. Their work is not related
-yet, but it appears to have a high potential in future research. In Imbalanced
-Learning, the classes of the given dataset are significantly skewed in a sense
-that there is a difference between examples of different classes. This means,
-that the dataset has a large number of observations in one class and a very
-small number of observations in the other class or classes. This is an
-unfavorable situation for the algorithm to learn and should be solved in the
-data pre-processing phase. In practice, the imbalanced dataset problem is are
-very common issue in Supervised Learning. Especially, in the fields of fraud
-detection, product categorization and disease diagnosis an imbalanced dataset is
-the norm rather than the exception \cite{He.2013}. 
+developed in the context of machine learning to mitigate the imbalanced 
+learning problem. The origin of oversampling comes from a different research 
+community which is more related to machine learning techniques. Although 
+oversampling, fuzzy and resampling approaches are aiming to solve a similar 
+problem, it seems that these communities have had very few contact so far. In 
+Imbalanced Learning, the classes of the given dataset are significantly skewed 
+in a sense that there is a difference between examples of different classes. 
+This means, that the dataset has a large number of observations in one class 
+and a very small number of observations in the other class or classes. This 
+constitutes a problem for the algorithm to learn and is aimed to be solved in 
+the data pre-processing phase. In practice, the imbalanced dataset problem is 
+are very common issue in Supervised Learning. Especially, in the fields of 
+fraud detection, product categorization and disease diagnosis an imbalanced 
+dataset is the norm rather than the exception \cite{He.2013}. 
 
 \subsubsection{SMOTE}
 
@@ -344,7 +341,17 @@ A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been present
 
 These modifications of SMOTE proof their refinement in experiments with 69 imbalanced datasets and four classifiers such as Logistic Regression (LR), K-Nearest Neighbours (KNN), Decision Tree (DT) and Gradient Boosting (GBC). The results show that G-SMOTE is outperforming SMOTE, Random Oversampling and the case of no oversampling, across all datasets, classifiers and performance metrics.    
 
-Various methods to deal with small datasets as well as small representation within a class label have been presented in this section. It has been proven, that all cases with artificially increased sample size seem to enhance the prediction performance of the conventional classifier. Thus, we can conclude that data pre-processing of a small or imbalanced dataset by increasing the sample size is an important task in the area of Machine Learning \cite{Ruparel.2013}.
+Various methods to deal with small datasets as well as small representation 
+within a class label have been presented in this section. It has been proven, 
+that all cases with artificially increased sample size seem to enhance the 
+prediction performance of the conventional classifier. Thus, we can conclude 
+that data pre-processing of a small or imbalanced dataset by increasing the 
+sample size is an important task in the area of Machine Learning 
+\cite{Ruparel.2013}. However, most of the studied methods are associated with a 
+lot of limitations and are hard to understand. In practice, an application of 
+these methods has still been challenging \cite{Sezer.2014}. As a result, we 
+propose a different approach to overcome the issues sourced form the absence of 
+data and provide a framework for an easy implementation of the algorithm.
 
 \section{Proposed Method}
 
