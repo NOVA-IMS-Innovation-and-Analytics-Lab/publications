@@ -5,6 +5,7 @@ Implement the command-line interface.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
+from pathlib import Path
 from argparse import ArgumentParser, RawTextHelpFormatter
 from os.path import dirname, join, exists
 from pickle import load
@@ -61,7 +62,8 @@ def create_parser():
 
     # Add arguments
     experiment_parser = subparsers.add_parser('experiment', help='Run experiment from available experimental configurations.', formatter_class=RawTextHelpFormatter)
-    experiment_parser.add_argument('name', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
+    experiment_parser.add_argument('exp', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
+    experiment_parser.add_argument('ovs', help=f'The name of the oversampler(s).')
     experiment_parser.add_argument('--n-jobs', type=int, default=-1, help='Number of jobs to run in parallel. -1 means using all processors.')
     experiment_parser.add_argument('--verbose', type=int, default=0, help='Controls the verbosity: the higher, the more messages.')
 
@@ -87,15 +89,21 @@ def run():
     elif args.subcommand == 'experiment':
         
         # Get configuration
-        if args.name not in CONFIG.keys():
-            raise ValueError(f'Experiment {args.name} not available to run. Select one from {list(CONFIG.keys())}.')
-        configuration = CONFIG[args.name]
+        if args.exp not in CONFIG.keys():
+            raise ValueError(f'Experiment `{args.exp}`` not available to run. Select one from {list(CONFIG.keys())}.')
+        if args.ovs not in CONFIG[args.exp].keys():
+            raise ValueError(f'Oversampler `{args.ovs}` for experiment `{args.exp}` not available to run. Select one from {list(CONFIG[args.exp].keys())}.')
+        configuration = CONFIG[args.exp][args.ovs]
 
         # Load datasets from database
         db_name, datasets_names = configuration.pop('db_name'), configuration.pop('datasets_names')
         datasets = load_datasets(db_name, datasets_names)
-    
+        
+        # Create directory
+        experiment_path = join(dirname(__file__), EXPERIMENTS_PATH, args.exp)
+        Path(experiment_path).mkdir(exist_ok=True)
+
         # Run and save experiment
-        experiment = ImbalancedExperiment(args.name, datasets, **configuration)
+        experiment = ImbalancedExperiment(args.ovs, datasets, **configuration)
         experiment.run(args.n_jobs, args.verbose)
-        experiment.dump(join(dirname(__file__), EXPERIMENTS_PATH))
+        experiment.dump(experiment_path)
