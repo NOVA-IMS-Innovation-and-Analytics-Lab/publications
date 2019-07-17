@@ -7,12 +7,22 @@ Implement the command-line interface.
 
 from pathlib import Path
 from argparse import ArgumentParser, RawTextHelpFormatter
+from os import listdir
 from os.path import dirname, join, exists
 from pickle import load
 from sqlite3 import connect
 
 import pandas as pd
-from sklearnext.tools import ImbalancedExperiment
+from sklearnext.tools import (
+    ImbalancedExperiment,
+    combine_experiments,
+    calculate_ranking,
+    calculate_mean_sem_ranking,
+    calculate_mean_sem_scores,
+    calculate_mean_sem_perc_diff_scores,
+    apply_friedman_test,
+    apply_holms_test
+)
 
 from . import DATA_PATH, EXPERIMENTS_PATH
 from .data import ImbalancedBinaryClassDatasets, BinaryClassDatasets
@@ -51,7 +61,7 @@ def create_parser():
     experiments_names = '\n'.join(CONFIG.keys())
     
     # Create parser and subparsers
-    parser = ArgumentParser(description='Download databases and run experiments.')
+    parser = ArgumentParser(description='Download databases, run and combine experiments.')
     subparsers = parser.add_subparsers()
     subparsers.required = True
     subparsers.dest = 'subcommand'
@@ -60,12 +70,16 @@ def create_parser():
     downloading_parser = subparsers.add_parser('downloading', help='Download data as sqlite database.', formatter_class=RawTextHelpFormatter)
     downloading_parser.add_argument('name', help=f'The name of the database. It should be one of the following:\n\n{databases_names}')
 
-    # Add arguments
+    # Experiment subparser
     experiment_parser = subparsers.add_parser('experiment', help='Run experiment from available experimental configurations.', formatter_class=RawTextHelpFormatter)
     experiment_parser.add_argument('exp', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
     experiment_parser.add_argument('ovs', help=f'The name of the oversampler(s).')
     experiment_parser.add_argument('--n-jobs', type=int, default=-1, help='Number of jobs to run in parallel. -1 means using all processors.')
     experiment_parser.add_argument('--verbose', type=int, default=0, help='Controls the verbosity: the higher, the more messages.')
+
+    # Combine subparser
+    combine_parser = subparsers.add_parser('combine', help='Combine multiple experiments.', formatter_class=RawTextHelpFormatter)
+    combine_parser.add_argument('exp', help=f'The name of the experiment. It should be one of the following:\n\n{experiments_names}')
 
     return parser
 
@@ -107,3 +121,22 @@ def run():
         experiment = ImbalancedExperiment(args.ovs, datasets, **configuration)
         experiment.run(args.n_jobs, args.verbose)
         experiment.dump(experiment_path)
+
+    elif args.subcommand == 'combine':
+
+        if args.exp not in CONFIG.keys():
+            raise ValueError(f'Experiment `{args.exp}`` not available to combine sub-experiments. Select one from {list(CONFIG.keys())}.')
+
+        # Find experiments
+        experiment_path = join(dirname(__file__), EXPERIMENTS_PATH, args.exp)
+        filenames = [filename for filename in listdir(experiment_path) if filename.endswith('.pkl')]
+        
+        # Load experiments
+        experiments = []
+        for filename in filenames:
+            with open(join(experiment_path, filename), 'rb') as f:
+                experiment = load(f)
+            experiments.append(experiment)
+
+        # Create and dump combined experiment
+        combine_experiments('combined', *experiments).dump(experiment_path)
