@@ -11,7 +11,8 @@ from sklearn.base import clone
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.dummy import DummyClassifier
 from sklearn.metrics import cohen_kappa_score, make_scorer
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.over_sampling.base import BaseOverSampler
@@ -62,10 +63,13 @@ def check_estimators(category, names, mapping):
 
 
 CLASSIFIERS_BASIC = [
+    ('CONSTANT CLASSIFIER', DummyClassifier(strategy='constant', constant=0), {}),
+    ('RANDOM CLASSIFIER', DummyClassifier(strategy='stratified'), {}),
     ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
-    ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]})
+    ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]}),
+    ('RF', RandomForestClassifier(), {})
 ]
 OVERSAMPLERS_BASIC = [
     ('NO OVERSAMPLING', None, {}),
@@ -133,27 +137,31 @@ OVERSAMPLERS_CLUSTERING = [
         }
     )
 ]
-OVERSAMPLERS_UNDERSAMPLED = [
-    ('BENCHMARK METHOD', None, {}),
-    ('NO OVERSAMPLING', UnderOverSampler(oversampler=None), {}),
-    ('RANDOM OVERSAMPLING', UnderOverSampler(oversampler=RandomOverSampler()), {}),
-    ('SMOTE', UnderOverSampler(oversampler=SMOTE()), {'oversampler__k_neighbors': [3, 5]}),
-    ('BORDERLINE SMOTE', UnderOverSampler(oversampler=BorderlineSMOTE()), {'oversampler__k_neighbors': [3, 5]}),
-    ('G-SMOTE', UnderOverSampler(oversampler=GeometricSMOTE()), {
-        'oversampler__k_neighbors': [3, 5], 
-        'oversampler__selection_strategy': ['combined', 'minority', 'majority'], 
-        'oversampler__truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
-        'oversampler__deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
-        }
-    )
-]
+def OVERSAMPLERS_UNDERSAMPLED(factor)
+    return [
+        ('BENCHMARK METHOD', None, {}),
+        ('NO OVERSAMPLING', UnderOverSampler(oversampler=None, factor=factor), {}),
+        ('RANDOM OVERSAMPLING', UnderOverSampler(oversampler=RandomOverSampler(), factor=factor), {}),
+        ('SMOTE', UnderOverSampler(oversampler=SMOTE(), factor=factor), {'oversampler__k_neighbors': [3, 5]}),
+        ('BORDERLINE SMOTE', UnderOverSampler(oversampler=BorderlineSMOTE(), factor=factor), {'oversampler__k_neighbors': [3, 5]}),
+        ('G-SMOTE', UnderOverSampler(oversampler=GeometricSMOTE(), factor=factor), {
+            'oversampler__k_neighbors': [3, 5], 
+            'oversampler__selection_strategy': ['combined', 'minority', 'majority'], 
+            'oversampler__truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
+            'oversampler__deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
+            }
+        )]
 CLASSIFIERS_MAPPING = {
     'basic': CLASSIFIERS_BASIC
+
 }
 OVERSAMPLERS_MAPPING = {
     'basic': OVERSAMPLERS_BASIC,
     'clustering': OVERSAMPLERS_CLUSTERING,
-    'undersampled': OVERSAMPLERS_UNDERSAMPLED
+    'undersampled_50': OVERSAMPLERS_UNDERSAMPLED(2),
+    'undersampled_75': OVERSAMPLERS_UNDERSAMPLED(4),
+    'undersampled_90': OVERSAMPLERS_UNDERSAMPLED(10),
+    'undersampled_95': OVERSAMPLERS_UNDERSAMPLED(20)
 }
 
 
@@ -170,41 +178,65 @@ def generate_configuration(db_name, datasets_names='all',
 
 CONFIG = {
     'imbalanced': {
-        'no_oversampling': generate_configuration('imbalanced_binary_class', oversamplers_names=['NO OVERSAMPLING']),
-        'random_oversampling': generate_configuration('imbalanced_binary_class', oversamplers_names=['RANDOM OVERSAMPLING']),
-        'smote': generate_configuration('imbalanced_binary_class', oversamplers_names=['SMOTE']),
-        'borderline_smote': generate_configuration('imbalanced_binary_class', oversamplers_names=['BORDERLINE SMOTE']),
-        'adasyn': generate_configuration('imbalanced_binary_class', oversamplers_names=['ADASYN']),
-        'gsmote': generate_configuration('imbalanced_binary_class', oversamplers_names=['G-SMOTE']),
-        'kmeans_ros': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['K-MEANS RANDOM OVERSAMPLING']),
-        'kmeans_smote': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['K-MEANS SMOTE']),
-        'kmeans_borderline_smote': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['K-MEANS BORDERLINE SMOTE']),
-        'kmeans_gsmote': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['K-MEANS G-SMOTE']),
-        'somo': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['SOMO']),
-        'gsomo': generate_configuration('imbalanced_binary_class', oversamplers_category='clustering', oversamplers_names=['G-SOMO'])
+        'no_oversampling': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['NO OVERSAMPLING']),
+        'random_oversampling': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['RANDOM OVERSAMPLING']),
+        'smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['SMOTE']),
+        'borderline_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['BORDERLINE SMOTE']),
+        'adasyn': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['ADASYN']),
+        'gsmote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE']),
+        'kmeans_ros': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS RANDOM OVERSAMPLING']),
+        'kmeans_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS SMOTE']),
+        'kmeans_borderline_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS BORDERLINE SMOTE']),
+        'kmeans_gsmote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS G-SMOTE']),
+        'somo': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['SOMO']),
+        'gsomo': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['G-SOMO'])
     },
     'lucas': {
-        'no_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['NO OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'random_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'borderline_smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['BORDERLINE SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'adasyn': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['ADASYN'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'gsmote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3)
+        'no_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['NO OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
+        'random_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
+        'smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
+        'borderline_smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['BORDERLINE SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
+        'adasyn': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['ADASYN'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
+        'gsmote': generate_configuration('remote_sensing',  datasets_names=['lucas'], classifiers_names=['CONSTANT CLASSIFIER', 'RANDOM_CLASSIFIER', 'KNN' , 'DT', 'GBC', 'RF'], oversamplers_names=['G-SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3)
     },
     'insurance': {
-        'no_oversampling': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['NO OVERSAMPLING']),
-        'random_oversampling': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['RANDOM OVERSAMPLING']),
-        'smote': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['SMOTE']),
-        'borderline_smote': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['BORDERLINE SMOTE']),
-        'adasyn': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['ADASYN']),
-        'gsmote': generate_configuration('various', datasets_names=['insurance'], oversamplers_names=['G-SMOTE'])
+        'no_oversampling': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['NO OVERSAMPLING']),
+        'random_oversampling': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['RANDOM OVERSAMPLING']),
+        'smote': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['SMOTE']),
+        'borderline_smote': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['BORDERLINE SMOTE']),
+        'adasyn': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['ADASYN']),
+        'gsmote': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE'])
     },
-    'small_data': {
-        'benchmark_method': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
-        'no_oversampling': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
-        'random_oversampling': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
-        'smote': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
-        'borderline_smote': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
-        'gsmote': generate_configuration('binary_class', oversamplers_category='undersampled', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
+    'small_data_50': {
+        'benchmark_method': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
+        'no_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'random_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'borderline_smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'gsmote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_50', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
+    },
+    'small_data_70': {
+        'benchmark_method': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
+        'no_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'random_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'borderline_smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'gsmote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_70', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
+    },
+    'small_data_90': {
+        'benchmark_method': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
+        'no_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'random_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'borderline_smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'gsmote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_90', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
+    },
+    'small_data_95': {
+        'benchmark_method': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['BENCHMARK METHOD'], scoring=['accuracy', 'geometric_mean_score']),
+        'no_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['NO OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'random_oversampling': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['accuracy', 'geometric_mean_score']),
+        'smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'borderline_smote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['BORDERLINE SMOTE'], scoring=['accuracy', 'geometric_mean_score']),
+        'gsmote': generate_configuration('binary_class', classifiers_names=['CONSTANT CLASSIFIER', 'LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='undersampled_95', oversamplers_names=['G-SMOTE'], scoring=['accuracy', 'geometric_mean_score'])
     }
 }
