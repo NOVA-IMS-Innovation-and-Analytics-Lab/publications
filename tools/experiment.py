@@ -69,7 +69,7 @@ CLASSIFIERS_BASIC = [
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
     ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]}),
-    ('RF', RandomForestClassifier(), {})
+    ('RF', RandomForestClassifier(), {'max_depth': [None, 3, 6], 'n_estimators': [10, 50, 100]})
 ]
 OVERSAMPLERS_BASIC = [
     ('NO OVERSAMPLING', None, {}),
@@ -78,9 +78,9 @@ OVERSAMPLERS_BASIC = [
     ('BORDERLINE SMOTE', BorderlineSMOTE(), {'k_neighbors': [3, 5]}),
     ('ADASYN', ADASYN(), {'n_neighbors': [2, 3]}),
     ('G-SMOTE', GeometricSMOTE(), {
-        'k_neighbors': [3, 5], 
-        'selection_strategy': ['combined', 'minority', 'majority'], 
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
+        'k_neighbors': [3, 5],
+        'selection_strategy': ['combined', 'minority', 'majority'],
+        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
         'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
         }
     )
@@ -110,7 +110,7 @@ OVERSAMPLERS_CLUSTERING = [
     ('K-MEANS G-SMOTE', GeometricSMOTE(clusterer=KMeans(), distributor=DensityDistributor()), {
         'k_neighbors': [3, 5],
         'selection_strategy': ['combined', 'minority', 'majority'],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
+        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
         'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
         'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         'distributor__distances_exponent': [0, 1, 2, 5],
@@ -128,7 +128,7 @@ OVERSAMPLERS_CLUSTERING = [
     ('G-SOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor()), {
         'k_neighbors': [3, 5],
         'selection_strategy': ['combined', 'minority', 'majority'],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
+        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
         'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
         'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         'distributor__distances_exponent': [0, 1, 2, 5],
@@ -145,9 +145,9 @@ def OVERSAMPLERS_UNDERSAMPLED(factor):
         ('SMOTE', UnderOverSampler(oversampler=SMOTE(), factor=factor), {'oversampler__k_neighbors': [3, 5]}),
         ('BORDERLINE SMOTE', UnderOverSampler(oversampler=BorderlineSMOTE(), factor=factor), {'oversampler__k_neighbors': [3, 5]}),
         ('G-SMOTE', UnderOverSampler(oversampler=GeometricSMOTE(), factor=factor), {
-            'oversampler__k_neighbors': [3, 5], 
-            'oversampler__selection_strategy': ['combined', 'minority', 'majority'], 
-            'oversampler__truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0], 
+            'oversampler__k_neighbors': [3, 5],
+            'oversampler__selection_strategy': ['combined', 'minority', 'majority'],
+            'oversampler__truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
             'oversampler__deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
             }
         )]
@@ -165,12 +165,12 @@ OVERSAMPLERS_MAPPING = {
 }
 
 
-def generate_configuration(db_name, datasets_names='all', 
-                           classifiers_category='basic', classifiers_names=None, 
-                           oversamplers_category='basic', oversamplers_names=None, 
-                           scoring=['roc_auc', 'f1', 'geometric_mean_score'], n_splits=5, 
+def generate_configuration(db_name, datasets_names='all',
+                           classifiers_category='basic', classifiers_names=None,
+                           oversamplers_category='basic', oversamplers_names=None,
+                           scoring=['roc_auc', 'f1', 'geometric_mean_score'], n_splits=5,
                            n_runs=3, random_state=0):
-    """Generate configuration dictionary for an experiment."""    
+    """Generate configuration dictionary for an experiment."""
     classifiers = check_estimators(classifiers_category, classifiers_names, CLASSIFIERS_MAPPING)
     oversamplers = check_estimators(oversamplers_category, oversamplers_names, OVERSAMPLERS_MAPPING)
     return dict(db_name=db_name, datasets_names=datasets_names, classifiers=classifiers, oversamplers=oversamplers, scoring=scoring, n_splits=n_splits, n_runs=n_runs, random_state=random_state)
