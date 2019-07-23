@@ -192,12 +192,12 @@ CONFIG = {
         'gsomo': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['G-SOMO'])
     },
     'lucas': {
-        'no_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['NO OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'random_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'borderline_smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['BORDERLINE SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'adasyn': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['ADASYN'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3),
-        'gsmote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['G-SMOTE'], scoring=['geometric_mean_score', 'accuracy', 'kappa_score', 'f1_macro'], n_splits=3)
+        'no_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['NO OVERSAMPLING'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
+        'random_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['RANDOM OVERSAMPLING'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
+        'smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['SMOTE'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
+        'borderline_smote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['BORDERLINE SMOTE'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
+        'adasyn': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['ADASYN'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
+        'gsmote': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['G-SMOTE'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3)
     },
     'insurance': {
         'no_oversampling': generate_configuration('various', datasets_names=['insurance'], classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['NO OVERSAMPLING']),
