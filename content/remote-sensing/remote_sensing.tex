@@ -243,10 +243,9 @@ classifier (GBC) supervised classifiers have been deployed.
 
 \section{Methodology}
 
-In this section, we describe the evaluation process of G-SMOTE using various
-classifiers, metrics and baseline methods. A description of the baseline
-methods, classification algorithms, evaluation methods, dataset used and
-experimental procedure is provided.
+This section explains the evaluation process of G-SMOTE's performance. A
+description of the baseline methods, classification algorithms, evaluation
+methods, dataset used and experimental procedure is provided.
 
 The implementation of the experimental procedure was based on the Python
 programming language, using the Scikit-Learn \cite{Pedregosa2011}, Imbalanced-
@@ -256,14 +255,14 @@ reproducible using the scripts available at \url{https://github.com/AlgoWit/publ
 
 \subsection{Baseline methods}
 
-Four oversampling techniques were used in this experiment
-as baseline methods along with Geometric SMOTE. Random oversampling was chosen
-for its simplicity. SMOTE was selected for being a classic technique and the
-most popular oversampling algorithm \cite{Douzas2019}. ADASYN and Borderline
-SMOTE were selected for representing popular modifications of the original
-SMOTE technique in the selection phase and data generation mechanism,
-respectively. Finally, we consider no oversampling as an additional baseline
-method.
+Four oversampling techniques were used in this experiment as baseline methods
+along with Geometric SMOTE. Random oversampling was chosen for its simplicity.
+SMOTE was selected for being a classic technique and the most popular
+oversampling algorithm \cite{Douzas2019}. ADASYN \todo{missing citation} and
+Borderline SMOTE \todo{missing citation} were selected for representing popular
+modifications of the original SMOTE technique in the selection phase and data
+generation mechanism, respectively. Finally, we use no oversampling as an
+additional baseline method.
 
 \subsection{Classification algorithms}
 
@@ -281,35 +280,35 @@ models.
 Amongst the many evaluation metrics existing for classifier's performance
 evaluation, there are several indices that are considered to be preliminary and
 are widely used for LULC classification accuracy assessment. Those measures are
-classification overall accuracy, user's accuracy or precision and 
+classification overall accuracy, user's accuracy or precision and
 producer's accuracy or recall,  and are calculated using the classification
 confusion matrix \cite{Liu2007}. However, the LUCAS dataset presents high
 inter-class variability. Hence, the minority classes can be difficult to
 account for by the classifiers that are designed to maximise the overall
 accuracy, as the majority classes are receiving more weight \cite{Inglada2017}.
-On the other hand, \cite{He2008} states that the use of user's and producer's 
-accuracy for class imbalanced data is not straightforward and producer's 
-accuracy is not sensitive to the data distribution at all. Hence, class 
-imbalance specific metrics are needed to better describe classifier's 
-performance. For this purpose, F-score and G-mean metrics are used to evaluate 
-and compare the performance of the oversampling methods. Classification Overall 
-Accuracy is provided to summarize the confusion matrix.
+On the other hand, \cite{He2008} states that the use of user's and producer's
+accuracy for class imbalanced data is not straightforward and producer's
+accuracy is not sensitive to the data distribution at all. Hence, class
+imbalance specific metrics are needed to better describe classifier's
+performance. For this purpose, F-score and G-mean metrics are used to evaluate
+and compare the performance of the oversampling methods. Classification Overall
+Accuracy is provided to summarise the confusion matrix.
 
 
-Overall Accuracy
+\subsubsection{Overall Accuracy}
 
-Classification Overall Accuracy is the number of correctly classified samples 
-divided by the sum of all the samples on the confusion matrix.  
+Classification Overall Accuracy is the number of correctly classified samples
+divided by the sum of all the samples on the confusion matrix.
 
-F-score
+\subsubsection{F-score}
 
-F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and 
+F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and
 producer's accuracy (recall), where user's accuracy is the fraction of correctly
 classified instances with regard to all instances classified as this certain
-class in the confusion matrix, and producer's accuracy is the fraction of 
-correctly classified instances with regard to all instances of that reference 
-class. F-score can be calculated as for the all classification as well as for 
-each class. The worst result is at the value of 0 and the best at 1 
+class in the confusion matrix, and producer's accuracy is the fraction of
+correctly classified instances with regard to all instances of that reference
+class. F-score can be calculated as for the all classification as well as for
+each class. The worst result is at the value of 0 and the best at 1
 \cite{Inglada2017}.
 
 \[
@@ -318,40 +317,40 @@ F{-}score=2\frac{\text{UA} \times \text{PA}}{\text{UA} + \text{PA}}
 
 Where UA and PA are user's and producer's accuracy respectively.
 
-G-measure
+\subsubsection{G-measure}
 
-G-mean measure is the geometric mean between sensitivity and specificity. 
+G-mean measure is the geometric mean between sensitivity and specificity.
 
 \[G{-}mean = \sqrt{Sensitivity \times Specificity}\]
 
-Where sensitivity is the same user's accuracy or recall, while specificity is 
-the proportion of actual negatives that are correctly identified as such for 
-each class. 
+Where sensitivity is the same user's accuracy or recall, while specificity is
+the proportion of actual negatives that are correctly identified as such for
+each class.
 
 \subsection{Experiment Settings}
 
 \subsection{Data Set}
 
-For this research LUCAS dataset and Landsat 8 time series from 2015 were used 
-for training and validation of supervised classifiers. 1694 LUCAS points are 
-used as reference ground-truth data. This dataset is grouped in 8 classes and 
-represents the land cover types for the study area. The are  of study is the 
-central part of Portugal. From the Table 1 it is obvious that the data is 
-highly imbalanced with a minority class of 4 instances (wetlands) and majority 
-class of 761 instances (woodland). 
+For this research LUCAS dataset and Landsat 8 time series from 2015 were used
+for training and validation of supervised classifiers. 1694 LUCAS points are
+used as reference ground-truth data. This dataset is grouped in 8 classes and
+represents the land cover types for the study area. The are  of study is the
+central part of Portugal. From the Table 1 it is obvious that the data is
+highly imbalanced with a minority class of 4 instances (wetlands) and majority
+class of 761 instances (woodland).
 
-The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral 
-sensor. The images are Level-1 terrain corrected products (L1TP) and are 
-acquired in 2015 form February to September, 1 image each month. Only bands 2, 
-3, 4, 5, 6 and 7 are used from each image. Thus, each reference point from 
-LUCAS dataset has 48 features (Table 2). Those features have the value of 
-digital numbers of the images representing LUCAS point location. 
+The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral
+sensor. The images are Level-1 terrain corrected products (L1TP) and are
+acquired in 2015 form February to September, 1 image each month. Only bands 2,
+3, 4, 5, 6 and 7 are used from each image. Thus, each reference point from
+LUCAS dataset has 48 features (Table 2). Those features have the value of
+digital numbers of the images representing LUCAS point location.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|p{2.2cm}|p{2.3cm}|p{2cm}|p{2cm}|}
 		\hline
-		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances} 
+		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
 		& \textbf{Imbalance Ratio} \\
 		\hline
 		A & Artificial land& 131 & 5.81 \\
@@ -380,8 +379,8 @@ digital numbers of the images representing LUCAS point location.
 	\centering
 	\begin{tabular}{|p{2.7cm}|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
 		\hline
-		\textbf{Dataset name} & \textbf{Features} & \textbf{Instances} & 
-		\textbf{Minority instances} & \textbf{Majority instances}	& 
+		\textbf{Dataset name} & \textbf{Features} & \textbf{Instances} &
+		\textbf{Minority instances} & \textbf{Majority instances}	&
 		\textbf{Imbalance Ratio} \\
 		\hline
 		LUCAS dataset & 48 & 1694 & 4 & 761 & 190.25 \\
