@@ -43,7 +43,7 @@ def test_under_oversampler():
     ('basic', CLASSIFIERS_MAPPING),
     ('basic', OVERSAMPLERS_MAPPING),
     ('clustering', OVERSAMPLERS_MAPPING),
-    ('undersampled', OVERSAMPLERS_MAPPING)
+    ('undersampled_50', OVERSAMPLERS_MAPPING)
 ])
 def test_default_check_estimators(category, mapping):
     """Test the default generation of estimators."""
@@ -60,7 +60,7 @@ def test_default_check_estimators(category, mapping):
     ('basic', ['KNN', 'LR'], CLASSIFIERS_MAPPING),
     ('basic', ['NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE'], OVERSAMPLERS_MAPPING),
     ('clustering', ['K-MEANS SMOTE'], OVERSAMPLERS_MAPPING),
-    ('undersampled', ['BENCHMARK METHOD', 'NO OVERSAMPLING'], OVERSAMPLERS_MAPPING)
+    ('undersampled_50', ['BENCHMARK METHOD', 'NO OVERSAMPLING'], OVERSAMPLERS_MAPPING)
 ])
 def test_subset_check_estimators(category, names, mapping):
     """Test the generation of estimators."""
@@ -76,7 +76,7 @@ def test_subset_check_estimators(category, names, mapping):
     ('Basic', None, CLASSIFIERS_MAPPING),
     ('basic', ['knn'], CLASSIFIERS_MAPPING),
     ('Clustering', ['K-MEANS SMOTE'], OVERSAMPLERS_MAPPING),
-    ('undersampled', 'BENCHMARK METHOD', OVERSAMPLERS_MAPPING)
+    ('undersampled_50', 'BENCHMARK METHOD', OVERSAMPLERS_MAPPING)
 ])
 def test_check_estimators_raise_error(category, names, mapping):
     """Test the raise of error for false input."""
