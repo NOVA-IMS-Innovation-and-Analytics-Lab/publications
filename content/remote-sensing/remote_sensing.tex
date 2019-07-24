@@ -322,52 +322,58 @@ times.
 Amongst the many evaluation metrics existing for classifier's performance
 evaluation, there are several indices that are considered to be preliminary and
 are widely used for LULC classification accuracy assessment. Those measures are
-classification overall accuracy, user's accuracy or precision and
+classification overall accuracy, user's accuracy or precision and 
 producer's accuracy or recall,  and are calculated using the classification
-confusion matrix \cite{Liu2007}. However, the LUCAS dataset presents high
+confusion matrix \cite{Liu2007}. However, the LUCAS dataset has high
 inter-class variability. Hence, the minority classes can be difficult to
 account for by the classifiers that are designed to maximise the overall
 accuracy, as the majority classes are receiving more weight \cite{Inglada2017}.
-On the other hand, \cite{He2008} states that the use of user's and producer's
-accuracy for class imbalanced data is not straightforward and producer's
-accuracy is not sensitive to the data distribution at all. Hence, class
-imbalance specific metrics are needed to better describe classifier's
-performance. For this purpose, F-score and G-mean metrics are used to evaluate
-and compare the performance of the oversampling methods. Classification Overall
-Accuracy is provided to summarise the confusion matrix.
-
+On the other hand, \cite{He2008} states that the use of user's and producer's 
+accuracy for class imbalanced data is not straightforward and producer's 
+accuracy is not sensitive to the data distribution at all. Considering these, 
+class imbalance specific metrics are needed to better describe classifier's 
+performance. For this purpose, F-score and G-mean metrics are used to evaluate 
+and compare the performance of the oversampling methods. Classification overall 
+accuracy (OA) is provided to summarize the confusion matrix.
 
 \subsubsection{Overall Accuracy}
 
-Classification Overall Accuracy is the number of correctly classified samples
-divided by the sum of all the samples on the confusion matrix.
+Classification Overall Accuracy is the number of correctly classified samples 
+divided by the sum of all the samples on the confusion matrix.  
 
 \subsubsection{F-score}
 
-F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and
-producer's accuracy (recall), where user's accuracy is the fraction of correctly
-classified instances with regard to all instances classified as this certain
-class in the confusion matrix, and producer's accuracy is the fraction of
-correctly classified instances with regard to all instances of that reference
-class. F-score can be calculated as for the all classification as well as for
-each class. The worst result is at the value of 0 and the best at 1
-\cite{Inglada2017}.
+F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and 
+producer's accuracy (recall), where user's accuracy is the fraction of 
+correctly classified instances with regard to all instances classified as this 
+certain class in the confusion matrix, and producer's accuracy is the fraction 
+of  correctly classified instances with regard to all instances of that 
+reference class. The F-score value for multi-class imbalanced data 
+classification can be calculated considering the user's accuracy and producer's 
+accuracy as a unweighted average of the respective values from all the classes.
 
 \[
-F{-}score=2\frac{\text{UA} \times \text{PA}}{\text{UA} + \text{PA}}
+F{-}score=2\frac{\text{E(UA)} \times \text{E(PA)}}{\text{E(UA)} + \text{E(PA)}}
 \]
 
-Where UA and PA are user's and producer's accuracy respectively.
+Where E(UA) and E(PA) are unweighted mean values of user's and producer's 
+accuracy for each classes respectively.
 
 \subsubsection{G-measure}
 
-G-mean measure is the geometric mean between sensitivity and specificity.
+The geometric mean score (G-mean) is the root of the product of class-wise 
+sensitivity and specificity. For the multi-class case sensitivity and 
+specificity are calculated for each class, then averaged with simple mean 
+value. Here the sensitivity (true positive rate) is the same with recall 
+value (producer's accuracy), and specificity (true negative rate) is defines as 
+the proportion of actual negatives classified as such.  
 
-\[G{-}mean = \sqrt{Sensitivity \times Specificity}\]
+\[
+G{-}mean = \sqrt{E(Sensitivity) \times E(Specificity)} 
+\]
 
-Where sensitivity is the same user's accuracy or recall, while specificity is
-the proportion of actual negatives that are correctly identified as such for
-each class.
+Where E(Sensitivity) and E(Specificity) are the unweighted mean values of 
+sensitivity and specificity of all the classes. 
 
 \subsection{Experiment Settings}
 
@@ -395,21 +401,21 @@ digital numbers of the images representing LUCAS point location.
 		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
 		& \textbf{Imbalance Ratio} \\
 		\hline
-		A & Artificial land& 131 & 5.81 \\
+		A & Artificial land & 131 & 5.81 \\
 		\hline
-		B & Cropland & 270 & 2.81 \\
+		B & Cropland        & 270 & 2.81 \\
 		\hline
-		C & Woodland & 761 & 1.00 \\
+		C & Woodland        & 761 & 1.00 \\
 		\hline
-		D & Shrubland & 296 & 2.61 \\
+		D & Shrubland       & 296 & 2.61 \\
 		\hline
-		E & Grassland & 185 & 4.11 \\
+		E & Grassland       & 185 & 4.11 \\
 		\hline
-		F & Bareland & 37 & 20.56 \\
+		F & Bareland        & 37  & 20.56 \\
 		\hline
-		G & Water & 10 & 76.10 \\
+		G & Water           & 10  & 76.10 \\
 		\hline
-		H & Wetlands & 4 &  190.25\\
+		H & Wetlands        & 4   & 190.25\\
 		\hline
 		%\textbf{Total} & & \textbf{1694} &  \textbf{190.25} \\
 		%\hline
