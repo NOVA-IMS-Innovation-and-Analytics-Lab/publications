@@ -65,7 +65,7 @@ def check_estimators(category, names, mapping):
 CLASSIFIERS_BASIC = [
     ('CONSTANT CLASSIFIER', DummyClassifier(strategy='constant', constant=0), {}),
     ('RANDOM CLASSIFIER', DummyClassifier(strategy='stratified'), {}),
-    ('LR', LogisticRegression(solver='lbfgs', max_iter=1e4, multi_class='auto'), {}),
+    ('LR', LogisticRegression(solver='liblinear', multi_class='auto'), {}),
     ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
     ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
     ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]}),
