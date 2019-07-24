@@ -271,11 +271,12 @@ learning type, training time and popularity within the remote sensing
 community. We further divide the relevant algorithms into 4 different learning
 types: neighbours-based, rule-based, ensemble and generalised linear methods.
 
-For each combination of oversampler and classifier, a grid search will be run
-in order to find the optimal parameter settings. The number of fits for a
-single combination of oversampler-classifier (represented as $x_a$ and $y_b$,
-respectively) is defined as:
+\todo{maybe move this part to the experimental setup}
+For each combination of oversampler and classifier (represented as $x_a$ and
+$y_b$, respectively), a grid search will be run in order to find the optimal
+parameter settings. The number of fits for a single combination  is defined as:
 \todo{confirm that formulas are correct}
+
 \[
 fits_{x_a,y_b}=\prod\limits_{p=1} \textrm{count}(x_a^p).\prod\limits_{q=1}
 \textrm{count}(y_b^q)
@@ -286,35 +287,35 @@ hyperparameter $p$ of an oversampler $x_a$. Finally, the total number of fits
 is defined as:
 
 \[
-Total\ Fits=\sum\limits_{a=1} \sum\limits_{b=1} fits_{x_a,y_b}
+Total\ Fits=k\sum\limits_{a=1} \sum\limits_{b=1} fits_{x_a,y_b}
 \]
 
-Thus, in order to setup an extensive grid search and run the full experiment
-within feasible time, selecting computationally efficient classifiers becomes
-vital.
+Where $k$ is the number of folds defined for cross-validation. Thus, adding new
+classifiers, oversamplers or grid search values may exponentially increase the
+time necessary to run the experiment. So, in order to setup an extensive grid
+search and run the full experiment within feasible time, selecting
+computationally efficient classifiers becomes vital.
 
-% popularity of algorithms here
-\cite{Khatami2016b}
+\cite{Khatami2016} developed a meta-analysis of classification processes out
+of 266 manuscripts published from 1998 to 2012. The most common classifiers
+found in supervised pixel-based land-cover image classification processes
+included K-nearest neighbours, Support Vector Machines, Decision Trees, Random
+Forests and Neural Networks. None of the methods used generalised linear models.
 
+Amongst the neighbours-based learning methods the K-nearest neighbours (KNN)
+\todo{missing citation} algorithm was selected. Out of the rule-based learning
+methods, the decision tree classifier (DT) \todo{missing citation} was chosen.
+Two ensemble learning methods were chosen: Gradient boosting classifier
+\todo{missing citation} and Random Forest classifier. Finally, the logistic
+regression classifier \todo{missing citation} was selected amongst the
+generalised linear models, as no method was found using any classifier using
+this learning type. All these algorithms were found to be computationally
+efficient and commonly used classifiers for the proposed task (with exception
+for the logistic regression).
 
-\subsubsection{neighbours-based}
-Amongst the neighbours-based learning methods, K-nearest neighbours (KNN)
-\todo{missing citation} algorithm was selected.
-
-\subsubsection{rule-based}
-The decision tree classifier (DT) \todo{missing citation} was chosen amongst
-the rule-based learning methods.
-
-\subsubsection{ensemble}
-Out of the ensemble learning methods, the Gradient boosting classifier
-\todo{missing citation} and Random Forest classifier was selected.
-
-\subsubsection{generalised linear methods}
-Finally, the logistic regression classifier \todo{missing citation} was
-selected amongst the generalised linear models.
-
-% explain why these algorithms have been chosen within each family of
-% classifiers
+Despite their common use, both artificial neural networks and the Support
+Vector Machines were not included in this experiment due to their long training
+times.
 
 \subsection{Evaluation methods}
 
@@ -416,33 +417,33 @@ digital numbers of the images representing LUCAS point location.
 	\caption{\label{tab:dataset_classes}LUCAS nomenclature and sample distribution}
 \end{table}
 
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|p{2.7cm}|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
-		\hline
-		\textbf{Dataset name} & \textbf{Features} & \textbf{Instances} &
-		\textbf{Minority instances} & \textbf{Majority instances}	&
-		\textbf{Imbalance Ratio} \\
-		\hline
-		LUCAS dataset & 48 & 1694 & 4 & 761 & 190.25 \\
-		\hline
-	\end{tabular}
-	\caption{\label{tab:datasets}Description of the datasets}
-\end{table}
+%\begin{table}[H]
+%	\centering
+%	\begin{tabular}{|p{2.7cm}|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+%		\hline
+%		\textbf{Dataset name} & \textbf{Features} & \textbf{Instances} &
+%		\textbf{Minority instances} & \textbf{Majority instances}	&
+%		\textbf{Imbalance Ratio} \\
+%		\hline
+%		LUCAS dataset & 48 & 1694 & 4 & 761 & 190.25 \\
+%		\hline
+%	\end{tabular}
+%	\caption{\label{tab:datasets}Description of the datasets}
+%\end{table}
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ll}
 		\toprule
-		\textbf{Dataset name}             &  LUCAS dataset \\
+		\textbf{Dataset name}             &  				 LUCAS \\
 		\textbf{Features}                 &             48 \\
 		\textbf{Instances}                &           1694 \\
 		\textbf{Minority class instaces}  &              4 \\
 		\textbf{Majority class instances} &            761 \\
-		\textbf{Imbalance Ratio}         &         190.25 \\
+		\textbf{Imbalance Ratio}          &         190.25 \\
 	\bottomrule
 	\end{tabular}
-	\caption{\label{tab:datasets2}Alternative for Description of the datasets}
+	\caption{\label{tab:datasets}Description of the dataset}
 \end{table}
 
 \section{Results and Discussion}
