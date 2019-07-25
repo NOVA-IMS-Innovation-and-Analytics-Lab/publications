@@ -182,7 +182,6 @@ CONFIG = {
         'random_oversampling': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['RANDOM OVERSAMPLING']),
         'smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['SMOTE']),
         'borderline_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['BORDERLINE SMOTE']),
-        'adasyn': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['ADASYN']),
         'gsmote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_names=['G-SMOTE']),
         'kmeans_ros': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS RANDOM OVERSAMPLING']),
         'kmeans_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS SMOTE']),
