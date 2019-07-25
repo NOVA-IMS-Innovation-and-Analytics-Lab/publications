@@ -38,7 +38,6 @@ FETCH_URLS = {
     'libras': urljoin(UCI_URL, 'libras/movement_libras.data'),
     'liver': urljoin(UCI_URL, 'liver-disorders/bupa.data'),
     'pima': 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/various.db',
-    'segmentation': urljoin(UCI_URL, 'statlog/segment/segment.dat'),
     'vehicle': urljoin(UCI_URL, 'statlog/vehicle/'),
     'wine': urljoin(UCI_URL, 'wine/wine.data'),
     'new_thyroid_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid1.zip'),
@@ -46,14 +45,9 @@ FETCH_URLS = {
     'cleveland': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'cleveland-0_vs_4.zip'),
     'dermatology': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p3/'), 'dermatology-6.zip'),
     'led': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'led7digit-0-2-4-5-6-7-8-9_vs_1.zip'),
-    'page_blocks_0': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'page-blocks0.zip'),
     'page_blocks_1_3': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'page-blocks-1-3_vs_4.zip'),
     'vowel': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'vowel0.zip'),
     'yeast_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'yeast1.zip'),
-    'yeast_3': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'yeast3.zip'),
-    'yeast_4': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast4.zip'),
-    'yeast_5': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast5.zip'),
-    'yeast_6': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'yeast6.zip'),
     'banknote_authentication': urljoin(UCI_URL, '00267/data_banknote_authentication.txt'),
     'arcene': urljoin(UCI_URL, 'arcene/'),
     'audit': urljoin(UCI_URL, '00475/audit_data.zip'),
@@ -252,18 +246,6 @@ class ImbalancedBinaryClassDatasets(Datasets):
         remove('temp.db')
         return data
 
-    def fetch_segmentation(self):
-        """Download and transform the Image Segmentation Data Set.
-        The minority class is identified as the `1` label
-        and the majority class as the rest of the labels.
-
-        https://archive.ics.uci.edu/ml/datasets/Statlog+%28Image+Segmentation%29
-        """
-        data = pd.read_csv(FETCH_URLS['segmentation'], header=None, delim_whitespace=True)
-        data = data.drop(columns=[2, 3, 4]).rename(columns={19: 'target'})
-        data['target'] = data['target'].isin([1]).astype(int)
-        return data
-
     def fetch_vehicle(self):
         """Download and transform the Vehicle Silhouettes Data Set.
         The minority class is identified as the `1` label
@@ -361,20 +343,6 @@ class ImbalancedBinaryClassDatasets(Datasets):
         data['target'] = data['target'].isin(['positive']).astype(int)
         return data
 
-    def fetch_page_blocks_0(self):
-        """Download and transform the Page Blocks 0 Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=147
-        """
-        zipped_data = requests.get(FETCH_URLS['page_blocks_0']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('page-blocks0.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={10: 'target'}, inplace=True)
-        data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
     def fetch_page_blocks_1_3(self):
         """Download and transform the Page Blocks 1-3 Data Set.
         The minority class is identified as the `positive` label and
@@ -415,78 +383,6 @@ class ImbalancedBinaryClassDatasets(Datasets):
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={8: 'target'}, inplace=True)
         data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
-    def fetch_yeast_3(self):
-        """Download and transform the Yeast 3 Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=154
-        """
-        zipped_data = requests.get(FETCH_URLS['yeast_3']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast3.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={8: 'target'}, inplace=True)
-        data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
-    def fetch_yeast_4(self):
-        """Download and transform the Yeast 4 Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=133
-        """
-        zipped_data = requests.get(FETCH_URLS['yeast_4']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast4.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={8: 'target'}, inplace=True)
-        data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
-    def fetch_yeast_5(self):
-        """Download and transform the Yeast 5 Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=134
-        """
-        zipped_data = requests.get(FETCH_URLS['yeast_5']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast5.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={8: 'target'}, inplace=True)
-        data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
-    def fetch_yeast_6(self):
-        """Download and transform the Yeast 6 Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=135
-        """
-        zipped_data = requests.get(FETCH_URLS['yeast_6']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('yeast6.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={8: 'target'}, inplace=True)
-        data['target'] = data['target'].isin([' positive']).astype(int)
-        return data
-
-    def fetch_mandelon_1(self):
-        """Simulate a variation of the MANDELON Data Set."""
-        X, y = make_classification(n_samples=4000, n_features=20, weights=[0.97, 0.03], random_state=RANDOM_STATE)
-        data = pd.DataFrame(np.column_stack([X, y]))
-        data.rename(columns={20: 'target'}, inplace=True)
-        data.target = data.target.astype(int)
-        return data
-
-    def fetch_mandelon_2(self):
-        """Simulate a variation of the MANDELON Data Set."""
-        X, y = make_classification(n_samples=3000, n_features=200, weights=[0.97, 0.03], random_state=RANDOM_STATE)
-        data = pd.DataFrame(np.column_stack([X, y]))
-        data.rename(columns={200: 'target'}, inplace=True)
-        data.target = data.target.astype(int)
         return data
 
 
