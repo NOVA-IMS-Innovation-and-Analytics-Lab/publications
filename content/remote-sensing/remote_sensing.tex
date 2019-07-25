@@ -258,8 +258,8 @@ reproducible using the scripts available at \url{https://github.com/AlgoWit/publ
 Four oversampling techniques were used in this experiment as baseline methods
 along with Geometric SMOTE. Random oversampling was chosen for its simplicity.
 SMOTE was selected for being a classic technique and the most popular
-oversampling algorithm \cite{Douzas2019}. ADASYN \todo{missing citation} and
-Borderline SMOTE \todo{missing citation} were selected for representing popular
+oversampling algorithm \cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and
+Borderline SMOTE \cite{Han2005} were selected for representing popular
 modifications of the original SMOTE technique in the selection phase and data
 generation mechanism, respectively. Finally, we use no oversampling as an
 additional baseline method.
@@ -271,11 +271,10 @@ learning type, training time and popularity within the remote sensing
 community. We further divide the relevant algorithms into 4 different learning
 types: neighbours-based, rule-based, ensemble and generalised linear methods.
 
-\todo{maybe move this part to the experimental setup}
+\todo{maybe move this part to the experimental setup?}
 For each combination of oversampler and classifier (represented as $x_a$ and
 $y_b$, respectively), a grid search will be run in order to find the optimal
 parameter settings. The number of fits for a single combination  is defined as:
-\todo{confirm that formulas are correct}
 
 \[
 fits_{x_a,y_b}=\prod\limits_{p=1} \textrm{count}(x_a^p).\prod\limits_{q=1}
@@ -297,23 +296,23 @@ search and run the full experiment within feasible time, selecting
 computationally efficient classifiers becomes vital.
 
 \cite{Khatami2016} developed a meta-analysis of classification processes out
-of 266 manuscripts published from 1998 to 2012. The most common classifiers
-found in supervised pixel-based land-cover image classification processes
-included K-nearest neighbours, Support Vector Machines, Decision Trees, Random
-Forests and Neural Networks. None of the methods used generalised linear models.
+of 266 manuscripts published from 1998 to 2012. Additionally,
+\cite{Maxwell2018} also describe mature classification methods used in remote
+sensing. The most common classifiers in supervised pixel-based land-cover image
+classification processes include K-nearest neighbours, Support Vector Machines,
+Decision Trees, Boosted Decision Trees, Random Forests and Neural Networks.
+None of the manuscripts mention the use of generalised linear models.
 
 Amongst the neighbours-based learning methods the K-nearest neighbours (KNN)
-\todo{missing citation} algorithm was selected. Out of the rule-based learning
-methods, the decision tree classifier (DT) \todo{missing citation} was chosen.
-Two ensemble learning methods were chosen: Gradient boosting classifier
-\todo{missing citation} and Random Forest classifier. Finally, the logistic
-regression classifier \todo{missing citation} was selected amongst the
-generalised linear models, as no method was found using any classifier using
-this learning type. All these algorithms were found to be computationally
-efficient and commonly used classifiers for the proposed task (with exception
-for the logistic regression).
+algorithm was selected. Out of the rule-based learning methods, the decision
+tree classifier (DT) was chosen. Two ensemble learning methods were chosen:
+Gradient boosting classifier and Random Forest classifier. Finally, the
+logistic regression classifier was selected amongst the generalised linear
+models, since it is a commonly used baseline algorithm. All these algorithms
+were found to be computationally efficient and commonly used classifiers for
+the proposed task (with exception for the logistic regression).
 
-Despite their common use, both artificial neural networks and the Support
+Despite their common use, both artificial neural networks and Support
 Vector Machines were not included in this experiment due to their long training
 times.
 
@@ -322,58 +321,58 @@ times.
 Amongst the many evaluation metrics existing for classifier's performance
 evaluation, there are several indices that are considered to be preliminary and
 are widely used for LULC classification accuracy assessment. Those measures are
-classification overall accuracy, user's accuracy or precision and 
+classification overall accuracy, user's accuracy or precision and
 producer's accuracy or recall,  and are calculated using the classification
 confusion matrix \cite{Liu2007}. However, the LUCAS dataset has high
 inter-class variability. Hence, the minority classes can be difficult to
 account for by the classifiers that are designed to maximise the overall
 accuracy, as the majority classes are receiving more weight \cite{Inglada2017}.
-On the other hand, \cite{He2008} states that the use of user's and producer's 
-accuracy for class imbalanced data is not straightforward and producer's 
-accuracy is not sensitive to the data distribution at all. Considering these, 
-class imbalance specific metrics are needed to better describe classifier's 
-performance. For this purpose, F-score and G-mean metrics are used to evaluate 
-and compare the performance of the oversampling methods. Classification overall 
+On the other hand, \cite{He2008} states that the use of user's and producer's
+accuracy for class imbalanced data is not straightforward and producer's
+accuracy is not sensitive to the data distribution at all. Considering these,
+class imbalance specific metrics are needed to better describe classifier's
+performance. For this purpose, F-score and G-mean metrics are used to evaluate
+and compare the performance of the oversampling methods. Classification overall
 accuracy (OA) is provided to summarize the confusion matrix.
 
 \subsubsection{Overall Accuracy}
 
-Classification Overall Accuracy is the number of correctly classified samples 
-divided by the sum of all the samples on the confusion matrix.  
+Classification Overall Accuracy is the number of correctly classified samples
+divided by the sum of all the samples on the confusion matrix.
 
 \subsubsection{F-score}
 
-F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and 
-producer's accuracy (recall), where user's accuracy is the fraction of 
-correctly classified instances with regard to all instances classified as this 
-certain class in the confusion matrix, and producer's accuracy is the fraction 
-of  correctly classified instances with regard to all instances of that 
-reference class. The F-score value for multi-class imbalanced data 
-classification can be calculated considering the user's accuracy and producer's 
+F-score (or F-measure) is the harmonic mean of user's accuracy (precision) and
+producer's accuracy (recall), where user's accuracy is the fraction of
+correctly classified instances with regard to all instances classified as this
+certain class in the confusion matrix, and producer's accuracy is the fraction
+of  correctly classified instances with regard to all instances of that
+reference class. The F-score value for multi-class imbalanced data
+classification can be calculated considering the user's accuracy and producer's
 accuracy as a unweighted average of the respective values from all the classes.
 
 \[
 F{-}score=2\frac{\text{E(UA)} \times \text{E(PA)}}{\text{E(UA)} + \text{E(PA)}}
 \]
 
-Where E(UA) and E(PA) are unweighted mean values of user's and producer's 
+Where E(UA) and E(PA) are unweighted mean values of user's and producer's
 accuracy for each classes respectively.
 
 \subsubsection{G-measure}
 
-The geometric mean score (G-mean) is the root of the product of class-wise 
-sensitivity and specificity. For the multi-class case sensitivity and 
-specificity are calculated for each class, then averaged with simple mean 
-value. Here the sensitivity (true positive rate) is the same with recall 
-value (producer's accuracy), and specificity (true negative rate) is defines as 
-the proportion of actual negatives classified as such.  
+The geometric mean score (G-mean) is the root of the product of class-wise
+sensitivity and specificity. For the multi-class case sensitivity and
+specificity are calculated for each class, then averaged with simple mean
+value. Here the sensitivity (true positive rate) is the same with recall
+value (producer's accuracy), and specificity (true negative rate) is defines as
+the proportion of actual negatives classified as such.
 
 \[
-G{-}mean = \sqrt{E(Sensitivity) \times E(Specificity)} 
+G{-}mean = \sqrt{E(Sensitivity) \times E(Specificity)}
 \]
 
-Where E(Sensitivity) and E(Specificity) are the unweighted mean values of 
-sensitivity and specificity of all the classes. 
+Where E(Sensitivity) and E(Specificity) are the unweighted mean values of
+sensitivity and specificity of all the classes.
 
 \subsection{Experiment Settings}
 
@@ -383,16 +382,10 @@ For this research LUCAS dataset and Landsat 8 time series from 2015 were used
 for training and validation of supervised classifiers. 1694 LUCAS points are
 used as reference ground-truth data. This dataset is grouped in 8 classes and
 represents the land cover types for the study area. The area of study is the
-central part of Portugal. From the Table 1 it is obvious that the data is
-highly imbalanced with a minority class of 4 instances (wetlands) and majority
-class of 761 instances (woodland).
-
-The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral
-sensor. The images are Level-1 terrain corrected products (L1TP) and are
-acquired in 2015 form February to September, 1 image each month. Only bands 2,
-3, 4, 5, 6 and 7 are used from each image. Thus, each reference point from
-LUCAS dataset has 48 features (Table 2). Those features have the value of
-digital numbers of the images representing LUCAS point location.
+central part of Portugal. The dataset's class distribution and imbalance ratio
+is presented in Table \ref{tab:dataset_classes}. The data imbalance becomes
+visible with a minority class of 4 instances (wetlands) and majority class of
+761 instances (woodland).
 
 \begin{table}[H]
 	\centering
@@ -436,6 +429,14 @@ digital numbers of the images representing LUCAS point location.
 %	\end{tabular}
 %	\caption{\label{tab:datasets}Description of the datasets}
 %\end{table}
+
+The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral
+sensor. The images are Level-1 terrain corrected products (L1TP) and are
+acquired in 2015 form February to September, 1 image each month. Only bands 2,
+3, 4, 5, 6 and 7 are used from each image. Thus, each reference point from
+LUCAS dataset has 48 features (Table \ref{tab:datasets}). Those features have the value of
+digital numbers of the images representing LUCAS point location.
+
 
 \begin{table}[H]
 	\centering
