@@ -43,7 +43,6 @@ FETCH_URLS = {
     'new_thyroid_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid1.zip'),
     'new_thyroid_2': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid2.zip'),
     'cleveland': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'cleveland-0_vs_4.zip'),
-    'dermatology': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p3/'), 'dermatology-6.zip'),
     'led': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p2/'), 'led7digit-0-2-4-5-6-7-8-9_vs_1.zip'),
     'page_blocks_1_3': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'page-blocks-1-3_vs_4.zip'),
     'vowel': urljoin(urljoin(KEEL_URL, 'imb_IRhigherThan9p1/'), 'vowel0.zip'),
@@ -312,20 +311,6 @@ class ImbalancedBinaryClassDatasets(Datasets):
         unzipped_data = ZipFile(BytesIO(zipped_data)).read('cleveland-0_vs_4.dat').decode('utf-8')
         data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
         data.rename(columns={13: 'target'}, inplace=True)
-        data['target'] = data['target'].isin(['positive']).astype(int)
-        return data
-
-    def fetch_dermatology(self):
-        """Download and transform the Dermatology Data Set.
-        The minority class is identified as the `positive` label and
-        the majority class as the `negative` label.
-
-        http://sci2s.ugr.es/keel/dataset.php?cod=1330
-        """
-        zipped_data = requests.get(FETCH_URLS['dermatology']).content
-        unzipped_data = ZipFile(BytesIO(zipped_data)).read('dermatology-6.dat').decode('utf-8')
-        data = pd.read_csv(StringIO(sub(r'@.+\n+', '', unzipped_data)), header=None)
-        data.rename(columns={34: 'target'}, inplace=True)
         data['target'] = data['target'].isin(['positive']).astype(int)
         return data
 
