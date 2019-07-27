@@ -87,7 +87,6 @@ OVERSAMPLERS_BASIC = [
 ]
 OVERSAMPLERS_CLUSTERING = [
     ('K-MEANS RANDOM OVERSAMPLING', RandomOverSampler(clusterer=KMeans(), distributor=DensityDistributor()), {
-        'k_neighbors': [3, 5],
         'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         'distributor__distances_exponent': [0, 1, 2, 5],
         'distributor__filtering_threshold': [0.0, 0.5, 1.0, 2.0]
