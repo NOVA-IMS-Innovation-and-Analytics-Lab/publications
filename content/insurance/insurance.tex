@@ -158,39 +158,38 @@ on section 6.
 \section{State of the art}
 
 Although companies’ efforts in fighting fraud have increased in recent years 
-and more sophisticated methodologies have been used, its consequences are still 
-evident in economic losses. According to the (2016 Global Economic Crime 
+and more sophisticated methodologies have been used, fraud consequences are 
+still evident in economic losses. According to the (2016 Global Economic Crime 
 Survey, 2016) in the insurance industry these numbers approach 80 billion 
 losses per year across all lines of insurance in the U.S. (Coalition Against 
 Insurance Fraud, n.d.). In Germany the insurance association (GDV) estimates 
 (Hartley, 2016) In Colombia, the National Institute for Investigation against 
 Fraud (INIF) ensures that (Chacón, 2017).  It is important to note that fraud 
-repercussions transcend economic losses having negative impacts in savings 
-losses, increased premium’s for users, distrust in the insurance sector and 
-insurer’s image discredit. Fraud, has also produced the need for the insurance 
-sector to improve business processes control, which frequently translate into 
-significant overhead burden and tedious operational tasks, which consume 
-substantial resources, both in terms of budget and time. 
+repercussions transcend economic losses, also having negative impacts in 
+savings losses, increased premium’s for users, distrust in the insurance sector 
+and insurer’s image discredit. Fraud, has also produced the need for the 
+insurance sector to improve business processes control, which frequently 
+translate into significant overhead burden and tedious operational tasks, which 
+consume substantial resources, both in terms of budget and time. 
 For these reasons, the industry has invested significantly in the development 
 of machine learning models, in the hope of improving the ability to proactively 
-detect and prevent fraudulent behaviors (Decker, 1998). In fact, preventing 
+detect and prevent fraudulent behaviors \cite{Decker1998}. In fact, preventing 
 fraud and reducing its financial impact on the business can be the right 
-strategy to increase competitiveness and grow the bottom line (Skeels Pan, 
-2016). A significant body of research can be found on the topic of fraud 
-prevention (Phua Alahakoon, 2004) (Wei, Jinjiu, Longbing, Yuming, Jiahang, 
-2012) (Barnarescu, 2016) (Ibrahim Hassan Abraham Ajith, 2015) (Kim, Baik,  
-Sungzoon, 2016) (Sahin, Bulkan, Duman, 20132). Most of the researchers 
-efforts have been focused on finding the best model that allows the 
-identification of fraudulent transactions or events, in order to expedite the 
-operational procedures, saving time and money.
-The Compulsory Auto Insurance (SOAT according to its acronym in Spanish) 
-established in Colombia in 1986, was a response to the increase in automotive 
+strategy to increase competitiveness and grow the bottom line \cite{Skeels 
+Pan2016}. A significant body of research can be found on the topic of fraud 
+prevention \cite{Phua2004} \cite{Wei2012} \cite{Banarescu2015} 
+\cite{Ibrahim2015} \cite{Kim2016} \cite{Sahin2013}. Most of the research 
+efforts have been focused on finding the best models to identify fraudulent 
+transactions or events, in order to expedite the operational procedures, saving 
+time and money.
+The Compulsory Auto Insurance (SOAT according to its acronym in Spanish) was 
+established in Colombia in 1986, as a response to the increase of automotive 
 accidents, with 1.3 million of fatal victims and more than 50 million injured, 
-which leads to a public health problem, its “social” purport consists in 
-guarantee a basic medical attention to all the victims of this type of accident 
-occurred in the country. Unfortunately, because of the mismanagement carried 
-out by the government, health entities and users, most of the cases related 
-with fraud, and the impossibility to determine the premium according to the 
+which can be considered a public health problem. SOAT's objective is to 
+guarantee a basic medical attention to all the victims involved in this type of 
+accident in the country. Unfortunately, because of the mismanagement  carried 
+out by the government, health entities and users, most of the cases  related 
+with fraud, and the impossibility to determine the premium according to  the 
 risk, the insurance companies which provide this coverage had state annual 
 losses for more than 54 million dollars. 
 The SOAT is highly sensitive to fraud; the actions made by fraudsters can be 
@@ -206,6 +205,30 @@ enumerated as follows:
 	companies
 	\item Inflation of treatments and medicines costs.
 \end{itemize}
+Fraud is, by defenition, an unusual event, in the insurance industry it is 
+supposed to expect fewer fraudulent claims than non-fraudulent cases. Also, the 
+cost of misclassified a fraudulent claim is higher than a considered rightful 
+claim as a counterfeit claim.  Hence, fraudulent claims prediction can be 
+defined as an imbalanced classification task. 
+Imbalanced datasets can be defined as datasets in which the existing classes 
+are not represented in the same proportion and where the misclassification 
+costs are not equal. Therefore, learning from it for classification purposes 
+becomes a very difficult task: 
+Most of classifiers (Regression models, Support Vector Machine (SVM), Decision 
+tress or Neural Networks) present a poor performance when they are facing with 
+unbalanced data: they can have a good accuracy for majority class but poor 
+results for the class of interest.  This, since they were created precisely 
+assuming a balanced distribution or equal misclassification costs. (Haibo, 
+2009) 
+Additionally, differentiate between rare cases and the minority class is 
+challenging: examples belonging to the lesser class can be identified by the 
+algorithm as noise or outliers, and in the same way noisy individuals can be 
+treated as the individuals of interest. (Beyan & Fisher, 2015)
+Because of the relevance of this situation and the importance of treat it the 
+best way, a lot of research has been developed for deal with it, (Haixiang, 
+Yijing, Shang, Mingyun, & Yuanyue, 2016) presents a review from 527 papers 
+where the work of 10 years of study are shaped. 
+There exist four main groups were the proposed solutions can be categorized: 
 
 
 
