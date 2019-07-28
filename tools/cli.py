@@ -34,7 +34,7 @@ DATABASES_MAPPING = {'imbalanced_binary_class': ImbalancedBinaryClassDatasets, '
 def load_datasets(db_name, datasets_names):
     """Load datasets from sqlite database."""
 
-    path = join(dirname(__file__), DATA_PATH, f'{db_name}.db')
+    path = join(DATA_PATH, f'{db_name}.db')
     if not exists(path):
         raise FileNotFoundError(f'Database {db_name} was not found.')
 
@@ -114,7 +114,7 @@ def run():
         datasets = load_datasets(db_name, datasets_names)
         
         # Create directory
-        experiment_path = join(dirname(__file__), EXPERIMENTS_PATH, args.exp)
+        experiment_path = join(EXPERIMENTS_PATH, args.exp)
         Path(experiment_path).mkdir(exist_ok=True)
 
         # Run and save experiment
@@ -128,7 +128,7 @@ def run():
             raise ValueError(f'Experiment `{args.exp}`` not available to combine sub-experiments. Select one from {list(CONFIG.keys())}.')
 
         # Find experiments
-        experiment_path = join(dirname(__file__), EXPERIMENTS_PATH, args.exp)
+        experiment_path = join(EXPERIMENTS_PATH, args.exp)
         filenames = [filename for filename in listdir(experiment_path) if filename.endswith('.pkl')]
         
         # Load experiments

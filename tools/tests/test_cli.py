@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import make_classification
 
-from .. import DATA_PATH, EXPERIMENTS_PATH
+from .. import DATA_PATH
 from ..cli import load_datasets, create_parser, run
 
 
@@ -31,7 +31,8 @@ def test_load_datasets():
     X2, y2 = make_classification(random_state=0, weights=[0.8, 0.2], n_features=n_features2)
 
     # Create database
-    db_path = join(dirname(__file__), '..', DATA_PATH, 'test.db')
+    db_path = join(DATA_PATH, 'test.db')
+    print(db_path)
     connection = connect(db_path)
 
     # Save table 1 to database
