@@ -1,0 +1,9 @@
+Classifier,Metric,p-value,Significance
+LR,ACCURACY,1.2e-02,True
+LR,G-MEAN,7.3e-02,False
+KNN,ACCURACY,1.6e-03,True
+KNN,G-MEAN,7.9e-03,True
+DT,ACCURACY,2.0e-04,True
+DT,G-MEAN,1.4e-03,True
+GBC,ACCURACY,3.0e-03,True
+GBC,G-MEAN,2.4e-02,True
