@@ -130,7 +130,7 @@ show that G-SMOTE outperforms every other oversampling technique, for both
 overall prediction power and minority class prediction power.
 
 Oversamplers' performance is evaluated through an experimental analysis using
-the publicly available LUCAS dataset \cite{Toth2013}. This dataset contains
+the publicly available LUCAS dataset \cite{LUCAS2015}. This dataset contains
 multispectral reflectance data from European soil, filtered for a region in
 Portugal. The experimental procedure includes a comparison of the different
 oversamplers using 4 classifiers and \textbf{(...)} evaluation metrics.
@@ -402,17 +402,17 @@ classifier and oversampler are presented in the table \ref{tab:datasets}.
 	\begin{tabular}{lll}
 		\toprule
 		Classifier       & Hyper-Parameters & Values\\
-		\toprule
-		LR               & maximum iterations   & 1e4   \\
+		\hline
+		LR               & maximum iterations   & 10000   \\
 		KNN              & number of neighbors  & {3, 5} \\
 		DT               & maximum depth        & {3, 6} \\
 		GBC              & maximum depth        & {3, 6} \\
     			 		 & number of estimators & {50, 100} \\
-		RF               & maximum depth        &  {None, 3, 6} \\
+		RF               & maximum depth        & {None, 3, 6} \\
 				 		 & number of estimators & {50, 100} \\
 		\toprule
 		Oversampler      &                      & \\
-		\toprule
+		\hline
 		G-SMOTE          & number of neighbors  & {3, 5} \\
 				 		 & selection strategy   & combined, minority, majority\\
 				 		 & truncation factor    & {-1.0, -0.5, .0, 0.25,
@@ -430,14 +430,18 @@ classifier and oversampler are presented in the table \ref{tab:datasets}.
 
 \subsection{Data Set}
 
-For this research LUCAS dataset and Landsat 8 time series from 2015 were used
-for training and validation of supervised classifiers. 1694 LUCAS points are
-used as reference ground-truth data. This dataset is grouped in 8 classes and
-represents the land cover types for the study area. The area of study is the
-central part of Portugal. The dataset's class distribution and imbalance ratio
-is presented in Table \ref{tab:dataset_classes}. The data imbalance becomes
-visible with a minority class of 4 instances (wetlands) and majority class of
-761 instances (woodland).
+For this research LUCAS dataset and Landsat-8 time series from 2015 were used
+for training and validation of supervised classifiers. 1694 ground-truth points 
+from LUCAS 2015 dataset are used as reference data. This dataset is grouped 
+into 8 classes and represents the main land cover types for the study area. The 
+area of study is in the continental part of north-western Portugal, 
+corresponding to the area covered by Landsat image from the track 204 and row 
+32, with coordinates of center lat: 40.336, long: -8.468. \todo{not sure about 
+the map of the study area, as there's not going to be a final map}
+
+The dataset's class distribution and imbalance ratio is presented in Table 
+\ref{tab:dataset_classes}. The data imbalance becomes visible with a minority 
+class of 4 instances (wetlands) and majority class of 761 instances (woodland).
 
 \begin{table}[H]
 	\centering
@@ -463,10 +467,12 @@ visible with a minority class of 4 instances (wetlands) and majority class of
 
 The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral
 sensor. The images are Level-1 terrain corrected products (L1TP) and are
-acquired in 2015 form February to September, 1 image each month. Only bands 2,
-3, 4, 5, 6 and 7 are used from each image. Thus, each reference point from
-LUCAS dataset has 48 features (Table \ref{tab:datasets}). Those features have
-the value of digital numbers of the images representing LUCAS point location.
+acquired in 2015 from February to September, 1 image each month. The 
+acquisition mode is Descending. Only bands 2, 3, 4, 5, 6 and 7 are used from 
+each image. Thus, each reference point from LUCAS dataset has 48 features 
+(Table \ref{tab:datasets}). Those features have the value of digital numbers of 
+the pixels from each spectral bands of the image time series representing LUCAS 
+point location.
 
 
 \begin{table}[H]
