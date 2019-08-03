@@ -39,6 +39,7 @@
 \usepackage{longtable}
 \usepackage{tabu}
 \usepackage{hyperref}
+\usepackage{csvsimple}
 \date{}
 
 \begin{document}
@@ -474,86 +475,50 @@ each image. Thus, each reference point from LUCAS dataset has 48 features
 the pixels from each spectral bands of the image time series representing LUCAS 
 point location.
 
-
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ll}
-		\toprule
-		\textbf{Dataset name}             &  				 LUCAS \\
-		\textbf{Features}                 &             48 \\
-		\textbf{Instances}                &           1694 \\
-		\textbf{Minority class instaces}  &              4 \\
-		\textbf{Majority class instances} &            761 \\
-		\textbf{Imbalance Ratio}          &         190.25 \\
-	\bottomrule
-	\end{tabular}
-	\caption{\label{tab:datasets}Description of the dataset}
+	\csvautobooktabular{./resources/dataset_descrip.csv}
+	\caption{\label{tab:rankings}Description of the dataset}
 \end{table}
+
 
 \section{Results and Discussion}
 
+%\begin{table}[H]
+%	\centering
+%	\begin{tabular}{lrrr}
+%	\toprule
+%	{} &  F1 macro &  G-mean macro &  Accuracy \\
+%	\midrule
+%	G-SMOTE             &       1.2 &           1.0 &       2.2 \\
+%	BORDERLINE SMOTE    &       2.2 &           2.0 &       3.0 \\
+%	NO OVERSAMPLING     &       3.8 &           5.2 &       1.0 \\
+%	SMOTE               &       3.8 &           3.6 &       5.0 \\
+%	ADASYN              &       4.8 &           4.2 &       6.0 \\
+%	\bottomrule
+%	\end{tabular}
+%	\caption{\label{tab:rankings}Ranking table}
+%\end{table}
+
 \begin{table}[H]
 	\centering
-	\begin{tabular}{llrrrrrr}
-	\toprule
-	Classifier &        Metric &  Random OS &  G-SMOTE &  B-SMOTE &   No OS &   SMOTE &  ADASYN \\
-	\midrule
-	        LR &  G-mean macro &     0.5287 &   0.5657 &   0.5300 &  0.5134 &
-					0.5245 &  0.5176 \\
-	        LR &      F1 macro &     0.2927 &   0.3125 &   0.2995 &  0.2956 &
-					0.2881 &  0.2816 \\
-	        LR &      Accuracy &     0.4990 &   0.5057 &   0.5321 &  0.5744 &
-					0.4953 &  0.4801 \\
-					\hline
-	       KNN &  G-mean macro &     0.4776 &   0.5037 &   0.5005 &  0.4962 &
-				 0.4866 &  0.4829 \\
-	       KNN &      F1 macro &     0.2425 &   0.2795 &   0.2633 &  0.2741 &
-				 0.2475 &  0.2438 \\
-	       KNN &      Accuracy &     0.4459 &   0.5573 &   0.4911 &  0.5579 &
-				 0.4256 &  0.4193 \\
-				 \hline
-	        DT &  G-mean macro &     0.4832 &   0.5194 &   0.5082 &  0.4883 &
-					0.4899 &  0.4921 \\
-	        DT &      F1 macro &     0.2427 &   0.2674 &   0.2715 &  0.2431 &
-					0.2500 &  0.2500 \\
-	        DT &      Accuracy &     0.4313 &   0.4786 &   0.4742 &  0.5142 &
-					0.4189 &  0.4166 \\
-					\hline
-	       GBC &  G-mean macro &     0.5373 &   0.5592 &   0.5453 &  0.5322 &
-				 0.5403 &  0.5375 \\
-	       GBC &      F1 macro &     0.3099 &   0.3293 &   0.3145 &  0.3129 &
-				 0.3128 &  0.3062 \\
-	       GBC &      Accuracy &     0.5602 &   0.5736 &   0.5657 &  0.5838 &
-				 0.5598 &  0.5514 \\
-				 \hline
-	        RF &  G-mean macro &     0.5418 &   0.5723 &   0.5496 &  0.5282 &
-					0.5452 &  0.5422 \\
-	        RF &      F1 macro &     0.3135 &   0.3413 &   0.3147 &  0.3057 &
-					0.3172 &  0.3141 \\
-	        RF &      Accuracy &     0.5763 &   0.5795 &   0.5708 &  0.5874 &
-					0.5571 &  0.5519 \\
-	\bottomrule
-	\end{tabular}
-	\caption{\label{tab:scores}Scoring table}
+	\csvautobooktabular{./resources/mean_sem_scores.csv}
+	\caption{\label{tab:rankings}Results for mean cross validation scores of 
+	oversamplersc}
 \end{table}
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{lrrr}
-	\toprule
-	{} &  F1 macro &  G-mean macro &  Accuracy \\
-	\midrule
-	RANDOM OVERSAMPLING &       5.2 &           5.0 &       3.8 \\
-	G-SMOTE             &       1.2 &           1.0 &       2.2 \\
-	BORDERLINE SMOTE    &       2.2 &           2.0 &       3.0 \\
-	NO OVERSAMPLING     &       3.8 &           5.2 &       1.0 \\
-	SMOTE               &       3.8 &           3.6 &       5.0 \\
-	ADASYN              &       4.8 &           4.2 &       6.0 \\
-	\bottomrule
-	\end{tabular}
-	\caption{\label{tab:rankings}Ranking table}
+	\csvautobooktabular{./resources/mean_sem_ranking.csv}
+	\caption{\label{tab:rankings} Results for mean ranking of oversamplers}
 \end{table}
 
+\begin{table}[H]
+	\centering
+	\csvautobooktabular{./resources/mean_sem_perc_diff_scores.csv}
+	\caption{\label{tab:rankings}Results for percentage difference between 
+		G-SMOTE and SMOTE}
+\end{table}
 
 \section{Conclusions}
 
