@@ -1,0 +1,16 @@
+Classifier,Metric,Difference
+LR,G-MEAN MACRO,7.85 $\pm$ nan
+LR,F-SCORE MACRO,8.48 $\pm$ nan
+LR,ACCURACY,nan $\pm$ nan
+KNN,G-MEAN MACRO,3.50 $\pm$ nan
+KNN,F-SCORE MACRO,12.92 $\pm$ nan
+KNN,ACCURACY,nan $\pm$ nan
+DT,G-MEAN MACRO,6.01 $\pm$ nan
+DT,F-SCORE MACRO,6.98 $\pm$ nan
+DT,ACCURACY,nan $\pm$ nan
+GBC,G-MEAN MACRO,3.49 $\pm$ nan
+GBC,F-SCORE MACRO,5.30 $\pm$ nan
+GBC,ACCURACY,nan $\pm$ nan
+RF,G-MEAN MACRO,4.98 $\pm$ nan
+RF,F-SCORE MACRO,7.60 $\pm$ nan
+RF,ACCURACY,nan $\pm$ nan

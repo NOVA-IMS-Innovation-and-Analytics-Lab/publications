@@ -1,0 +1,16 @@
+Classifier,Metric,RANDOM OVERSAMPLING,G-SMOTE,BORDERLINE SMOTE,NO OVERSAMPLING,SMOTE,ADASYN
+LR,G-MEAN MACRO,3.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
+LR,F-SCORE MACRO,4.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,5.00 $\pm$ nan,6.00 $\pm$ nan
+LR,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
+KNN,G-MEAN MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
+KNN,F-SCORE MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,3.00 $\pm$ nan,2.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
+KNN,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
+DT,G-MEAN MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,5.00 $\pm$ nan,4.00 $\pm$ nan,3.00 $\pm$ nan
+DT,F-SCORE MACRO,6.00 $\pm$ nan,2.00 $\pm$ nan,1.00 $\pm$ nan,5.00 $\pm$ nan,4.00 $\pm$ nan,3.00 $\pm$ nan
+DT,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
+GBC,G-MEAN MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan
+GBC,F-SCORE MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan,6.00 $\pm$ nan
+GBC,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
+RF,G-MEAN MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan
+RF,F-SCORE MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,3.00 $\pm$ nan,6.00 $\pm$ nan,2.00 $\pm$ nan,4.00 $\pm$ nan
+RF,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
