@@ -328,15 +328,21 @@ accuracy, as the majority classes are receiving more weight \cite{Inglada2017}.
 On the other hand, \cite{He2008} states that the use of user's and producer's
 accuracy for class imbalanced data is not straightforward and producer's
 accuracy is not sensitive to the data distribution at all. Considering these,
-class imbalance specific metrics are needed to better describe classifier's
-performance. For this purpose, F-score and G-mean metrics are used to evaluate
-and compare the performance of the oversampling methods. Classification overall
-accuracy (OA) is provided to summarize the confusion matrix.
+class specific metrics are needed to better describe classifier's performance. 
+For this purpose, F-score and G-mean metrics are used to evaluate and compare 
+the performance of the oversampling methods. Classification overall accuracy 
+(OA) is provided for discussion.
 
 \subsubsection{Overall Accuracy}
 
 Classification Overall Accuracy is the number of correctly classified samples
-divided by the sum of all the samples on the confusion matrix.
+divided by the sum of all the samples on the confusion matrix. 
+
+In case when the training data is imbalanced and the accuracy metric is 
+utilized, the result of the grid search for the best parameters will indicate 
+that the particular parameterization is the one with highest classification 
+overall accuracy, which is biased towards the majority class and can disregard 
+the classification of minority classes.
 
 \subsubsection{F-score}
 
@@ -361,16 +367,22 @@ accuracy of all the classes, respectively.
 The geometric mean score (G-mean) is the root of the product of class-wise
 sensitivity and specificity. For the multi-class case sensitivity and
 specificity are calculated for each class, then averaged with simple mean
-value. Here the sensitivity (true positive rate) is the same with recall
-value (producer's accuracy), and specificity (true negative rate) is defines as
-the proportion of actual negatives classified as such.
+value. Here the sensitivity (true positive rate) is the same with producer's 
+accuracy (recall), and specificity (true negative rate) is defines as
+the proportion of actual negatives classified as such. Adequately, specificity 
+can be defined as producer's accuracy of the negative class \cite{Silva2017}.
 
 \[
 G{-}mean = \sqrt{E(Sensitivity) \times E(Specificity)}
 \]
 
 Where E(Sensitivity) and E(Specificity) are the unweighted mean values of
-sensitivity and specificity of all the classes, respectively.
+sensitivity and specificity of all the classes, respectively. The geometric 
+mean indicates the balance between classification performances on both majority 
+and minority classes. It means, high misclassification in the minority class 
+will lead to a lower geometric mean value. This is a very valuable feature for 
+evaluation of the classifier's performance with class imbalance problem, which 
+is the case of this study. 
 
 
 \subsection{Experiment Settings}
@@ -380,7 +392,7 @@ parameters that need to be set up by users for a better classification
 performance. Parameter tuning to define the optimal values of the
 hyper-parameters was performed with 5-fold cross-validation (CV) for each of
 the model (combining classifiers with oversampler). The best parameters are
-later selected to validate the classifie'r performance.
+later selected to validate the classifier's performance.
 
 In order to avoid from over-optimistic classification results, implementation
 of CV with oversampling technique should be carried out as following
@@ -396,7 +408,7 @@ is used only on the training dataset generated in each step of the CV
 procedure.
 
 A range of hyper-parameters used for the grid search for each of the
-classifier and oversampler are presented in the table \ref{tab:datasets}.
+classifier and oversampler are presented in the table \ref{tab:grid}.
 
 \begin{table}[H]
 	\centering
@@ -425,7 +437,7 @@ classifier and oversampler are presented in the table \ref{tab:datasets}.
 		ADASYN           & number of neighbors & {2, 3} \\
 		\bottomrule
 	\end{tabular}
-	\caption{\label{tab:datasets}User-defined grid values}
+	\caption{\label{tab:grid}User-defined grid values}
 \end{table}
 
 
@@ -478,45 +490,72 @@ point location.
 \begin{table}[H]
 	\centering
 	\csvautobooktabular{./resources/dataset_descrip.csv}
-	\caption{\label{tab:rankings}Description of the dataset}
+	\caption{\label{tab:datasets}Description of the dataset}
 \end{table}
-
 
 \section{Results and Discussion}
+This section presents the final results of classifiers performance with 
+different oversamplers over LUCAS dataset. A simple ranking of oversamplers 
+performance is carried out for comparative analysis.  
 
-%\begin{table}[H]
-%	\centering
-%	\begin{tabular}{lrrr}
-%	\toprule
-%	{} &  F1 macro &  G-mean macro &  Accuracy \\
-%	\midrule
-%	G-SMOTE             &       1.2 &           1.0 &       2.2 \\
-%	BORDERLINE SMOTE    &       2.2 &           2.0 &       3.0 \\
-%	NO OVERSAMPLING     &       3.8 &           5.2 &       1.0 \\
-%	SMOTE               &       3.8 &           3.6 &       5.0 \\
-%	ADASYN              &       4.8 &           4.2 &       6.0 \\
-%	\bottomrule
-%	\end{tabular}
-%	\caption{\label{tab:rankings}Ranking table}
-%\end{table}
+The cross-validation scores for each combination of classifiers, evaluation 
+metrics and oversamplers are presented in Table \ref{tab:mean_cross_val}. 
+From this table we can observe that Geometric-SMOTE over-performs nearly all 
+the other oversampling methods for both G-mean and F-score metrics with all the 
+classifiers. 
 
 \begin{table}[H]
 	\centering
-	\csvautobooktabular{./resources/mean_sem_scores.csv}
-	\caption{\label{tab:rankings}Results for mean cross validation scores of 
-	oversamplersc}
+	\csvautobooktabular{./resources/cross_val_scores.csv}
+	\caption{\label{tab:mean_cross_val}Results for cross validation scores 
+		of oversamplers (B-SMOTE correspondents to Borderline SMOTE)}
 \end{table}
 
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{./resources/mean_sem_ranking.csv}
-	\caption{\label{tab:rankings} Results for mean ranking of oversamplers}
-\end{table}
+A ranking score was assigned to each oversampling method with the best and 
+worst performing methods receiving scores equal to 1 and 6, respectively. This 
+comparison is presented in Table \ref{tab:ranking}. From this table we can 
+observe that for G-mean measure Geometric-SMOTE algorithm systematically 
+performs better than any other oversampling algorithm. For F-score it is the 
+best for all the combinations but Borterline-SMOTE with Decision Tree 
+classifier, even though, the difference with Geometric-SMOTE value is 
+negligible.
 
 \begin{table}[H]
 	\centering
-	\csvautobooktabular{./resources/mean_sem_perc_diff_scores.csv}
-	\caption{\label{tab:rankings}Results for percentage difference between 
+	\csvautobooktabular{./resources/model_ranking.csv}
+	\caption{\label{tab:ranking} Results for ranking of oversamplers}
+\end{table}
+
+The men of ranking scores for each of oversampling method across the 
+classification algorithms is presented in the Table \ref{tab:mean_rankings}.
+
+\begin{table}[H]
+	\centering
+	\csvautobooktabular{./resources/mean_ranking.csv}
+	\caption{\label{tab:mean_rankings} Results for mean ranking of oversamplers}
+\end{table}
+
+As it was stated in the section 3.3, accuracy metric can be misleading for 
+imbalanced data classification. This resulted the classification with 
+unmodified data to have the highest accuracy score due to the fact, that 
+overall accuracy is determined mostly by the majority classes, while importance 
+of the prediction in minority classes is neglected. In the multi-class 
+classification with imbalanced data such as LUCAS dataset, when the 
+prediction of all the classes are of importance, accuracy metrics should not be 
+implemented to evaluate the model performance, as is commonly utilized in 
+remote sensing. However, even for accuracy metric, Geometric-SMOTE shows the 
+best performance amongst the data modification algorithms and exceeds the rest 
+of the oversampling methods.
+ 
+Table \ref{tab:smote_gsmote} presents the percentage difference  between 
+Geometric-SMOTE and SMOTE. For this comparison SMOTE algorithm was selected due 
+to its popularity and wide use within the remote sensing society (see section 
+2).
+
+\begin{table}[H]
+	\centering
+	\csvautobooktabular{./resources/mean_diff_scores.csv}
+	\caption{\label{tab:smote_gsmote}Results for percentage difference between 
 		G-SMOTE and SMOTE}
 \end{table}
 
