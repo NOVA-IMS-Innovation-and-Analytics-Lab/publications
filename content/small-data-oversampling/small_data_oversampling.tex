@@ -731,7 +731,83 @@ the Scikit-Learn ecosystem.
 
 \section{Results and Discussion}
 \subsection{Comparative Presentation}
+
+The mean cross validation scores per classifier across all datasets are 
+presented in Figure 13. The oversamplers are tested including four 
+undersampling ratios to evaluate how the methods perform as the data set size 
+diminishes. The graphs are based on G-mean metric to assure unbiased values due 
+to slightly imbalanced distribution of classes.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./resources/mean_scores_per_classifier}
+	\caption{Mean scores per classifier}
+	\label{fig:mean_scores_per_classifier}
+\end{figure}
+
+As explained in section 5, a ranking score in the range 1 to 5 is assigned to 
+each oversampler. The mean ranking of all oversampling methods across the 10 
+datasets is presented in the following figure: 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./resources/mean_ranking_per_classifier}
+	\caption{Mean ranking per classifier}
+	\label{fig:mean_ranking_per_classifier}
+\end{figure}
+
+G-SMOTE shows better prediction performance in almost every case when comparing 
+with SMOTE, Borderline SMOTE, Random Oversampling and No Oversampling. The 
+graphs show that the performance of oversamplers degrade as the size of the 
+data set diminishes.  
+
+We also added the results of the benchmark method in table 2. The benchmark 
+method represents the original dataset without applying undersampling before 
+training the algorithm. This sample set is seen as the ground truth of our 
+experiments which is expected to obtain the best results by design. Looking at 
+all numbers, G-SMOTE has the ability to represent the reality with the highest 
+precision.
+
+[Table]
+
 \subsection{Statistical Analysis}
+
+The application of the Friedman test show the following results:
+
+\begin{table}[H]
+	\begin{tabular}{ll|ll|ll|ll|ll}
+		&          & \multicolumn{2}{c|}{50\%} & \multicolumn{2}{c|}{75\%} & 
+		\multicolumn{2}{c|}{90\%} & \multicolumn{2}{c}{95\%} \\
+		\textbf{Classifier} & \textbf{Metric}   & \textbf{p-value}  & 
+		\textbf{Sig}  & \textbf{p-value}   & 
+		\textbf{Sig}  & \textbf{p-value}   & \textbf{Sig}  & 
+		\textbf{p-value}   & \textbf{Sig}  
+		\\ \hline
+		LR         & Accuracy & 2.00E-03  & TRUE          & 2.80E-03  & 
+		TRUE          & 9.30E-03  & TRUE          & 1.20E-02  & TRUE          \\
+		LR         & G-Mean   & 3.30E-02  & TRUE          & 1.40E-02  & 
+		TRUE          & 1.30E-02  & TRUE          & 7.30E-02  & FALSE         \\
+		KNN        & Accuracy & 3.50E-03  & TRUE          & 2.20E-03  & 
+		TRUE          & 4.70E-03  & TRUE          & 1.60E-03  & TRUE          \\
+		KNN        & G-Mean   & 1.00E-02  & TRUE          & 9.30E-04  & 
+		TRUE          & 2.00E-04  & TRUE          & 7.90E-03  & TRUE          \\
+		DT         & Accuracy & 5.50E-03  & TRUE          & 1.90E-02  & 
+		TRUE          & 1.80E-03  & TRUE          & 2.00E-04  & TRUE          \\
+		DT         & G-Mean   & 2.20E-03  & TRUE          & 4.50E-02  & 
+		TRUE          & 6.80E-03  & TRUE          & 1.40E-03  & TRUE          \\
+		GBC        & Accuracy & 3.00E-03  & TRUE          & 2.90E-02  & 
+		TRUE          & 6.10E-03  & TRUE          & 3.00E-03  & TRUE          \\
+		GBC        & G-Mean   & 3.40E-03  & TRUE          & 4.50E-02  & 
+		TRUE          & 8.70E-03  & TRUE          & 2.40E-02  & TRUE         
+	\end{tabular}
+\caption{\label{tab:friedman-test}Results for Friedman test}
+\end{table}
+
+Therefore, the null hypothesis of the Friedman test is rejected at a 
+significance level of a = 0.05, i.e. the classifiers do not perform similarly 
+in the mean rankings across the oversampling methods and evaluation metrics.
+
+\subsection{Limitations and future studies}s
 
 \section{Conclusions}
 
