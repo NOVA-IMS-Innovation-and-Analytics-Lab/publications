@@ -1,16 +1,16 @@
 Classifier,Metric,RANDOM OVERSAMPLING,G-SMOTE,BORDERLINE SMOTE,NO OVERSAMPLING,SMOTE,ADASYN
-LR,G-MEAN MACRO,3.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
-LR,F-SCORE MACRO,4.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,5.00 $\pm$ nan,6.00 $\pm$ nan
-LR,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
-KNN,G-MEAN MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
-KNN,F-SCORE MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,3.00 $\pm$ nan,2.00 $\pm$ nan,4.00 $\pm$ nan,5.00 $\pm$ nan
-KNN,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
-DT,G-MEAN MACRO,6.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,5.00 $\pm$ nan,4.00 $\pm$ nan,3.00 $\pm$ nan
-DT,F-SCORE MACRO,6.00 $\pm$ nan,2.00 $\pm$ nan,1.00 $\pm$ nan,5.00 $\pm$ nan,4.00 $\pm$ nan,3.00 $\pm$ nan
-DT,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
-GBC,G-MEAN MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan
-GBC,F-SCORE MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan,6.00 $\pm$ nan
-GBC,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
-RF,G-MEAN MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,2.00 $\pm$ nan,6.00 $\pm$ nan,3.00 $\pm$ nan,4.00 $\pm$ nan
-RF,F-SCORE MACRO,5.00 $\pm$ nan,1.00 $\pm$ nan,3.00 $\pm$ nan,6.00 $\pm$ nan,2.00 $\pm$ nan,4.00 $\pm$ nan
-RF,ACCURACY,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan,nan $\pm$ nan
+LR,G-MEAN MACRO,3.00,1.00,2.00,6.00,4.00,5.00
+LR,F-SCORE MACRO,4.00,1.00,2.00,3.00,5.00,6.00
+LR,ACCURACY,4.00,3.00,2.00,1.00,5.00,6.00
+KNN,G-MEAN MACRO,6.00,1.00,2.00,3.00,4.00,5.00
+KNN,F-SCORE MACRO,6.00,1.00,3.00,2.00,4.00,5.00
+KNN,ACCURACY,4.00,2.00,3.00,1.00,5.00,6.00
+DT,G-MEAN MACRO,6.00,1.00,2.00,5.00,4.00,3.00
+DT,F-SCORE MACRO,6.00,2.00,1.00,5.00,4.00,3.00
+DT,ACCURACY,4.00,2.00,3.00,1.00,5.00,6.00
+GBC,G-MEAN MACRO,5.00,1.00,2.00,6.00,3.00,4.00
+GBC,F-SCORE MACRO,5.00,1.00,2.00,3.00,4.00,6.00
+GBC,ACCURACY,4.00,2.00,3.00,1.00,5.00,6.00
+RF,G-MEAN MACRO,5.00,1.00,2.00,6.00,3.00,4.00
+RF,F-SCORE MACRO,5.00,1.00,3.00,6.00,2.00,4.00
+RF,ACCURACY,3.00,2.00,4.00,1.00,5.00,6.00
