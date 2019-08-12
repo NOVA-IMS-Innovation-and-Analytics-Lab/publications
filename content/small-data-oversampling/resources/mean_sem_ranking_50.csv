@@ -1,9 +1,9 @@
-Classifier,Metric,NO OVERSAMPLING,RANDOM OVERSAMPLING,SMOTE,BORDERLINE SMOTE,G-SMOTE
-LR,ACCURACY,3.64 $\pm$ 0.39,3.71 $\pm$ 0.46,2.21 $\pm$ 0.26,4.14 $\pm$ 0.40,1.29 $\pm$ 0.18
-LR,G-MEAN,4.14 $\pm$ 0.40,3.57 $\pm$ 0.43,1.86 $\pm$ 0.26,3.29 $\pm$ 0.57,2.14 $\pm$ 0.55
-KNN,ACCURACY,3.43 $\pm$ 0.38,4.43 $\pm$ 0.30,2.29 $\pm$ 0.21,3.36 $\pm$ 0.53,1.50 $\pm$ 0.33
-KNN,G-MEAN,3.93 $\pm$ 0.35,4.00 $\pm$ 0.44,2.21 $\pm$ 0.26,3.21 $\pm$ 0.58,1.64 $\pm$ 0.32
-DT,ACCURACY,3.43 $\pm$ 0.35,3.64 $\pm$ 0.36,2.93 $\pm$ 0.48,3.86 $\pm$ 0.47,1.14 $\pm$ 0.14
-DT,G-MEAN,3.79 $\pm$ 0.46,3.79 $\pm$ 0.26,2.50 $\pm$ 0.39,3.79 $\pm$ 0.41,1.14 $\pm$ 0.14
-GBC,ACCURACY,4.29 $\pm$ 0.31,3.21 $\pm$ 0.34,3.00 $\pm$ 0.39,3.36 $\pm$ 0.52,1.14 $\pm$ 0.14
-GBC,G-MEAN,4.21 $\pm$ 0.31,3.50 $\pm$ 0.36,2.93 $\pm$ 0.41,3.21 $\pm$ 0.51,1.14 $\pm$ 0.14
+Classifier,Metric,NO OVERSAMPLING,RANDOM OVERSAMPLING,SMOTE,BORDERLINE SMOTE,G-SMOTE,BENCHMARK METHOD
+LR,ACCURACY,4.64 $\pm$ 0.39,4.64 $\pm$ 0.51,3.07 $\pm$ 0.32,5.14 $\pm$ 0.40,1.71 $\pm$ 0.36,1.79 $\pm$ 0.31
+LR,G-MEAN,5.14 $\pm$ 0.40,4.57 $\pm$ 0.43,2.57 $\pm$ 0.37,4.14 $\pm$ 0.67,2.71 $\pm$ 0.71,1.86 $\pm$ 0.26
+KNN,ACCURACY,4.36 $\pm$ 0.42,5.43 $\pm$ 0.30,3.00 $\pm$ 0.33,4.14 $\pm$ 0.64,2.14 $\pm$ 0.26,1.93 $\pm$ 0.47
+KNN,G-MEAN,4.71 $\pm$ 0.42,5.00 $\pm$ 0.44,3.00 $\pm$ 0.31,4.00 $\pm$ 0.69,2.43 $\pm$ 0.20,1.86 $\pm$ 0.59
+DT,ACCURACY,4.43 $\pm$ 0.35,4.57 $\pm$ 0.35,3.79 $\pm$ 0.52,4.71 $\pm$ 0.55,1.71 $\pm$ 0.29,1.79 $\pm$ 0.49
+DT,G-MEAN,4.79 $\pm$ 0.46,4.64 $\pm$ 0.28,3.36 $\pm$ 0.45,4.64 $\pm$ 0.47,1.86 $\pm$ 0.26,1.71 $\pm$ 0.57
+GBC,ACCURACY,5.29 $\pm$ 0.31,4.21 $\pm$ 0.34,4.00 $\pm$ 0.39,4.36 $\pm$ 0.52,1.79 $\pm$ 0.26,1.36 $\pm$ 0.18
+GBC,G-MEAN,5.21 $\pm$ 0.31,4.50 $\pm$ 0.36,3.93 $\pm$ 0.41,4.21 $\pm$ 0.51,1.86 $\pm$ 0.26,1.29 $\pm$ 0.18

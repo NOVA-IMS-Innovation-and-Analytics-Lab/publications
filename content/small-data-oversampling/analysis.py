@@ -46,13 +46,13 @@ def generate_main_results(ratio):
 
     # Exclude constant classifier
     mask_clf = (experiment.results_.reset_index().Classifier != 'CONSTANT CLASSIFIER')
-    mask_ovr = (experiment.results_.reset_index().Oversampler != 'BENCHMARK METHOD')
-    mask = (mask_clf & mask_ovr).values
+    #mask_ovr = (experiment.results_.reset_index().Oversampler != 'BENCHMARK METHOD')
+    mask = (mask_clf).values
     experiment.results_ = experiment.results_[mask]
     experiment.classifiers = experiment.classifiers[1:]
     experiment.classifiers_names_ = experiment.classifiers_names_[1:]
-    experiment.oversamplers = experiment.oversamplers[:-1]
-    experiment.oversamplers_names_ = experiment.oversamplers_names_[:-1]
+    #experiment.oversamplers = experiment.oversamplers[:-1]
+    #experiment.oversamplers_names_ = experiment.oversamplers_names_[:-1]
 
     # Recreate optimal and wide optimal results
     experiment._calculate_optimal_results()._calculate_wide_optimal_results()
