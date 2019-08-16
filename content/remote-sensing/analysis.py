@@ -1,32 +1,31 @@
 from os.path import dirname, join
 from pickle import load
-import pandas as pd
 
-from tools import EXPERIMENTS_PATH
-#from tools.format import generate_mean_std_tbl
+import pandas as pd
 from sklearnext.tools import (
     combine_experiments,
     calculate_mean_sem_scores,
     calculate_mean_sem_perc_diff_scores,
     calculate_mean_sem_ranking,
 )
+from tools import EXPERIMENTS_PATH
+from tools.format import METRICS_NAMES_MAPPING
 
-data = load(open(join(EXPERIMENTS_PATH, f'lucas', f'combined.pkl'), 'rb'))
-
+EXPERIMENTS_NAMES = [
+    'no_oversampling', 
+    'random_oversampling',
+    'smote',
+    'borderline_smote',
+    'adasyn',
+    'gsmote'
+]
 RESOURCES_PATH = join(dirname(__file__), 'resources')
-
-EVALUATION = 'drop_accuracy'
-MAIN_RESULTS_NAMES = names = [
+MAIN_RESULTS_NAMES = [
     'mean_sem_scores', 
     'mean_sem_perc_diff_scores', 
     'mean_sem_ranking',  
 ]
 
-METRICS_NAMES_MAPPING = {
-    'geometric_mean_macro_score': 'G-MEAN MACRO',
-    'f1_macro': 'F-SCORE MACRO',
-    'accuracy': 'ACCURACY'
-}
 
 def generate_mean_tbl(mean_vals, std_vals):
     """Generate table that combines mean and sem values."""
@@ -37,11 +36,15 @@ def generate_mean_tbl(mean_vals, std_vals):
     return tbl
 
 
-def generate_main_results(evaluation):
+def generate_main_results():
     """Generate the main results of the experiment."""
 
     # Load experiments object
-    experiments = [data]
+    experiments = []
+    for name in EXPERIMENTS_NAMES:
+        file_path = join(EXPERIMENTS_PATH, 'lucas', f'{name}.pkl')
+        with open(file_path, 'rb') as file:
+            experiments.append(load(file))
     
     # Create combined experiment
     experiment = combine_experiments('combined', *experiments)
@@ -53,10 +56,6 @@ def generate_main_results(evaluation):
     experiment.results_ = experiment.results_[mask]
     experiment.classifiers = experiment.classifiers[2:]
     experiment.classifiers_names_ = experiment.classifiers_names_[2:]
-    
-    # Drop accuracy metric
-    #experiment.results_ = experiment.results_.drop('mean_test_accuracy', axis=1, level=0)
-    #experiment.scoring_cols_ = experiment.scoring_cols_[:2]
     
     # Recreate optimal and wide optimal results
     experiment._calculate_optimal_results()._calculate_wide_optimal_results()
@@ -71,6 +70,6 @@ def generate_main_results(evaluation):
 
 if __name__ == '__main__':
     
-    main_results = generate_main_results(EVALUATION)
+    main_results = generate_main_results()
     for name, result in zip(MAIN_RESULTS_NAMES, main_results):
         result.to_csv(join(RESOURCES_PATH, f'{name}.csv'), index=False)

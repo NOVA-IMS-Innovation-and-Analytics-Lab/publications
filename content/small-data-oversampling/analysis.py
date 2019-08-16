@@ -22,7 +22,7 @@ EXPERIMENTS_NAMES = [
     'benchmark_method'
 ]
 RESOURCES_PATH = join(dirname(__file__), 'resources')
-MAIN_RESULTS_NAMES = names = [
+MAIN_RESULTS_NAMES = [
     'mean_sem_scores', 
     'mean_sem_perc_diff_scores', 
     'mean_sem_ranking', 
