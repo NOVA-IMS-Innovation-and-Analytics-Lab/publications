@@ -21,9 +21,9 @@ EXPERIMENTS_NAMES = [
 ]
 RESOURCES_PATH = join(dirname(__file__), 'resources')
 MAIN_RESULTS_NAMES = [
-    'mean_sem_scores', 
-    'mean_sem_perc_diff_scores', 
-    'mean_sem_ranking',  
+    'mean_scores', 
+    'mean_perc_diff_scores', 
+    'mean_ranking',  
 ]
 
 
