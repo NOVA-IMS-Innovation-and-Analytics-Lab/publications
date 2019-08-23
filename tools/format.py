@@ -8,8 +8,8 @@ Format experimental results.
 import pandas as pd
 
 METRICS_NAMES_MAPPING = {
-    'roc_auc': 'AUC', 
-    'f1': 'F-SCORE', 
+    'roc_auc': 'AUC',
+    'f1': 'F-SCORE',
     'geometric_mean_score': 'G-MEAN',
     'geometric_mean_macro_score': 'G-MEAN MACRO',
     'f1_macro': 'F-SCORE MACRO',
