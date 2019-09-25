@@ -3,7 +3,7 @@ from pickle import load
 
 from tools import EXPERIMENTS_PATH
 from tools.format import generate_mean_std_tbl, generate_pvalues_tbl
-from sklearnext.tools import (
+from rlearn.tools import (
     combine_experiments,
     calculate_mean_sem_scores,
     calculate_mean_sem_perc_diff_scores,

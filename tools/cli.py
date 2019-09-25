@@ -13,7 +13,7 @@ from pickle import load
 from sqlite3 import connect
 
 import pandas as pd
-from sklearnext.tools import (
+from rlearn.tools import (
     ImbalancedExperiment,
     combine_experiments,
     calculate_ranking,
@@ -24,9 +24,9 @@ from sklearnext.tools import (
     apply_holms_test
 )
 
-from . import DATA_PATH, EXPERIMENTS_PATH
-from .data import ImbalancedBinaryClassDatasets, BinaryClassDatasets
-from .experiment import CONFIG
+from tools import DATA_PATH, EXPERIMENTS_PATH
+from tools.data import ImbalancedBinaryClassDatasets, BinaryClassDatasets
+from tools.experiment import CONFIG
 
 DATABASES_MAPPING = {'imbalanced_binary_class': ImbalancedBinaryClassDatasets, 'binary_class': BinaryClassDatasets}
 

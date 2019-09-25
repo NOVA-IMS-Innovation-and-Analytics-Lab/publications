@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import make_classification
 
-from .. import DATA_PATH
-from ..cli import load_datasets, create_parser, run
+from tools import DATA_PATH
+from tools.cli import load_datasets, create_parser, run
 
 
 def test_load_datasets_raise_error():

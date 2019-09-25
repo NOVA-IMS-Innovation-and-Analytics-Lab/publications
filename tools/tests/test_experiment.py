@@ -7,9 +7,9 @@ from collections import Counter
 import pytest
 
 from sklearn.datasets import make_classification
-from sklearnext.over_sampling import SMOTE
+from imblearn.over_sampling import SMOTE
 
-from ..experiment import (
+from tools.experiment import (
     UnderOverSampler,
     check_estimators,
     CLASSIFIERS_MAPPING,
@@ -17,21 +17,22 @@ from ..experiment import (
     generate_configuration
 )
 
-X, y = make_classification(random_state=0, n_samples=100, weights=[0.8, 0.2])
+RND_SEED = 0
+X, y = make_classification(random_state=RND_SEED, n_samples=100, weights=[0.8, 0.2])
 
 
 def test_under_oversampler():
     """Test the UnderOverSampler class."""
-    underoversampler = UnderOverSampler(random_state=1, oversampler=SMOTE(), factor=2)
+    underoversampler = UnderOverSampler(random_state=RND_SEED, oversampler=SMOTE(random_state=RND_SEED), factor=2)
     
     # Test fit
     underoversampler.fit(X, y)
     assert len(underoversampler.sampling_strategy_) == 1
-    assert set(underoversampler.sampling_strategy_.values()) == set([0]) 
+    assert set(underoversampler.sampling_strategy_.values()) == set([0])
 
     # Test sample
     X_resampled, y_resampled = underoversampler.fit_resample(X, y)
-    assert underoversampler.undersampler_.random_state == 1
+    assert underoversampler.undersampler_.random_state == RND_SEED
     assert underoversampler.undersampler_.sampling_strategy == {0: 40, 1:10}
     assert underoversampler.oversampler_.sampling_strategy == {0: 80, 1:20}
     assert X.shape == X_resampled.shape
@@ -81,4 +82,4 @@ def test_subset_check_estimators(category, names, mapping):
 def test_check_estimators_raise_error(category, names, mapping):
     """Test the raise of error for false input."""
     with pytest.raises(ValueError):
-        estimators = check_estimators(category, names, mapping)
+        check_estimators(category, names, mapping)

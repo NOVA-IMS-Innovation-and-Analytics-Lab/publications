@@ -14,10 +14,13 @@ from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import cohen_kappa_score, make_scorer
+from sklearn.cluster import KMeans
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.over_sampling.base import BaseOverSampler
-from sklearnext.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN, GeometricSMOTE, DensityDistributor
-from sklearnext.cluster import KMeans, SOM
+from gsmote import GeometricSMOTE
+from clover.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN
+from clover.distribution import DensityDistributor
+from somlearn import SOM
 
 
 class UnderOverSampler(BaseOverSampler):
@@ -106,29 +109,8 @@ OVERSAMPLERS_CLUSTERING = [
         'distributor__filtering_threshold': [0.0, 0.5, 1.0, 2.0]
         }
     ),
-    ('K-MEANS G-SMOTE', GeometricSMOTE(clusterer=KMeans(), distributor=DensityDistributor()), {
-        'k_neighbors': [3, 5],
-        'selection_strategy': ['combined', 'minority', 'majority'],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
-        'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
-        'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        'distributor__distances_exponent': [0, 1, 2, 5],
-        'distributor__filtering_threshold': [0.0, 0.5, 1.0, 2.0]
-        }
-    ),
     ('SOMO', SMOTE(clusterer=SOM(), distributor=DensityDistributor()), {
         'k_neighbors': [3, 5],
-        'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        'distributor__distances_exponent': [0, 1, 2, 5],
-        'distributor__filtering_threshold': [0.0, 0.5, 1.0, 2.0],
-        'distributor__distribution_ratio': [0.0, 0.25, 0.5, 0.75, 1.0]
-        }
-    ),
-    ('G-SOMO', GeometricSMOTE(clusterer=SOM(), distributor=DensityDistributor()), {
-        'k_neighbors': [3, 5],
-        'selection_strategy': ['combined', 'minority', 'majority'],
-        'truncation_factor': [-1.0, -0.5, .0, 0.25, 0.5, 0.75, 1.0],
-        'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
         'clusterer__n_clusters': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         'distributor__distances_exponent': [0, 1, 2, 5],
         'distributor__filtering_threshold': [0.0, 0.5, 1.0, 2.0],
@@ -185,9 +167,7 @@ CONFIG = {
         'kmeans_ros': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS RANDOM OVERSAMPLING']),
         'kmeans_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS SMOTE']),
         'kmeans_borderline_smote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS BORDERLINE SMOTE']),
-        'kmeans_gsmote': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['K-MEANS G-SMOTE']),
         'somo': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['SOMO']),
-        'gsomo': generate_configuration('imbalanced_binary_class', classifiers_names=['LR', 'KNN' , 'DT', 'GBC'], oversamplers_category='clustering', oversamplers_names=['G-SOMO'])
     },
     'lucas': {
         'no_oversampling': generate_configuration('remote_sensing',  datasets_names=['lucas'], oversamplers_names=['NO OVERSAMPLING'], scoring=['geometric_mean_macro_score', 'f1_macro', 'accuracy'], n_splits=3),
