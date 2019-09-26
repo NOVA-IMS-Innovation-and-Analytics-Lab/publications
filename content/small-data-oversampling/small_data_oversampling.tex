@@ -427,7 +427,7 @@ repeated reversely.
 
 \item Positive class selection
 
-With the hyperparameter selection\_strategy = 'positive', a second positive 
+With the hyper-parameter selection\_strategy = 'positive', a second positive 
 class sample is selected as one of the $\mathit{k}$ nearest neighbors. This 
 indicates that the selection strategy is based only on the positive class and 
 works like the selection strategy of SMOTE. As SMOTE may lead to the generation 
@@ -451,7 +451,7 @@ selection strategy here.
 When selection\_strategy = 'negative', a negative sample is selected as the 
 nearest class neighbor. This scenario prevents the algorithm from creating 
 noisy samples. More specifically, as the radius is drawn from the selected 
-positive class instance to the nearest neighbour of the negative class, it does 
+positive class instance to the nearest neighbor of the negative class, it does 
 not allow the data generation mechanism to penetrate the opposite area.
 
 \begin{figure}[H]
@@ -533,7 +533,7 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 		factor. If the parameter of the deformation factor is equal to 0, the 
 		data generation area obtains a circle. On the opposite, if the 
 		parameter is set to 1, the area deforms to a line segment. 
-		For a graphical example of these hyperparameters the reader is referred 
+		For a graphical example of these hyper-parameters the reader is referred 
 		to (Douzas, 2019).
 	\end{enumerate}
 
@@ -624,16 +624,16 @@ Gradient Boosting (GB) \cite{Friedman.2001}.
 
 \subsubsection{Experimental Procedure}
 
-The main concept of the experimental procedure is to randomly undersample 
+The main concept of the experimental procedure is to randomly under-sample 
 the datasets presented in Table 1, increase them artificially with different 
 oversamplers and compare the results with the original dataset which is 
 considered to be the benchmark. This method allows us to directly compare the 
 quality of the artificial generated sample set with the observed data. In order 
 to evaluate if the proposed method can improve artificial data generation, we 
 compare G-SMOTE with SMOTE, Borderline SMOTE and Random Oversampling. Also, we 
-apply the machine learning algorithms to the undersampled data with the 
+apply the machine learning algorithms to the under-sampled data with the 
 objective to assess their performance with a smaller amount of data. To 
-undersample the data we use a ratio of 50, 75, 90 and 95 percent of the 
+under-sample the data we use a ratio of 50, 75, 90 and 95 percent of the 
 original dataset. For example, with an undersampling ratio of 95 percent, we 
 take only five percent of the original data as a base to apply the oversampling 
 mechanism. This approach aims to provide an understanding of the classification 
@@ -683,7 +683,7 @@ validation score for each combination of dataset, classifier, oversampler and
 evaluation metric is reported.
 
 In order to confirm the statistical significance of the experimental results, 
-the Friedman test \cite{Sheldon.1996} as well as the Holms test 
+the Friedman test \cite{Sheldon.1996} as well as the Holm test 
 \cite{JanezDemsar.2006} are applied. The Friedman test is a non-parametric 
 procedure to test hypothesis on ordinal scaled variables. Additionally, it can 
 also be applied with interval data when normality and homogeneity assumption 
@@ -695,8 +695,8 @@ algorithms under the null hypothesis, which states that the independent
 variable has no effect on the dependent variable. In our case, the null 
 hypothesis assumes that all five algorithms show identical performance 
 independent of the oversampling method and evaluation metric used. If the 
-null-hypothesis is rejected to our favour, we proceed with the Holms test. The 
-Holms test acts as a post-hoc test for the Friedman test for controlling the 
+null-hypothesis is rejected to our favor, we proceed with the Holm test. The 
+Holm test acts as a post-hoc test for the Friedman test for controlling the 
 family-wise error rate when all algorithms are compared to a control method and 
 not between themselves. This non-parametric test is very powerful in situations 
 where we want to test whether a newly proposed method is better than existing 
@@ -717,7 +717,7 @@ with the Scikit-Learn ecosystem.
 \section{Results and Discussion}
 
 In this section the performance of the different oversamplers and the results 
-of the statistical tests are presented and analysed.
+of the statistical tests are presented and analyzed.
 
 \subsection{Comparative Presentation}
 
@@ -814,7 +814,7 @@ Logistic Regression and Decision Tree in the mean ranking.
 \subsection{Statistical Analysis}
 
 To confirm the significance of the above presented results we apply the 
-Friedman test as well as the Holms Test on our results. The application of the 
+Friedman test as well as the Holm Test on our results. The application of the 
 Friedman test shows the following results:
 
 \begin{table}[H]
@@ -850,7 +850,7 @@ Therefore, the null hypothesis of the Friedman test is rejected at a
 significance level of a = 0.05, i.e. the classifiers do not perform similarly 
 in the mean rankings across the oversampling methods and evaluation metrics.
 
-[Holms test]
+[Holm test]
 
 \section{Conclusions}
 
