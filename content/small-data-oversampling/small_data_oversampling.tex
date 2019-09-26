@@ -387,26 +387,14 @@ The study of \cite{Douzas.2019b} has performed an extensive comparison between
 G-SMOTE and SMOTE using 69 imbalanced datasets and several classifiers. The 
 results show that G-SMOTE outperforms SMOTE, Random Oversampling and the case 
 of no oversampling, across all datasets, classifiers and performance 
-metrics.    
-
-Various methods to deal with small datasets or a small representation 
-within a class label have been presented in this section. It has been proven, 
-that all cases with artificially increased sample size seem to enhance the 
-prediction performance of the classifier. Thus, we can conclude 
-that increasing the sample size of a small or imbalanced dataset is an 
-important task in the area of machine learning \cite{Ruparel.2013}. However, 
-most of the studied methods are associated with a lot of limitations and are 
-not easy to understand. Considering these methods in practice, an application 
-has still been challenging \cite{Sezer.2014}. As a result, we propose a 
-different approach to overcome the issues sourced form the absence of data and 
-provide a framework for an easy implementation of the algorithm.
+metrics.
 
 \section{Proposed Method}
 
 In the following section, we propose G-SMOTE as a novel data generation procedure 
 for small datasets. Originally developed for imbalanced datasets, we 
-slightly adapt the algorithm to not only increase the minority class, but the 
-entire dataset independent from class occurrences. 
+adapt the algorithm to not only resample the minority class, but the 
+entire dataset independent from the class distribution. 
 
 \subsection{G-SMOTE for the small dataset problem}
 
