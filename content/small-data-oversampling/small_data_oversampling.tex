@@ -51,35 +51,31 @@
 \maketitle
 
 \begin{abstract}
-Many machine learning tasks are restricted due to small training sets where a 
-lot of information is missing. This data deficiency often limits the learning 
-algorithm to build an accurate prediction model which results in poor analysis 
-and decision making. Given these limitations, this research aims to improve 
-predictive performance by artificially adding samples in the pre-processing 
-phase of the data analysis process. We apply the oversampling technique 
-Geometric SMOTE to generate new instances and enhance a crisp data structure 
-for the algorithm to learn. The results of the experiment show a significant 
-improvement on the prediction capability when comparing with other oversampling 
-techniques such as SMOTE, Borderline SMOTE and Random Oversampling. These 
-findings create a linkage between the research areas of the imbalance data 
-problem and the small data problem which offers a lot of potential for future 
+Small training datasets decrease the performance of machine learning algorithms
+which results in poor analysis and decision making. The current research work
+aims to investigate the effect of using small datasets and provide a solution by
+artificially adding samples in the training process. More specifically, the
+over-sampling technique Geometric SMOTE is applied to generate new instances and
+enhance the initial training data. The experimental results show a significant
+improvement on the prediction capability when comparing with other over-sampling
+techniques such as Random Oversampling, SMOTE and Borderline SMOTE. These
+findings create a linkage between the research areas of the imbalance learning
+problem and the small data problem which offers a lot of potential for future
 research.
 \end{abstract}
 
 \section{Introduction}
 One of the key problems in supervised learning is the insufficient size of data
-sets \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of 
-training sample sets can be caused by different factors. First, data is 
-becoming an increasingly expensive resource \cite{Li.2007} as the process to 
-retain data is getting more complex due to strict privacy regulations such as 
-the General Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. 
-Additionally, the small dataset problem can be found in numerous industries 
-where organizations simply do not have access to a reasonable amount of data, 
-for example: manufacturing industries are usually dealing with small data in 
-early stages of product developments; health care organizations have to work 
-with different kinds of rare diseases, where very few records around the world 
-are available; and in financial industries, fraud detection is an important 
-issue with only few examples for cases of violence \cite{AbdulLateh.2017}.
+sets \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of
+training samples can be caused by different factors. First, data is becoming an
+increasingly expensive resource \cite{Li.2007} as the process to retain data is
+getting more complex due to strict privacy regulations such as the General Data
+Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the
+small dataset problem can be found in numerous industries where organizations
+simply do not have access to a reasonable amount of data. For example, manufacturing 
+industries are usually dealing with small data in early stages of
+product developments and health care organizations have to work with different
+kinds of rare diseases, where very few records are available \cite{AbdulLateh.2017}.
 
 In machine learning, researchers are mainly concerned with the design of 
 sophisticated learning algorithms when aiming to improve prediction 
@@ -98,7 +94,7 @@ well as imprecise and does not lead to a robust classification performance
 \cite{AbdulLateh.2017}.
 
 Considering the size of data, there are two types of problems: first, the 
-insufficiency of data belonging to one class (imbalance data problem); and 
+insufficiency of data belonging to one class (imbalance data problem) and 
 second, the size of the whole data (small dataset problem) \cite{Sezer.2014}. 
 In both cases, a small training sample set does not provide enough information 
 to a machine learning model to obtain a stable learning accuracy 
@@ -144,13 +140,13 @@ approaches are reviewed and the state-of-the-art to improve small dataset
 learning is reported. We start by presenting fuzzy theories, which have 
 historically been the most used approach to mitigate the small dataset problem. 
 Next, we look at resampling mechanisms, which mainly consist of bootstrapping 
-techniques, and finally, we review oversampling techniques that can be a 
+techniques, and finally, we review over-sampling techniques that can be a 
 valuable option to increase the sample size in small datasets.
 
 \subsection{Fuzzy Theories}
 
 One of the most effective methods to improve the learning performance of 
-prediction models is artificial sample generation. It is proven that the 
+prediction models is artificial sample generation. It has been shown that the 
 accuracy of the learning algorithm is improved, when the sample size of 
 training sets is increased \cite{AbdulLateh.2017}. Thus, the objective is to 
 fill the gaps between observations (information gaps) with synthetic samples 
@@ -177,7 +173,7 @@ Generation (VSG) and was originally proposed by \cite{Niyogi.1998}. The idea is
 to create additional examples based on the current set of real-life examples by 
 using prior information gained from the available data. The introduction of 
 virtual examples expands the effective training set size and can therefore help 
-to mitigate the learning problem. \cite{Niyogi.1998} proved that the process of 
+to mitigate the learning problem. \cite{Niyogi.1998} showed that the process of 
 creating artificial samples is mathematically equivalent to incorporating prior 
 knowledge. They demonstrate the concept on object recognition by mathematically 
 transforming the views of 3D-objects. These new views are called ‘virtual 
@@ -262,23 +258,23 @@ would get lost \cite{Tsai.2008}.
 
 \subsection{Resampling Mechanism}
 
-An alternative approach to fuzzy theories is the Bootstrapping Procedure (BP), 
-which is the most well-known artificial sample generation method 
-\cite{AbdulLateh.2017}. The main difference to the previously presented 
-techniques is that BP creates new training sets by resampling instances from 
-the measured data with replacement \cite{Efron.1993}. It allows the algorithms 
-to use the same sample more than one time to gradually revise the identified 
-patterns in order to improve predictive accuracy. Although this can double the 
-number of observations from the training sets, Bootstrapping can cause 
-overfitting when applied to small data because it repetitively uses the same 
-information. Also, since the amount of information provided by small data is 
-minimal, any missing observations in the new, bootstrapped training sets are a 
-loss of valuable information (see Figure 4). As a result, Bootstrap cannot be 
-seen as a solution to the small dataset problem, as it increases the number of 
-training samples rather than the amount of (artificially generated) information 
-\cite{Tsai.2015}, \cite{Li.2018}. However, \cite{Ivanescu.2006} applied BP in 
-batch process industries where they proofed that the Bootstrapping Procedure 
-can help mitigate the limited data problem.
+An alternative approach to fuzzy theories is the Bootstrapping Procedure (BP),
+which is the most well-known artificial sample generation method
+\cite{AbdulLateh.2017}. The main difference to the previously presented
+techniques is that BP creates new training sets by resampling instances from the
+measured data with replacement \cite{Efron.1993}. It allows the algorithms to
+use the same sample more than one time to gradually revise the identified
+patterns in order to improve predictive accuracy. Although this can double the
+number of observations from the training sets, Bootstrapping can cause
+overfitting when applied to small data because it repetitively uses the same
+information. Also, since the amount of information provided by small data is
+minimal, any missing observations in the new, bootstrapped training sets are a
+loss of valuable information (see Figure 4). As a result, Bootstrap cannot be
+seen as a solution to the small dataset problem, as it increases the number of
+training samples rather than the amount of (artificially generated) information
+\cite{Tsai.2015}, \cite{Li.2018}. However, \cite{Ivanescu.2006} applied BP in
+batch process industries where it was shown that it may help mitigate the
+limited data problem.
 
 \begin{figure}[H]
 	\centering
@@ -291,54 +287,52 @@ can help mitigate the limited data problem.
 	\label{fig:bootstrappingexample}
 \end{figure}
 
-In further studies of \cite{Tsai.2008} and \cite{Chao.2011}, the Bootstrap 
-Procedure was applied to actually generate virtual samples in order to fill the 
-information gaps. Instead of resampling observations, they execute the BP once 
-for each input factor which results in a newly shuffled training set. After 
-generating new instances, they are combined with the original dataset to train 
-a Neural Network. The results show that this method significantly decreases the 
-prediction error rate in modelling manufacturing systems as well as in the 
+In further studies of \cite{Tsai.2008} and \cite{Chao.2011}, the BP was applied
+to actually generate virtual samples in order to fill the information gaps.
+Instead of resampling observations, they execute the BP once for each input
+factor which results in a newly shuffled training set. After generating new
+instances, they are combined with the original dataset to train a Neural
+Network. The results show that this method significantly decreases the
+prediction error rate in modeling manufacturing systems as well as in the
 prediction to radiotherapy of bladder cancer cells.
 
-\subsection{Oversampling Techniques}
+\subsection{Over-sampling Techniques}
 
-A different approach to fill information gaps is synthetic oversampling of the
-training set. Oversampling is an artificial data generation strategy originally
-developed in the context of machine learning to mitigate the imbalanced 
-learning problem. The origin of oversampling comes from a different research 
-community than the fuzzy strategies presented above, which is more related to 
-machine learning techniques. Although oversampling, fuzzy theories and 
-resampling approaches are aiming to solve a similar problem, it seems that 
-these communities have had very few connections so far. 
+A different approach to fill information gaps is synthetic over-sampling of the
+training set. Over-sampling is an artificial data generation strategy originally
+developed in the context of machine learning to mitigate the imbalanced learning
+problem. Its origin comes from a different research community than the fuzzy
+strategies presented above, which is more related to machine learning
+techniques. Although over-sampling, fuzzy theories and resampling approaches are
+aiming to solve a similar problem, it seems that these communities have had very
+few connections so far. 
 
-In imbalanced learning, the classes of the given dataset are significantly 
-skewed in a sense that there is a difference between examples of different 
-classes. This means, that the dataset has a large number of observations in one 
-class and a very small number of observations in the other class or classes. 
-This constitutes a problem for the algorithm to learn and is aimed to be solved 
-in the data pre-processing phase of the data analysis. In practice, the 
-imbalanced dataset problem is are very common issue in supervised learning. 
-Especially, in the fields of fraud detection, product categorization and 
-disease diagnosis, an imbalanced dataset is the norm rather than the exception 
-\cite{He.2013}. 
+In the imbalanced learning problem, the classes of the given dataset are
+significantly skewed. This means, that the dataset has a large number of
+observations in one class and a very small number of observations in the other
+class or classes. This constitutes a problem for the algorithm to learn and is
+aimed to be solved in the training phase. In practice, the imbalanced dataset
+problem is are very common issue in supervised learning. Especially, in the
+fields of fraud detection, product categorization and disease diagnosis, an
+imbalanced dataset is the norm rather than the exception \cite{He.2013}. 
 
 \subsubsection{SMOTE}
 
 There are several methods presented in the literature to tackle this problem.
-The first method to be proposed and still the most popular is the synthetic 
-minority oversampling technique (SMOTE). SMOTE works based on the idea of 
-k-nearest neighbors. It draws a line between the minority class instances and 
-their nearest neighbors and generates synthetic data inbetween these samples 
-\cite{Chawla.2002}. The algorithm is considered as a standard framework for 
-pre-processing imbalanced datasets due to its simplicity as well as its 
-robustness. Numerous variations have been proposed based on SMOTE increasing 
-its status as the staple idea in oversampling for imbalanced learning problems 
-\cite{Fernandez.2018}. However, SMOTE presents some signifiant limitations when 
-it comes to the sample generation process. In practice, the separation between 
-majority and minority class clusters is often not clearly definable. Thus, 
-noisy samples may be generated when a minority sample lies in the region of the 
-majority classes. Figure 5 presents a scenario where a minority instance is 
-generated within the majority region (noisy sample).
+The first method to be proposed and still the most popular is the synthetic
+minority oversampling technique (SMOTE). SMOTE works based on the idea of
+k-nearest neighbors and linear interpolation. More specifically, it forms a line
+segment between neighboring minority class instances and and generates synthetic
+data between these samples \cite{Chawla.2002}. The algorithm is considered as a
+standard selection due to its simplicity
+as well as its robustness. Numerous variations have been proposed based on SMOTE
+increasing its status as the staple idea in over-sampling for imbalanced learning
+problems \cite{Fernandez.2018}. However, SMOTE presents some signifiant
+limitations when it comes to the sample generation process. In practice, the
+separation between majority and minority class clusters is often not clearly
+definable. Thus, noisy samples may be generated when a minority sample lies in
+the region of the majority classes. Figure 5 presents a scenario where a
+minority instance is generated within the majority region (noisy sample).
 
 \begin{figure}[H]
 	\centering
@@ -368,13 +362,13 @@ the best results within their study.
 
 \subsubsection{G-SMOTE}
 
-A the novel data generation procedure Geometric SMOTE (G-SMOTE) has been 
+The novel data generation procedure Geometric SMOTE (G-SMOTE) has been 
 presented with the objective to improve the above mentioned limitations of the 
 SMOTE algorithm \cite{Douzas.2019b}. G-SMOTE can be seen as a substitute of 
 SMOTE enhanced by geometric properties. The main difference to SMOTE is that 
-the novel method significantly broadens the options for data generation and 
-prevents the creation of noise. Instead of connecting the minority sample and 
-its nearest neighbour with a line segment (hypersphere), the instances are 
+it broadens the options for data generation and 
+prevents the creation of noise. Instead of connecting the minority sample and one of 
+its nearest neighbors with a line segment, the instances are 
 generated in a geometrical region (hyper-spheroid) around the minority sample. 
 Furthermore, G-SMOTE is designed to avoid the generation of noisy samples by 
 some restrictions in the selection strategy. Figure 7 demonstrates the 
@@ -409,22 +403,22 @@ provide a framework for an easy implementation of the algorithm.
 
 \section{Proposed Method}
 
-In the following section, we propose G-SMOTE as novel data generation procedure 
-for small sample sets. Originally developed for imbalanced datasets, we 
+In the following section, we propose G-SMOTE as a novel data generation procedure 
+for small datasets. Originally developed for imbalanced datasets, we 
 slightly adapt the algorithm to not only increase the minority class, but the 
-entire sample set independent from class occurrences. 
+entire dataset independent from class occurrences. 
 
 \subsection{G-SMOTE for the small dataset problem}
 
-As mentioned above, the G-SMOTE algorithm randomly generates artificial data 
-within a geometrical region of the input space. The size of this area is 
-derived from the distance of the selected sample to the nearest neighbour, 
-whereas the shape is determined by the hyperparameters truncation factor and 
-deformation factor. Additionally, the direction of the new input area is 
-defined by the selection strategy of G-SMOTE. The main concept can be adapted 
-from the original method to the small dataset problem. However, the selection 
-strategy requires some minor adjustments for these kind of problems which will 
-be described hereafter.
+As mentioned above, the G-SMOTE algorithm randomly generates artificial data
+within a geometrical region of the input space. The size of this area is derived
+from the distance of the selected sample to one of the nearest neighbors,
+whereas the shape is determined by the hyper-parameters called as truncation
+factor and deformation factor. Additionally, the hyper-parameter selection
+strategy of G-SMOTE modifies the SMOTE selection process. The main concept can
+be adapted from the original method to the small dataset problem. However, the
+selection strategy requires some minor adjustments for these kind of problems
+which will be described hereafter.
 
 The selection strategy $\alpha$\textsubscript{sel} determines the data points 
 of the $\mathit{k}$ nearest neighbors. This mechanism allows the positive or 
