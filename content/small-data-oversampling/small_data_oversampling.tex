@@ -351,25 +351,26 @@ straightforward and it is based on the binarization of the problem through the o
 Finally, regression tasks require an extensive modification of the original G-SMOTE algorithm and they 
 will be a topic for future research.
 
-The hyper-parameter selection strategy $\alpha_{sel}$ defines the radius of the surface 
-point. This mechanism allows the positive or negative class area to expand into a direction where it 
-prevents the algorithm from creating noisy samples. In G-SMOTE for small data both classes are 
-selected in two individual runs to 
-introduce new observations. In the first run, a random sample called x\textsubscript{surface} is selected 
-which belongs to the positive class. Similarly, x\textsubscript{surface} is assigned to the negative class 
-samples in the second run. Both runs are based on the defined selection strategy where 
-$\alpha$\textsubscript{sel} can have three different values: positive class selection 
-S\textsubscript{pos}, negative class selection S\textsubscript{neg} and combined selection 
-S\textsubscript{com}. We describe the cases referring to first run of randomly selecting a positive 
-sample. In the second run, a negative class example is randomly chosen and the process is repeated 
-inversely. 
+The hyper-parameter selection strategy \( \alpha_{sel} \) defines the radius of 
+the surface point. This mechanism allows the positive or negative class area to 
+expand into a direction where it prevents the algorithm from creating noisy 
+samples. In G-SMOTE for small data both classes are selected in two individual 
+runs to introduce new observations. In the first run, a random sample called 
+\( \textbf{x}_{surface} \) is selected which belongs to the positive class. 
+Similarly, \( \textbf{x}_{surface} \) is assigned to the negative class 
+samples in the second run. Both runs are based on the defined selection 
+strategy where \( \alpha_{sel} \) can have three different values: positive 
+class selection \( S_{pos} \), negative class selection \( S_{neg} \) and 
+combined selection \( S_{com} \). We describe the cases referring to first run 
+of randomly selecting a positive sample. In the second run, a negative class 
+example is randomly chosen and the process is repeated inversely. 
 
 \begin{enumerate}[label=($\alph*$)]
 
 \item Positive class selection
 
 With the hyper-parameter selection\_strategy = 'positive', a second positive 
-class sample is selected as one of the $\mathit{k}$ nearest neighbors. This 
+class sample is selected as one of the \( k \) nearest neighbors. This 
 indicates that the selection strategy is based only on the positive class and 
 works like the selection strategy of SMOTE. As SMOTE may lead to the generation 
 of data penetrating the opposite class area, this drawback also applies on the 
@@ -380,9 +381,9 @@ selection strategy here.
 	\includegraphics[width=0.51\linewidth]
 		{./resources/positive_class_selection_strategy}
 	\caption{Example of positive class selection strategy: A positive class 
-	instance is defined as the center and one of its $\mathit{k = 4}$ positive 
+	instance is defined as the center and one of its \( k = 4 \) positive 
 	class nearest neighbors is selected as the surface point. The radius 
-	$\mathit{R}$ is equal to the distance of these instances 
+	\( R \) is equal to the distance of these instances 
 	\cite{Douzas.2019b}.}
 	\label{fig:positiveclassselectionstrategy}
 \end{figure}
@@ -401,7 +402,7 @@ not allow the data generation mechanism to penetrate the opposite area.
 		{./resources/negative_class_selection_strategy}
 	\caption{Example of negative class selection strategy: A positive class 
 	instance is defined as the center and its closest negative class neighbor 
-	is selected as the surface point. The radius $\mathit{R}$ is defined to be 
+	is selected as the surface point. The radius \( R \) is defined to be 
 	equal to the distance of these instances \cite{Douzas.2019b}.}
 	\label{fig:negativeclassselectionstrategy}
 \end{figure}
@@ -409,27 +410,25 @@ not allow the data generation mechanism to penetrate the opposite area.
 \item Combined selection
 
 The combined selection strategy initially applies the positive and negative 
-selection strategies. Once x\textsubscript{pos} and x\textsubscript{neg} are 
-identified, the point with the minimum distance to the center 
-x\textsubscript{center} is defined as the surface point 
-x\textsubscript{surface}. Figure 10 presents an example when 
-x\textsubscript{surface} is identified as a negative class instance.
+selection strategies. Once \( \textbf{x}_{pos} \) and \( \textbf{x}_{neg} \) 
+are identified, the point with the minimum distance to the center \( 
+\textbf{x}_{center} \) is defined as the surface point \( \textbf{x}_{surface} 
+\). Figure 10 presents an example when \( \textbf{x}_{surface} \) is identified 
+as a negative class instance.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.52\linewidth]
 		{./resources/combined_class_selection_strategy}
-	\caption{The closest point x\textsubscript{neg} to the center positive 
-	class sample x\textsubscript{center} is identified as the surface point 
-	x\textsubscript{surface} since it is closer to the center than the 
-	selected instance x\textsubscript{pos} from the $\mathit{k}$ nearest 
+	\caption{The closest point \( \textbf{x}_{neg} \) to the center positive 
+	class sample \( \textbf{x}_{center} \) is identified as the surface point 
+	\( \textbf{x}_{surface} \) since it is closer to the center than the 
+	selected instance \( \textbf{x}_{pos} \) from the \( k \) nearest 
 	positive class neighbors of the center \cite{Douzas.2019b}.}
 	\label{fig:combinedclassselectionstrategy}
 \end{figure}
 
 \end{enumerate}
-
-%More adjustments?
 
 \subsection{Adapted G-SMOTE algorithm}
 
@@ -437,36 +436,36 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 
 \begin{enumerate}
 	\item 
-	An empty set S\textsubscript{gen} is initialized
+	An empty set \( S_{gen} \) is initialized
 	\item 
-	The S\textsubscript{pos} elements are shuffled and the process described 
-	below is repeated $\mathit{N}$ times until $\mathit{N}$ artificial points 
+	The \( S_{pos} \) elements are shuffled and the process described 
+	below is repeated \( N \) times until \( N \) artificial points 
 	have been generated.
 	\item 
-	A positive class instance x\textsubscript{center} is selected as the center 
-	of the geometric region.
+	A positive class instance \( \textbf{x}_{center} \) is selected as the 
+	center of the geometric region.
 	\item 
-	Depending on the values of $\alpha$\textsubscript{sel} (positive, negative 
+	Depending on the values of \( \alpha_{sel} \) (positive, negative 
 	or both), this step results in a randomly selected sample 
-	x\textsubscript{surface} which belongs either to the positive or negative 
+	\( \textbf{x}_{surface} \) which belongs either to the positive or negative 
 	sample set
 	\item 
-	A random point e\textsubscript{sphere} is generated on the surface of a 
+	A random point \( \textbf{e}_{sphere} \) is generated on the surface of a 
 	unit hypersphere centered at the origin of the input space. This point is 
-	transformed to a randomly generated point x\textsubscript{gen} inside the 
+	transformed to a randomly generated point \( \textbf{x}_{gen} \) inside the 
 	unit hypersphere. 
 	\item 
 	The geometrical transformations are applied to define the admissible area 
-	for x\textsubscript{gen}. These are defined as truncation 
-	$\alpha$\textsubscript{trunc}, which defines the subarea of the hypersphere 
-	and deform $\alpha$\textsubscript{def}, which deforms the hypersphere. 
+	for \( \textbf{x}_{gen} \). These are defined as truncation 
+	\( \alpha_{trunc} \), which defines the subarea of the hypersphere 
+	and deform \( \alpha_{def} \), which deforms the hypersphere. 
 	
 	\begin{enumerate}[label=($\alph*$)]
 		\item 
-		The truncation factor $\alpha$\textsubscript{trunc} defines the degree 
+		The truncation factor \( \alpha_{trunc} \) defines the degree 
 		of truncation that is applied to the geometric area and can be 
-		specified between zero and one, where truncation\_factor=0.0 
-		corresponds to a circle and truncation\_factor=1.0 becomes a 
+		specified between zero and one, where truncation factor = 0.0 
+		corresponds to a circle and truncation factor = 1.0 becomes a 
 		half-hypersphere around the selected sample. 
 		
 		\item 
@@ -474,19 +473,19 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 		factor. If the parameter of the deformation factor is equal to 0, the 
 		data generation area obtains a circle. On the opposite, if the 
 		parameter is set to 1, the area deforms to a line segment. 
-		For a graphical example of these hyper-parameters the reader is referred 
-		to (Douzas, 2019).
+		For a graphical example of these hyper-parameters the reader is 
+		referred to (Douzas, 2019).
 	\end{enumerate}
 
 	\item 
-	The generated point x\textsubscript{gen} is translated
+	The generated point \( \textbf{x}_{gen} \) is translated
 	\item 
-	x\textsubscript{gen} is added to S\textsubscript{gen}
+	\( \textbf{x}_{gen} \) is added to \( \textbf{S}_{gen} \)
 	\item 
-	Once this process is repeated $\mathit{N}$ times: S\textsubscript{neg} 
+	Once this process is repeated \( N \) times: \( \textbf{x}_{neg} \) 
 	elements are shuffled, a negative class instance is selected as 
-	x\textsubscript{center} and the algorithm starts again with step 4 until 
-	$\mathit{N}$ negative samples are introduced
+	\( \textbf{x}_{center} \) and the algorithm starts again with step 4 until 
+	\( N \) negative samples are introduced
 \end{enumerate}
 
 \section{Research Methodology}
@@ -497,7 +496,7 @@ variety of datasets, evaluation measures and classifiers to evaluate the
 performance. A description of this set-up, the experimental procedure as well 
 as the software implementation is provided in this section.
 
-\subsubsection{Experimental Data}
+\subsection{Experimental Data}
 
 Ten datasets are used to test the performance of G-SMOTE which are retrieved 
 from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the 
@@ -526,7 +525,7 @@ datasets are presented in the following table:
 \caption{\label{tab:datasets}Description of the datasets} 
 \end{longtable}
 
-\subsubsection{Evaluation Measures}
+\subsection{Evaluation Measures}
 
 To evaluate the performance of G-SMOTE, the experiment includes two different 
 measures. First, accuracy is used as one of the most common metrics for 
@@ -534,10 +533,10 @@ evaluating classification models \cite{M.2015}. Accuracy measures
 the ratio of correct predictions over the total number of instances evaluated. 
 The accuracy metric can be stated as
 
-\[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\]
+$$Accuracy = \frac{TP + TN}{TP +TN + FP + FN}$$
 
-where $\mathit{TP/TN}$ denote the number of correctly classified positive as 
-well as negative instances and $\mathit{FP/FN}$ denote the number of 
+where \(TP / TN\) denote the number of correctly classified positive as 
+well as negative instances and \(FP / FN\) denote the number of 
 misclassified negative and positive instances, respectively. The accuracy 
 metric might be negligible for datasets with a significant disparity between 
 the number of positive and negative label. As pointed out by many studies, 
@@ -548,14 +547,14 @@ geometric mean (G-Mean) as a second measure. G-Mean measures the trade-off
 between sensitivity (true positive rate) and specificity (true negative rate) 
 by the following:
 
-\[G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} 
-\times \dfrac{TN}{TN + FP}}\]
+$$G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} 
+\times \dfrac{TN}{TN + FP}}$$
 
 The objective of both measures is to be maximized since a classifier is 
 performing well if it provides high classification accuracy and a high ratio of 
 positive and negative accuracy \cite{Han.2012}. 
 
-\subsubsection{Machine Learning Algorithms}
+\subsection{Machine Learning Algorithms}
 
 The experiment is conducted with several classifiers to make sure the results 
 are not dependent on the machine learning algorithm. We use the following four 
@@ -563,7 +562,7 @@ classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest
 Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and 
 Gradient Boosting (GB) \cite{Friedman.2001}.
 
-\subsubsection{Experimental Procedure}
+\subsection{Experimental Procedure}
 
 The main concept of the experimental procedure is to randomly under-sample 
 the datasets presented in Table 1, increase them artificially with different 
@@ -590,25 +589,24 @@ Figure 11 visualizes the experimental process on a high level of abstraction:
 \end{figure}
 
 
-We use $\mathit{k}$-fold cross-validation with $\mathit{k = 5}$ as a technique 
+We use \( k \)-fold cross-validation with \( k = 5 \) as a technique 
 for assessing the performance of the models for each combination of oversampler 
-and classifiers. The dataset $\mathit{D}$ is randomly split into $\mathit{k}$ 
-subsets (folds) $\mathit{D_1, D_2, … D_k}$ of approximately equal size. Each 
+and classifiers. The dataset \( D \) is randomly split into \( k \) 
+subsets (folds) \( D_1, D_2, … D_k \) of approximately equal size. Each 
 fold is used as a validation set and the remaining folds are used to train the 
-model with $\mathit{k}$ iterations. This procedure is repeated until each 
-$\mathit{k}$ have been used as a validation set \cite{Han.2012}. Based on this 
+model with \( k \) iterations. This procedure is repeated until each 
+\( k \) have been used as a validation set \cite{Han.2012}. Based on this 
 technique, the experiment is conducted in the following steps within one 
 iteration:
 
 \begin{enumerate}
 	\item 
-	Splitting dataset into $\mathit{k}$-fold cross-validation sets where 
-	$\mathit{k = 5}$
+	Splitting dataset into \( k \)-fold cross-validation sets where \( k \)
 	\item 
-	Undersampling $\mathit{k - 1}$ folds such that the class frequency remains 
+	Undersampling \( k - 1 \) folds such that the class frequency remains 
 	the same as the original with a ratio of 50, 75, 90 and 95 percent
 	\item 
-	Synthetic oversampling of $\mathit{k - 1}$ folds to the original size of 
+	Synthetic oversampling of \( k - 1 \) folds to the original size of 
 	the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Borderline 
 	SMOTE, Random Oversampling and No Oversampling
 	\item 
@@ -645,7 +643,7 @@ ones. The control method in our case is the proposed G-SMOTE method and is
 tested under the null hypothesis whether G-SMOTE yields an improved performance 
 over other oversampling methods.
 
-\subsubsection{Software Implementation}
+\subsection{Software Implementation}
 
 The implementation of the experimental procedure is based on Python programming 
 language with the Scikit-Learn library 
@@ -758,40 +756,61 @@ To confirm the significance of the above presented results we apply the
 Friedman test as well as the Holm Test on our results. The application of the 
 Friedman test shows the following results:
 
-\begin{table}[H]
-	\begin{tabular}{ll|ll|ll|ll|ll}
-		&          & \multicolumn{2}{c|}{50\%} & \multicolumn{2}{c|}{75\%} & 
-		\multicolumn{2}{c|}{90\%} & \multicolumn{2}{c}{95\%} \\
-		\textbf{Classifier} & \textbf{Metric}   & \textbf{p-value}  & 
-		\textbf{Sig}  & \textbf{p-value}   & 
-		\textbf{Sig}  & \textbf{p-value}   & \textbf{Sig}  & 
-		\textbf{p-value}   & \textbf{Sig}  
-		\\ \hline
-		LR         & Accuracy & 2.00E-03  & TRUE          & 2.80E-03  & 
-		TRUE          & 9.30E-03  & TRUE          & 1.20E-02  & TRUE          \\
-		LR         & G-Mean   & 3.30E-02  & TRUE          & 1.40E-02  & 
-		TRUE          & 1.30E-02  & TRUE          & 7.30E-02  & FALSE         \\
-		KNN        & Accuracy & 3.50E-03  & TRUE          & 2.20E-03  & 
-		TRUE          & 4.70E-03  & TRUE          & 1.60E-03  & TRUE          \\
-		KNN        & G-Mean   & 1.00E-02  & TRUE          & 9.30E-04  & 
-		TRUE          & 2.00E-04  & TRUE          & 7.90E-03  & TRUE          \\
-		DT         & Accuracy & 5.50E-03  & TRUE          & 1.90E-02  & 
-		TRUE          & 1.80E-03  & TRUE          & 2.00E-04  & TRUE          \\
-		DT         & G-Mean   & 2.20E-03  & TRUE          & 4.50E-02  & 
-		TRUE          & 6.80E-03  & TRUE          & 1.40E-03  & TRUE          \\
-		GBC        & Accuracy & 3.00E-03  & TRUE          & 2.90E-02  & 
-		TRUE          & 6.10E-03  & TRUE          & 3.00E-03  & TRUE          \\
-		GB        & G-Mean   & 3.40E-03  & TRUE          & 4.50E-02  & 
-		TRUE          & 8.70E-03  & TRUE          & 2.40E-02  & TRUE         
-	\end{tabular}
-\caption{\label{tab:friedman-test}Results for Friedman test}
-\end{table}
+\begin{center}
+	\begin{footnotesize}
+		\csvreader[
+		longtable=llll,
+		table head=
+		\toprule\mdseries Classifier & \mdseries Metric & \mdseries p-value & 
+		\mdseries Significance \\
+		\midrule\endhead
+		\bottomrule\endfoot,
+		late after line=\\,
+		before reading={\catcode`\#12},
+		after reading={\catcode`\#12},
+		]{./resources/friedman_test.csv}
+		{1=\classifier,2=\metric,3=\pvalue,4=\significance}
+		{\classifier & \metric & \pvalue & \significance}
+	\end{footnotesize}
+	\addtocounter{table}{-1}
+	\captionof{table}{Results for Friedman test}
+	\label{tab:friedman_test}
+\end{center}
 
 Therefore, the null hypothesis of the Friedman test is rejected at a 
 significance level of a = 0.05, i.e. the classifiers do not perform similarly 
 in the mean rankings across the oversampling methods and evaluation metrics.
 
-[Holm test]
+The Holm's method is applied to adjust the $\text{p-values}$ of the paired 
+difference test with G-SMOTE algorithm as the control method. The results are 
+shown in Table 5:
+
+\begin{center}
+	\begin{footnotesize}
+		\csvreader[
+		longtable=llllll,
+		table head=
+		\toprule\mdseries Classifier & \mdseries Metric & \mdseries NONE & 
+		\mdseries RANDOM & \mdseries SMOTE & \mdseries B-SMOTE\\
+		\midrule\endhead
+		\bottomrule\endfoot,
+		late after line=\\,
+		before reading={\catcode`\#12},
+		after reading={\catcode`\#12},
+		]{./resources/holms_test.csv}
+		{1=\classifier,2=\metric,3=\none,4=\random,5=\smote,6=\bsmote}
+		{\classifier & \metric & \none & \random & \smote & \bsmote}
+	\end{footnotesize}
+	\addtocounter{table}{-1}
+	\captionof{table}{Adjusted $\text{p-values}$ using Holm test (B-SMOTE 
+	corresponds to Borderline 
+	SMOTE)}
+	\label{tab:holm_test}
+\end{center}
+
+At a significance level of a = 0.05 the null hypothesis of the Holm's test is 
+rejected for all oversamplers, indicating that the proposed method outperforms 
+all other methods used.  
 
 \section{Conclusions}
 
