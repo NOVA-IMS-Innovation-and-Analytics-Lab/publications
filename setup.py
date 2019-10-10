@@ -9,7 +9,7 @@ setup(
         'xlrd>=1.0.0',
         'cluster-over-sampling>=0.1.0',
         'geometric-smote>=0.1.2',
-        'research-learn == 0.1.0'
+        'research-learn >= 0.1.7'
     ],
     entry_points={
         'console_scripts':['run=tools.cli:run']
