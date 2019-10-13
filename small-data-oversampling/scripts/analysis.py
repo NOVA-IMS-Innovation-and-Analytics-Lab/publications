@@ -34,7 +34,7 @@ RESULTS_NAMES = [
     'gsmote'
 ]
 OVERSAMPLERS_NAMES = ['NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'BORDERLINE SMOTE', 'G-SMOTE']
-CLASSIFIERS_NAMES = ['LR', 'DT', 'KNN', 'GBC']
+CLASSIFIERS_NAMES = ['LR', 'KNN', 'DT', 'GBC']
 SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
 RESULTS_PATH = join(dirname(__file__), '..', 'results')
 ANALYSIS_PATH = join(dirname(__file__), '..', 'analysis')
