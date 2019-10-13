@@ -116,19 +116,19 @@ between population, sample and synthetic data.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.35\linewidth]{../analysis/relationship.png}
-	\caption{Relationship between population, actual data and virtual data \cite{Li.2006}}
+	\includegraphics[width=0.75\linewidth]{../analysis/relationship.png}
+	\caption{Relationship between population, sample and synthetic data \cite{Li.2006}}
 	\label{fig:relationship}
 \end{figure}
 
 The next sections will describe an effective way to tackle the small dataset
-problem. In chapter 2, the previously studied solutions are reviewed. Next, a
-detailed description of the proposed method is presented in chapter 3. This is
-followed by the research methodology and the experimental results in chapter 4
-and 5. Finally, the paper is concluded with an analysis of the experimental
-results in chapter 6.
+problem. In chapter 2, the previously studied solutions are reviewed. A detailed
+description of the proposed method is presented in chapter 3. This is followed
+by the research methodology and the experimental results in chapters 4 and 5.
+Finally, the paper is concluded with an analysis of the experimental results in
+chapter 6.
 
-\section{Related Work}
+\section{Related work}
 
 Several data pre-processing methods to increase the data size have been
 presented by the research community. In this section, the most important
@@ -139,7 +139,7 @@ Next, we look at re-sampling mechanisms, which mainly consist of bootstrapping
 techniques, and finally, we review over-sampling methods that can be a valuable
 option to increase the sample size in small datasets.
 
-\subsection{Fuzzy Theories}
+\subsection{Fuzzy theories}
 
 Many artificial sample generation techniques presented in the literature are
 based on fuzzy theories \cite{AbdulLateh.2017}. The fuzzy set theory provides a
@@ -148,11 +148,12 @@ It gives a wider scope of applicability, especially in the fields of information
 processing and pattern classification \cite{Zimmermann.2010}. Based on this
 concept, several methods have emerged in the last decade to estimate or
 approximate functions which are generating artificial samples for sparse
-training sets.
+training sets. Figure \ref{fig:small-data-distribution} presents the obtained
+samples and information gaps on the distribution of a small dataset.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{"../analysis/small_data_distribution"}
+	\includegraphics[width=0.6\linewidth]{../analysis/small_data_distribution.png}
 	\caption{Distribution of a small dataset \cite{Tsai.2015}}
 	\label{fig:small-data-distribution}
 \end{figure}
@@ -163,176 +164,168 @@ to create additional observations based on the current set of examples by using
 prior information. The introduction of virtual examples expands the effective
 training set size and can therefore help to mitigate the learning problem.
 \cite{Niyogi.1998} showed that the process of creating artificial samples is
-mathematically equivalent to incorporating prior knowledge. They demonstrate the
-concept on object recognition by mathematically transforming the views of
+mathematically equivalent to incorporating prior knowledge. They demonstrated
+the concept on object recognition by mathematically transforming the views of
 3D-objects. These new views are called virtual samples and its application
-extends information and results in successful generalization.
+extends information and results in successful generalization of the proposed
+solution.
 
-Based on this theory, several closely related studies were developed for manufacturing environments. 
-The first method to overcome scheduling problems due to the lack of data in early stages of 
-manufacturing systems was the creation of a Functional Virtual Population (FVP) \cite{Li.2003}. The 
-idea is to create a number of virtual samples within of a newly defined domain range. The method 
-involves a highly manual process, however, the application of FVP dramatically improved the 
-classification accuracy of a neural network. 
+Based on the above approach, several closely related studies were developed for
+manufacturing environments. The first method to overcome scheduling problems due
+to the lack of data in early stages of manufacturing systems was the creation of
+a Functional Virtual Population (FVP) \cite{Li.2003}. The idea was to create a
+number of virtual samples within a newly defined domain range. The method
+involves a highly manual process, however, the application of FVP dramatically
+improved the classification accuracy of a neural network. 
 
-In 2004, the idea of fuzzifying information to extend a small dataset was used to develop the 
-Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. It combines the principle of information 
-diffusion by \cite{Huang.1997} with  traditional Neural Networks to estimate functions. The information 
-diffusion method partially fills the information gaps by using fuzzy theories to represent the similarities 
-between samples and subsequently derive new ones. 
+In 2004, the idea of fuzzifying information to extend a small dataset was used
+to develop the Diffusion-Neural-Network (DNN) method \cite{Huang.2004}. It
+combines the principle of information diffusion by \cite{Huang.1997} with
+traditional Neural Networks to estimate functions. The information diffusion
+method partially fills the information gaps by using fuzzy theories to represent
+the similarities between samples and subsequently derive new ones. 
 
-The researchers \cite{Li.2006b} further examined possible methods to learn scheduling knowledge with 
-rare data in early stages of manufacturing systems. They developed a new data fuzzification technique 
-called mega-fuzzification and combined it with a data trend estimation procedure to systematically 
-expand the training data. The method fuzzifies the dataset as a whole and expands it in consideration of 
-a previously defined data trend. The results of this study show high learning accuracy and denote the 
-method as a reliable and applicable approach in the business marketplace. However, the difficulty in 
-establishing the domain ranges and the lack of a theoretical basis explain its lack of popularity and 
-limited interest. 
-
-In order to fully fill the information gaps, a technique which diffuses the sample set one for one was 
-introduced by \cite{Li.2007}. Their concept is to combine data trend estimation with a diffusion 
-technique to estimate the domain range mainly to avoid over-estimation. The method is called 
-Mega-Trend-Diffusion (MTD) and diffuses a set of data instead of each sample individually. For 
-example, two samples $\mathit{m}$ and $\mathit{n}$ (Figure 3) are diffused simultaneously into one 
-function with their borders $\mathit{a}$ and $\mathit{b}$. To estimate $\mathit{a}$ and $\mathit{b}$, 
-the algorithm takes the minimum and maximum values of the dataset and counts the number of data 
-points which are smaller or greater than the average of the values. This takes the skewness in the 
-distribution of the data and the domain range into consideration when calculating new samples. The 
-triangular shape of Figure 3 represents the membership function which shows the similarities between 
-samples. $\mathit{M}$ and $\mathit{n}$ are the samples and their heights are 
-the possible values of the membership function.
+In order to fully fill the information gaps, a technique which diffuses the
+sample set one for one was introduced by \cite{Li.2007}. Their concept is to
+combine data trend estimation with a diffusion technique to estimate the domain
+range mainly to avoid over-estimation. The method is called Mega-Trend-Diffusion
+(MTD) and diffuses a set of data instead of each sample individually. For
+example, the two samples $\mathit{m}$ and $\mathit{n}$ of figure
+\ref{fig:mtd-function} are diffused simultaneously into one function with their
+borders $\mathit{a}$ and $\mathit{b}$. To estimate $\mathit{a}$ and
+$\mathit{b}$, the algorithm takes the minimum and maximum values of the dataset
+and counts the number of data points which are smaller or greater than the
+average of the values. This takes the skewness in the distribution of the data
+and the domain range into consideration when calculating new samples. The
+triangular shape of \ref{fig:mtd-function} represents the membership function
+which shows the similarities between samples. $\mathit{M}$ and $\mathit{n}$ are
+the samples and their heights are the possible values of the membership
+function.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{"../analysis/mtd_function"}
+	\includegraphics[width=0.6\linewidth]{../analysis/mtd_function.png}
 	\caption{MTD function \cite{Li.2007}}
 	\label{fig:mtd-function}
 \end{figure}
 
-After estimating the domain range between $\mathit{a}$ and $\mathit{b}$, samples are randomly 
-produced within this area by using a common diffusion function. The artificial samples are then trained 
-with a Back-propagation Neural Network (BPNN) like \cite{Huang.2004} originally proposed. This 
-technique is seen as an improvement of DNN and was initially developed to improve early flexible 
-manufacturing system scheduling accuracy. In further research, MTD is widely used as a synthetic 
-sample generation method and is recognized as an effective way to deal with small dataset problems 
-\cite{AbdulLateh.2017}. However, MTD only considers the data for independent attributes and does not 
-deal with their relationships. 
+After estimating the domain range between $\mathit{a}$ and $\mathit{b}$, samples
+are randomly produced within this area by using a common diffusion function. The
+artificial samples are then trained with a Back-propagation Neural Network
+(BPNN) like \cite{Huang.2004} originally proposed. This technique is seen as an
+improvement of DNN and was initially developed to improve early flexible
+manufacturing system scheduling accuracy. In further research, MTD is widely
+used as a synthetic sample generation method and is recognized as an effective
+way to deal with small dataset problems \cite{AbdulLateh.2017}. However, MTD
+only considers the data for independent attributes and does not deal with their
+relationships. 
 
-Also, a genetic algorithm based virtual sample generation (GABVSG) was proposed. The method takes 
-the relationship among the attributes into account and explores the integrated effects of attributes 
-instead of dealing with them individually. This algorithm is performed in three steps: Samples are 
-randomly selected to determine the range of each attribute by using MTD functions. Next, a Genetic 
-Algorithm is applied to find the most feasible virtual samples. Finally, the average error of these new 
-samples is calculated. The results outperformed the ones using MTD and also showed better 
-performance in prediction than in case of no generation of synthetic samples \cite{Li.2014}.
+Also, a genetic algorithm based virtual sample generation (GABVSG) was proposed.
+The method takes the relationship among the attributes into account and explores
+the integrated effects of attributes instead of dealing with them individually.
+This algorithm is performed in three steps: Samples are randomly selected to
+determine the range of each attribute by using MTD functions. Next, a Genetic
+Algorithm is applied to find the most feasible virtual samples. Finally, the
+average error of these new samples is calculated. The results outperformed the
+ones using MTD and also showed better performance in prediction than in case of
+no generation of synthetic samples \cite{Li.2014}.
 
-The above presented fuzzy-based algorithms are limited on numerical attributes. When the dataset 
-contains nominal features, resampling mechanisms have to be considered such as Bootstrap. Although 
-it is possible to transform nominal values into binary ones, the relationship between the values of the 
-attributes would get lost \cite{Tsai.2008}. 
+\subsection{Random over-sampling}
 
-\subsection{Resampling Mechanism}
+An alternative approach to fuzzy theories as well the most well-known artificial
+sample generation method is the Bootstrapping Procedure (BP)
+\cite{AbdulLateh.2017} or Random Over-Sampling (ROS) as is known in the
+imbalanced learning research area. The main difference to the previously
+presented techniques is that ROS creates expands the training set by resampling
+instances from the measured data with replacement \cite{Efron.1993}. Therefore,
+it allows the algorithms to use the same sample more than one time to gradually
+revise the identified patterns in order to improve predictive accuracy. However,
+ROS may cause over-fitting when applied to small data because it repetitively
+uses the same information \cite{Tsai.2015}, \cite{Li.2018}. Nevertheless,
+\cite{Ivanescu.2006} applied ROS in batch process industries where it was shown
+that it may help mitigate the limited data problem.
 
-An alternative approach to fuzzy theories is the Bootstrapping Procedure (BP), which is the most 
-well-known artificial sample generation method \cite{AbdulLateh.2017}. The main difference to the 
-previously presented techniques is that BP creates new training sets by resampling instances from the
-measured data with replacement \cite{Efron.1993}. It allows the algorithms to use the same sample more 
-than one time to gradually revise the identified patterns in order to improve predictive accuracy. 
-Although this can double the number of observations from the training sets, Bootstrapping can cause 
-over-fitting when applied to small data because it repetitively uses the same information. Also, since the 
-amount of information provided by small data is minimal, any missing observations in the new, 
-bootstrapped training sets are a loss of valuable information (see Figure 4). As a result, Bootstrap 
-cannot be seen as a solution to the small dataset problem, as it increases the number of training 
-samples rather than the amount of (artificially generated) information \cite{Tsai.2015}, \cite{Li.2018}. 
-However, \cite{Ivanescu.2006} applied BP in batch process industries where it was shown that it may 
-help mitigate the limited data problem.
+\subsection{Informed over-sampling}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\linewidth]{../analysis/bootstrapping_example}
-	\caption{Example of bootstrapping sets, where six samples are represented 
-	as symbols and are allocated to $\mathit{n}$ possible subsets. The size of 
-	the subsets are increased using multiple instances of the original data. 
-	The data points which are not selected by the BP are used as a test set 
-	\cite{Kuhn.2013}.}
-	\label{fig:bootstrappingexample}
-\end{figure}
+A different approach to fill information gaps is informed over-sampling. It is
+an artificial data generation strategy originally developed in the context of
+machine learning to mitigate the imbalanced learning problem. Its origin comes
+from a different research community than the fuzzy strategies presented above,
+which is more related to machine learning techniques. Although over-sampling,
+fuzzy theories and bootstrapping approaches are aiming to solve a similar
+problem, it seems that these communities have had very few connections so far.
 
-In further studies of \cite{Tsai.2008} and \cite{Chao.2011}, the BP was applied to actually generate 
-virtual samples in order to fill the information gaps. Instead of resampling observations, they execute 
-the BP once for each input factor which results in a newly shuffled training set. After generating new
-instances, they are combined with the original dataset to train a Neural Network. The results show that 
-this method significantly decreases the prediction error rate in modeling manufacturing systems as well 
-as in the prediction to radiotherapy of bladder cancer cells.
-
-\subsection{Over-sampling Techniques}
-
-A different approach to fill information gaps is synthetic over-sampling of the training set. 
-Over-sampling is an artificial data generation strategy originally developed in the context of machine 
-learning to mitigate the imbalanced learning problem. Its origin comes from a different research 
-community than the fuzzy strategies presented above, which is more related to machine learning
-techniques. Although over-sampling, fuzzy theories and resampling approaches are aiming to solve a 
-similar problem, it seems that these communities have had very few connections so far. 
-
-In the imbalanced learning problem, the classes of the given dataset are significantly skewed. This 
-means, that the dataset has a large number of observations in one class and a very small number of 
-observations in the other class or classes. This constitutes a problem for the algorithm to learn and is 
-aimed to be solved in the training phase. In practice, the imbalanced dataset problem is are very 
-common issue in supervised learning. Especially, in the fields of fraud detection, product categorization 
-and disease diagnosis, an imbalanced dataset is the norm rather than the exception \cite{He.2013}. 
+In the imbalanced learning problem, the classes of the given dataset are
+significantly skewed i.e. the dataset has a large number of observations in one
+of the classes called majority class and relatively small number of observations
+in the other class(es) called minority class(es). This constitutes a problem for
+the learning phase of the algorithm resulting in low accuracy for the minority
+class(es). In practice, the imbalanced dataset problem is very common issue in
+supervised learning. Especially, in the fields of fraud detection, product
+categorization and disease diagnosis, an imbalanced dataset is the norm rather
+than the exception \cite{He.2013}. 
 
 \subsubsection{SMOTE}
 
-There are several methods presented in the literature that belong in the over-sampling category. The 
-first method to be  proposed and still the most popular is the Synthetic Minority Oversampling 
-TEchnique (SMOTE). SMOTE is based on the idea of k-nearest neighbors and linear interpolation as a 
-data generation mechanism. More specifically, SMOTE proposes to form a line segment between 
-neighboring minority class instances and and generate synthetic data between these samples 
-\cite{Chawla.2002}. The algorithm is very popular due to its simplicity as well as its robustness. 
-Numerous variations have been proposed based on SMOTE increasing its status as the staple idea in 
-over-sampling for imbalanced learning problems \cite{Fernandez.2018}. However, SMOTE has some 
-significant limitations when it comes to the sample generation process. In practice, the separation 
-between majority and minority class clusters is often not clearly definable. Thus, noisy samples may be 
-generated when a minority sample lies in the region of the majority classes. Figure 5 presents a 
-scenario where a minority instance is generated within the majority region (noisy sample).
+There are several methods presented in the literature that belong in the
+over-sampling category. The first method to be  proposed and still the most
+popular is the Synthetic Minority Oversampling TEchnique (SMOTE). SMOTE is based
+on the idea of k-nearest neighbors and linear interpolation as a data generation
+mechanism. More specifically, SMOTE proposes to form a line segment between
+neighboring minority class instances and generate synthetic data between them
+\cite{Chawla.2002}. The algorithm is very popular due to its simplicity as well
+as its robustness. Numerous variations have been proposed based on SMOTE,
+increasing its status as the staple idea in over-sampling for imbalanced
+learning problems \cite{Fernandez.2018}. However, SMOTE has some significant
+limitations when it comes to the sample generation process. In practice, the
+separation between majority and minority class areas is often not clearly
+definable. Thus, noisy samples may be generated when a minority sample lies in
+the region of the majority classes. Figure \ref{fig:noisy-examples} presents a
+scenario where a minority instance is generated within the majority region
+(noisy sample).
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{../analysis/noisy_examples}
+	\includegraphics[width=0.6\linewidth]{../analysis/noisy_examples.png}
 	\caption{Generation of noisy examples \cite{Douzas.2019b}}
 	\label{fig:noisy-examples}
 \end{figure}
 
-Furthermore, redundant instances may be generated within dense minority regions, as so that they do 
-not add any relevant information to the classifier and may lead to over-fitting. Figure 6 demonstrates 
-an example where a minority  class instance is generated in a dense minority class. This new 
-observation belongs to the same dense cluster as the original and is therefore less useful. 
+Furthermore, redundant instances may be generated within dense minority regions,
+as so that they do not add any relevant information to the classifier and may
+lead to over-fitting. Figure \ref{fig:redundant-examples} demonstrates an
+example where a minority  class instance is generated in a dense minority class.
+This new observation belongs to the same dense cluster as the original and is
+therefore less useful. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{../analysis/redundant_examples}
+	\includegraphics[width=0.6\linewidth]{../analysis/redundant_examples.png}
 	\caption{Generation of redundant examples \cite{Douzas.2019b}}
 	\label{fig:redundant-examples}
 \end{figure}
 
-Although SMOTE is recognized as an oversampling technique for imbalanced datasets, it can also be 
-used for solving the small dataset problem.  \cite{Li.2018} showed that SMOTE is able to successfully 
-fill the information gaps with synthetic samples. However, given its limitations, it did not achieve the 
-best results within their study.
+Although SMOTE is recognized as an over-sampling technique for imbalanced
+datasets, it can also be used for solving the small dataset problem.
+\cite{Li.2018} showed that SMOTE is able to successfully fill the information
+gaps with synthetic samples. However, given its limitations, SMOTE did not
+achieve the best results within their study.
 
 \subsubsection{G-SMOTE}
 
-The novel data generation procedure Geometric SMOTE (G-SMOTE) has been presented with the 
-objective to improve the above mentioned limitations of the SMOTE algorithm \cite{Douzas.2019b}. 
-G-SMOTE can be seen as a substitute of SMOTE enhanced by geometric properties. The main 
-difference to SMOTE is that it broadens the options for data generation and prevents the creation of 
-noise. Instead of connecting the minority sample and one of its nearest neighbors with a line segment, 
-the instances are generated in a geometrical region (hyper-spheroid) around the minority sample. 
-Furthermore, G-SMOTE is designed to avoid the generation of noisy samples by introducing the 
-hyper-parameter selection strategy. Figure 7 demonstrates the distribution of artificially created 
-samples by SMOTE versus G-SMOTE. Increasing number of $\mathit{k}$ neighbors, SMOTE tends to 
-generate noisy samples, whereas G-SMOTE avoids this scenario.
+The novel data generation procedure Geometric SMOTE (G-SMOTE) has been presented
+with the objective to improve the above mentioned limitations of the SMOTE
+algorithm \cite{Douzas.2019b}. G-SMOTE can be seen as a substitute of SMOTE
+enhanced by geometric properties. The main difference to SMOTE is that it
+broadens the options for data generation and prevents the creation of noise.
+Instead of connecting a minority sample and one of its minority class nearest
+neighbors with a line segment, the instances are generated in a geometrical
+region around the minority sample. Furthermore, G-SMOTE is designed to avoid the
+generation of noisy samples by introducing the \textit{selection strategy}
+hyper-parameter. Figure \ref{fig:smotevsgsmote} demonstrates the distribution of
+artificially created samples by SMOTE versus G-SMOTE. Increasing number of
+$\mathit{k}$ neighbors, SMOTE tends to generate noisy samples, whereas G-SMOTE
+avoids this scenario.
 
 \begin{figure}[H]
 	\centering
@@ -341,43 +334,48 @@ generate noisy samples, whereas G-SMOTE avoids this scenario.
 	\label{fig:smotevsgsmote}
 \end{figure}
 
-The study of \cite{Douzas.2019b} has performed an extensive comparison between G-SMOTE and 
-SMOTE using 69 imbalanced datasets and several classifiers. The results show that G-SMOTE 
-outperforms SMOTE, Random Oversampling and the case of no over-sampling, across all datasets, 
-classifiers and performance metrics.
+The study of \cite{Douzas.2019b} has performed an extensive comparison between
+G-SMOTE and SMOTE using 69 imbalanced datasets and several classifiers. The
+results show that G-SMOTE outperforms SMOTE, Random Oversampling and the case of
+no over-sampling, across all datasets, classifiers and performance metrics.
 
-\section{Proposed Method}
+\section{Proposed method}
 
-In the following section, we present G-SMOTE as a novel data generation procedure for small datasets. 
-Originally developed for the imbalanced learning problem, we adapt the algorithm to not only re-sample 
-the minority class, but the entire dataset independent from the class distribution. 
+In the following section, we present G-SMOTE as a novel data generation
+procedure for small datasets in the case of binary classification. Originally
+developed for the imbalanced learning problem, we adapt the algorithm to not
+only re-sample the minority class, but the entire dataset independent from the
+class distribution. 
 
 \subsection{G-SMOTE for the small dataset problem}
 
-As mentioned above, the G-SMOTE algorithm randomly generates artificial data within a geometrical 
-region of the input space. The size of this area is derived from the distance of the selected sample to 
-one of its nearest neighbors, whereas the shape is determined by the hyper-parameters called 
-truncation and deformation factor. Additionally, the hyper-parameter selection strategy of G-SMOTE 
-modifies the SMOTE selection process and also affects the size of the geometric region. Although the 
-main concept can be adapted from the original method to the small dataset problem, the selection 
-strategy requires some minor adjustments which will be described hereafter. In what follows, G-SMOTE 
-is applied to the case of binary classification tasks. The application for the multi-class case is also 
-straightforward and it is based on the binarization of the problem through the one-vs-all approach. 
-Finally, regression tasks require an extensive modification of the original G-SMOTE algorithm and they 
-will be a topic for future research.
+As mentioned above, the G-SMOTE algorithm randomly generates artificial data
+within a geometrical region of the input space. The size of this area is derived
+from the distance of the selected sample to one of its nearest neighbors,
+whereas the shape is determined by the hyper-parameters called
+\textit{truncation factor} and \textit{deformation factor}. Additionally, the
+\textit{selection strategy} hyper-parameter  of G-SMOTE modifies the standard
+SMOTE selection process and also affects the size of the geometric region.
+Although the main concept can be adapted from the original method to the small
+dataset problem, the \textit{selection strategy} requires some minor adjustments which
+will be described hereafter. In what follows, G-SMOTE is applied to the case of
+binary classification tasks. The application for the multi-class case is also
+straightforward and it is based on the binarization of the problem through the
+one-vs-all approach. Finally, regression tasks require an extensive modification
+of the original G-SMOTE algorithm and they will be a topic of future research.
 
-The hyper-parameter selection strategy \( \alpha_{sel} \) defines the radius of 
-the surface point. This mechanism allows the positive or negative class area to 
-expand into a direction where it prevents the algorithm from creating noisy 
-samples. In G-SMOTE for small data both classes are selected in two individual 
-runs to introduce new observations. In the first run, a random sample called 
-\( \textbf{x}_{surface} \) is selected which belongs to the positive class. 
-Similarly, \( \textbf{x}_{surface} \) is assigned to the negative class 
-samples in the second run. Both runs are based on the defined selection 
-strategy where \( \alpha_{sel} \) can have three different values: positive 
-class selection \( S_{pos} \), negative class selection \( S_{neg} \) and 
-combined selection \( S_{com} \). We describe the cases referring to first run 
-of randomly selecting a positive sample. In the second run, a negative class 
+The \textit{selection strategy} hyper-parameter \( \alpha_{sel} \) defines the
+radius of the geometric region. This mechanism allows the positive or negative
+class area to expand into the feature space but at the same time prevents the
+algorithm from creating noisy samples. In G-SMOTE for small data both classes
+are selected in two individual runs to introduce new observations. In the first
+run, a random sample called \( \textbf{x}_{surface} \) is selected which belongs
+to the positive class. Similarly, \( \textbf{x}_{surface} \) is assigned to the
+negative class samples in the second run. Both runs are based on the defined
+selection strategy where \( \alpha_{sel} \) can have three different values:
+positive class selection \( S_{pos} \), negative class selection \( S_{neg} \)
+and combined selection \( S_{com} \). We describe the cases referring to first
+run of randomly selecting a positive sample. In the second run, a negative class
 example is randomly chosen and the process is repeated inversely. 
 
 \begin{enumerate}[label=($\alph*$)]
@@ -503,27 +501,27 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 	\( N \) negative samples are introduced
 \end{enumerate}
 
-\section{Research Methodology}
+\section{Research methodology}
 
-The main objective of this work is to compare G-SMOTE with other oversampling 
-techniques when it comes to the small dataset problem. Therefore, we use a 
-variety of datasets, evaluation measures and classifiers to evaluate the 
-performance. A description of this set-up, the experimental procedure as well 
-as the software implementation is provided in this section.
+The main objective of this work is to compare G-SMOTE with other oversampling
+techniques when it comes to the small dataset problem. Therefore, we use a
+variety of datasets, evaluation measures and classifiers to evaluate the
+performance. A description of this set-up, the experimental procedure as well as
+the software implementation is provided in this section.
 
-\subsection{Experimental Data}
+\subsection{Experimental data}
 
-Ten datasets are used to test the performance of G-SMOTE which are retrieved 
-from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the 
-selection of the data lies on binary classification problems with a highly 
-balanced distribution of the two classes. In order to assure generalizability 
-of the results, the datasets include different topics such as health care, 
-finance, business and physics as well as different sample sizes. Details of the 
-datasets are presented in the following table:
+Ten datasets are used to test the performance of G-SMOTE which are retrieved
+from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the selection
+of the data lies on binary classification problems with a highly balanced
+distribution of the two classes. In order to assure generalizability of the
+results, the datasets include different topics such as health care, finance,
+business and physics as well as different sample sizes. Details of the datasets
+are presented in the following table:
 
 \begin{longtable}{llll}
 	\specialrule{.1em}{.05em}{.05em}
-	\textbf{Dataset} & \textbf{Number of samples} & \textbf{Number of 
+	\textbf{Dataset} & \textbf{Number of samples} & \textbf{Number of
 	attributes} & \textbf{Area} \\
 	\hline
 	Arcene & 900 & 10.000 & Health Care \\
@@ -540,149 +538,146 @@ datasets are presented in the following table:
 \caption{\label{tab:datasets}Description of the datasets} 
 \end{longtable}
 
-\subsection{Evaluation Measures}
+\subsection{Evaluation measures}
 
-To evaluate the performance of G-SMOTE, the experiment includes two different 
-measures. First, accuracy is used as one of the most common metrics for 
-evaluating classification models \cite{M.2015}. Accuracy measures 
-the ratio of correct predictions over the total number of instances evaluated. 
-The accuracy metric can be stated as
+To evaluate the performance of G-SMOTE, the experiment includes two different
+measures. First, accuracy is used as one of the most common metrics for
+evaluating classification models \cite{M.2015}. Accuracy measures the ratio of
+correct predictions over the total number of instances evaluated. The accuracy
+metric can be stated as
 
 $$Accuracy = \frac{TP + TN}{TP +TN + FP + FN}$$
 
-where \(TP / TN\) denote the number of correctly classified positive as 
-well as negative instances and \(FP / FN\) denote the number of 
-misclassified negative and positive instances, respectively. The accuracy 
-metric might be negligible for datasets with a significant disparity between 
-the number of positive and negative label. As pointed out by many studies, 
-accuracy has limitations in the discrimination process since rare classes have 
-only few impacts on the measure compared to majority classes. To make sure the 
-accuracies of the two classes stay relatively balanced, we include the 
-geometric mean (G-Mean) as a second measure. G-Mean measures the trade-off 
-between sensitivity (true positive rate) and specificity (true negative rate) 
-by the following:
+where \( TP \), \( TN \) denote the number of correctly classified positive as
+well as negative instances and \(FP \), \( FN\) denote the number of
+misclassified negative and positive instances, respectively. The accuracy metric
+might be inappropriate for datasets with a significant difference between the
+number of positive and negative classes. As pointed out by many studies,
+accuracy has limitations in the discrimination process since rare classes have
+only few impacts on the measure compared to majority classes. To make sure the
+contribution in the accuracies of the two classes stay relatively balanced, we
+include the geometric mean score (G-Mean) as a second measure. G-Mean measures
+the trade-off between sensitivity (true positive rate) and specificity (true
+negative rate) by the following:
 
 $$G-Mean = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP + FN} 
 \times \dfrac{TN}{TN + FP}}$$
 
-The objective of both measures is to be maximized since a classifier is 
-performing well if it provides high classification accuracy and a high ratio of 
-positive and negative accuracy \cite{Han.2012}. 
+\subsection{Machine learning algorithms}
 
-\subsection{Machine Learning Algorithms}
+The experiment is conducted with several classifiers to make sure the results
+are not dependent on the machine learning algorithm. We use the following four
+classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors
+(KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient
+Boosting (GB) \cite{Friedman.2001}.
 
-The experiment is conducted with several classifiers to make sure the results 
-are not dependent on the machine learning algorithm. We use the following four 
-classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest 
-Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and 
-Gradient Boosting (GB) \cite{Friedman.2001}.
+\subsection{Experimental procedure}
 
-\subsection{Experimental Procedure}
-
-The main concept of the experimental procedure is to randomly under-sample 
-the datasets presented in Table 1, increase them artificially with different 
-oversamplers and compare the results with the original dataset which is 
-considered to be the benchmark. This method allows us to directly compare the 
-quality of the artificial generated sample set with the observed data. In order 
-to evaluate if the proposed method can improve artificial data generation, we 
-compare G-SMOTE with SMOTE, Borderline SMOTE and Random Oversampling. Also, we 
-apply the machine learning algorithms to the under-sampled data with the 
-objective to assess their performance with a smaller amount of data. To 
-under-sample the data we use a ratio of 50, 75, 90 and 95 percent of the 
-original dataset. For example, with an undersampling ratio of 95 percent, we 
-take only five percent of the original data as a base to apply the oversampling 
-mechanism. This approach aims to provide an understanding of the classification 
+The main concept of the experimental procedure is to randomly under-sample the
+datasets presented in table \ref{tab:datasets}, increase their size artificially with
+different over-samplers and compare the results with the original dataset which
+is considered to be the benchmark. This method allows us to directly compare the
+quality of the artificial generated sample set with the observed data. In order
+to evaluate if the proposed method can improve artificial data generation, we
+compare G-SMOTE with SMOTE, Borderline SMOTE and Random Oversampling. Also, we
+apply the machine learning algorithms to the under-sampled data with the
+objective to assess their performance with a smaller amount of data. To
+under-sample the data we use a ratio of 50, 75, 90 and 95 percent of the
+original dataset. For example, with an undersampling ratio of 95 percent, we
+take only five percent of the original data as a base to apply the over-sampling
+mechanism. This approach aims to provide an understanding of the classification
 performance as the size of the dataset diminishes.
 
-Figure 11 visualizes the experimental process on a high level of abstraction: 
+Figure \ref{fig:experimentalprocedure} visualizes the experimental process: 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{../analysis/experimental_procedure}
+	\includegraphics[width=0.7\linewidth]{../analysis/experimental_procedure.png}
 	\caption{High-level experimental procedure}
 	\label{fig:experimentalprocedure}
 \end{figure}
 
-
-We use \( k \)-fold cross-validation with \( k = 5 \) as a technique 
-for assessing the performance of the models for each combination of oversampler 
-and classifiers. The dataset \( D \) is randomly split into \( k \) 
-subsets (folds) \( D_1, D_2, … D_k \) of approximately equal size. Each 
-fold is used as a validation set and the remaining folds are used to train the 
-model with \( k \) iterations. This procedure is repeated until each 
-\( k \) have been used as a validation set \cite{Han.2012}. Based on this 
-technique, the experiment is conducted in the following steps within one 
-iteration:
+We use \( k \)-fold cross-validation scores with \( k = 5 \) to assess the
+performance of the models for each combination of over-sampler and classifier.
+The dataset \( D \) is randomly split into \( k \) subsets (folds) \( D_1, D_2,
+… D_k \) of approximately equal size. Each fold is used as a validation set and
+the remaining folds are used to train the model with \( k \) iterations. This
+procedure is repeated until each \( k \) have been used as a validation set
+\cite{Han.2012}. Based on the above description, the experiment is conducted in
+the following steps within one iteration:
 
 \begin{enumerate}
+	
 	\item 
-	Splitting dataset into \( k \)-fold cross-validation sets where \( k \)
+	Splitting dataset into \( k \)-fold cross-validation sets where \( k \).
+
 	\item 
 	Undersampling \( k - 1 \) folds such that the class frequency remains 
-	the same as the original with a ratio of 50, 75, 90 and 95 percent
+	the same as the original with a ratio of 50, 75, 90 and 95 percent.
+
 	\item 
-	Synthetic oversampling of \( k - 1 \) folds to the original size of 
-	the dataset (class ratio remains the same) with G-SMOTE, SMOTE, Borderline 
-	SMOTE, Random Oversampling and No Oversampling
+	Synthetic oversampling of \( k - 1 \) folds to the original size of the
+	dataset (class ratio remains the same) with G-SMOTE, SMOTE, Borderline
+	SMOTE, Random Oversampling and No Oversampling.
+
 	\item 
 	Training the model with the classifiers LR, KNN, DT and GB
+
 	\item 
 	Testing the model with the remaining, original fold
+
 	\item 
 	Computation of results
+
 \end{enumerate}	
 
-This procedure is repeated three times and the on average highest cross 
-validation score for each combination of dataset, classifier, oversampler and 
-evaluation metric is reported.
+This procedure is repeated 3 times and the highest cross validation score for
+each combination of dataset, classifier, oversampler and evaluation metric is
+reported.
 
-In order to confirm the statistical significance of the experimental results, 
-the Friedman test \cite{Sheldon.1996} as well as the Holm test 
-\cite{JanezDemsar.2006} are applied. The Friedman test is a non-parametric 
-procedure to test hypothesis on ordinal scaled variables. Additionally, it can 
-also be applied with interval data when normality and homogeneity assumption 
-does not hold. We use the Friedman test to evaluate the data generation 
-algorithms on each dataset separately. Ranking scores are assigned to each 
-oversampling method with scores of 1 to 5 for the best and worst performing 
-methods, respectively. The procedure compares the average ranks of the 
-algorithms under the null hypothesis, which states that the independent 
-variable has no effect on the dependent variable. In our case, the null 
-hypothesis assumes that all five algorithms show identical performance 
-independent of the oversampling method and evaluation metric used. If the 
-null-hypothesis is rejected to our favor, we proceed with the Holm test. The 
-Holm test acts as a post-hoc test for the Friedman test for controlling the 
-family-wise error rate when all algorithms are compared to a control method and 
-not between themselves. This non-parametric test is very powerful in situations 
-where we want to test whether a newly proposed method is better than existing 
-ones. The control method in our case is the proposed G-SMOTE method and is 
-tested under the null hypothesis whether G-SMOTE yields an improved performance 
-over other oversampling methods.
+In order to confirm the statistical significance of the experimental results,
+the Friedman test \cite{Sheldon.1996} as well as the Holm test
+\cite{JanezDemsar.2006} are applied. Ranking scores are assigned to each
+over-sampling method with scores of 1 to 5 for the best and worst performing
+methods, respectively. The Friedman test is a non-parametric procedure that
+compares the average rankings of the algorithms under the null hypothesis that
+all show identical performance independent of the selected classifier and
+evaluation metric. If the null-hypothesis is rejected to our favor, we proceed
+with the Holm test. The Holm test acts as a post-hoc test for the Friedman test
+for controlling the family-wise error rate when all algorithms are compared to a
+control method and not between themselves. This non-parametric test is very
+powerful in situations where we want to test whether a newly proposed method is
+better than existing ones. The control method in our case is the proposed
+G-SMOTE method and is tested under the null hypothesis that it performs
+similarly to the rest of over-samplers for every combination of classifier and
+metric.
 
 \subsection{Software Implementation}
 
-The implementation of the experimental procedure is based on Python programming 
-language with the Scikit-Learn library 
+The implementation of the experimental procedure is based on Python programming
+language using the Scikit-Learn library
 \cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011}.
-All functions, algorithms, experiments and results reported are 
-provided at \url{http://github.com/AlgoWit/publications}. They can be adjusted 
-and implemented in comparative studies as the procedure is fully integrated 
-with the Scikit-Learn ecosystem.    
+All functions, algorithms, experiments and results reported are provided at
+\url{https://github.com/AlgoWit/publications/tree/master/small-data-oversampling}.
+Additionally, Research-Learn library
+(\url{https://github.com/AlgoWit/research-learn}) provides a framework to
+implement comparative experiments, being also fully integrated with the
+Scikit-Learn ecosystem.
 
-\section{Results and Discussion}
+\section{Results and discussion}
 
 In this section the performance of the different oversamplers and the results 
 of the statistical tests are presented and analyzed.
 
-\subsection{Comparative Presentation}
+\subsection{Comparative presentation}
 
-The mean cross validation scores and the standard deviation values per 
-classifier across all datasets are presented in Table 
-\ref{tab:mean_sem_scores}. The scores are presented for each undersampling 
-ratio to evaluate how the methods perform as the dataset size diminishes. We  
-include the benchmark method that represents the original dataset without 
-applying undersampling before training the algorithm. This sample set is seen 
-as the ground truth of our experiments which is expected to obtain the best 
-results by design.
+The mean cross validation scores and the standard error per classifier and
+metric across all datasets are presented in Table \ref{tab:mean_sem_scores}. The
+scores are presented for each under-sampling ratio to evaluate how the methods
+perform as the dataset size diminishes. We include the benchmark method that
+represents the original dataset without applying under-sampling before training
+the algorithm. This sample set is seen as the ground truth of our experiments
+which is expected to obtain the best results by design.
 
 \begin{center}
 \begin{footnotesize}
@@ -709,25 +704,20 @@ results by design.
 \label{tab:mean_sem_scores}
 \end{center}
 
-This table shows that G-SMOTE outperforms nearly all oversampling methods used 
-for both, accuracy and G-mean metrics, on all classifiers. The highest score in 
-the experiment is achieved by G-SMOTE with Gradient Boosting classifier and an 
-average accuracy of 93\%. The undersampling ratio in this case is 50\% of the 
-entire dataset. Throughout the scores we can observe that all oversamplers have 
-a better performance as the dataset increase their size i.e. the undersampling 
-ratio gets smaller. There is also a pattern in the performance of the 
-classifiers. The better results a classifier can establish, the better the 
-performance of the oversamplers in general. 
+This table shows that G-SMOTE outperforms nearly all over-sampling methods for
+all combinations of classifiers and metrics. Throughout the scores we can
+observe that all over-samplers have a better performance as the dataset increase
+their size i.e. the under-sampling ratio gets smaller.  Particularly, the scores
+of G-SMOTE are the closest to the ones of the Benchmark method which implies
+that the proposed method is able to artificially establish a representative
+dataset.
 
-The scores of G-SMOTE are very similar to the ones of the Benchmark method 
-which implies that the proposed method is able to artificially establish a 
-representative dataset. Of all oversampling methods, the artificial data 
-created by G-SMOTE is the one closest to the observed data of the benchmark 
-method.
-
-Table 3 presents the mean and standard error of percentage difference between 
-G-SMOTE and SMOTE. It shows that G-SMOTE performs better on average than SMOTE 
-in almost every combination of ratio, classifier and metric. 
+Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
+of percentage difference between G-SMOTE and No Oversampling. It shows that
+G-SMOTE performs significantly better compared to the case where no
+over-sampling is applied in every combination of under-sampling ratio,
+classifier and metric. Particularly, the performance gap increases for higher
+under-sampling ratios.
 
 \begin{center}
 	\begin{footnotesize}
@@ -749,8 +739,8 @@ in almost every combination of ratio, classifier and metric.
 	\label{tab:mean_sem_perc_diff_scores}
 \end{center}
 
-As explained in section 4, a ranking score in the range 1 to 5 is assigned to 
-each oversampler. The mean ranking of all oversampling methods across the 
+As explained in section 4, a ranking score in the range 1 to 5 is assigned to
+each oversampler. The mean ranking of all oversampling methods across the
 datasets is presented in the following figure: 
 
 \begin{figure}[H]
@@ -760,16 +750,16 @@ datasets is presented in the following figure:
 	\label{fig:mean_ranking_per_classifier_accuracy}
 \end{figure}
 
-Looking at the graphs, G-SMOTE is ranked on the top place when comparing with 
-SMOTE, Borderline SMOTE, Random Oversampling and No Oversampling. Additionally, 
-G-SMOTE slightly outperforms the Benchmark method using the classifiers 
-Logistic Regression and Decision Tree in the mean ranking. 
+Looking at the graphs, G-SMOTE is ranked on the top place when comparing with
+SMOTE, Borderline SMOTE, Random Oversampling and No Oversampling. Additionally,
+G-SMOTE slightly outperforms the Benchmark method using the classifiers Logistic
+Regression and Decision Tree in the mean ranking. 
 
 \subsection{Statistical Analysis}
 
-To confirm the significance of the above presented results we apply the 
-Friedman test as well as the Holm Test on our results. The application of the 
-Friedman test shows the following results:
+To confirm the significance of the above presented results we apply the Friedman
+test as well as the Holm Test on the above results. The application of the
+Friedman test is presented below:
 
 \begin{center}
 	\begin{footnotesize}
@@ -789,16 +779,16 @@ Friedman test shows the following results:
 	\end{footnotesize}
 	\addtocounter{table}{-1}
 	\captionof{table}{Results for Friedman test}
-	\label{tab:friedman_test}
+	\label{tab:friedman_test.csv}
 \end{center}
 
 Therefore, the null hypothesis of the Friedman test is rejected at a 
-significance level of a = 0.05, i.e. the classifiers do not perform similarly 
-in the mean rankings across the oversampling methods and evaluation metrics.
+significance level of a = 0.05, i.e. the over-samplers do not perform similarly 
+in the mean rankings for any combination of classifier and evaluation metric.
 
 The Holm's method is applied to adjust the $\text{p-values}$ of the paired 
 difference test with G-SMOTE algorithm as the control method. The results are 
-shown in Table 5:
+shown in table \ref{tab:holm_test}:
 
 \begin{center}
 	\begin{footnotesize}
@@ -823,25 +813,22 @@ shown in Table 5:
 	\label{tab:holm_test}
 \end{center}
 
-At a significance level of a = 0.05 the null hypothesis of the Holm's test is 
-rejected for all oversamplers, indicating that the proposed method outperforms 
-all other methods used.  
+At a significance level of a = 0.05 the null hypothesis of the Holm's test is
+rejected for 25 out 32 combinations. This indicates that the proposed method
+outperforms all other methods in most cases.  
 
 \section{Conclusions}
 
-This research illustrates an effective solution to mitigate the small dataset 
-problem in supervised learning tasks. The oversampling algorithm G-SMOTE has 
-the ability to represent the underlying population of a small sample very well 
-and is able to improve prediction accuracy on limited data for binary 
-classification problems. This improvement in the forecasting performance of 
-G-SMOTE relates to its capability of increasing the diversity of generated 
-instances while generating artificial samples in safe areas of the input space. 
-The successful implementation of this oversampler in imbalance data problems 
-can be translated into small dataset problems, which shows a lot of potential 
-for possible linkage of these research areas in the future. The G-SMOTE 
-algorithm is available for implementation on GitHub 
-(\url{https://github.com/AlgoWit/geometric-smote}) or 
-\url{http://geometric-smote.readthedocs.io}.
+This paper illustrates an effective solution to mitigate the small dataset
+problem in binary classification tasks. As shown above, the over-sampling
+algorithm G-SMOTE has the ability to generate high quality artificial samples
+and improve the prediction accuracy of various classifiers. This improvement
+relates to its capability of increasing the diversity of new instances while
+avoiding the generation of noisy samples. An important point is that G-SMOTE
+significantly improves classification performance compared to the case where
+only the small data are used. Also G-SMOTE outperforms standard over-sampling
+approaches such Random Over-Sampling and SMOTE. Finally, G-SMOTE implementation
+is available on (\url{https://github.com/AlgoWit/geometric-smote}).
 
 \bibliography{references}
 \bibliographystyle{apalike}
