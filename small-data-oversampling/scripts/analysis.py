@@ -101,7 +101,7 @@ def generate_statistical_results():
 
     # Calculate statistical results
     friedman_test = sort_tbl(generate_pvalues_tbl(apply_friedman_test(results)), ovrs_order=OVERSAMPLERS_NAMES, clfs_order=CLASSIFIERS_NAMES)
-    holms_test = sort_tbl(generate_pvalues_tbl(apply_holms_test(results, control_oversampler='G-SMOTE')), ovrs_order=OVERSAMPLERS_NAMES, clfs_order=CLASSIFIERS_NAMES)
+    holms_test = sort_tbl(generate_pvalues_tbl(apply_holms_test(results, control_oversampler='G-SMOTE')), ovrs_order=OVERSAMPLERS_NAMES[:-1], clfs_order=CLASSIFIERS_NAMES)
     statistical_results_names = ('friedman_test', 'holms_test')
     statistical_results = zip(statistical_results_names, (friedman_test, holms_test))
 
