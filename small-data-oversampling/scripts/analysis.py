@@ -37,20 +37,21 @@ OVERSAMPLERS_NAMES = ['NO OVERSAMPLING', 'RANDOM OVERSAMPLING', 'SMOTE', 'BORDER
 CLASSIFIERS_NAMES = ['LR', 'DT', 'KNN', 'GBC']
 SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
 RESULTS_PATH = join(dirname(__file__), '..', 'results')
+ANALYSIS_PATH = join(dirname(__file__), '..', 'analysis')
 
 def generate_results(ratio):
     """Generate results including all oversamplers."""
 
-    # Load experiments object
+    # Load results
     results = []
     for name in RESULTS_NAMES:
         file_path = join(RESULTS_PATH, f'{name}_{ratio}.pkl')
         results.append(pd.read_pickle(file_path))
         
-    # Create combined experiment
+    # Combine results
     results = combine_results(*results)
 
-    # Filter experiment
+    # Select results
     results = select_results(results, classifiers_names=CLASSIFIERS_NAMES)
 
     return results
@@ -113,9 +114,9 @@ if __name__ == '__main__':
     main_results = generate_main_results()
     for ratio, results in main_results.items():
         for name, result in results:
-            result.to_csv(join(RESULTS_PATH, f'{name}_{ratio}.csv'), index=False)
+            result.to_csv(join(ANALYSIS_PATH, f'{name}_{ratio}.csv'), index=False)
 
     # Statistical results
     statistical_results = generate_statistical_results()
     for name, result in statistical_results:
-        result.to_csv(join(RESULTS_PATH, f'{name}.csv'), index=False)
+        result.to_csv(join(ANALYSIS_PATH, f'{name}.csv'), index=False)
