@@ -51,107 +51,122 @@
 \maketitle
 
 \begin{abstract}
-One of the key problems in supervised learning is the insufficient size of data sets. Small training 
-datasets decrease the performance of machine learning algorithms. The current research work aims to 
-investigate the effect of using small datasets and provide a solution by artificially adding samples in the 
-training process. The over-sampling technique Geometric SMOTE is applied to generate new instances 
-and enhance the initial training data. Experimental results show a significant improvement on the 
-prediction capability when comparing with other over-sampling techniques such as Random 
-Oversampling, SMOTE and Borderline SMOTE. These findings create a linkage between the research 
-areas of the imbalance learning and the small data problems which offers a lot of potential for future
-research.
+One of the key problems in supervised learning is the insufficient size of data
+sets that may result in decreased performance of machine learning algorithms.
+The current research work aims to investigate the effect of using small datasets
+and provide a solution by artificially adding samples in the training process.
+The over-sampling algorithm Geometric SMOTE is applied to generate new instances
+and enhance the initial dataset. Experimental results show a significant
+improvement on the prediction capability when comparing with other over-sampling
+techniques such as Random Oversampling, SMOTE and Borderline SMOTE. These
+findings create a connection between the research areas of the imbalance learning
+and the small data problems which offers a lot of potential for future research.
 \end{abstract}
 
 \section{Introduction}
-Insufficient size of data sets is a common issue between various supervised learning tasks 
-\cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of training samples can be caused by 
-different factors. First, data is becoming an increasingly expensive resource \cite{Li.2007} as the 
-process to retain data is getting more complex due to strict privacy regulations such as the General 
-Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the small dataset 
-problem can be found in numerous industries where organizations simply do not have access to a 
-reasonable amount of data. For example, manufacturing industries are usually dealing with small data in 
-early stages of product developments and health care organizations have to work with different kinds 
-of rare diseases, where very few records are available \cite{AbdulLateh.2017}.
+Insufficient size of data sets is a common issue between various supervised
+learning tasks \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited
+availability of training samples can be caused by different factors. First, data
+is becoming an increasingly expensive resource \cite{Li.2007} as the process to
+retain them is getting more complex due to strict privacy regulations such as
+the General Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}.
+Additionally, the small dataset problem can be found in numerous industries
+where organizations simply do not have access to a reasonable amount of data.
+For example, manufacturing industries are usually dealing with small number of
+samples in early stages of product developments and health care organizations
+have to work with different kinds of rare diseases, where very few records are
+available \cite{AbdulLateh.2017}.
 
-In machine learning, researchers are mainly concerned with the design of sophisticated learning 
-algorithms when aiming to improve prediction performance. However, a more successful way is often 
-to increase the sample size.A rule of thumb is that "a dumb algorithm with lots and lots of data beats a 
-clever one with modest amounts of it" \cite{Domingos.2012}. One of the reasons why application of 
-refined algorithms does not perform well on an insufficient amount of data is that training samples 
-often does not provide an unbiased representation of reality. Generally, they are characterized by a 
-loose data structure with many information gaps whereas a bigger dataset carries more observations 
-to provide a complete picture of the problem. This lack of information negatively impacts the 
-performance of machine learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained from 
-prediction models trained with small sample sizes is considered unreliable as well as imprecise and does 
-not lead to a robust classification performance 
+In machine learning, researchers are usually concerned with the design of
+sophisticated learning algorithms when aiming to improve prediction performance.
+However, a more successful way is often to increase the sample size. A rule of
+thumb is that "a dumb algorithm with lots and lots of data beats a clever one
+with modest amounts of it" \cite{Domingos.2012}. Generally, small training
+samples are characterized by a loose data structure with many information gaps
+whereas a bigger dataset carries more observations to provide a complete picture
+of the problem. This lack of information negatively impacts the performance of
+machine learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained
+from prediction models trained with small sample sizes is considered unreliable
+as well as imprecise and does not lead to a robust classification performance
 \cite{AbdulLateh.2017}.
 
-Considering the size of data, there are two types of problems: first, the  insufficiency of data belonging 
-to one class (imbalance learning problem) for a binary or multi-class classification task and second, the 
-size of the whole dataset (small dataset problem) for any classification or regression task 
-\cite{Sezer.2014}. In both cases, small training samples affect the performance of machine learning 
-models \cite{Tsai.2008}. A theoretical definition of "small" can be found in statistical learning theory by 
-Vapnik. A sample size is defined as small, if the ratio between the number of training samples and 
-Vapnik-Chervonenkis (VC) dimensions is less than 20. VC dimensions are determined as the maximum 
-number of vectors that can be separated into two classes in all possible ways by a set of functions 
-\cite{Vapnik.2008}.
+Considering the size of data, there are two types of problems: First, the
+insufficiency of data belonging to one class (imbalance learning problem) for a
+binary or multi-class classification task and second, the size of the whole
+dataset (small dataset problem) for any classification or regression task
+\cite{Sezer.2014}. In both cases, small training samples affect the performance
+of machine learning models \cite{Tsai.2008}. A theoretical definition of "small"
+can be found in statistical learning theory by Vapnik. A sample size is defined
+as small, if the ratio between the number of training samples and
+Vapnik-Chervonenkis (VC) dimensions is approximately less than 20. VC dimensions
+are determined as the maximum number of vectors that can be separated into two
+classes in all possible ways by a set of functions \cite{Vapnik.2008}.
 
-Under-representation of observations in the sample set can be solved in different ways. The use of 
-synthetic data derived from existing (real) observations is a promising approach to the problem 
-\cite{Sezer.2014}. Techniques to artificially add information by extending the sample size, and 
-eventually improving the classification results of the algorithms, can translate into significant 
-improvements in many application domains. However, it is important to consider that virtual data 
-samples are not necessarily representatives of the population, as they are artificially created. Taking 
-this into consideration, the challenge in artificial data generation is to create data which extends the 
-observed data without creating noise \cite{Li.2006}. Additionally, it is important to consider that 
-generating artificial data will only work if the available sample is representative of the underlying 
-population.
+Under-representation of observations in the sample set can be solved in
+different ways. The use of synthetic data derived from existing observations is
+a promising approach to the problem \cite{Sezer.2014}. Techniques to
+artificially add information by extending the sample size, and eventually
+improving the performance of the algorithms, can translate into significant
+improvements in many application domains. However, it is important to note that
+the challenge in artificial data generation is to create data which extend the
+training set without creating noise \cite{Li.2006}. Additionally, generating
+artificial data will only work if the initial sample is representative of the
+underlying population. Figure \ref{fig:relationship} shows the relationship
+between population, sample and synthetic data.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.35\linewidth]{./resources/relationship}
+	\includegraphics[width=0.35\linewidth]{../analysis/relationship.png}
 	\caption{Relationship between population, actual data and virtual data \cite{Li.2006}}
 	\label{fig:relationship}
 \end{figure}
 
-The next sections will describe an effective way to tackle the small dataset problem. In chapter 2, the 
-previously studied solutions are reviewed. Next, a detailed description of the proposed method is 
-presented in chapter 3. This is followed by the research methodology and the experimental results in 
-chapter 4 and 5. Finally, the paper is concluded with an analysis of the experiments in chapter 6.
+The next sections will describe an effective way to tackle the small dataset
+problem. In chapter 2, the previously studied solutions are reviewed. Next, a
+detailed description of the proposed method is presented in chapter 3. This is
+followed by the research methodology and the experimental results in chapter 4
+and 5. Finally, the paper is concluded with an analysis of the experimental
+results in chapter 6.
 
 \section{Related Work}
 
-Several data pre-processing methods to increase the data size have been presented by the research 
-community. In this section, the most important approaches are reviewed and the state-of-the-art to 
-improve small dataset learning is reported. We start by presenting fuzzy theories, which have 
-historically been the most used approach to mitigate the small dataset problem.  Next, we look at 
-re-sampling mechanisms, which mainly consist of bootstrapping techniques, and finally, we review 
-over-sampling methods that can be a valuable option to increase the sample size in small datasets.
+Several data pre-processing methods to increase the data size have been
+presented by the research community. In this section, the most important
+approaches are reviewed and the state-of-the-art to improve small dataset
+learning is reported. We start by describing fuzzy theories, which have
+historically been the most used approach to mitigate the small dataset problem.
+Next, we look at re-sampling mechanisms, which mainly consist of bootstrapping
+techniques, and finally, we review over-sampling methods that can be a valuable
+option to increase the sample size in small datasets.
 
 \subsection{Fuzzy Theories}
 
-Many artificial sample generation techniques presented in the literature are based on fuzzy theories
-\cite{AbdulLateh.2017}. The fuzzy set theory provides a strict mathematical framework to generalize the 
-classical notion of a dataset. It gives a wider scope of applicability, especially in the fields of 
-information processing and pattern classification \cite{Zimmermann.2010}. Based on this concept, 
-several methods have emerged in the last decade to estimate or approximate functions which are 
-generating more samples for sparse training sets.
+Many artificial sample generation techniques presented in the literature are
+based on fuzzy theories \cite{AbdulLateh.2017}. The fuzzy set theory provides a
+strict mathematical framework to generalize the classical notion of a dataset.
+It gives a wider scope of applicability, especially in the fields of information
+processing and pattern classification \cite{Zimmermann.2010}. Based on this
+concept, several methods have emerged in the last decade to estimate or
+approximate functions which are generating artificial samples for sparse
+training sets.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{"./resources/small_data_distribution"}
+	\includegraphics[width=0.6\linewidth]{"../analysis/small_data_distribution"}
 	\caption{Distribution of a small dataset \cite{Tsai.2015}}
 	\label{fig:small-data-distribution}
 \end{figure}
 
-The fundamental concept of artificially creating data is called Virtual Sample Generation (VSG) and was 
-originally proposed by \cite{Niyogi.1998}. The idea is to create additional examples based on the 
-current set of real-life examples by using prior information gained from the available data. The 
-introduction of virtual examples expands the effective training set size and can therefore help to 
-mitigate the learning problem. \cite{Niyogi.1998} showed that the process of creating artificial samples 
-is mathematically equivalent to incorporating prior knowledge. They demonstrate the concept on object 
-recognition by mathematically transforming the views of 3D-objects. These new views are called virtual 
-samples and its application extends information and results in successful generalization. 
+The fundamental concept of creating synthetic data is called Virtual Sample
+Generation (VSG) and was originally proposed by \cite{Niyogi.1998}. The idea is
+to create additional observations based on the current set of examples by using
+prior information. The introduction of virtual examples expands the effective
+training set size and can therefore help to mitigate the learning problem.
+\cite{Niyogi.1998} showed that the process of creating artificial samples is
+mathematically equivalent to incorporating prior knowledge. They demonstrate the
+concept on object recognition by mathematically transforming the views of
+3D-objects. These new views are called virtual samples and its application
+extends information and results in successful generalization.
 
 Based on this theory, several closely related studies were developed for manufacturing environments. 
 The first method to overcome scheduling problems due to the lack of data in early stages of 
@@ -190,7 +205,7 @@ the possible values of the membership function.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{"./resources/mtd_function"}
+	\includegraphics[width=0.6\linewidth]{"../analysis/mtd_function"}
 	\caption{MTD function \cite{Li.2007}}
 	\label{fig:mtd-function}
 \end{figure}
@@ -235,7 +250,7 @@ help mitigate the limited data problem.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{./resources/bootstrapping_example}
+	\includegraphics[width=0.6\linewidth]{../analysis/bootstrapping_example}
 	\caption{Example of bootstrapping sets, where six samples are represented 
 	as symbols and are allocated to $\mathit{n}$ possible subsets. The size of 
 	the subsets are increased using multiple instances of the original data. 
@@ -284,7 +299,7 @@ scenario where a minority instance is generated within the majority region (nois
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{./resources/noisy_examples}
+	\includegraphics[width=0.6\linewidth]{../analysis/noisy_examples}
 	\caption{Generation of noisy examples \cite{Douzas.2019b}}
 	\label{fig:noisy-examples}
 \end{figure}
@@ -296,7 +311,7 @@ observation belongs to the same dense cluster as the original and is therefore l
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{./resources/redundant_examples}
+	\includegraphics[width=0.6\linewidth]{../analysis/redundant_examples}
 	\caption{Generation of redundant examples \cite{Douzas.2019b}}
 	\label{fig:redundant-examples}
 \end{figure}
@@ -321,7 +336,7 @@ generate noisy samples, whereas G-SMOTE avoids this scenario.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{./resources/smote_vs_gsmote}
+	\includegraphics[width=1\linewidth]{../analysis/smote_vs_gsmote}
 	\caption{SMOTE versus G-SMOTE \cite{Douzas.2019}}
 	\label{fig:smotevsgsmote}
 \end{figure}
@@ -379,7 +394,7 @@ selection strategy here.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.51\linewidth]
-		{./resources/positive_class_selection_strategy}
+		{../analysis/positive_class_selection_strategy}
 	\caption{Example of positive class selection strategy: A positive class 
 	instance is defined as the center and one of its \( k = 4 \) positive 
 	class nearest neighbors is selected as the surface point. The radius 
@@ -399,7 +414,7 @@ not allow the data generation mechanism to penetrate the opposite area.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]
-		{./resources/negative_class_selection_strategy}
+		{../analysis/negative_class_selection_strategy}
 	\caption{Example of negative class selection strategy: A positive class 
 	instance is defined as the center and its closest negative class neighbor 
 	is selected as the surface point. The radius \( R \) is defined to be 
@@ -419,7 +434,7 @@ as a negative class instance.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.52\linewidth]
-		{./resources/combined_class_selection_strategy}
+		{../analysis/combined_class_selection_strategy}
 	\caption{The closest point \( \textbf{x}_{neg} \) to the center positive 
 	class sample \( \textbf{x}_{center} \) is identified as the surface point 
 	\( \textbf{x}_{surface} \) since it is closer to the center than the 
@@ -583,7 +598,7 @@ Figure 11 visualizes the experimental process on a high level of abstraction:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{resources/experimental_procedure}
+	\includegraphics[width=0.7\linewidth]{../analysis/experimental_procedure}
 	\caption{High-level experimental procedure}
 	\label{fig:experimentalprocedure}
 \end{figure}
@@ -681,7 +696,7 @@ results by design.
 	late after line=\\,
 	before reading={\catcode`\#12},
 	after reading={\catcode`\#12},
-	]{./resources/mean_sem_scores.csv}
+	]{../analysis/mean_sem_scores.csv}
 	{1=\ratio,2=\classifier,3=\metric,4=\none,5=\random,6=\smote,7=\bsmote,
 		8=\gsmote,9=\benchmark}
 	{\ratio & \classifier & \metric & \none & \random & \smote & \bsmote & 	
@@ -725,7 +740,7 @@ in almost every combination of ratio, classifier and metric.
 		late after line=\\,
 		before reading={\catcode`\#12},
 		after reading={\catcode`\#12},
-		]{./resources/mean_sem_perc_diff_scores.csv}
+		]{../analysis/mean_sem_perc_diff_scores.csv}
 		{1=\ratio,2=\classifier,3=\metric,4=\difference}
 		{\ratio & \classifier & \metric & \difference}
 	\end{footnotesize}
@@ -740,7 +755,7 @@ datasets is presented in the following figure:
 
 \begin{figure}[H]
 	\includegraphics[width=1\linewidth]
-		{resources/mean_ranking_per_classifier_accuracy}
+		{../analysis/mean_ranking_per_classifier_accuracy}
 	\caption{Mean ranking per classifier (Accuracy)}
 	\label{fig:mean_ranking_per_classifier_accuracy}
 \end{figure}
@@ -768,7 +783,7 @@ Friedman test shows the following results:
 		late after line=\\,
 		before reading={\catcode`\#12},
 		after reading={\catcode`\#12},
-		]{./resources/friedman_test.csv}
+		]{../analysis/friedman_test.csv}
 		{1=\classifier,2=\metric,3=\pvalue,4=\significance}
 		{\classifier & \metric & \pvalue & \significance}
 	\end{footnotesize}
@@ -797,7 +812,7 @@ shown in Table 5:
 		late after line=\\,
 		before reading={\catcode`\#12},
 		after reading={\catcode`\#12},
-		]{./resources/holms_test.csv}
+		]{../analysis/holms_test.csv}
 		{1=\classifier,2=\metric,3=\none,4=\random,5=\smote,6=\bsmote}
 		{\classifier & \metric & \none & \random & \smote & \bsmote}
 	\end{footnotesize}
