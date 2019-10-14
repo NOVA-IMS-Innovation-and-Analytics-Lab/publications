@@ -146,7 +146,7 @@ G-SMOTE outperforms every other oversampling technique, for both overall
 prediction power and minority class prediction power.
 
 Oversamplers' performance is evaluated through an experimental analysis using
-the publicly available EUROSTAT´s Land Use/Cover Area Statistical Survey (LUCAS)
+the publicly available EUROSTAT's Land Use/Cover Area Statistical Survey (LUCAS)
 dataset \cite{LUCAS2015}. This dataset contains multispectral reflectance data
 from Landsat 8, filtered for a region in Portugal. The experimental procedure
 includes a comparison of the different oversamplers using 5 classifiers and 3
@@ -174,7 +174,7 @@ Some of the existing studies implements the random undersampling method, which
 randomly reduces the number of training samples  belonging to the majority
 class. However, this method has the disadvantage of information loss as it
 discards samples from the majority class  \cite{Feng2019}. \cite{Feng2018}
-carries out competitive analysis of  under-samplers and oversamplers performance
+carries out competitive analysis of under-samplers and oversamplers performance
 for land cover classification with  Rotation Forest (RoF) ensemble classifier.
 In the experiment random  undersampling, undersampling based RoF and a number of
 oversampling techniques  were deployed. The used dataset comprises 16 imbalanced
@@ -387,6 +387,7 @@ discussion.
 \begin{itemize}
 
 	\renewcommand\labelitemi{--}
+	
 	\item Overall Accuracy
 
 	Classification Overall Accuracy is the number of correctly classified
@@ -543,11 +544,19 @@ Thus, each reference point from LUCAS dataset has 48 features (Table
 pixels from each spectral bands of the image time series representing LUCAS
 point location.
 
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{../analysis/dataset_descrip.csv}
-	\caption{\label{tab:datasets}Description of the dataset}
-\end{table}
+\pgfplotstabletypeset[
+begin table=\begin{longtable}, 
+end table=\end{longtable},
+col sep=comma, 
+header=true, 
+columns={Dataset name , LUCAS},
+columns/Dataset name /.style={column type=l,string type},
+columns/LUCAS/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
+every last row/.style={after row=\bottomrule \caption{Description of the 
+dataset}}
+]
+{../analysis/dataset_descrip.csv}
 
 \section{Results and Discussion}
 
@@ -562,13 +571,26 @@ oversampling methods for both G-mean and F-score metrics on all classifiers. The
 absolute best results are achieved when Geometric-SMOTE is combined with Fandom
 Forest.
 
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{../analysis/mean_scores.csv}
-	\caption{\label{tab:mean_cross_val}Results for cross validation scores of
-		oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling,
-		B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}
-\end{table}
+\pgfplotstabletypeset[
+begin table=\begin{longtable}, 
+end table=\end{longtable},
+col sep=comma, 
+header=true, 
+columns={Classifier,Metric,NO OS,RAND OS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
+columns/Classifier/.style={column type=l,string type}, 
+columns/Metric/.style={column type=l,string type}, 
+columns/NO OS/.style={column type=l,string type}, 
+columns/RAND OS/.style={column type=l,string type},
+columns/SMOTE/.style={column type=l,string type}, 
+columns/B-SMOTE/.style={column type=l,string type},  
+columns/ADASYN/.style={column type=l,string type}, 
+columns/G-SMOTE/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
+every last row/.style={after row=\bottomrule \caption{Results for cross 
+validation scores of oversamplers (NO OS: No Oversampling, RAND OS: Random 
+Oversampling, B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}}
+] 
+{../analysis/mean_scores.csv}
 
 Amongst the classifiers Random Forest shows best performance for all three
 measures. It recorded constantly improved results for both G-mean and F-score
@@ -593,11 +615,25 @@ classifiers except the Decision Tree classifier, where Borderline-SMOTE
 outperforms the remaining oversamplers. Regardless, its discrepancy with
 Geometric-SMOTE is negligible.
 
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{../analysis/mean_ranking.csv}
-	\caption{\label{tab:ranking} Results for ranking of oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling, B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}
-\end{table}
+\pgfplotstabletypeset[
+begin table=\begin{longtable},
+end table=\end{longtable},
+col sep=comma,
+header=true,
+columns={Classifier,Metric,NO OS,RAND OS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
+columns/Classifier/.style={column type=l,string type}, 
+columns/Metric/.style={column type=l,string type}, 
+columns/NO OS/.style={column type=l,string type}, 
+columns/RAND OS/.style={column type=l,string type},
+columns/SMOTE/.style={column type=l,string type}, 
+columns/B-SMOTE/.style={column type=l,string type},  
+columns/ADASYN/.style={column type=l,string type}, 
+columns/G-SMOTE/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule \caption{Results for ranking of 
+oversamplers}}
+]
+{../analysis/mean_ranking.csv}
 
 The mean of ranking scores for each of oversampling method across the
 classification algorithms is presented in the Table \ref{tab:mean_rankings}.
@@ -619,13 +655,21 @@ model performance, as is commonly utilized in remote sensing. However, even for
 accuracy metric, Geometric-SMOTE shows the best performance amongst the data
 modification algorithms and exceeds the rest of the oversampling methods.
 
-
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{../analysis/model_mean_ranking.csv}
-	\caption{\label{tab:mean_rankings} Results for mean ranking of oversamplers}
-\end{table}
-
+\pgfplotstabletypeset[
+begin table=\begin{longtable},
+end table=\end{longtable},
+col sep=comma,
+header=true,
+columns={Oversampler,F1 macro,G-mean macro,Accuracy},
+columns/Oversampler/.style={column type=l,string type}, 
+columns/F1 macro/.style={column type=l,string type}, 
+columns/G-mean macro/.style={column type=l,string type}, 
+columns/Accuracy/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule \caption{Results for mean ranking 
+of oversamplers}}
+]
+{../analysis/model_mean_ranking.csv}
 
 Table \ref{tab:smote_gsmote} presents the percentage difference  between
 Geometric-SMOTE and SMOTE. For this comparison SMOTE algorithm was selected due
@@ -633,12 +677,20 @@ to its popularity and wide use within the remote sensing society (see section
 2). The table shows that Geometric-SMOTE outperforms SMOTE regardless of the
 classifier or metric used.
 
-\begin{table}[H]
-	\centering
-	\csvautobooktabular{../analysis/mean_perc_diff_scores.csv}
-	\caption{\label{tab:smote_gsmote}Results for percentage difference between
-		G-SMOTE and SMOTE}
-\end{table}
+\pgfplotstabletypeset[
+begin table=\begin{longtable}, 
+end table=\end{longtable},
+col sep=comma, 
+header=true, 
+columns={Classifier,Metric,Difference},
+columns/Classifier/.style={column type=l,string type},
+columns/Metric/.style={column type=l,string type},
+columns/Difference/.style={column type=l,string type}, 
+every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
+every last row/.style={after row=\bottomrule \caption{Results for percentage 
+difference between G-SMOTE and SMOTE}}
+]
+{../analysis/mean_perc_diff_scores.csv}
 
 \section{Conclusions}
 
