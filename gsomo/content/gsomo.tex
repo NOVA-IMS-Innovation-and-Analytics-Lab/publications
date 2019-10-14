@@ -196,7 +196,7 @@ neighbors from the \( k \) nearest neighbors are randomly chosen. Figure
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{./resources/fig1.png}
+	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{../analysis/fig1.png}
 	\captionbelow{SMOTE Algorithm, adopted from \cite{Schubach2017}}
 	\label{fig:Schubach}
 \end{figure}
@@ -286,7 +286,7 @@ outlier instances \cite{Sez2016}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm,height=7cm, keepaspectratio]{./resources/fig2.png}
+	\includegraphics[width=10cm,height=7cm, keepaspectratio]{../analysis/fig2.png}
 	\captionbelow{Challenging data formations, adopted from  \cite{Sez2016}.}
 	\label{fig:Sez}
 \end{figure}
@@ -317,7 +317,7 @@ is too high and individuals from another cluster are selected.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{./resources/fig3.png}
+	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{../analysis/fig3.png}
 	\captionbelow{Shortcomings of SMOTE, adopted from \cite{Douzas2017}}
 \end{figure}
 
@@ -343,7 +343,7 @@ region, instead of on the line segment.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{./resources/fig4.png}
+	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{../analysis/fig4.png}
 	\captionbelow{Synthetic data generation based on a geometric region, adopted from \cite{Douzas2019}}
 	\label{fig:GSMOTE}
 \end{figure}
@@ -591,7 +591,7 @@ artificial samples are created through the intra-cluster process.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=18cm,height=13cm, keepaspectratio]{./resources/fig5.png}
+	\includegraphics[width=18cm,height=13cm, keepaspectratio]{../analysis/fig5.png}
 	\captionbelow{Overview of identified filtered clusters and neighboring relations, adopted from \cite{Douzas2017}}
 	\label{fig:Somo_Overview}
 \end{figure}
@@ -627,7 +627,7 @@ $x_{gen}$ based on $x_{center}$ and the radius $R$.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm,height=10cm, keepaspectratio]{./resources/fig6.png}
+	\includegraphics[width=15cm,height=10cm, keepaspectratio]{../analysis/fig6.png}
 	\captionbelow{Constructing the geometric region, based on the unit hyper sphere, truncation and 
 	deformation, adopted from \cite{Douzas2017}}
 	\label{fig:Hypersphere}
@@ -670,7 +670,7 @@ columns/Imbalance Ratio/.style={fixed,fixed zerofill,precision=2,column type=r},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Overview of experimental data.}}
 ]
-{./resources/datasets_summary.csv}
+{../analysis/datasets_summary.csv}
 
 The data sets that can be download from  
 \url{https://github.com/IMS-ML-Lab/publications/raw/master/assets/data/imbalanced_data.db}.
@@ -805,7 +805,7 @@ columns/G-SOMO/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
 every last row/.style={after row=\bottomrule \caption{Results for mean cross validation scores of oversamplers across the datasets.}}
 ] 
-{./resources/scores.csv}
+{../analysis/scores.csv}
 
 Table 2 shows that G-SMOTE performs better on average than the
 rest of the methods. Particularly, the mean and standard error of percentage
@@ -823,7 +823,7 @@ columns/Difference/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
 every last row/.style={after row=\bottomrule \caption{Results for percentage difference between G-SOMO and SMOTE across the datasets.}}
 ]
-{./resources/perc_diff_scores.csv}
+{../analysis/perc_diff_scores.csv}
 
 For the purpose of a clear distinction between the oversampling methods, a
 ranking score is introduced, ranging from 1 to 4. More precisely, 1 represents
@@ -845,7 +845,7 @@ columns/G-SOMO/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Results for mean ranking of oversamplers across the datasets.}}
 ]
-{./resources/ranking.csv} 
+{../analysis/ranking.csv} 
 
 Based on the insights from the above tables we can conclude, that G-SOMO
 successfully outperforms other oversampling methods, proven in combination with
@@ -859,7 +859,7 @@ it highlights the previously mentioned ranking between all oversampling methods.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm,height=12cm, keepaspectratio]{./resources/fig7.png}
+	\includegraphics[width=15cm,height=12cm, keepaspectratio]{../analysis/fig7.png}
 	\captionbelow{Graphical overview of mean ranking for each classifier.}
 	\label{fig:MeanRanking}
 \end{figure}
@@ -881,7 +881,7 @@ columns/Significance/.style={column type=r,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Results for Friedman test.}}
 ]
-{./resources/friedman_test.csv}
+{../analysis/friedman_test.csv}
 
 Therefore at a significance level of a = 0.05 the null hypothesis is rejected,
 i.e. the classifiers do not perform similarly in the mean rankings across the
@@ -904,7 +904,7 @@ columns/SMOTE/.style={zerofill,precision=1,column type=r, dec sep align},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Adjusted p-values using the Holm's method.}}
 ]
-{./resources/holms_test.csv}
+{../analysis/holms_test.csv}
 
 Therefore, the null hypothesis of the Holm's test is rejected at a significance
 level of a = 0.05 for 27 out of 36 total cases. It is important to note that the

@@ -39,6 +39,7 @@ SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
 RESULTS_PATH = join(dirname(__file__), '..', 'results')
 ANALYSIS_PATH = join(dirname(__file__), '..', 'analysis')
 
+
 def generate_results(ratio):
     """Generate results including all oversamplers."""
 

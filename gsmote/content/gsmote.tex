@@ -77,20 +77,19 @@ observed \cite{Chawla2002}, \cite{Barua2014}.
 The imbalance learning problem can be found in numerous practical domains, such
 as chemical and biochemical engineering, financial management, information
 technology, security, business, agriculture or emergency management, for a more
-in depth review the reader is referred to \cite{Haixiang2017}. Standard
-learning methods induce a bias in favor of the majority class during training.
-This happens because the minority classes contribute less to the minimization of
-the objective function, defined often as the classification accuracy.
-Additionally, the distinction between noisy and minority class instances is
-frequently difficult. As a result the performance of the classifiers, evaluated
-on metrics suitable for imbalanced data, is low. It is also important to
-consider that the costs of misclassifying the minority class are frequently much
-higher than the costs of misclassification of the majority class
-\cite{Domingos1999}, \cite{Ting2002}. Diseases screening tests are a typical
-situation in in which false negatives involve a much higher cost than the false
-positives. Therefore, fundamentally the class imbalance challenge is to propose
-smart and simple ways is to improve the accuracy of classifiers for the minority
-class.
+in depth review the reader is referred to \cite{Haixiang2017}. Standard learning
+methods induce a bias in favor of the majority class during training. This
+happens because the minority classes contribute less to the minimization of the
+objective function, defined often as the classification accuracy. Additionally,
+the distinction between noisy and minority class instances is frequently
+difficult. As a result the performance of the classifiers, evaluated on metrics
+suitable for imbalanced data, is low. It is also important to consider that the
+costs of misclassifying the minority class are frequently much higher than the
+costs of misclassification of the majority class \cite{Domingos1999},
+\cite{Ting2002}. Diseases screening tests are a typical situation in in which
+false negatives involve a much higher cost than the false positives. Therefore,
+fundamentally the class imbalance challenge is to propose smart and simple ways
+is to improve the accuracy of classifiers for the minority class.
 
 We can classify the approaches to deal with class imbalance into three main
 groups \cite{Fernandez2013}. The first consists in the modification or creation
@@ -228,14 +227,14 @@ where the results of oversampling are sensitive to it as it is shown in the
 following example. The decision boundary of Fig. 1 identifies areas of the input
 space where instances from either the positive or negative class dominate. A few
 of the minority class instances, called noisy observations, that are located
-near the decision boundary, penetrate into the majority class area. A large  \(
-k \) value can result in the generation of additional noisy examples since \(x'
+near the decision boundary, penetrate into the majority class area. A large  \(k
+\) value can result in the generation of additional noisy examples since \(x'
 \), the selected \( k \)-nearest neighbor of \( x \), might be one of the
 aforementioned noisy observations.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, keepaspectratio]{./resources/fig1}
+	\includegraphics[width=12cm, keepaspectratio]{../analysis/fig1}
 	\captionbelow{An instance near the decision boundary and one of its 
 	4-nearest neighbors are selected randomly. A noisy observation is generated.}
 \end{figure}
@@ -249,7 +248,7 @@ a noisy instance as can be seen in Fig. 2.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, keepaspectratio]{./resources/fig2}
+	\includegraphics[width=12cm, keepaspectratio]{../analysis/fig2}
 	\captionbelow{A 2-nearest neighbor does not avoid the generation of noise when 
 	noisy samples are initially selected.}
 \end{figure}
@@ -269,7 +268,7 @@ absent.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, keepaspectratio]{./resources/fig3}
+	\includegraphics[width=12cm, keepaspectratio]{../analysis/fig3}
 	\captionbelow{An instance belonging to a minority class cluster and 
 	one of its 5-nearest neighbors are selected. An observation belonging 
 	to the same cluster is generated.}
@@ -285,7 +284,7 @@ region as it is exemplified in Fig. 4.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, keepaspectratio]{./resources/fig4}
+	\includegraphics[width=12cm, keepaspectratio]{../analysis/fig4}
 	\captionbelow{An attempt to generate inter-cluster instances by increasing 
 	the number of k-nearest neighbors of the selected instances. One of the 
 	generated instances penetrates in the majority class area.}
@@ -464,8 +463,8 @@ The algorithmic procedure is the following:
  initialized. 
  
  \item The following loop is repeated until \( N \) minority instances are
- selected, each multiple times if necessary, in the order that appear in \(
- S_{min} \):
+ selected, each multiple times if necessary, in the order that appear in
+ \(S_{min} \):
  
  	\begin{itemize}
  		
@@ -516,9 +515,9 @@ functions:
 		If \( \alpha_{sel} = combined \) then \( S_{min, k} \) and \( S_{maj, 1}
 		\) are defined as above and the elements \( \textbf{x}_{min} \in S_{min,
 		k}\) and  \( \textbf{x}_{maj} \in S_{maj, 1}\) are randomly selected.
-		Finally the element \( \textbf{x}_{surface} \) is defined as either \(
-		\textbf{x}_{min} \) or \( \textbf{x}_{maj} \) by selecting the one with
-		smallest distance from \( \textbf{x}_{center} \).
+		Finally the element \( \textbf{x}_{surface} \) is defined as either
+		\(\textbf{x}_{min} \) or \( \textbf{x}_{maj} \) by selecting the one
+		with smallest distance from \( \textbf{x}_{center} \).
 			
 	
 	\item Function \texttt{Hyperball}:
@@ -610,21 +609,20 @@ can be described in detail as follows:
 
 	In this case the neighbor selection strategy is based only on the minority
 	class and it is identical to the selection strategy of SMOTE. Initially the
-	\( k \) nearest neighbors of \( \textbf{x}_{center} \) from the set \(
-	S_{min} \) are identified and one of them, \( \textbf{x}_{surface} \), is
+	\( k \) nearest neighbors of \( \textbf{x}_{center} \) from the set
+	\(S_{min} \) are identified and one of them, \( \textbf{x}_{surface} \), is
 	randomly selected. Fig. 5 presents an example of a minority class instance
-	selection among the \( k = 4 \ \) nearest neighbors of \(
-	\textbf{x}_{center} \). The time complexity of this selection strategy
-	depends on the choice of the algorithm and increases with the dimensionality
-	of the input space as well as the value of the \( k \) parameter
-	\cite{Vaidya1989}. Therefore for a wide set of realistic cases restricting
-	the search of nearest neighbors to the minority class has a lower
-	computational cost than including the majority class instances in the search
-	space.
+	selection among the \( k = 4 \ \) nearest neighbors of \(\textbf{x}_{center}
+	\). The time complexity of this selection strategy depends on the choice of
+	the algorithm and increases with the dimensionality of the input space as
+	well as the value of the \( k \) parameter \cite{Vaidya1989}. Therefore for
+	a wide set of realistic cases restricting the search of nearest neighbors to
+	the minority class has a lower computational cost than including the
+	majority class instances in the search space.
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig5}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig5}
 		\captionbelow{An example of the minority selection strategy. A minority 
 		class instance is defined as the center of the hyper-spheroid and one of 
 		its \(k = 4\) minority class nearest neighbors is selected as the 
@@ -655,7 +653,7 @@ can be described in detail as follows:
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig6}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig6}
 		\captionbelow{An example of the majority selection strategy. A 
 		minority class instance is defined as the center of the hyper-spheroid
 		 and its closest majority class neighbor is selected as the surface 
@@ -684,14 +682,14 @@ can be described in detail as follows:
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig7}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig7}
 		\captionbelow{A minority class sample is identified as the surface point 
 		since it is closer to the center than the nearest majority class instance.}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig8}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig8}
 		\captionbelow{The closest to the center majority class sample is identified 
 		as the surface point since it is closer to the center than the selected 
 		instance from the k nearest minority class neighbors of the center.}
@@ -719,39 +717,39 @@ can be described in detail as follows:
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig9}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig9}
 		\captionbelow{A unit hyper-sphere centered at the origin of the input 
 		space. A point is randomly generated on the surface and moved to the 
 		interior of the unit hyper-sphere.}
 	\end{figure}
 
-	\item In this step a transformation is applied to the generated point \(
-	\textbf{x}_{gen} \). As it was explained above, the center \(
-	\textbf{x}_{center} \) and the selected surface point \(
-	\textbf{x}_{surface} \) define a special direction in the input space which
-	is represented by the unit vector \( \textbf{e}_{\scriptscriptstyle//} \) of
-	equation \eqref{eqn:unit}. SMOTE mechanism, that always selects a minority
-	class instance as a surface point, exploits this direction by generating
-	synthetic samples at the line segment between \( \textbf{x}_{center} \) and
-	\( \textbf{x}_{surface} \). G-SMOTE algorithm parametrizes a generalized
-	version of the SMOTE mechanism. More specifically, the unit vector \(
-	\textbf{e}_{\scriptscriptstyle//} \) defines a family of parallel
-	hyper-planes which are perpendicular to it. We define a linear mapping
-	between \( \alpha_{trunc} \) and the point determined by the intersection of
-	each hyper-plane and the parallel to \( \textbf{e}_{\scriptscriptstyle//} \)
-	diameter. Therefore each one of these hyper-planes corresponds to a
-	particular value of \( \alpha_{trunc} \) and partitions the hyper-sphere
-	interior in to two areas. Let \( P \) the hyper-plane that passes through
-	the origin and \( P' \) the hyper-plane for a specific non-zero value of \(
-	\alpha_{trunc} \). When \( a_{trunc} > 0 \), the area that does not include
-	the \( \textbf{e}_{\scriptscriptstyle//} \) point is truncated from the
-	interior of the hyper-sphere, in the sense that if the \( \textbf{x}_{gen}
-	\) point belongs to it then it is mapped with respect to \( P \) to the
-	symmetric point \( \textbf{x}_{gen} - 2 \textbf{x}_{\scriptscriptstyle//} \)
-	of equation  \eqref{eqn:truncate}, where \(
-	\textbf{x}_{\scriptscriptstyle//} \) is defined in equation
-	\eqref{eqn:parallel}. Condition  \eqref{eqn:condition} checks if  the \(
-	\textbf{x}_{gen} \) is in the truncated area. Fig. 10 shows an example of
+	\item In this step a transformation is applied to the generated point
+	\(\textbf{x}_{gen} \). As it was explained above, the center
+	\(\textbf{x}_{center} \) and the selected surface point
+	\(\textbf{x}_{surface} \) define a special direction in the input space
+	which is represented by the unit vector \( \textbf{e}_{\scriptscriptstyle//}
+	\) of equation \eqref{eqn:unit}. SMOTE mechanism, that always selects a
+	minority class instance as a surface point, exploits this direction by
+	generating synthetic samples at the line segment between \(
+	\textbf{x}_{center} \) and \( \textbf{x}_{surface} \). G-SMOTE algorithm
+	parametrizes a generalized version of the SMOTE mechanism. More
+	specifically, the unit vector \(\textbf{e}_{\scriptscriptstyle//} \) defines
+	a family of parallel hyper-planes which are perpendicular to it. We define a
+	linear mapping between \( \alpha_{trunc} \) and the point determined by the
+	intersection of each hyper-plane and the parallel to \(
+	\textbf{e}_{\scriptscriptstyle//} \) diameter. Therefore each one of these
+	hyper-planes corresponds to a particular value of \( \alpha_{trunc} \) and
+	partitions the hyper-sphere interior in to two areas. Let \( P \) the
+	hyper-plane that passes through the origin and \( P' \) the hyper-plane for
+	a specific non-zero value of \(\alpha_{trunc} \). When \( a_{trunc} > 0 \),
+	the area that does not include the \( \textbf{e}_{\scriptscriptstyle//} \)
+	point is truncated from the interior of the hyper-sphere, in the sense that
+	if the \( \textbf{x}_{gen} \) point belongs to it then it is mapped with
+	respect to \( P \) to the symmetric point \( \textbf{x}_{gen} - 2
+	\textbf{x}_{\scriptscriptstyle//} \) of equation  \eqref{eqn:truncate},
+	where \(\textbf{x}_{\scriptscriptstyle//} \) is defined in equation
+	\eqref{eqn:parallel}. Condition  \eqref{eqn:condition} checks if  the
+	\(\textbf{x}_{gen} \) is in the truncated area. Fig. 10 shows an example of
 	the above transformation. When \( \alpha_{trunc} < 0 \), the transformation
 	is similarly defined but in this case the truncation occurs in the area that
 	includes the \( \textbf{e}_{\scriptscriptstyle//} \) point. In both cases,
@@ -765,14 +763,14 @@ can be described in detail as follows:
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig10}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig10}
 		\captionbelow{An example of applying the \texttt{Truncate} transformation. 
 		The shaded area corresponds to the resulting truncated area.}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig11}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig11}
 		\captionbelow{Truncated areas for various values of \( \alpha_{trunc} \).}
 	\end{figure}
 
@@ -784,20 +782,20 @@ can be described in detail as follows:
 	by the \( \alpha_{def} \) hyper-parameter and from equation
 	\eqref{eqn:deform} changes linearly with it. Therefore any point located at
 	the surface of the hyper-sphere will remain to the surface of the new
-	boundary while all the axes, except the one defined by the \(
-	\textbf{e}_{\scriptscriptstyle//} \) unit vector, rescale by the factor \(
-	\alpha_{def} \). This effectively corresponds to the formation of a
-	hyper-spheroid boundary with symmetry axis at the \(
-	\textbf{e}_{\scriptscriptstyle//} \) direction. Similarly to the truncation,
-	the deformation transformation further modifies the initially uniform
-	probability distribution. Fig. 12 presents a deformation of the unit
+	boundary while all the axes, except the one defined by the
+	\(\textbf{e}_{\scriptscriptstyle//} \) unit vector, rescale by the factor
+	\(\alpha_{def} \). This effectively corresponds to the formation of a
+	hyper-spheroid boundary with symmetry axis at the
+	\(\textbf{e}_{\scriptscriptstyle//} \) direction. Similarly to the
+	truncation, the deformation transformation further modifies the initially
+	uniform probability distribution. Fig. 12 presents a deformation of the unit
 	hyper-sphere and the resulting mapping of the \( \textbf{x}_{gen} \) point.
 	Fig. 13 shows the effect of increasing the \( \alpha_{def} \) values on the
 	hyper-sphere deformation.
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig12}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig12}
 		\captionbelow{The transformation \texttt{Deform} is applied and the 
 		generated point is mapped to a new point towards the diameter of 
 		the hyper-sphere.}
@@ -805,7 +803,7 @@ can be described in detail as follows:
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig13}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig13}
 		\captionbelow{The effect of increasing \( \alpha_{def} \) on the 
 		hypersphere deformation. The last case corresponds to a line segment.}
 	\end{figure}
@@ -821,14 +819,14 @@ can be described in detail as follows:
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig14}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig14}
 		\captionbelow{Boundaries of permissible data generation area 
 		for the scenario of Fig 7.}
 	\end{figure}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=12cm, keepaspectratio]{./resources/fig15}
+		\includegraphics[width=12cm, keepaspectratio]{../analysis/fig15}
 		\captionbelow{Boundaries of permissible data generation area 
 		for the scenario of Fig 8.}
 	\end{figure}
@@ -885,7 +883,7 @@ columns/Imbalance Ratio/.style={fixed,fixed zerofill,precision=2,column type=r},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Description of the datasets.}}
 ]
-{./resources/datasets_summary.csv}
+{../analysis/datasets_summary.csv}
 
 \subsection{Evaluation measures}
 
@@ -989,7 +987,7 @@ control method.
 
 \subsection{Software implementation}
 
-As it was mentioned above, the implementation of the experimental procedure 
+As it was mentioned above, the implementation of the experimental procedure
 based on the Python programming language and Scikit-Learn/Imbalanced-Learn
 libraries. Specifically, the function that prepares and runs any comparative
 experiment can be found at
@@ -1011,8 +1009,8 @@ imbalanced datasets.
 
 \subsection{Comparative presentation}
 
-The mean and standard error of cross validation scores across datasets for each combination of
-classifiers, metrics and oversamplers are presented in Table 2:
+The mean and standard error of cross validation scores across datasets for each
+combination of classifiers, metrics and oversamplers are presented in Table 2:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable}, 
@@ -1029,7 +1027,7 @@ columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
 every last row/.style={after row=\bottomrule \caption{Results for mean cross validation scores of oversamplers across the datasets.}}
 ] 
-{./resources/scores.csv}
+{../analysis/scores.csv}
 
 Table 2 shows that G-SMOTE systematically performs better on average than the
 rest of the methods. Particularly, the mean and standard error of percentage
@@ -1047,7 +1045,7 @@ columns/Difference/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
 every last row/.style={after row=\bottomrule \caption{Results for percentage difference between G-SMOTE and SMOTE across the datasets.}}
 ]
-{./resources/perc_diff_scores.csv}
+{../analysis/perc_diff_scores.csv}
 
 As explained in section 5.4 a ranking score in the range 1 to 4 is assigned to
 each oversampler. Then the mean and standard error of oversampling methods'
@@ -1069,7 +1067,7 @@ columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Results for mean ranking of oversamplers across the datasets.}}
 ]
-{./resources/ranking.csv}
+{../analysis/ranking.csv}
 
 \subsection{Statistical analysis}
 
@@ -1088,7 +1086,7 @@ columns/Significance/.style={column type=r,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Results for Friedman test.}}
 ]
-{./resources/friedman_test.csv}
+{../analysis/friedman_test.csv}
 
 Therefore at a significance level of a = 0.05 the null hypothesis is rejected,
 i.e. the classifiers do not perform similarly in the mean rankings across the
@@ -1111,7 +1109,7 @@ columns/SMOTE/.style={zerofill,precision=1,column type=r, dec sep align},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Adjusted p-values using the Holm's method.}}
 ]
-{./resources/holms_test.csv}
+{../analysis/holms_test.csv}
 
 Therefore, the null hypothesis of the Holm's test is rejected for all
 oversamplers at a significance level of a = 0.05, indicating that the proposed
@@ -1171,7 +1169,7 @@ columns/Frequency/.style={ zerofill,precision=0,column type=r, dec sep align},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule \caption{Optimal configuration frequency for the three G-SMOTE cases.}}
 ]
-{./resources/cases_frequency.csv}
+{../analysis/cases_frequency.csv}
 
 Therefore pure G-SMOTE represents the configuration with the highest frequency
 and ranking among the 3 cases, covering the majority of optimal hyper-parameter
@@ -1181,14 +1179,14 @@ mechanism.
 
 \subsection{Analysis and tuning of optimal hyper-parameters}
 
-As it was explained on the above section, the G-SMOTE geometric
-hyper-parameters control the characteristics of the data generation process.
-More specifically, the \( majority \) selection strategy expands aggressively
-the minority class area, increasing the variety of generated samples. Lower 
-absolute values of the truncation and deformation factors have a similar effect. On
-the other hand, the \( minority \) selection strategy and higher absolute values
-of the truncation and deformation factors result in a data generation process
-that resembles the SMOTE mechanism. 
+As it was explained on the above section, the G-SMOTE geometric hyper-parameters
+control the characteristics of the data generation process. More specifically,
+the \( majority \) selection strategy expands aggressively the minority class
+area, increasing the variety of generated samples. Lower absolute values of the
+truncation and deformation factors have a similar effect. On the other hand, the
+\( minority \) selection strategy and higher absolute values of the truncation
+and deformation factors result in a data generation process that resembles the
+SMOTE mechanism. 
 
 An analysis of the G-SMOTE geometric hyper-parameters dependence on Imbalance
 Ratio (IR) and number of samples over number of features ratio (R) shows the

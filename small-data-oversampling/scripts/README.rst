@@ -10,6 +10,10 @@ Activate a Python 3 virtual environment and run the command::
 Data
 ====
 
+To download and save the experimental datasets, run the command::
+
+    python data.py
+
 The data are saved in the *data* directory as a sqlite3 database.
 
 =======
