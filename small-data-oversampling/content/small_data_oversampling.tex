@@ -68,30 +68,30 @@ be a valid option to improve accuracy in small data problems.
 \end{abstract}
 
 \section{Introduction}
-Insufficient size of data sets is a common issue between various supervised
-learning tasks \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited
-availability of training samples can be caused by different factors. First, data
-is becoming an increasingly expensive resource \cite{Li.2007} as the process to
-retain them is getting more complex due to strict privacy regulations such as
-the General Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}.
-Additionally, the small dataset problem can be found in numerous industries
-where organizations simply do not have access to a reasonable amount of data.
-For example, manufacturing industries are usually dealing with small number of
-samples in early stages of product developments and health care organizations
-have to work with different kinds of rare diseases, where very few records are
-available \cite{AbdulLateh.2017}.
+Insufficient size of data sets is a common issue in many supervised learning
+tasks \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of
+training samples can be caused by different factors. First, data is becoming an
+increasingly expensive resource \cite{Li.2007} as the process to retain them is
+getting more complex due to strict privacy regulations such as the General Data
+Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the
+small dataset problem can be found in numerous industries where organizations
+simply do not have access to a reasonable amount of data. For example,
+manufacturing industries are usually dealing with small number of samples in
+early stages of product developments and health care organizations have to work
+with different kinds of rare diseases, where very few records are available
+\cite{AbdulLateh.2017}.
 
 In machine learning, researchers are usually concerned with the design of
 sophisticated learning algorithms when aiming to improve prediction performance.
-However, a more successful way is often to increase the sample size. A rule of
-thumb is that "a dumb algorithm with lots and lots of data beats a clever one
-with modest amounts of it" \cite{Domingos.2012}. Generally, small training
-samples are characterized by a loose data structure with many information gaps
-whereas a bigger dataset carries more observations to provide a complete picture
-of the problem. This lack of information negatively impacts the performance of
-machine learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained
-from prediction models trained with small sample sizes is considered unreliable
-as well as imprecise and does not lead to a robust classification performance
+However, increasing the sample size is more effective. A rule of thumb is that
+"a dumb algorithm with lots and lots of data beats a clever one with modest
+amounts of it" \cite{Domingos.2012}. Generally, small training samples are
+characterized by a loose data structure with many information gaps whereas a
+bigger dataset carries more observations to provide a complete picture of the
+problem. This lack of information negatively impacts the performance of machine
+learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained from
+prediction models trained with small sample sizes is considered unreliable as
+well as imprecise and does not lead to a robust classification performance
 \cite{AbdulLateh.2017}.
 
 Considering the size of data, there are two types of problems: First, the
@@ -140,8 +140,9 @@ approaches are reviewed and the state-of-the-art to improve small dataset
 learning is reported. We start by describing fuzzy theories, which have
 historically been the most used approach to mitigate the small dataset problem.
 Next, we look at re-sampling mechanisms, which mainly consist of bootstrapping
-techniques, and finally, we review over-sampling methods that can be a valuable
-option to increase the sample size in small datasets.
+techniques, and finally, we review over-sampling methods, developed in the
+context of imbalanced learning, that can be a valuable option to increase the
+sample size in small datasets.
 
 \subsection{Fuzzy theories}
 
@@ -152,15 +153,7 @@ It gives a wider scope of applicability, especially in the fields of information
 processing and pattern classification \cite{Zimmermann.2010}. Based on this
 concept, several methods have emerged in the last decade to estimate or
 approximate functions which are generating artificial samples for sparse
-training sets. Figure \ref{fig:small-data-distribution} presents the obtained
-samples and information gaps on the distribution of a small dataset.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\linewidth]{../analysis/small_data_distribution.png}
-	\caption{Distribution of a small dataset \cite{Tsai.2015}}
-	\label{fig:small-data-distribution}
-\end{figure}
+training sets.
 
 The fundamental concept of creating synthetic data is called Virtual Sample
 Generation (VSG) and was originally proposed by \cite{Niyogi.1998}. The idea is
@@ -241,13 +234,13 @@ sample generation method is the Bootstrapping Procedure (BP)
 \cite{AbdulLateh.2017} or Random Over-Sampling (ROS) as is known in the
 imbalanced learning research area. The main difference to the previously
 presented techniques is that ROS creates expands the training set by resampling
-instances from the measured data with replacement \cite{Efron.1993}. Therefore,
-it allows the algorithms to use the same sample more than one time to gradually
-revise the identified patterns in order to improve predictive accuracy. However,
-ROS may cause over-fitting when applied to small data because it repetitively
-uses the same information \cite{Tsai.2015}, \cite{Li.2018}. Nevertheless,
-\cite{Ivanescu.2006} applied ROS in batch process industries where it was shown
-that it may help mitigate the limited data problem.
+instances from the original dataset with replacement \cite{Efron.1993}.
+Therefore, it allows the algorithms to use the same sample more than one time to
+gradually revise the identified patterns in order to improve predictive
+accuracy. However, ROS may cause over-fitting when applied to small data because
+it repetitively uses the same information \cite{Tsai.2015}, \cite{Li.2018}.
+Nevertheless, \cite{Ivanescu.2006} applied ROS in batch process industries where
+it was shown that it may help mitigate the small data problem.
 
 \subsection{Informed over-sampling}
 
@@ -261,13 +254,13 @@ problem, it seems that these communities have had very few connections so far.
 
 In the imbalanced learning problem, the classes of the given dataset are
 significantly skewed i.e. the dataset has a large number of observations in one
-of the classes called majority class and relatively small number of observations
-in the other class(es) called minority class(es). This constitutes a problem for
-the learning phase of the algorithm resulting in low accuracy for the minority
-class(es). In practice, the imbalanced dataset problem is very common issue in
-supervised learning. Especially, in the fields of fraud detection, product
-categorization and disease diagnosis, an imbalanced dataset is the norm rather
-than the exception \cite{He.2013}. 
+of the classes, called majority class, and relatively small number of
+observations in the other class(es), called minority class(es). This constitutes
+a problem for the learning phase of the algorithm resulting in low accuracy for
+the minority class(es). In practice, the imbalanced dataset problem is very
+common issue in supervised learning. Especially, in the fields of fraud
+detection, product categorization and disease diagnosis, an imbalanced dataset
+is the norm rather than the exception \cite{He.2013}.
 
 \subsubsection{SMOTE}
 
@@ -334,7 +327,8 @@ avoids this scenario.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/smote_vs_gsmote}
-	\caption{SMOTE versus G-SMOTE \cite{Douzas.2019}}
+	\caption{Three positive class instances are used by SMOTE and G-SMOTE to generate synthetic data. 
+	G-SMOTE generate non noisy samples with higher variety than SMOTE. \cite{Douzas.2019}}
 	\label{fig:smotevsgsmote}
 \end{figure}
 
@@ -517,11 +511,11 @@ the software implementation is provided in this section.
 
 Ten datasets are used to test the performance of G-SMOTE which are retrieved
 from UCI Machine Learning Repository \cite{Dua.2019}. The focus on the selection
-of the data lies on binary classification problems with a highly balanced
-distribution of the two classes. In order to assure generalizability of the
-results, the datasets include different topics such as health care, finance,
-business and physics as well as different sample sizes. Details of the datasets
-are presented in the following table:
+of the data lies on binary classification problems with a balanced distribution
+of the two classes. In order to assure generalizability of the results, the
+datasets include different topics such as health care, finance, business and
+physics as well as different sample sizes. Details of the datasets are presented
+in the following table:
 
 \begin{longtable}{llll}
 	\specialrule{.1em}{.05em}{.05em}
@@ -577,20 +571,20 @@ Boosting (GB) \cite{Friedman.2001}.
 
 \subsection{Experimental procedure}
 
-The main concept of the experimental procedure is to randomly under-sample the
-datasets presented in table \ref{tab:datasets}, increase their size artificially with
-different over-samplers and compare the results with the original dataset which
-is considered to be the benchmark. This method allows us to directly compare the
-quality of the artificial generated sample set with the observed data. In order
-to evaluate if the proposed method can improve artificial data generation, we
-compare G-SMOTE with SMOTE, Borderline SMOTE and Random Oversampling. Also, we
-apply the machine learning algorithms to the under-sampled data with the
-objective to assess their performance with a smaller amount of data. To
-under-sample the data we use a ratio of 50, 75, 90 and 95 percent of the
-original dataset. For example, with an undersampling ratio of 95 percent, we
-take only five percent of the original data as a base to apply the over-sampling
-mechanism. This approach aims to provide an understanding of the classification
-performance as the size of the dataset diminishes.
+The main concept of the experimental procedure is to reduce the size of the
+datasets presented in table \ref{tab:datasets}, increase their size artificially
+with different over-samplers and compare the results with the original dataset
+which is considered to be the benchmark. This method allows us to directly
+compare the quality of the artificial generated sample set with the observed
+data. In order to evaluate if the proposed method can improve artificial data
+generation, we compare G-SMOTE with SMOTE, Borderline SMOTE and Random
+Oversampling. Also, we apply the machine learning algorithms to the
+under-sampled data with the objective to assess their performance with a smaller
+amount of data. To under-sample the data we use a ratio of 50, 75, 90 and 95
+percent of the original dataset. For example, with an undersampling ratio of 95
+percent, we take only five percent of the original data as a base to apply the
+over-sampling mechanism. This approach aims to provide an understanding of the
+classification performance as the size of the dataset diminishes.
 
 Figure \ref{fig:experimentalprocedure} visualizes the experimental process: 
 
@@ -708,7 +702,7 @@ which is expected to obtain the best results by design.
 \label{tab:mean_sem_scores}
 \end{center}
 
-This table shows that G-SMOTE outperforms nearly all over-sampling methods for
+This table shows that G-SMOTE outperforms all over-sampling methods almost for
 all combinations of classifiers and metrics. Throughout the scores we can
 observe that all over-samplers have a better performance as the dataset increase
 their size i.e. the under-sampling ratio gets smaller.  Particularly, the scores
@@ -728,7 +722,7 @@ under-sampling ratios.
 		\csvreader[
 		longtable=llll,
 		table head=
-		\toprule\mdseries Ratio & \mdseries Classifier & \mdseries Metric & \mdseries Difference \\
+		\toprule\mdseries Ratio & \mdseries Classifier & \mdseries Metric & \mdseries \% Difference \\
 		\midrule\endhead
 		\bottomrule\endfoot,
 		late after line=\\,
@@ -826,13 +820,14 @@ outperforms all other methods in most cases.
 This paper illustrates an effective solution to mitigate the small dataset
 problem in binary classification tasks. As shown above, the over-sampling
 algorithm G-SMOTE has the ability to generate high quality artificial samples
-and improve the prediction accuracy of various classifiers. This improvement
-relates to its capability of increasing the diversity of new instances while
-avoiding the generation of noisy samples. An important point is that G-SMOTE
-significantly improves classification performance compared to the case where
-only the small data are used. Also G-SMOTE outperforms standard over-sampling
-approaches such Random Over-Sampling and SMOTE. Finally, G-SMOTE implementation
-is available on (\url{https://github.com/AlgoWit/geometric-smote}).
+and improve the prediction accuracy of the classifiers used in the experiments.
+This improvement relates to its capability of increasing the diversity of new
+instances while avoiding the generation of noisy samples. An important point is
+that G-SMOTE significantly improves classification performance compared to the
+case where only the small data are used. Also G-SMOTE outperforms standard
+over-sampling approaches such as Random Over-Sampling and SMOTE, being closer to
+the benchmark scores than any of them. Finally, G-SMOTE implementation is
+available on (\url{https://github.com/AlgoWit/geometric-smote}).
 
 \bibliography{references}
 \bibliographystyle{apalike}
