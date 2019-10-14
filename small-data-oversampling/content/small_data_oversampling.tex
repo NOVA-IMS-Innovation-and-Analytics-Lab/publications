@@ -51,16 +51,20 @@
 \maketitle
 
 \begin{abstract}
-One of the key problems in supervised learning is the insufficient size of data
-sets that may result in decreased performance of machine learning algorithms.
-The current research work aims to investigate the effect of using small datasets
-and provide a solution by artificially adding samples in the training process.
-The over-sampling algorithm Geometric SMOTE is applied to generate new instances
-and enhance the initial dataset. Experimental results show a significant
-improvement on the prediction capability when comparing with other over-sampling
-techniques such as Random Oversampling, SMOTE and Borderline SMOTE. These
-findings create a connection between the research areas of the imbalance learning
-and the small data problems which offers a lot of potential for future research.
+In the age of the data deluge there are still many domains and applications
+restricted to the use of small datasets. The ability to harness these small
+datasets to solve problems through the use of supervised learning methods can
+have a significant impact in many important areas. The insufficient size of data
+sets usually results in unsatisfactory performance of machine learning
+algorithms. The current research work aims to contribute to mitigate the small
+dataset problem through the creation of artificial instances, which are added to
+the training process. The over-sampling algorithm Geometric SMOTE is applied to
+generate new instances and enhance the initial dataset. Experimental results
+show a significant improvement in accuracy when compared with the use of the
+original small dataset and also over other over-sampling techniques such as
+Random Oversampling, SMOTE and Borderline SMOTE. These findings show that
+oversampling research, developed in the context of imbalanced learning, can also
+be a valid option to improve accuracy in small data problems.
 \end{abstract}
 
 \section{Introduction}
@@ -287,7 +291,7 @@ scenario where a minority instance is generated within the majority region
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{../analysis/noisy_examples.png}
-	\caption{Generation of noisy examples \cite{Douzas.2019b}}
+	\caption{Generation of noisy examples \cite{Douzas.2019}}
 	\label{fig:noisy-examples}
 \end{figure}
 
@@ -301,7 +305,7 @@ therefore less useful.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{../analysis/redundant_examples.png}
-	\caption{Generation of redundant examples \cite{Douzas.2019b}}
+	\caption{Generation of redundant examples \cite{Douzas.2019}}
 	\label{fig:redundant-examples}
 \end{figure}
 
@@ -315,7 +319,7 @@ achieve the best results within their study.
 
 The novel data generation procedure Geometric SMOTE (G-SMOTE) has been presented
 with the objective to improve the above mentioned limitations of the SMOTE
-algorithm \cite{Douzas.2019b}. G-SMOTE can be seen as a substitute of SMOTE
+algorithm \cite{Douzas.2019}. G-SMOTE can be seen as a substitute of SMOTE
 enhanced by geometric properties. The main difference to SMOTE is that it
 broadens the options for data generation and prevents the creation of noise.
 Instead of connecting a minority sample and one of its minority class nearest
@@ -334,7 +338,7 @@ avoids this scenario.
 	\label{fig:smotevsgsmote}
 \end{figure}
 
-The study of \cite{Douzas.2019b} has performed an extensive comparison between
+The study of \cite{Douzas.2019} has performed an extensive comparison between
 G-SMOTE and SMOTE using 69 imbalanced datasets and several classifiers. The
 results show that G-SMOTE outperforms SMOTE, Random Oversampling and the case of
 no over-sampling, across all datasets, classifiers and performance metrics.
@@ -397,7 +401,7 @@ selection strategy here.
 	instance is defined as the center and one of its \( k = 4 \) positive 
 	class nearest neighbors is selected as the surface point. The radius 
 	\( R \) is equal to the distance of these instances 
-	\cite{Douzas.2019b}.}
+	\cite{Douzas.2019}.}
 	\label{fig:positiveclassselectionstrategy}
 \end{figure}
 
@@ -416,7 +420,7 @@ not allow the data generation mechanism to penetrate the opposite area.
 	\caption{Example of negative class selection strategy: A positive class 
 	instance is defined as the center and its closest negative class neighbor 
 	is selected as the surface point. The radius \( R \) is defined to be 
-	equal to the distance of these instances \cite{Douzas.2019b}.}
+	equal to the distance of these instances \cite{Douzas.2019}.}
 	\label{fig:negativeclassselectionstrategy}
 \end{figure}
 
@@ -437,7 +441,7 @@ as a negative class instance.
 	class sample \( \textbf{x}_{center} \) is identified as the surface point 
 	\( \textbf{x}_{surface} \) since it is closer to the center than the 
 	selected instance \( \textbf{x}_{pos} \) from the \( k \) nearest 
-	positive class neighbors of the center \cite{Douzas.2019b}.}
+	positive class neighbors of the center \cite{Douzas.2019}.}
 	\label{fig:combinedclassselectionstrategy}
 \end{figure}
 
@@ -487,7 +491,7 @@ The adapted G-SMOTE algorithm can be generally described in the following steps:
 		data generation area obtains a circle. On the opposite, if the 
 		parameter is set to 1, the area deforms to a line segment. 
 		For a graphical example of these hyper-parameters the reader is 
-		referred to (Douzas, 2019).
+		referred to \cite{Douzas.2019}.
 	\end{enumerate}
 
 	\item 

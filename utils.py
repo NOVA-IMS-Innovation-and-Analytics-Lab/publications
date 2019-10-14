@@ -43,7 +43,7 @@ FETCH_URLS = {
     'iris': urljoin(UCI_URL, 'iris/bezdekIris.data'),
     'libras': urljoin(UCI_URL, 'libras/movement_libras.data'),
     'liver': urljoin(UCI_URL, 'liver-disorders/bupa.data'),
-    'pima': 'https://raw.githubusercontent.com/IMS-ML-Lab/publications/master/assets/data/various.db',
+    'pima': 'https://gist.githubusercontent.com/ktisha/c21e73a1bd1700294ef790c56c8aec1f/raw/819b69b5736821ccee93d05b51de0510bea00294/pima-indians-diabetes.csv',
     'vehicle': urljoin(UCI_URL, 'statlog/vehicle/'),
     'wine': urljoin(UCI_URL, 'wine/wine.data'),
     'new_thyroid_1': urljoin(urljoin(KEEL_URL, 'imb_IRlowerThan9/'), 'new-thyroid1.zip'),
@@ -243,13 +243,8 @@ class ImbalancedBinaryClassDatasets(Datasets):
 
         https://www.kaggle.com/uciml/pima-indians-diabetes-database
         """
-        database = requests.get(FETCH_URLS['pima']).content
-        with open('temp.db', 'wb') as file:
-            file.write(database)
-        with connect('temp.db') as con:
-            data = pd.read_sql('select * from pima', con)
-        data.rename(columns={'8': 'target'}, inplace=True)
-        remove('temp.db')
+        data = pd.read_csv(FETCH_URLS['pima'], header=None, skiprows=9)
+        data.rename(columns={8: 'target'}, inplace=True)
         return data
 
     def fetch_vehicle(self):
