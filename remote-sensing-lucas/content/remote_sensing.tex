@@ -553,8 +553,8 @@ columns={Dataset name , LUCAS},
 columns/Dataset name /.style={column type=l,string type},
 columns/LUCAS/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule \caption{Description of the 
-dataset}}
+every last row/.style={after row=\bottomrule 
+\caption{\label{tab:datasets}Description of the dataset}}
 ]
 {../analysis/dataset_descrip.csv}
 
@@ -586,9 +586,10 @@ columns/B-SMOTE/.style={column type=l,string type},
 columns/ADASYN/.style={column type=l,string type}, 
 columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule \caption{Results for cross 
-validation scores of oversamplers (NO OS: No Oversampling, RAND OS: Random 
-Oversampling, B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}}
+every last row/.style={after row=\bottomrule 
+\caption{\label{tab:mean_cross_val}Results for cross validation scores of 
+oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling, 
+B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}}
 ] 
 {../analysis/mean_scores.csv}
 
@@ -630,8 +631,8 @@ columns/B-SMOTE/.style={column type=l,string type},
 columns/ADASYN/.style={column type=l,string type}, 
 columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule \caption{Results for ranking of 
-oversamplers}}
+every last row/.style={after row=\bottomrule 
+\caption{\label{tab:ranking}Results for ranking of oversamplers}}
 ]
 {../analysis/mean_ranking.csv}
 
@@ -666,12 +667,12 @@ columns/F1 macro/.style={column type=l,string type},
 columns/G-mean macro/.style={column type=l,string type}, 
 columns/Accuracy/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule \caption{Results for mean ranking 
-of oversamplers}}
+every last row/.style={after row=\bottomrule 
+\caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
 ]
 {../analysis/model_mean_ranking.csv}
 
-Table \ref{tab:smote_gsmote} presents the percentage difference  between
+Table \ref{tab:smote_gsmote} presents the percentage difference between
 Geometric-SMOTE and SMOTE. For this comparison SMOTE algorithm was selected due
 to its popularity and wide use within the remote sensing society (see section
 2). The table shows that Geometric-SMOTE outperforms SMOTE regardless of the
@@ -687,8 +688,9 @@ columns/Classifier/.style={column type=l,string type},
 columns/Metric/.style={column type=l,string type},
 columns/Difference/.style={column type=l,string type}, 
 every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule \caption{Results for percentage 
-difference between G-SMOTE and SMOTE}}
+every last row/.style={after row=\bottomrule 
+\caption{\label{tab:smote_gsmote}Results for percentage difference 
+between G-SMOTE and SMOTE}}
 ]
 {../analysis/mean_perc_diff_scores.csv}
 
