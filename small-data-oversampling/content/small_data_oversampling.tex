@@ -21,6 +21,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage{hyperref}
 \usepackage[colorinlistoftodos]{todonotes}
 \geometry{
 	a4paper,
@@ -400,9 +401,12 @@ data generation is considered.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/smote_mechanism.png}
-	\caption{Three positive class instances are used by SMOTE and G-SMOTE 
-	to generate synthetic data. G-SMOTE generates non-noisy samples 
-	with higher variety than SMOTE.}
+	\caption{The G-SMOTE data generation mechanism for the three 
+	different \textit{selection strategy} values, when positive class 
+	samples are generated  values. The hyper-parameters 
+	\textit{deformation factor} and \textit{truncation factor} 
+	have also different values resulting in the permissible 
+	data generation areas of the figure.}
 	\label{fig:gsmotemechanism}
 \end{figure}
 
@@ -469,71 +473,60 @@ $$\textit{G-Mean} = \sqrt{sensitivity \times specificity} = \sqrt{\dfrac{TP}{TP 
 
 \subsection{Machine learning algorithms}
 
-The experiment is conducted with several classifiers. We use the following four
-algorithms: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors
-(KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient
-Boosting (GB) \cite{Friedman.2001}.
+The experiment is conducted using several classifiers: Logistic Regression (LR)
+\cite{McCullagh.2019}, K-Nearest Neighbors (KNN) \cite{Cover.1967}, Decision
+Tree (DT) \cite{Salzberg.1994} and Gradient Boosting (GB) \cite{Friedman.2001}.
 
 \subsection{Experimental procedure}
 
-The main concept of the experimental procedure is to reduce the size of the
-datasets presented in table \ref{tab:datasets}, increase their size artificially
-back to the initial using different over-samplers and compare the results with
-the original dataset which is considered to be the benchmark. This method allows
-us to directly compare the quality of the artificially generated samples to the
-observed data. In order to evaluate if the proposed method can improve
-artificial data generation, we compare G-SMOTE with SMOTE, Borderline SMOTE and
-Random Oversampling. Also, we apply the machine learning algorithms to the
-under-sampled data with the objective to assess their performance with a smaller
-amount of data. To under-sample the data we use a ratio of 50, 75, 90 and 95
-percent of the original dataset. For example, with an undersampling ratio of 95
-percent, we take only five percent of the original data as a base to apply the
-over-sampling mechanism. This approach aims to provide an understanding of the
-classification performance as the size of the dataset diminishes.
+As explained above, the main goal of the paper is to evaluate how well various
+over-samplers, particularly G-SMOTE, are able to enhance small datasets with
+artificial samples compared to the case where the original data are used. In
+order to evaluate them, various classifiers and metrics are selected. We use \(k
+\)-fold cross-validation scores with \( k = 5 \) to assess the performance of
+the models for each combination of over-sampler and classifier. The dataset \( D
+\) is randomly split into \( k \) subsets (folds) \( D_1, D_2, … D_k \) of
+approximately equal size. Each fold is used as a validation set and the
+remaining folds are used to train the model with \( k \) iterations. This
+procedure is repeated until each \( k \) have been used as a validation set
+\cite{Han.2012}. Therefore, the experimental procedure for each of the datasets
+presented in table \ref{tab:datasets} and for each cross-validation stage
+consists of the following steps:
 
-Figure \ref{fig:experimentalprocedure} visualizes the experimental process: 
+\begin{enumerate}
+
+	\item The data are divided into \( k \)-folds.
+	
+	\item The \( k - 1 \) folds are under-sampled using an undersampling ratio
+	50, 75, 90 and 95, corresponding to the percentage of the dataset that is
+	removed.
+
+	\item Over-sampling is applied to the under-sampled data of the previous
+	steps that increases their size and class distribution back to the initial.
+
+	\item The re-sampled data of the previous step are used to train the
+	classifiers.
+	
+	\item The classifiers are evaluated on the remaining fold of step 1.
+
+\end{enumerate}
+
+The results also include the case where the classifiers are trained on the
+original data, called the benchmark performance. Figure
+\ref{fig:experimentalprocedure} visualizes the experimental procedure: 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{../analysis/experimental_procedure.png}
-	\caption{High-level experimental procedure}
+	\includegraphics[width=1.0\linewidth]{../analysis/experimental_procedure.png}
+	\caption{Visualization of experimental procedure.}
 	\label{fig:experimentalprocedure}
 \end{figure}
 
-We use \( k \)-fold cross-validation scores with \( k = 5 \) to assess the
-performance of the models for each combination of over-sampler and classifier.
-The dataset \( D \) is randomly split into \( k \) subsets (folds) \( D_1, D_2,
-… D_k \) of approximately equal size. Each fold is used as a validation set and
-the remaining folds are used to train the model with \( k \) iterations. This
-procedure is repeated until each \( k \) have been used as a validation set
-\cite{Han.2012}. Based on the above description, the experiment is conducted in
-the following steps within one iteration:
-
-\begin{enumerate}
-	
-	\item 
-	Split the dataset into \( k \)-fold cross-validation sets.
-
-	\item 
-	Under-sample \( k - 1 \) folds such that the class frequency remains 
-	the same as the original with a ratio of 50, 75, 90 and 95 percent.
-
-	\item 
-	Over-sample \( k - 1 \) folds to the original size of the
-	dataset (class ratio remains the same) with G-SMOTE, SMOTE, Borderline
-	SMOTE, Random Oversampling. Also include the no oversampling case.
-
-	\item 
-	Train the model with the classifiers LR, KNN, DT and GB
-
-	\item 
-	Test the model with the remaining, original fold
-
-\end{enumerate}	
-
-This procedure is repeated 3 times and the highest cross validation score for
-each combination of dataset, classifier, oversampler and evaluation metric is
-reported.
+This procedure results in a cross validation score for each combination of
+dataset, classifier, oversampler and evaluation metric. It is also repeated
+three times and the average cross-validation score is calculated. The algorithms
+used in the experiment have various hyper-parameters that yield to different
+scores. The maximum of these scores is reported.
 
 In order to confirm the statistical significance of the experimental results,
 the Friedman test \cite{Sheldon.1996} as well as the Holm test
@@ -554,18 +547,18 @@ every combination of classifier and metric.
 \subsection{Software Implementation}
 
 The implementation of the experimental procedure is based on Python programming
-language using the Scikit-Learn library
-\cite{PedregosaF.VaroquauxG.GramfortA.MichelV.ThirionB.GriselO.BlondelM.Prette.2011}.
-All functions, algorithms, experiments and results reported are provided at
-\url{https://github.com/AlgoWit/publications/tree/master/small-data-oversampling}.
-Additionally, Research-Learn library
-(\url{https://github.com/AlgoWit/research-learn}) provides a framework to
-implement comparative experiments, being also fully integrated with the
-Scikit-Learn ecosystem.
+language using the \href{https://scikit-learn.org/stable/}{Scikit-Learn} library
+\cite{Pedregosa.2011}. All functions, algorithms, experiments and results
+reported are provided at the GitHub repository of the
+\href{https://github.com/AlgoWit/publications/tree/master/small-data-oversampling}{project}.
+Additionally,
+\href{https://research-learn.readthedocs.io/en/latest/?badge=latest}{Research-Learn}
+library provides a framework to implement comparative experiments, being also
+fully integrated with the Scikit-Learn ecosystem.
 
 \section{Results and discussion}
 
-In this section the performance of the different oversamplers and the results 
+In this section the performance of the different over-samplers and the results 
 of the statistical tests are presented and analyzed.
 
 \subsection{Comparative presentation}
@@ -573,10 +566,10 @@ of the statistical tests are presented and analyzed.
 The mean cross validation scores and the standard error per classifier and
 metric across all datasets are presented in Table \ref{tab:mean_sem_scores}. The
 scores are presented for each under-sampling ratio to evaluate how the methods
-perform as the dataset size diminishes. We include the benchmark method that
-represents the original dataset without applying under-sampling before training
-the algorithm. This sample set is seen as the ground truth of our experiments
-which is expected to obtain the best results by design.
+perform as the dataset size diminishes. We also include the benchmark method
+that represents the original dataset without applying under-sampling before
+training the algorithm. The benchmark method is expected to obtain the best
+results by design.
 
 \begin{center}
 \begin{footnotesize}
@@ -603,13 +596,13 @@ which is expected to obtain the best results by design.
 \label{tab:mean_sem_scores}
 \end{center}
 
-This table shows that G-SMOTE outperforms all over-sampling methods almost for
-all combinations of classifiers and metrics. Throughout the scores we can
+The above table shows that G-SMOTE outperforms all over-sampling methods almost
+for all combinations of classifiers and metrics. Throughout the scores we can
 observe that all over-samplers have a better performance as the dataset increase
 their size i.e. the under-sampling ratio gets smaller.  Particularly, the scores
-of G-SMOTE are the closest to the ones of the Benchmark method which implies
-that the proposed method is able to artificially establish a representative
-dataset.
+of G-SMOTE are the closest to the ones of the benchmark method which implies
+that it is able to reconstruct the original dataset more effectively compared to
+the rest of the over-samplers.
 
 Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
 of percentage difference between G-SMOTE and No Oversampling. It shows that
@@ -651,7 +644,7 @@ datasets is presented in the following figure:
 
 Looking at the graphs, G-SMOTE is ranked on the top place when comparing with
 SMOTE, Borderline SMOTE, Random Oversampling and No Oversampling. Additionally,
-G-SMOTE slightly outperforms the Benchmark method using the classifiers Logistic
+G-SMOTE slightly outperforms the benchmark method using the classifiers Logistic
 Regression and Decision Tree in the mean ranking. 
 
 \subsection{Statistical Analysis}
@@ -685,7 +678,7 @@ Therefore, the null hypothesis of the Friedman test is rejected at a
 significance level of a = 0.05, i.e. the over-samplers do not perform similarly 
 in the mean rankings for any combination of classifier and evaluation metric.
 
-The Holm's method is applied to adjust the $\text{p-values}$ of the paired 
+The Holm method is applied to adjust the $\text{p-values}$ of the paired 
 difference test with G-SMOTE algorithm as the control method. The results are 
 shown in table \ref{tab:holm_test}:
 
