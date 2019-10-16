@@ -13,3 +13,4 @@ __pycache__
 *.fdb_latexmk
 *.egg-info
 .*venv
+*.pptx
