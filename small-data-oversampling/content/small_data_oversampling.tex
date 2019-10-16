@@ -2,7 +2,7 @@
 
 \pdfoutput=1
 
-\title{Small Data Oversampling  \\ \LARGE{Improving small data prediction accuracy using the Geometric SMOTE algorithm}}
+\title{Small Data Over-sampling  \\ \LARGE{Improving small data prediction accuracy using the Geometric SMOTE algorithm}}
 
 \author{
 	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1}\), Maria Lechleitner\(^{1*}\) 
@@ -63,7 +63,7 @@ the training process. The over-sampling algorithm Geometric SMOTE is applied to
 generate new instances and enhance the initial dataset. Experimental results
 show a significant improvement in accuracy when compared with the use of the
 original small dataset and also over other over-sampling techniques such as
-Random Oversampling, SMOTE and Borderline SMOTE. These findings show that
+Random Over-sampling, SMOTE and Borderline SMOTE. These findings show that
 over-sampling research, developed in the context of imbalanced learning, can
 also be a valid option to improve accuracy in small data problems.
 \end{abstract}
@@ -143,10 +143,10 @@ techniques, and finally, we review over-sampling methods, developed in the
 context of imbalanced learning, that can be a valuable option to increase the
 sample size in small datasets.
 
-\subsection{Fuzzy theories}
+\subsection{Fuzzy theory}
 
 Many artificial sample generation techniques presented in the literature are
-based on fuzzy theories \cite{AbdulLateh.2017}. The fuzzy set theory defines a
+based on fuzzy theory \cite{AbdulLateh.2017}. The fuzzy set theory defines a
 strict mathematical framework to generalize the classical notion of a dataset,
 providing a wide scope of applicability, especially in the fields of information
 processing and pattern classification \cite{Zimmermann.2010}. Based on this
@@ -176,7 +176,7 @@ classification accuracy of a neural network.
 approach that fuzzifies information in order to extend a small dataset. It
 combines the principle of information diffusion by \cite{Huang.1997} with
 traditional Neural Networks to approximate functions. The information diffusion
-method partially fills the information gaps by using fuzzy theories to represent
+method partially fills the information gaps by using fuzzy theory to represent
 the similarities between samples and subsequently derive new ones.
 
 In order to fully fill the information gaps, Mega-Trend-Diffusion (MTD)
@@ -201,7 +201,7 @@ than in the case of no generation of synthetic samples \cite{Li.2014}.
 
 \subsection{Random over-sampling}
 
-An alternative approach to fuzzy theories as well the most well-known artificial
+An alternative approach to fuzzy theory as well the most well-known artificial
 sample generation method is the Bootstrapping Procedure \cite{AbdulLateh.2017}
 or Random Over-Sampling (ROS) as is known in the imbalanced learning research
 area. The main difference to the previously presented techniques is that ROS
@@ -238,7 +238,7 @@ is the norm rather than the exception \cite{He.2013}.
 
 There are several methods presented in the literature that belong in the
 over-sampling category. The first method to be  proposed and still the most
-popular is the Synthetic Minority Oversampling TEchnique (SMOTE). SMOTE is based
+popular is the Synthetic Minority Over-sampling TEchnique (SMOTE). SMOTE is based
 on the idea of \( k \)-nearest neighbors and linear interpolation as a data
 generation mechanism. More specifically, SMOTE proposes to form a line segment
 between neighboring minority class instances and generate synthetic data between
@@ -306,7 +306,7 @@ tends to generate noisy samples, whereas G-SMOTE avoids this scenario.
 
 The experimental study of \cite{Douzas.2019} includes an extensive comparison
 between G-SMOTE and SMOTE using 69 imbalanced datasets and several classifiers.
-The results show that G-SMOTE outperforms SMOTE, Random Oversampling and the
+The results show that G-SMOTE outperforms SMOTE, Random Over-sampling and the
 case of no over-sampling, across all datasets, classifiers and performance
 metrics.
 
@@ -591,8 +591,8 @@ results by design.
 \end{footnotesize}
 \addtocounter{table}{-1}
 \captionof{table}{Results for mean cross validation 
-	scores of oversamplers (NONE corresponds to No Oversampling, RANDOM 
-	to Random Oversampling and B-SMOTE to Borderline SMOTE)}
+	scores of oversamplers (NONE corresponds to No Over-sampling, RANDOM 
+	to Random Over-sampling and B-SMOTE to Borderline SMOTE)}
 \label{tab:mean_sem_scores}
 \end{center}
 
@@ -605,7 +605,7 @@ that it is able to reconstruct the original dataset more effectively compared to
 the rest of the over-samplers.
 
 Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
-of percentage difference between G-SMOTE and No Oversampling. It shows that
+of percentage difference between G-SMOTE and No Over-sampling. It shows that
 G-SMOTE performs significantly better compared to the case where no
 over-sampling is applied in every combination of under-sampling ratio,
 classifier and metric. Particularly, the performance gap increases for higher
@@ -632,7 +632,7 @@ under-sampling ratios.
 \end{center}
 
 As explained in section 4, a ranking score in the range 1 to 5 is assigned to
-each oversampler. The mean ranking of all oversampling methods across the
+each oversampler. The mean ranking of all over-sampling methods across the
 datasets is presented in the following figure: 
 
 \begin{figure}[H]
@@ -643,7 +643,7 @@ datasets is presented in the following figure:
 \end{figure}
 
 Looking at the graphs, G-SMOTE is ranked on the top place when comparing with
-SMOTE, Borderline SMOTE, Random Oversampling and No Oversampling. Additionally,
+SMOTE, Borderline SMOTE, Random Over-sampling and No Over-sampling. Additionally,
 G-SMOTE slightly outperforms the benchmark method using the classifiers Logistic
 Regression and Decision Tree in the mean ranking. 
 
@@ -721,7 +721,9 @@ that G-SMOTE significantly improves classification performance compared to the
 case where only the small data are used. Also G-SMOTE outperforms standard
 over-sampling approaches such as Random Over-Sampling and SMOTE, being closer to
 the benchmark scores than any of them. Finally, G-SMOTE implementation is
-available on (\url{https://github.com/AlgoWit/geometric-smote}).
+available as an
+\href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open
+source project}.
 
 \bibliography{references}
 \bibliographystyle{apalike}
