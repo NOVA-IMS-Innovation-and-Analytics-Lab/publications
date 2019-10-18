@@ -204,7 +204,12 @@ and Boosted DT.
 
 SMOTE is the most popular informed oversampling method, and it has been used to
 successfully deal with the class imbalance problem in land cover classification.
-% Describe SMOTE algorithm
+In this approach the minority class is oversampled by selecting each minority 
+class instance and generating synthetic examples along the line segments 
+joining $k$ minority class neighbors. For this $k$-nearest neighbors selection 
+rule is used, and the number of nearest neighbors is setup to five. Depending 
+on the amount of required data generation, samples from five nearest 
+neighbors are randomly selected.
 
 The variational semi-supervised learning (VSSL) proposed by \cite{Cenggoro2018}
 aims to fix the imbalance problem in LULC mapping. VSSL is a semi-supervised
