@@ -1,32 +1,47 @@
-\documentclass[parskip=full]{scrartcl}
+%  LaTeX support: latex@mdpi.com
+%  In case you need support, please attach all files that are necessary for compiling as well as the log file, and specify the details of your LaTeX setup (which operating system and LaTeX version / tools you are using).
 
-\pdfoutput=1
+%=================================================================
+\documentclass[remotesensing,article,submit,moreauthors,pdftex]{Definitions/mdpi}
 
-\title{Imbalanced Learning in Land Cover Classification  \\ \LARGE{Improving minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
+% If you would like to post an early version of this manuscript as a preprint, you may use preprint as the journal and change 'submit' to 'accept'. The document class line would be, e.g., \documentclass[preprints,article,accept,moreauthors,pdftex]{mdpi}. This is especially recommended for submission to arXiv, where line numbers should be removed before posting. For preprints.org, the editorial staff will make this change immediately prior to posting.
 
-\author{Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Joao Fonseca\(^{1}\), Manvel Khudinyan\(^{1}\) 
-	\\
-	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
-	\\
-	\small{*Corresponding Author}
-	\\
-	\\
-	\small{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal}
-	\\
-	\small{Telephone: +351 21 382 8610}
-}
+%--------------------
+% Class Options:
+%--------------------
+%---------
+% pdftex
+%---------
+% The option pdftex is for use with pdfLaTeX. If eps figures are used, remove the option pdftex and use LaTeX and dvi2pdf.
 
+%=================================================================
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{xx}
+\issuenum{1}
+\articlenumber{5}
+\pubyear{2019}
+\copyrightyear{2019}
+%\externaleditor{Academic Editor: name}
+\history{Received: date; Accepted: date; Published: date}
+%\updates{yes} % If there is an update available, un-comment this line
+
+%% MDPI internal command: uncomment if new journal that already uses continuous page numbers
+%\continuouspages{yes}
+
+%------------------------------------------------------------------
+% The following line should be uncommented if the LaTeX file is uploaded to arXiv.org
+%\pdfoutput=1
+
+%=================================================================
+% Add packages and commands here. The following packages are loaded in our class file: fontenc, calc, indentfirst, fancyhdr, graphicx, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, amsthm, hyphenat, natbib, hyperref, footmisc, geometry, caption, url, mdframed, tabto, soul, multirow, microtype, tikz
+
+\usepackage{colortbl}
 \usepackage{breakcites}
 \usepackage{float}
 \usepackage{graphicx}
-\usepackage{geometry}
-\geometry{
-	a4paper,
-	total={170mm,257mm},
-	left=18mm,
-	right=18mm,
-	top=8mm,
-}
 \usepackage{amsmath}
 \newcommand{\inlineeqnum}{\refstepcounter{equation}~~\mbox{(\theequation)}}
 \usepackage{enumitem}
@@ -37,13 +52,44 @@
 \usepackage{longtable}
 \usepackage{tabu}
 \usepackage{hyperref}
-\date{}
 
-\begin{document}
 
-\maketitle
+%=================================================================
+%% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
+%% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
 
-\begin{abstract}
+%=================================================================
+% Full title of the paper (Capitalized)
+\Title{Imbalanced Learning in Land Cover Classification:  \\ \LARGE{Improving minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
+
+% Author Orchid ID: enter ID or remove command
+%\newcommand{\orcidauthorA}{0000-0000-000-000X} % Add \orcidA{} behind the author's name
+%\newcommand{\orcidauthorB}{0000-0000-000-000X} % Add \orcidB{} behind the author's name
+
+% Authors, for the paper (add full first names)
+\Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca $^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$}
+
+% Authors, for metadata in PDF
+\AuthorNames{Georgios Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan}
+
+% Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
+\address{
+$^{1}$ \quad NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca, mkhudinyan\}@novaims.unl.pt}
+
+% Contact information of the corresponding author
+\corres{Correspondence: bacao@novaims.unl.pt; Tel.: +351 21 382 8610}
+
+% Current address and/or shared authorship
+\firstnote{These authors contributed equally to this work.}
+
+% The commands \thirdnote{} till \eighthnote{} are available for further notes
+
+%\simplesumm{} % Simple summary
+
+%\conference{} % An extended version of a conference paper
+
+% Abstract (Do not insert blank lines, i.e. \\)
+\abstract{
 In spite of its importance in sustainable resource management, the automatic
 production of Land Use/Land Cover maps continues to be a challenging problem.
 The ability to build robust automatic classifiers able to produce accurate maps
@@ -64,8 +110,23 @@ other oversamplers and improves the robustness of the classifiers. These results
 indicate that, when using imbalanced datasets, remote sensing researchers should
 consider the use of these new generation oversamplers to increase the quality of
 the classification results.
-\end{abstract}
+}
 
+% Keywords
+\keyword{Imbalance learning; LULC classification; Oversampling;
+Geometric-SMOTE; Class imbalance;}
+
+% The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
+%\PACS{J0101}
+%\MSC{}
+%\JEL{}
+
+%\setcounter{secnumdepth}{4}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 The production of accurate Land Use/Land Cover (LULC) maps offers unique
 monitoring capabilities within the remote-sensing domain \cite{Mellor2015}. LULC
@@ -126,7 +187,7 @@ problem, which can be divided into three groups:
 \begin{enumerate}
 
 	\item Undersampling algorithms reduce the size of the majority classes.
-	
+
 	\item Oversampling algorithms attempt to even the distributions by
 	generating artificial data for the minority class(es).
 
@@ -246,7 +307,7 @@ Although recent studies demonstrate the usefulness of informed oversampling
 methods for remote sensing applications, they still present some drawbacks.
 SMOTE method has the disadvantage of generating noisy data \cite{He2008}. In
 order to mitigate this problem many variations of SMOTE have been developed with
-the objective of preventing noisy data generation. 
+the objective of preventing noisy data generation.
 
 Borderline-SMOTE is one of the most popular SMOTE-based oversamplers. It has two
 variations, Borderline-SMOTE1 and Borderline-SMOTE2 \cite{Han2005}. Similarly to
@@ -283,9 +344,8 @@ oversampling algorithms across 69 imbalanced datasets and number of classifiers
 such as logistic regression, K-Nearest Neighbors, Decision Trees and Gradient
 Boosting Classifier.
 
-In this study we use a set of
-more recent oversamplers, most notably G-SMOTE, that is yet to be adopted within
-the remote sensing community.
+In this study we use a set of more recent oversamplers, most notably G-SMOTE,
+that is yet to be adopted within the remote sensing community.
 
 To compare the performance of the different oversamplers we use the LUCAS
 dataset and 5 different supervised classifiers: Logistic Regression, K-Nearest
@@ -321,28 +381,12 @@ learning type, training time and popularity within the remote sensing community.
 We further divide classification algorithms into 4 different learning types:
 neighbors-based, rule-based, ensemble and generalized linear methods.
 
-For each combination of oversampler and classifier (represented as $x_a$ and
-$y_b$, respectively), a grid search will be run in order to find the optimal
-parameter settings. The number of fits for a single combination  is defined as:
-
-\begin{equation}
-fits_{x_a,y_b}=\prod\limits_{p=1} \textrm{count}(x_a^p).\prod\limits_{q=1}
-\textrm{count}(y_b^q)
-\end{equation}
-
-Where $\textrm{count}(x_a^p)$ corresponds to the search grid size of
-hyperparameter $p$ of an oversampler $x_a$. Finally, the total number of fits is
-defined as:
-
-\begin{equation}
-Total\ Fits=k\sum\limits_{a=1} \sum\limits_{b=1} fits_{x_a,y_b}
-\end{equation}
-
-Where $k$ is the number of folds defined for cross-validation. Thus, adding new
-classifiers, oversamplers or grid search values may exponentially increase the
-time necessary to run the experiment. Therefore, in order to setup an extensive
-grid search and run the full experiment within feasible time, selecting
-computationally efficient classifiers becomes vital.
+For each combination of oversampler and classifier, a grid search will be run in
+order to find the optimal parameter settings. Adding new classifiers,
+oversamplers or grid search values may exponentially increase the time necessary
+to run the experiment. Therefore, in order to setup an extensive grid search and
+run the full experiment within feasible time, selecting computationally
+efficient classifiers becomes vital.
 
 \cite{Khatami2016} developed a meta-analysis of classification processes out of
 266 manuscripts published from 1998 to 2012. Additionally, \cite{Maxwell2018}
@@ -386,7 +430,7 @@ discussion.
 \begin{itemize}
 
 	\renewcommand\labelitemi{--}
-	
+
 	\item Overall Accuracy
 
 	Classification Overall Accuracy is the number of correctly classified
@@ -544,15 +588,15 @@ pixels from each spectral bands of the image time series representing LUCAS
 point location.
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable}, 
+begin table=\begin{longtable},
 end table=\end{longtable},
-col sep=comma, 
-header=true, 
+col sep=comma,
+header=true,
 columns={Dataset name , LUCAS},
 columns/Dataset name /.style={column type=l,string type},
 columns/LUCAS/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule 
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule
 \caption{\label{tab:datasets}Description of the dataset}}
 ]
 {../analysis/dataset_descrip.csv}
@@ -571,25 +615,25 @@ absolute best results are achieved when Geometric-SMOTE is combined with Fandom
 Forest.
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable}, 
+begin table=\begin{longtable},
 end table=\end{longtable},
-col sep=comma, 
-header=true, 
+col sep=comma,
+header=true,
 columns={Classifier,Metric,NO OS,RAND OS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-columns/Classifier/.style={column type=l,string type}, 
-columns/Metric/.style={column type=l,string type}, 
-columns/NO OS/.style={column type=l,string type}, 
+columns/Classifier/.style={column type=l,string type},
+columns/Metric/.style={column type=l,string type},
+columns/NO OS/.style={column type=l,string type},
 columns/RAND OS/.style={column type=l,string type},
-columns/SMOTE/.style={column type=l,string type}, 
-columns/B-SMOTE/.style={column type=l,string type},  
-columns/ADASYN/.style={column type=l,string type}, 
+columns/SMOTE/.style={column type=l,string type},
+columns/B-SMOTE/.style={column type=l,string type},
+columns/ADASYN/.style={column type=l,string type},
 columns/G-SMOTE/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule 
-\caption{\label{tab:mean_cross_val}Results for cross validation scores of 
-oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling, 
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule
+\caption{\label{tab:mean_cross_val}Results for cross validation scores of
+oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling,
 B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}}
-] 
+]
 {../analysis/mean_scores.csv}
 
 Amongst the classifiers Random Forest shows best performance for all three
@@ -621,16 +665,16 @@ end table=\end{longtable},
 col sep=comma,
 header=true,
 columns={Classifier,Metric,NO OS,RAND OS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-columns/Classifier/.style={column type=l,string type}, 
-columns/Metric/.style={column type=l,string type}, 
-columns/NO OS/.style={column type=l,string type}, 
+columns/Classifier/.style={column type=l,string type},
+columns/Metric/.style={column type=l,string type},
+columns/NO OS/.style={column type=l,string type},
 columns/RAND OS/.style={column type=l,string type},
-columns/SMOTE/.style={column type=l,string type}, 
-columns/B-SMOTE/.style={column type=l,string type},  
-columns/ADASYN/.style={column type=l,string type}, 
+columns/SMOTE/.style={column type=l,string type},
+columns/B-SMOTE/.style={column type=l,string type},
+columns/ADASYN/.style={column type=l,string type},
 columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule 
+every last row/.style={after row=\bottomrule
 \caption{\label{tab:ranking}Results for ranking of oversamplers}}
 ]
 {../analysis/mean_ranking.csv}
@@ -661,12 +705,12 @@ end table=\end{longtable},
 col sep=comma,
 header=true,
 columns={Oversampler,F1 macro,G-mean macro,Accuracy},
-columns/Oversampler/.style={column type=l,string type}, 
-columns/F1 macro/.style={column type=l,string type}, 
-columns/G-mean macro/.style={column type=l,string type}, 
+columns/Oversampler/.style={column type=l,string type},
+columns/F1 macro/.style={column type=l,string type},
+columns/G-mean macro/.style={column type=l,string type},
 columns/Accuracy/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule 
+every last row/.style={after row=\bottomrule
 \caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
 ]
 {../analysis/model_mean_ranking.csv}
@@ -678,17 +722,17 @@ to its popularity and wide use within the remote sensing society (see section
 classifier or metric used.
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable}, 
+begin table=\begin{longtable},
 end table=\end{longtable},
-col sep=comma, 
-header=true, 
+col sep=comma,
+header=true,
 columns={Classifier,Metric,Difference},
 columns/Classifier/.style={column type=l,string type},
 columns/Metric/.style={column type=l,string type},
-columns/Difference/.style={column type=l,string type}, 
-every head row/.style={before row=\toprule, after row=\midrule\endhead}, 
-every last row/.style={after row=\bottomrule 
-\caption{\label{tab:smote_gsmote}Results for percentage difference 
+columns/Difference/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule
+\caption{\label{tab:smote_gsmote}Results for percentage difference
 between G-SMOTE and SMOTE}}
 ]
 {../analysis/mean_perc_diff_scores.csv}
@@ -721,7 +765,50 @@ SMOTE. Geometric-SMOTE proves to be a useful tool for remote sensing researchers
 and can effectively replace the two widely accepted oversamplers Random
 Oversampling and SMOTE methods.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{6pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\authorcontributions{Conceptualization, F.B.; Methodology, G.D.; Software,
+G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
+Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.;
+Supervision, F.B.; Funding Acquisition, F.B.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\funding{This research was funded by NAME OF FUNDER grant number XXX.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\acknowledgments{The authors would like to thank Direção Geral do Território
+(DGT) for supporting the used data in this study.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\conflictsofinterest{The authors declare no conflict of interest. The funders
+had no role in the design of the study; in the collection, analyses, or
+interpretation of data; in the writing of the manuscript, or in the decision to
+publish the results.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% optional
+\abbreviations{The following abbreviations are used in this manuscript:\\
+\noindent
+\begin{tabular}{@{}ll}
+  OS & Oversampling\\
+  CV & Cross-Validation\\
+  LULC & Land Use/Land Cover\\
+  LUCAS & Land Use/Cover Area Statistical Survey\\
+  SMOTE & Synthetic Minority Over-sampling Technique\\
+  ADASYN & Adaptive Synthetic Sampling Technique\\
+  LR & Logistic Regression\\
+  KNN & K-Nearest Neighbours\\
+  DT & Decision Trees\\
+  GBC & Gradient Boosting Classifier\\
+  RF & Random Forest\\
+\end{tabular}}
+
+
+\reftitle{References}
+
+\externalbibliography{yes}
 \bibliography{references}
-\bibliographystyle{apalike}
 
 \end{document}
