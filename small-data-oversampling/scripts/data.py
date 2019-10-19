@@ -9,7 +9,7 @@ import sys
 from os.path import join, dirname
 from sqlite3 import connect
 
-sys.path.append('../..')
+sys.path.append(join(dirname(__file__), '..', '..'))
 from utils import BinaryClassDatasets
 
 DATA_PATH = join(dirname(__file__), '..', 'data', 'small_data_oversampling.db')
