@@ -1,20 +1,5 @@
-%  LaTeX support: latex@mdpi.com
-%  In case you need support, please attach all files that are necessary for compiling as well as the log file, and specify the details of your LaTeX setup (which operating system and LaTeX version / tools you are using).
-
-%=================================================================
 \documentclass[remotesensing,article,submit,moreauthors,pdftex]{Definitions/mdpi}
 
-% If you would like to post an early version of this manuscript as a preprint, you may use preprint as the journal and change 'submit' to 'accept'. The document class line would be, e.g., \documentclass[preprints,article,accept,moreauthors,pdftex]{mdpi}. This is especially recommended for submission to arXiv, where line numbers should be removed before posting. For preprints.org, the editorial staff will make this change immediately prior to posting.
-
-%--------------------
-% Class Options:
-%--------------------
-%---------
-% pdftex
-%---------
-% The option pdftex is for use with pdfLaTeX. If eps figures are used, remove the option pdftex and use LaTeX and dvi2pdf.
-
-%=================================================================
 \firstpage{1}
 \makeatletter
 \setcounter{page}{\@firstpage}
@@ -24,19 +9,7 @@
 \articlenumber{5}
 \pubyear{2019}
 \copyrightyear{2019}
-%\externaleditor{Academic Editor: name}
 \history{Received: date; Accepted: date; Published: date}
-%\updates{yes} % If there is an update available, un-comment this line
-
-%% MDPI internal command: uncomment if new journal that already uses continuous page numbers
-%\continuouspages{yes}
-
-%------------------------------------------------------------------
-% The following line should be uncommented if the LaTeX file is uploaded to arXiv.org
-%\pdfoutput=1
-
-%=================================================================
-% Add packages and commands here. The following packages are loaded in our class file: fontenc, calc, indentfirst, fancyhdr, graphicx, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, amsthm, hyphenat, natbib, hyperref, footmisc, geometry, caption, url, mdframed, tabto, soul, multirow, microtype, tikz
 
 \usepackage{colortbl}
 \usepackage{breakcites}
@@ -53,42 +26,14 @@
 \usepackage{tabu}
 \usepackage{hyperref}
 
-
-%=================================================================
-%% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
-%% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
-
-%=================================================================
-% Full title of the paper (Capitalized)
 \Title{Imbalanced Learning in Land Cover Classification:  \\ \LARGE{Improving minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
-
-% Author Orchid ID: enter ID or remove command
-%\newcommand{\orcidauthorA}{0000-0000-000-000X} % Add \orcidA{} behind the author's name
-%\newcommand{\orcidauthorB}{0000-0000-000-000X} % Add \orcidB{} behind the author's name
-
-% Authors, for the paper (add full first names)
 \Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca $^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$}
-
-% Authors, for metadata in PDF
 \AuthorNames{Georgios Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan}
-
-% Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address{
 $^{1}$ \quad NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca, mkhudinyan\}@novaims.unl.pt}
-
-% Contact information of the corresponding author
 \corres{Correspondence: bacao@novaims.unl.pt; Tel.: +351 21 382 8610}
-
-% Current address and/or shared authorship
 \firstnote{These authors contributed equally to this work.}
 
-% The commands \thirdnote{} till \eighthnote{} are available for further notes
-
-%\simplesumm{} % Simple summary
-
-%\conference{} % An extended version of a conference paper
-
-% Abstract (Do not insert blank lines, i.e. \\)
 \abstract{
 In spite of its importance in sustainable resource management, the automatic
 production of Land Use/Land Cover maps continues to be a challenging problem.
@@ -323,74 +268,75 @@ datasets for various classifiers and evaluation metrics.
 
 \section{Methodology}
 
-In this study we use a set of more recent oversamplers, most notably G-SMOTE,
-that is yet to be adopted within the remote sensing community. To compare the
-performance of the different oversamplers we use the LUCAS dataset and 5
-different supervised classifiers: Logistic Regression, K-Nearest Neighbors,
-Decision Trees, Gradient Boosting Classifier and Random Forest.
+This section describes the evaluation process of G-SMOTE's performance. A
+description of the oversamplers, classifiers, evaluation metrics, LUCAS dataset
+characteristics as well as the experimental procedure is provided.
 
-This section reports the evaluation process of G-SMOTE's performance. A
-description of the baseline methods, classification algorithms, evaluation
-methods, dataset used and experimental procedure is provided.
+\subsection{LUCAS dataset}
 
-The implementation of the experimental procedure was based on the Python
-programming language, using the Scikit-Learn \cite{Pedregosa2011}, Imbalanced-
-Learn \cite{JMLR:v18:16-365} and Geometric-SMOTE \cite{Douzas2019} libraries.
-The experiments reported in this paper as well as the analysis of the results
-are reproducible using the scripts available at \url{https://github.com/AlgoWit/
-publications}.
+LUCAS dataset and Landsat-8 time series from 2015 were used for the experimental
+procedure. 1694 ground-truth points were included as reference data. This
+dataset is grouped into 8 classes and represents the main land cover types for
+the study area. The later is in the continental part of north-western Portugal,
+corresponding to the area covered by Landsat image from the track 204 and row
+32, with coordinates of center lat: 40.336, long: -8.468.
 
-\subsection{Oversamplers}
+The dataset's class distribution and Imbalance Ratio, defined as the ratio of
+number of samples for the majority class over the number of samples for any of
+the minority classes, is presented in Table \ref{tab:classes_distribution}.
 
-Four oversampling techniques were used in this experiment as baseline methods
-along with G-SMOTE. Random oversampling was chosen for its simplicity. SMOTE was
-selected for being a classic technique and the most popular oversampling
-algorithm \cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and Borderline SMOTE
-\cite{Han2005} were selected for representing popular modifications of the
-original SMOTE technique in the selection phase and data generation mechanism,
-respectively. Finally, we use no oversampling as an additional baseline method.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{llrrrr}
+		\toprule
+		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
+		& \textbf{Imbalance Ratio} \\
+		\hline
+		A & Artificial land & 131 & 5.81 \\
+		B & Cropland        & 270 & 2.81 \\
+		C & Woodland        & 761 & 1.00 \\
+		D & Shrubland       & 296 & 2.61 \\
+		E & Grassland       & 185 & 4.11 \\
+		F & Bareland        & 37  & 20.56 \\
+		G & Water           & 10  & 76.10 \\
+		H & Wetlands        & 4   & 190.25\\
+		\hline
+		\textbf{Total} & & \textbf{1694} &  \textbf{190.25} \\
+		\bottomrule
+	\end{tabular}
+	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
+\end{table}
 
-\subsection{Classifiers}
+The remote sensing dataset includes 8 images from Landsat 8ETM+ multi-spectral
+sensor. The images are Level-1 terrain corrected products (L1TP) and are
+acquired in 2015 from February to September, 1 image each month. The acquisition
+mode is Descending. Only bands 2, 3, 4, 5, 6 and 7 are used from each image.
+Thus, each reference point from LUCAS dataset has 48 features (Table
+\ref{tab:LUCAS}). Those features have the value of digital numbers of the
+pixels from each spectral bands of the image time series representing LUCAS
+point location.
 
-The selection of classification algorithms was done according to 3 criteria:
-learning type, training time and popularity within the remote sensing community.
-We further divide classification algorithms into 4 different learning types:
-neighbors-based, rule-based, ensemble and generalized linear methods.
+\pgfplotstabletypeset[
+begin table=\begin{longtable},
+end table=\end{longtable},
+col sep=comma,
+header=true,
+columns={Dataset name , LUCAS},
+columns/Dataset name /.style={column type=l,string type},
+columns/LUCAS/.style={column type=l,string type},
+every head row/.style={before row=\toprule, after row=\midrule\endhead},
+every last row/.style={after row=\bottomrule
+\caption{\label{tab:LUCAS}Description of the LUCAS dataset.}}
+]
+{../analysis/dataset_descrip.csv}
 
-For each combination of oversampler and classifier, a grid search will be run in
-order to find the optimal parameter settings. Adding new classifiers,
-oversamplers or grid search values may exponentially increase the time necessary
-to run the experiment. Therefore, in order to setup an extensive grid search and
-run the full experiment within feasible time, selecting computationally
-efficient classifiers becomes vital.
-
-\cite{Khatami2016} developed a meta-analysis of classification processes out of
-266 manuscripts published from 1998 to 2012. Additionally, \cite{Maxwell2018}
-also describe mature classification methods used in remote sensing. Both
-manuscripts were used to determine the most commonly used classifiers for LULC
-classification problems: K-Nearest Neighbors, Support Vector Machines, Decision
-Trees, Boosted Decision Trees, Random Forests and Neural Networks. None of the
-manuscripts mention the use of generalized linear models.
-
-Amongst the neighbors-based learning methods the KNN algorithm was selected. Out
-of the rule-based learning methods, the decision tree classifier (DT) was
-chosen. Two ensemble learning methods were chosen: Gradient boosting classifier
-and Random Forest classifier. Finally, the logistic regression classifier was
-selected amongst the generalized linear models, since it is a commonly used
-baseline algorithm. All these algorithms were found to be computationally
-efficient and commonly used classifiers for the proposed task (with exception
-for the logistic regression).
-
-Despite their common use, both artificial neural networks and Support Vector
-Machines were not included in this experiment due to their long training times.
-
-\subsection{Evaluation metrics} \label{evaluation methods}
+\subsection{Evaluation metrics}
 
 Amongst the many evaluation metrics existing for classifier's performance
-evaluation, there are several indices that are considered to be preliminary and
-are widely used for LULC classification accuracy assessment. Those measures are
-classification overall accuracy, user's accuracy or precision and producer's
-accuracy or recall,  and are calculated using the classification confusion
+evaluation, there are several of them that are widely used for LULC
+classification accuracy assessment. Those measures are classification overall
+accuracy, user's accuracy or precision and producer's accuracy or recall. Their
+calculation is based on the classification confusion
 matrix \cite{Liu2007}. However, the LUCAS dataset has high inter-class
 variability. Hence, the minority classes can be difficult to account for by the
 classifiers that are designed to maximize the overall accuracy, as the majority
@@ -463,6 +409,48 @@ discussion.
 
 \end{itemize}
 
+\subsection{Machine learning algorithms}
+
+Four oversampling techniques were used in this experiment as baseline methods
+along with G-SMOTE. Random oversampling was chosen for its simplicity. SMOTE was
+selected for being a classic technique and the most popular oversampling
+algorithm \cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and Borderline SMOTE
+\cite{Han2005} were selected for representing popular modifications of the
+original SMOTE technique in the selection phase and data generation mechanism,
+respectively. Finally, we use no oversampling as an additional baseline method.
+
+The selection of classification algorithms was done according to 3 criteria:
+learning type, training time and popularity within the remote sensing community.
+We further divide classification algorithms into 4 different learning types:
+neighbors-based, rule-based, ensemble and generalized linear methods.
+
+For each combination of oversampler and classifier, a grid search will be run in
+order to find the optimal parameter settings. Adding new classifiers,
+oversamplers or grid search values may exponentially increase the time necessary
+to run the experiment. Therefore, in order to setup an extensive grid search and
+run the full experiment within feasible time, selecting computationally
+efficient classifiers becomes vital.
+
+\cite{Khatami2016} developed a meta-analysis of classification processes out of
+266 manuscripts published from 1998 to 2012. Additionally, \cite{Maxwell2018}
+also describe mature classification methods used in remote sensing. Both
+manuscripts were used to determine the most commonly used classifiers for LULC
+classification problems: K-Nearest Neighbors, Support Vector Machines, Decision
+Trees, Boosted Decision Trees, Random Forests and Neural Networks. None of the
+manuscripts mention the use of generalized linear models.
+
+Amongst the neighbors-based learning methods the KNN algorithm was selected. Out
+of the rule-based learning methods, the decision tree classifier (DT) was
+chosen. Two ensemble learning methods were chosen: Gradient boosting classifier
+and Random Forest classifier. Finally, the logistic regression classifier was
+selected amongst the generalized linear models, since it is a commonly used
+baseline algorithm. All these algorithms were found to be computationally
+efficient and commonly used classifiers for the proposed task (with exception
+for the logistic regression).
+
+Despite their common use, both artificial neural networks and Support Vector
+Machines were not included in this experiment due to their long training times.
+
 \subsection{Experiment settings}
 
 As it is stated in the section 3.2, machine-learning classifiers usually have
@@ -517,65 +505,14 @@ and oversampler are presented in the table \ref{tab:grid}.
 	\caption{\label{tab:grid}User-defined grid values}
 \end{table}
 
+\subsection{Software implementation}
 
-\subsection{Dataset}
-
-For this research LUCAS dataset and Landsat-8 time series from 2015 were used
-for training and validation of supervised classifiers. 1694 ground-truth points
-from LUCAS 2015 dataset are used as reference data. This dataset is grouped into
-8 classes and represents the main land cover types for the study area. The area
-of study is in the continental part of north-western Portugal, corresponding to
-the area covered by Landsat image from the track 204 and row 32, with
-coordinates of center lat: 40.336, long: -8.468.
-
-The dataset's class distribution and imbalance ratio is presented in Table
-\ref{tab:dataset_classes}. The data imbalance becomes visible with a minority
-class of 4 instances (wetlands) and majority class of 761 instances (woodland).
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{llrrrr}
-		\toprule
-		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
-		& \textbf{Imbalance Ratio} \\
-		\hline
-		A & Artificial land & 131 & 5.81 \\
-		B & Cropland        & 270 & 2.81 \\
-		C & Woodland        & 761 & 1.00 \\
-		D & Shrubland       & 296 & 2.61 \\
-		E & Grassland       & 185 & 4.11 \\
-		F & Bareland        & 37  & 20.56 \\
-		G & Water           & 10  & 76.10 \\
-		H & Wetlands        & 4   & 190.25\\
-		\hline
-		\textbf{Total} & & \textbf{1694} &  \textbf{190.25} \\
-		\bottomrule
-	\end{tabular}
-	\caption{\label{tab:dataset_classes}LUCAS nomenclature and sample distribution}
-\end{table}
-
-The remote sensing dataset presents 8 images from Landsat 8ETM+ multi-spectral
-sensor. The images are Level-1 terrain corrected products (L1TP) and are
-acquired in 2015 from February to September, 1 image each month. The acquisition
-mode is Descending. Only bands 2, 3, 4, 5, 6 and 7 are used from each image.
-Thus, each reference point from LUCAS dataset has 48 features (Table
-\ref{tab:datasets}). Those features have the value of digital numbers of the
-pixels from each spectral bands of the image time series representing LUCAS
-point location.
-
-\pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Dataset name , LUCAS},
-columns/Dataset name /.style={column type=l,string type},
-columns/LUCAS/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:datasets}Description of the dataset}}
-]
-{../analysis/dataset_descrip.csv}
+The implementation of the experimental procedure was based on the Python
+programming language, using the Scikit-Learn \cite{Pedregosa2011}, Imbalanced-
+Learn \cite{JMLR:v18:16-365} and Geometric-SMOTE \cite{Douzas2019} libraries.
+The experiments reported in this paper as well as the analysis of the results
+are reproducible using the scripts available at \url{https://github.com/AlgoWit/
+publications}.
 
 \section{Results and discussion}
 
@@ -750,21 +687,16 @@ G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
 Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.;
 Supervision, F.B.; Funding Acquisition, F.B.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \funding{This research was funded by NAME OF FUNDER grant number XXX.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \acknowledgments{The authors would like to thank Direção Geral do Território
 (DGT) for supporting the used data in this study.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \conflictsofinterest{The authors declare no conflict of interest. The funders
 had no role in the design of the study; in the collection, analyses, or
 interpretation of data; in the writing of the manuscript, or in the decision to
 publish the results.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% optional
 \abbreviations{The following abbreviations are used in this manuscript:\\
 \noindent
 \begin{tabular}{@{}ll}
@@ -775,7 +707,7 @@ publish the results.}
   SMOTE & Synthetic Minority Over-sampling Technique\\
   ADASYN & Adaptive Synthetic Sampling Technique\\
   LR & Logistic Regression\\
-  KNN & K-Nearest Neighbours\\
+  KNN & K-Nearest Neighbors\\
   DT & Decision Trees\\
   GBC & Gradient Boosting Classifier\\
   RF & Random Forest\\
