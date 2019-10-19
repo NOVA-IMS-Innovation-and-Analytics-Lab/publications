@@ -276,12 +276,12 @@ characteristics as well as the experimental procedure is provided.
 
 LUCAS dataset and Landsat-8 time series from 2015 were used for the experimental
 procedure. 1694 ground-truth points were included as reference data. This
-dataset is grouped into 8 classes and represents the main land cover types for
-the study area. The later is in the continental part of north-western Portugal,
+dataset contains 8 classes that represent the main land cover types for the
+study area. The later is in the continental part of north-western Portugal,
 corresponding to the area covered by Landsat image from the track 204 and row
-32, with coordinates of center lat: 40.336, long: -8.468.
+32, with coordinates of center lat: \( 40.336 \), long: \( -8.468 \).
 
-The dataset's class distribution and Imbalance Ratio, defined as the ratio of
+The number of samples per class and the Imbalance Ratio (IR), defined as the ratio of
 number of samples for the majority class over the number of samples for any of
 the minority classes, is presented in Table \ref{tab:classes_distribution}.
 
@@ -290,7 +290,7 @@ the minority classes, is presented in Table \ref{tab:classes_distribution}.
 	\begin{tabular}{llrrrr}
 		\toprule
 		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
-		& \textbf{Imbalance Ratio} \\
+		& \textbf{IR} \\
 		\hline
 		A & Artificial land & 131 & 5.81 \\
 		B & Cropland        & 270 & 2.81 \\
@@ -307,22 +307,24 @@ the minority classes, is presented in Table \ref{tab:classes_distribution}.
 	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
 \end{table}
 
-The remote sensing dataset includes 8 images from Landsat 8ETM+ multi-spectral
+The experiment's dataset includes 8 images from Landsat 8ETM+ multi-spectral
 sensor. The images are Level-1 terrain corrected products (L1TP) and are
 acquired in 2015 from February to September, 1 image each month. The acquisition
 mode is Descending. Only bands 2, 3, 4, 5, 6 and 7 are used from each image.
-Thus, each reference point from LUCAS dataset has 48 features (Table
-\ref{tab:LUCAS}). Those features have the value of digital numbers of the
-pixels from each spectral bands of the image time series representing LUCAS
-point location.
+Thus, each reference point from LUCAS dataset has 48 features. The features'
+values are digital numbers of the pixels from each spectral band of the image
+time series representing LUCAS point location. Table \ref{tab:LUCAS} presents a
+description of the LUCAS dataset, including information about the majority class
+C and the smallest minority class H to emphasize the imbalance character of the
+dataset:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
 end table=\end{longtable},
 col sep=comma,
 header=true,
-columns={Dataset name , LUCAS},
-columns/Dataset name /.style={column type=l,string type},
+columns={Dataset, LUCAS},
+columns/Dataset/.style={column type=l,string type},
 columns/LUCAS/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule
@@ -333,60 +335,47 @@ every last row/.style={after row=\bottomrule
 \subsection{Evaluation metrics}
 
 Amongst the many evaluation metrics existing for classifier's performance
-evaluation, there are several of them that are widely used for LULC
-classification accuracy assessment. Those measures are classification overall
-accuracy, user's accuracy or precision and producer's accuracy or recall. Their
-calculation is based on the classification confusion
-matrix \cite{Liu2007}. However, the LUCAS dataset has high inter-class
-variability. Hence, the minority classes can be difficult to account for by the
-classifiers that are designed to maximize the overall accuracy, as the majority
-classes are receiving more weight \cite{Inglada2017}. On the other hand,
-\cite{He2008} states that the use of user's and producer's accuracy for class
-imbalanced data is not straightforward and producer's accuracy is not sensitive
-to the data distribution at all. Considering these, class specific metrics are
-needed to better describe classifier's performance. For this purpose, F-score
-and G-mean metrics are used to evaluate and compare the performance of the
-oversampling methods. Classification overall accuracy (OA) is provided for
-discussion.
+evaluation, there are few of them that are widely used in LULC classification.
+Those are the following: \textit{Overall Accuracy}, user's accuracy (or
+\textit{Precision}) and producer's accuracy (or \textit{Recall}). Their
+calculation is based on the classification confusion matrix \cite{Liu2007}.
+However, the LUCAS dataset is highly imbalanced with various IRs for different
+minority classes. On the other hand, \cite{He2009} states that the use of the
+above metrics for class imbalanced data is not an appropriate choice, since they
+are mainly determined by the majority class contribution. For this purpose,
+\textit{F-score} and \textit{G-mean} metrics are used to evaluate and compare
+the performance of the oversampling methods while \textit{Overall Accuracy} is
+provided for discussion:
 
 \begin{itemize}
 
 	\renewcommand\labelitemi{--}
 
-	\item Overall Accuracy
+	\item \textit{Overall Accuracy} is the number of correctly classified samples
+	divided by the sum of all samples.
 
-	Classification Overall Accuracy is the number of correctly classified
-	samples divided by the sum of all the samples on the confusion matrix.
+	% Formula
 
-	In case when the training data is imbalanced and the accuracy metric is
-	utilized, the result of the grid search for the best parameters will
-	indicate that the particular parameterization is the one with highest
-	classification overall accuracy, which is biased towards the majority class
-	and can disregard the classification of minority classes.
-
-	\item F-score
-
-	F-score (or F-measure) is the harmonic mean of user's accuracy (precision)
-	and	producer's accuracy (recall), where user's accuracy is the fraction of
-	correctly classified instances with regard to all instances classified as
-	this certain class in the confusion matrix, and producer's accuracy is the
-	fraction of  correctly classified instances with regard to all instances of
-	that reference class. The F-score value for multi-class imbalanced data
-	classification can be calculated considering the user's accuracy and
-	producer's accuracy as a unweighted average of the respective values from
-	all the classes.
+	\item \textit{F-score} is the harmonic mean of \textit{Precision} and
+	\textit{Recall}. \textit{Precision} per class is the fraction of correctly
+	classified instances over the number of instances classified as this
+	particular class, while \textit{Recall} per class is the fraction of
+	correctly classified instances over the number of instances of this
+	particular class. The F-score value for the multi-class case can be
+	calculated based on the above per class values as their
+	unweighted average.
 
 	\begin{equation}
-	F{-}score=2\frac{\text{E(UA)} \times \text{E(PA)}}{\text{E(UA)} +
-	\text{E(PA)}}
+	\textit{F-score}=2\frac{\overline{P} \times \overline{R}}{\overline{P} +
+	\overline{R}}
 	\end{equation}
 
-	Where E(UA) and E(PA) are unweighted mean values of user's and producer's
-	accuracy of all the classes, respectively.
+	\( \overline{P} \) and \( \overline{R} \) are the unweighted average values
+	of \textit{Precision} and \textit{Recall} respectively.
 
-	\item G-measure
+	\item \textit{G-mean}
 
-	The geometric mean score (G-mean) is the root of the product of class-wise
+	The \textit{G-mean} is the geometric mean of per class
 	sensitivity and specificity. For the multi-class case sensitivity and
 	specificity are calculated for each class, then averaged with simple mean
 	value. Here the sensitivity (true positive rate) is the same with producer's

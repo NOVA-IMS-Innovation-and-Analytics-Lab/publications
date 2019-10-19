@@ -1,6 +1,6 @@
-Dataset name ,LUCAS
-Features ,48
-Instances ,1694
-Minority class instaces ,4
-Majority class instances ,761
-Imbalance Ratio ,190.25
+Dataset,LUCAS
+Features,48
+Instances,1694
+Instances of class H,4
+Instances of class C,761
+IR of class H,190.25
