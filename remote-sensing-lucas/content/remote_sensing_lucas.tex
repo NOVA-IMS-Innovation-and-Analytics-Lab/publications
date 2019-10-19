@@ -335,14 +335,23 @@ every last row/.style={after row=\bottomrule
 \subsection{Evaluation metrics}
 
 Amongst the many evaluation metrics existing for classifier's performance
-evaluation, there are few of them that are widely used in LULC classification.
-Those are the following: \textit{Overall Accuracy}, user's accuracy (or
-\textit{Precision}) and producer's accuracy (or \textit{Recall}). Their
-calculation is based on the classification confusion matrix \cite{Liu2007}.
-However, the LUCAS dataset is highly imbalanced with various IRs for different
-minority classes. On the other hand, \cite{He2009} states that the use of the
-above metrics for class imbalanced data is not an appropriate choice, since they
-are mainly determined by the majority class contribution. For this purpose,
+evaluation, \textit{Overall Accuracy}, user's accuracy (or \textit{Precision})
+and producer's accuracy (or \textit{Recall}) are the most common in LULC
+classification. For a binary classification task their calculation is given in
+terms of the true positives \( TP \), true negatives \(TN \), false positives
+\( FP \) and false negatives \( FN \)
+\cite{Liu2007}. More specifically,  \( \textit{Precision} =  \frac{TP}{TP + FP}
+\) and \(\textit{Recall} =  \frac{TP}{TP + FN} \). For the multi-class case, the
+average value across classes is used, as explained below.  
+
+The LUCAS dataset is highly imbalanced, having wide a range of IRs for the
+different minority classes. Therefore, the use of the metrics above for class
+imbalanced data is not an appropriate choice since they are mainly determined by
+the majority class contribution \cite{He2009}. An appropriate evaluation metric
+should consider the classification accuracy of all classes. A simple approach
+for the multi-class case is to select a binary class evaluation metric, apply it
+to each binary sub-task of the multi-class problem i.e. consider each class
+versus the rest and finally average its values. For this purpose,
 \textit{F-score} and \textit{G-mean} metrics are used to evaluate and compare
 the performance of the oversampling methods while \textit{Overall Accuracy} is
 provided for discussion:
@@ -351,118 +360,72 @@ provided for discussion:
 
 	\renewcommand\labelitemi{--}
 
-	\item \textit{Overall Accuracy} is the number of correctly classified samples
-	divided by the sum of all samples.
+	\item The \textit{Overall Accuracy} is the number of correctly classified
+	samples for classes divided by the sum of all samples. Assuming that the
+	various classes are labeled by the index \( c \), \textit{Overall Accuracy}
+	is given by the following formula:
 
-	% Formula
+	$$\textit{Overall Accuracy} = \frac{ \sum\limits_{c}{ \text{TP}_{c} } }{
+	\sum\limits_{c}{ (\text{TP}_{c}  + \text{FP}_{c}) } } $$
 
-	\item \textit{F-score} is the harmonic mean of \textit{Precision} and
-	\textit{Recall}. \textit{Precision} per class is the fraction of correctly
-	classified instances over the number of instances classified as this
-	particular class, while \textit{Recall} per class is the fraction of
-	correctly classified instances over the number of instances of this
-	particular class. The F-score value for the multi-class case can be
-	calculated based on the above per class values as their
-	unweighted average.
+	\item The \textit{F-score} is the harmonic mean of \textit{Precision} and
+	\textit{Recall}. The \textit{F-score} for the multi-class case can be
+	calculated using their average per class values:
 
-	\begin{equation}
-	\textit{F-score}=2\frac{\overline{P} \times \overline{R}}{\overline{P} +
-	\overline{R}}
-	\end{equation}
+	$$\textit{F-score}=2\frac{\overline{Precision} \times \overline{Recall}}{\overline{Precision} +
+	\overline{Recall}}$$
 
-	\( \overline{P} \) and \( \overline{R} \) are the unweighted average values
-	of \textit{Precision} and \textit{Recall} respectively.
+	\item The \textit{G-mean} is the geometric mean of \textit{Sensitivity} and
+	\textit{Specificity}. \textit{Sensitivity} is identical to the
+	\textit{Recall} while \textit{Specificity} is given by the formula
+	\(\textit{Specificity} =  \frac{TN}{TN + FP} \). Therefore, they are equal
+	to the true positive and true negative rate, respectively. The
+	\textit{G-mean} for the multi-class case can be calculated using their
+	average per class values:
 
-	\item \textit{G-mean}
-
-	The \textit{G-mean} is the geometric mean of per class
-	sensitivity and specificity. For the multi-class case sensitivity and
-	specificity are calculated for each class, then averaged with simple mean
-	value. Here the sensitivity (true positive rate) is the same with producer's
-	accuracy (recall), and specificity (true negative rate) is defined as the
-	proportion of actual negatives classified as such. Adequately, specificity
-	can be defined as producer's accuracy of the negative class
-	\cite{Silva2017}.
-
-	\begin{equation}
-	G{-}mean = \sqrt{E(Sensitivity) \times E(Specificity)}
-	\end{equation}
-
-	Where E(Sensitivity) and E(Specificity) are the unweighted mean values of
-	sensitivity and specificity of all the classes, respectively. The geometric
-	mean indicates the balance between classification performances on both
-	majority and minority classes. It means, that high misclassification in the
-	minority class will lead to a lower geometric mean value. This is a very
-	valuable feature for evaluation of the classifier's performance with class
-	imbalance problem, which is the case of this study.
+	$$\textit{G-mean} = \sqrt{ \overline{Sensitivity} \times
+	\overline{Specificity}}$$
 
 \end{itemize}
 
 \subsection{Machine learning algorithms}
 
-Four oversampling techniques were used in this experiment as baseline methods
-along with G-SMOTE. Random oversampling was chosen for its simplicity. SMOTE was
-selected for being a classic technique and the most popular oversampling
-algorithm \cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and Borderline SMOTE
-\cite{Han2005} were selected for representing popular modifications of the
-original SMOTE technique in the selection phase and data generation mechanism,
-respectively. Finally, we use no oversampling as an additional baseline method.
+The main objective of the paper is to show the effectiveness of G-SMOTE when it
+is used on multi-class highly imbalanced data of a remote sensing application as
+well as to compare its performance to other oversampling methods. Four oversampling
+algorithms were used in the experiment along with G-SMOTE. ROS was chosen for its
+simplicity. SMOTE was selected for being a the most widely used oversampler
+\cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and Borderline SMOTE \cite{Han2005}
+were selected for representing popular modifications of the original SMOTE
+algorithm. Finally, no oversampling was also applied as an additional baseline
+method.
 
-The selection of classification algorithms was done according to 3 criteria:
-learning type, training time and popularity within the remote sensing community.
-We further divide classification algorithms into 4 different learning types:
-neighbors-based, rule-based, ensemble and generalized linear methods.
-
-For each combination of oversampler and classifier, a grid search will be run in
-order to find the optimal parameter settings. Adding new classifiers,
-oversamplers or grid search values may exponentially increase the time necessary
-to run the experiment. Therefore, in order to setup an extensive grid search and
-run the full experiment within feasible time, selecting computationally
-efficient classifiers becomes vital.
-
-\cite{Khatami2016} developed a meta-analysis of classification processes out of
-266 manuscripts published from 1998 to 2012. Additionally, \cite{Maxwell2018}
-also describe mature classification methods used in remote sensing. Both
-manuscripts were used to determine the most commonly used classifiers for LULC
-classification problems: K-Nearest Neighbors, Support Vector Machines, Decision
-Trees, Boosted Decision Trees, Random Forests and Neural Networks. None of the
-manuscripts mention the use of generalized linear models.
-
-Amongst the neighbors-based learning methods the KNN algorithm was selected. Out
-of the rule-based learning methods, the decision tree classifier (DT) was
-chosen. Two ensemble learning methods were chosen: Gradient boosting classifier
-and Random Forest classifier. Finally, the logistic regression classifier was
-selected amongst the generalized linear models, since it is a commonly used
-baseline algorithm. All these algorithms were found to be computationally
-efficient and commonly used classifiers for the proposed task (with exception
-for the logistic regression).
-
-Despite their common use, both artificial neural networks and Support Vector
-Machines were not included in this experiment due to their long training times.
+For the evaluation of the oversampling methods, the classifiers LR, KNN, DT, GBC
+and RFC were selected. The choice of classifiers was done according to the
+following criteria: learning type, training time and popularity within the
+remote sensing community. All these algorithms were found to be computationally
+efficient and commonly used for the proposed task, with the exception of LR
+which is rarely used in remote sensing applications \cite{Khatami2016},
+\cite{Maxwell2018}.
 
 \subsection{Experiment settings}
 
-As it is stated in the section 3.2, machine-learning classifiers usually have
-parameters that need to be set up by users for a better classification
-performance. Parameter tuning to define the optimal values of the
-hyper-parameters was performed with 3-fold cross-validation (CV) for each of the
-model (combining classifiers with oversampler). The best parameters are later
-selected to validate the classifier's performance.
+In order to evaluate the performance of each oversampler, every possible
+combination of oversampler, classifier and metric is formed. The evaluation
+score for each of the above combinations is generated through a \( n \)-fold
+cross validation procedure with \( n = 5 \). Before starting the training of
+each classifier, and in each stage \(i \in \{1, 2 ,... , n \} \) of the \( n
+\)-fold cross validation procedure, synthetic data \( S_{i} \) were generated
+using the oversampler, based on the training data \(T_{i} \) of the \( n - 1 \)
+folds, such that the resulting \(S_{i} \cup T_{i} \) training set becomes
+perfectly balanced. This enhanced training set in turn was used to train the
+classifier. The performance evaluation of the classifiers was done on the
+validation data \( V_{i} \) of the remaining fold, where \(V_{i} \cup T_{i} = D
+\), \(V_{i} \cap T_{i} = \emptyset \) while \( D \) represents the dataset. The
+process above is repeated three times and the results are averaged.
 
-In order to avoid over-optimistic classification results, implementation of CV
-with oversampling technique should be carried out as following \cite{Lusa2015}.
-In $k$-fold CV dataset is divided into $k$ parts, one part is excluded and used
-as only test set, while the rest $k$-1 part is used to train the model. This
-process is iterated and each of the $k$ folds are used only once as a test set
-to evaluate the classifier's performance. Later, results are averaged across all
-$k$ iterations. It is crucial to remember that all the steps for building the
-prediction model should be applied only on the training data. From this respect,
-the oversampling (or any kind of data resampling) technique should not be
-applied on the whole dataset. Instead, it is used only on the training dataset
-generated in each step of the CV procedure.
-
-A range of hyper-parameters used for the grid search for each of the classifier
-and oversampler are presented in the table \ref{tab:grid}.
+The range of hyper-parameters used for each classifier and oversampler are
+presented in table \ref{tab:grid}:
 
 \begin{table}[H]
 	\centering
@@ -505,16 +468,9 @@ publications}.
 
 \section{Results and discussion}
 
-This section presents the final results of classifiers performance with
-different oversamplers over LUCAS dataset. A simple ranking of oversamplers
-performance is carried out for comparative analysis.
-
-The cross-validation scores for each combination of classifiers, evaluation
-metrics and oversamplers are presented in Table \ref{tab:mean_cross_val}. From
-this table we can observe that Geometric-SMOTE over-performs nearly all other
-oversampling methods for both G-mean and F-score metrics on all classifiers. The
-absolute best results are achieved when Geometric-SMOTE is combined with Fandom
-Forest.
+This section presents the results of oversamplers comparison on the LUCAS
+dataset. For each combination of classifier and metric, a cross-validation score
+is provided in Table \ref{tab:mean_cross_val}:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
@@ -533,33 +489,26 @@ columns/G-SMOTE/.style={column type=l,string type},
 every head row/.style={before row=\toprule, after row=\midrule\endhead},
 every last row/.style={after row=\bottomrule
 \caption{\label{tab:mean_cross_val}Results for cross validation scores of
-oversamplers (NO OS: No Oversampling, RAND OS: Random Oversampling,
-B-SMOTE: Borderline SMOTE, G-SMOTE: Geometric SMOTE)}}
+oversamplers.}}
 ]
 {../analysis/mean_scores.csv}
 
-Amongst the classifiers Random Forest shows best performance for all three
-measures. It recorded constantly improved results for both G-mean and F-score
-metrics while combined with oversamplers. Second best classification results are
-obtained with Gradient Boosting Classifier, and the worst performance is with
-single Decision Tree Classifier.
-
-Somewhat contrary to expectations, for some of the data balancing methods
-slightly decreased the accuracy of imbalance-specific metrics while compared to
-the baseline methods. For instance, the KNN classifier recorded higher G- mean
-value (0.50) with unchanged data compared to the results of Random Oversampling
-(0.48), ADASYN (0.48) and SMOTE (0.49). Similarly, Logistic Regression
-classifier recorded higher F-score value (0.30) with No Oversampling compared to
-the ones with Random Oversampling (0.29), SMOTE (0.29) and ADASYN (0.28).
+From this table we can observe that G-SMOTE outperforms all other oversampling
+methods for both \textit{G-mean} and \textit{F-score} metrics on all
+classifiers. The absolute best results are achieved when G-SMOTE is combined
+with LR and RF. It is important to notice that the accuracy scores reflect the
+well known bias towards the majority class as discussed in \ref{evaluation
+methods}. Accordingly, models with no oversampling present the highest accuracy
+score. In a multi-class classification problem with an imbalanced dataset, where
+the prediction of all the classes are of equal importance as in many remote
+sensing applications, overall accuracy should be of secondary importance
+compared to more robust metrics, such as \textit{G-mean} and \textit{F-score}
+utilized in remote sensing. Nevertheless, even for accuracy metric, G-SMOTE
+shows the best performance amongst the oversamplers.
 
 A ranking score was assigned to each oversampling method with the best and worst
 performing methods receiving scores equal to 1 and 6, respectively. This
-comparison is presented in Table \ref{tab:ranking}. From this table we can
-observe that G-SMOTE systematically outperforms any other oversampling algorithm
-according to the G-mean measure. Using F-score it performs best on all
-classifiers except the Decision Tree classifier, where Borderline-SMOTE
-outperforms the remaining oversamplers. Regardless, its discrepancy with
-Geometric-SMOTE is negligible.
+comparison is presented in Table \ref{tab:ranking}:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
@@ -581,25 +530,9 @@ every last row/.style={after row=\bottomrule
 ]
 {../analysis/mean_ranking.csv}
 
-The mean of ranking scores for each of oversampling method across the
-classification algorithms is presented in the Table \ref{tab:mean_rankings}.
-From this table it is easier to interpret that Geometric-SMOTE has been the best
-method almost all the time for G-mean and F-score measures. The same way
-Borderline-SMOTE has been the second best method almost all the times. In
-contrast to those two methods, in average ADASYN could not improve the
-classification results for any of measures compared to SMOTE method.
-
-Accuracy scores' results depict the bias discussed in section \ref{evaluation
-methods}. This metric, by attributing proportional importance to the predictive
-power of each class according to the dataset's class distribution, hinders the
-importance of minority classes. Therefore, this metric can be misleading for
-imbalanced data classification problems. Accordingly, models with no
-oversampling present the highest accuracy score. In a multi-class classification
-problem with an imbalanced dataset, where the prediction of all the classes are
-of equal importance, overall accuracy should not be implemented to evaluate the
-model performance, as is commonly utilized in remote sensing. However, even for
-accuracy metric, Geometric-SMOTE shows the best performance amongst the data
-modification algorithms and exceeds the rest of the oversampling methods.
+From table \ref{tab:ranking} the consistency of G-SMOTE' performance is
+confirmed. Table \ref{tab:mean_rankings} was created by averaging the ranking
+scores over all classifiers per evaluation metric:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
@@ -618,10 +551,7 @@ every last row/.style={after row=\bottomrule
 {../analysis/model_mean_ranking.csv}
 
 Table \ref{tab:smote_gsmote} presents the percentage difference between
-Geometric-SMOTE and SMOTE. For this comparison SMOTE algorithm was selected due
-to its popularity and wide use within the remote sensing society (see section
-2). The table shows that Geometric-SMOTE outperforms SMOTE regardless of the
-classifier or metric used.
+G-SMOTE and SMOTE:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
@@ -639,33 +569,28 @@ between G-SMOTE and SMOTE}}
 ]
 {../analysis/mean_perc_diff_scores.csv}
 
+Given the popularity of SMOTE in remote sensing, it makes sense to directly
+compare both oversamplers. The table shows that G-SMOTE outperforms SMOTE
+regardless of the classifier or metric used.
+
 \section{Conclusions}
 
-In this paper we presented the performance of Geometric-SMOTE oversampling
-algorithm as a novel approach to deal with class imbalance problem in naturally
-imbalanced remote sensing datasets  with an aim to improve the LULC
-classification. Geometric-SMOTE's performance was evaluated and compared with
-other oversampling methods, specifically Random Oversampling, SMOTE and its
-variations Borderline-SMOTE and ADASYN, through the use of a number of
-classifiers: Logistic Regression, K-Nearest Neighbors, Decision Trees, Gradient
-Boosting Classifier and Random Forests.
+In this paper we applied G-SMOTE, a novel oversampling algorithm, on a LULC
+application based on the LUCAS, a highly imbalanced multi-class dataset.
+Geometric-SMOTE's performance was evaluated and compared with other oversampling
+methods. More specifically, Random Oversampling, SMOTE, Borderline-SMOTE and
+ADASYN, using Logistic Regression, K-Nearest Neighbors, Decision Trees, Gradient
+Boosting Classifier and Random Forest.
 
-For this purpose, an imbalanced LUCAS dataset was used. For model validation and
-comparison Overall Accuracy was used, as well as G-mean and F-score as they
-represent imbalance-specific metrics. The models were trained using the 3-fold
-cross-validation method. The experiment results show the importance of
-oversampling methods for multi-class imbalanced data classification as in most
-of the cases balancing data with oversampling resulted for higher G-mean and F-
-score values.
+The experiment results show the importance of oversampling methods for
+multi-class imbalanced data classification as in most of the cases balancing
+data with oversampling resulted in higher \textit{G-mean} and \text{F-score}
+values.
 
-Geometric-SMOTE shows the best results and dominated the ranking across the
-oversamplers. However, table \ref{tab:ranking} reports Decision Trees to achieve
-a higher F-Score when using the Borderline SMOTE algorithm. Although this
-algorithm systematically performs better than any other oversampling method
-using G-mean and F-score metrics, it may be useful to also consider Borderline
-SMOTE. Geometric-SMOTE proves to be a useful tool for remote sensing researchers
-and can effectively replace the two widely accepted oversamplers Random
-Oversampling and SMOTE methods.
+G-SMOTE can a be a useful tool for remote sensing researchers and practitioners,
+as it systematically outperforms the previous widely used oversamplers, such as
+Random Oversampling and SMOTE. G-SMOTE is easily accessible to the users through
+an open source implementation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{6pt}
