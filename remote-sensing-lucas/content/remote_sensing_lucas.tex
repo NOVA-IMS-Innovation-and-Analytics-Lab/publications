@@ -26,52 +26,42 @@
 \usepackage{tabu}
 \usepackage{hyperref}
 
-\Title{Imbalanced Learning in Land Cover Classification:  \\ \LARGE{Improving minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
-\Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca $^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$}
-\AuthorNames{Georgios Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan}
-\address{
-$^{1}$ \quad NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca, mkhudinyan\}@novaims.unl.pt}
+\Title{Imbalanced Learning in Land Cover Classification:  \\ \LARGE{Improving
+minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
+\Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca
+$^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$} \AuthorNames{Georgios
+Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan} \address{$^{1}$ \quad
+NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca,
+mkhudinyan\}@novaims.unl.pt}
 \corres{Correspondence: bacao@novaims.unl.pt; Tel.: +351 21 382 8610}
 \firstnote{These authors contributed equally to this work.}
 
-\abstract{
-In spite of its importance in sustainable resource management, the automatic
-production of Land Use/Land Cover maps continues to be a challenging problem.
-The ability to build robust automatic classifiers able to produce accurate maps
-can have a significant impact in the way we manage and optimize natural
-resources. The difficulty in achieving these results comes from many different
-factors, such as data quality, uncertainty, among others. In this paper, we
-address the imbalanced learning problem, a common and difficult problem in
-remote sensing that significantly affects the quality of classifiers. Having
-very asymmetric distributions of the different classes constitutes a significant
-hurdle for any classifier. In this work, we propose Geometric SMOTE (G-SMOTE) as
-a means of addressing the imbalanced learning problem in remote sensing. G-SMOTE
-is a sophisticated oversampler which significantly increases the quality of the
-generated instances over previous methods, such as Synthetic Minority
-Oversampling Technique (SMOTE). In this paper, we test the performance of
-G-SMOTE, in the the LUCAS dataset, against other oversamplers with different
-classifiers. The results show that G-SMOTE significantly outperforms all the
+\abstract{In spite of its importance in sustainable resource management, the
+automatic production of Land Use/Land Cover maps continues to be a challenging
+problem. The ability to build robust automatic classifiers able to produce
+accurate maps can have a significant impact in the way we manage and optimize
+natural resources. The difficulty in achieving these results comes from many
+different factors, such as data quality, uncertainty, among others. In this
+paper, we address the imbalanced learning problem, a common and difficult
+problem in remote sensing that significantly affects the quality of classifiers.
+Having very asymmetric distributions of the different classes constitutes a
+significant hurdle for any classifier. In this work, we propose Geometric SMOTE
+(G-SMOTE) as a means of addressing the imbalanced learning problem in remote
+sensing. G-SMOTE is a sophisticated oversampler which significantly increases
+the quality of the generated instances over previous methods, such as Synthetic
+Minority Oversampling Technique (SMOTE). In this paper, we test the performance
+of G-SMOTE, in the the LUCAS dataset, against other oversamplers with a variety
+of classifiers. The results show that G-SMOTE significantly outperforms all the
 other oversamplers and improves the robustness of the classifiers. These results
 indicate that, when using imbalanced datasets, remote sensing researchers should
 consider the use of these new generation oversamplers to increase the quality of
-the classification results.
-}
+the classification results.}
 
-% Keywords
 \keyword{Imbalance learning; LULC classification; Oversampling;
 Geometric-SMOTE; Class imbalance;}
 
-% The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
-%\PACS{J0101}
-%\MSC{}
-%\JEL{}
-
-%\setcounter{secnumdepth}{4}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 The production of accurate Land Use/Land Cover (LULC) maps offers unique
 monitoring capabilities within the remote-sensing domain \cite{Mellor2015}. LULC
@@ -91,7 +81,8 @@ different levels of area coverage, which causes some of them to be frequent in
 the training dataset, while others are limited \cite{Feng2019}. In
 remote-sensing classification problems, the number of instances of some classes
 is often smaller when compared to the rest of the classes. This is especially
-true in LULC data \cite{Williams2009, Cenggoro2018}.
+true in  in LUCAS data, where a squared grid sampling strategy is used.
+\cite{Williams2009, Cenggoro2018}.
 
 The above mentioned asymmetry in class distribution affects negatively the
 performance of classifiers. In the machine learning community, the problem is
@@ -117,8 +108,9 @@ groups \cite{Fernandez2013}:
 	\item Algorithmic level solutions. They modify the algorithmic procedure to
 	reinforce the learning of the minority class.
 
-	\item Data level solutions. They rebalance class distribution by generating
-	artificial data for the minority class(es).
+	\item Data level solutions. They rebalance the class distribution either by
+	removing instances from the majority class(es) or by generating artificial
+	data for the minority class(es).
 
 \end{enumerate}
 
@@ -279,7 +271,7 @@ procedure. 1694 ground-truth points were included as reference data. This
 dataset contains 8 classes that represent the main land cover types for the
 study area. The later is in the continental part of north-western Portugal,
 corresponding to the area covered by Landsat image from the track 204 and row
-32, with coordinates of center lat: \( 40.336 \), long: \( -8.468 \).
+32.
 
 The number of samples per class and the Imbalance Ratio (IR), defined as the ratio of
 number of samples for the majority class over the number of samples for any of
@@ -576,7 +568,7 @@ regardless of the classifier or metric used.
 \section{Conclusions}
 
 In this paper we applied G-SMOTE, a novel oversampling algorithm, on a LULC
-application based on the LUCAS, a highly imbalanced multi-class dataset.
+production based on the LUCAS, a highly imbalanced multi-class dataset.
 Geometric-SMOTE's performance was evaluated and compared with other oversampling
 methods. More specifically, Random Oversampling, SMOTE, Borderline-SMOTE and
 ADASYN, using Logistic Regression, K-Nearest Neighbors, Decision Trees, Gradient
@@ -592,10 +584,8 @@ as it systematically outperforms the previous widely used oversamplers, such as
 Random Oversampling and SMOTE. G-SMOTE is easily accessible to the users through
 an open source implementation.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{6pt}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{Conceptualization, F.B.; Methodology, G.D.; Software,
 G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
 Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
