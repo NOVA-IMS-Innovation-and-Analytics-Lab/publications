@@ -1,6 +1,4 @@
-Oversampler,F1 macro,G-mean macro,Accuracy
-G-SMOTE,1.2,1.0,2.2
-BORDERLINE SMOTE,2.2,2.0,3.0
-SMOTE ,3.8,3.6,5.0
-ADASYN,4.8,4.2,6.0
-NO OVERSAMPLING,3.8,5.2,1.0
+Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE
+Accuracy,1.0,3.8,5.0,3.0,6.0,2.2
+F-score,3.8,5.2,3.8,2.2,4.8,1.2
+G-mean,5.2,5.0,3.6,2.0,4.2,1.0
