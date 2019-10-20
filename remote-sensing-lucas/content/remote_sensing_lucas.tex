@@ -332,7 +332,7 @@ every last row/.style={after row=\bottomrule
 ]
 {../analysis/dataset_descrip.csv}
 
-\subsection{Evaluation metrics}
+\subsection{Evaluation metrics}  \label{Evaluation metrics}
 
 Amongst the many evaluation metrics existing for classifier's performance
 evaluation, \textit{Overall Accuracy}, user's accuracy (or \textit{Precision})
@@ -342,7 +342,7 @@ terms of the true positives \( TP \), true negatives \(TN \), false positives
 \( FP \) and false negatives \( FN \)
 \cite{Liu2007}. More specifically,  \( \textit{Precision} =  \frac{TP}{TP + FP}
 \) and \(\textit{Recall} =  \frac{TP}{TP + FN} \). For the multi-class case, the
-average value across classes is used, as explained below.  
+average value across classes is used, as explained below.
 
 The LUCAS dataset is highly imbalanced, having wide a range of IRs for the
 different minority classes. Therefore, the use of the metrics above for class
@@ -394,7 +394,7 @@ The main objective of the paper is to show the effectiveness of G-SMOTE when it
 is used on multi-class highly imbalanced data of a remote sensing application as
 well as to compare its performance to other oversampling methods. Four oversampling
 algorithms were used in the experiment along with G-SMOTE. ROS was chosen for its
-simplicity. SMOTE was selected for being a the most widely used oversampler
+simplicity. SMOTE was selected for being the most widely used oversampler
 \cite{Douzas2019}. ADASYN \cite{HaiboHe2008} and Borderline SMOTE \cite{Han2005}
 were selected for representing popular modifications of the original SMOTE
 algorithm. Finally, no oversampling was also applied as an additional baseline
@@ -497,8 +497,8 @@ From this table we can observe that G-SMOTE outperforms all other oversampling
 methods for both \textit{G-mean} and \textit{F-score} metrics on all
 classifiers. The absolute best results are achieved when G-SMOTE is combined
 with LR and RF. It is important to notice that the accuracy scores reflect the
-well known bias towards the majority class as discussed in \ref{evaluation
-methods}. Accordingly, models with no oversampling present the highest accuracy
+well known bias towards the majority class as discussed in \ref{Evaluation
+metrics}. Accordingly, models with no oversampling present the highest accuracy
 score. In a multi-class classification problem with an imbalanced dataset, where
 the prediction of all the classes are of equal importance as in many remote
 sensing applications, overall accuracy should be of secondary importance
@@ -598,8 +598,8 @@ an open source implementation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{Conceptualization, F.B.; Methodology, G.D.; Software,
 G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
-Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.;
-Supervision, F.B.; Funding Acquisition, F.B.}
+Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
+J.F., M.K.; Supervision, F.B.; Funding Acquisition, F.B.}
 
 \funding{This research was funded by NAME OF FUNDER grant number XXX.}
 
