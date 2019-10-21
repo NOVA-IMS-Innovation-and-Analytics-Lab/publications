@@ -41,7 +41,7 @@ automatic production of Land Use/Land Cover maps continues to be a challenging
 problem. The ability to build robust automatic classifiers able to produce
 accurate maps can have a significant impact in the way we manage and optimize
 natural resources. The difficulty in achieving these results comes from many
-different factors, such as data quality and uncertainty, among others. In this
+different factors, such as data quality and uncertainty. In this
 paper, we address the imbalanced learning problem, a common and difficult
 problem in remote sensing that affects the quality of classifiers. Having very
 asymmetric distributions of the different classes constitutes a significant
@@ -78,13 +78,9 @@ continues to be a bottleneck \cite{Rajan2008}. In order to build accurate and
 robust supervised classifiers it is crucial to have a large enough training
 dataset. Often, the problem is that different land cover types have very
 different levels of area coverage, which causes some of them to be frequent in
-the training dataset, while others are limited \cite{Feng2019}. In remote
-sensing classification problems, the number of instances of some classes is
-often smaller when compared to the rest of the classes. This is especially true
-for LUCAS dataset, where a squared grid sampling strategy is used.
-\cite{Williams2009, Cenggoro2018}.
-
-% EDIT - Remove 81-83 lines
+the training dataset, while others are limited \cite{Feng2019}. This is
+especially true for LUCAS dataset, where a squared grid sampling strategy is
+used \cite{Williams2009, Cenggoro2018}.
 
 The above mentioned asymmetry in class distribution affects negatively the
 performance of classifiers. In the machine learning community, the problem is
@@ -136,10 +132,10 @@ problem, which can be divided into three groups:
 \end{enumerate}
 
 In this paper, we compare the performance of various oversampling algorithms on
-an the publicly available EUROSTAT's Land Use/Cover Area Statistical Survey
+the publicly available EUROSTAT's Land Use/Cover Area Statistical Survey
 (LUCAS) dataset \cite{LUCAS2015} with Landsat 8 dense time-series. The
 experimental procedure includes a comparison of five oversamplers using five
-classifiers and three evaluation metrics. More specifically the oversampling
+classifiers and three evaluation metrics. Specifically, the oversampling
 algorithms are Geometric SMOTE (G-SMOTE) \cite{Douzas2019}, Synthetic Minority
 Oversampling TEchnique (SMOTE) \cite{Chawla2002}, Borderline SMOTE (B-SMOTE)
 \cite{Han2005}, Adaptive Synthetic Sampling Technique (ADASYN)
@@ -167,9 +163,12 @@ of resampling methods for remote sensing imbalanced data classification.
 \subsection{Random resampling}
 
 Random resampling refers to non-informed strategies that remove instances from
-the majority class or replicate instances from the minority class. More
-specifically, the selection of the data occurs in a random fashion without
-exploiting any additional information.
+the majority class or replicate instances from the minority class. As such, the
+selection of the data occurs in a random fashion without exploiting any
+additional information.
+
+% changed "more specifically" to "as such" simply because there's already the
+% same expression in the start of the following subsection
 
 % EDIT - Missing reference 176, 177
 
@@ -243,11 +242,20 @@ defines a flexible geometric region around each minority class instance for
 synthetic data generation. The shape of this area is controlled by a set of
 hyperparameters. This significantly increases the diversity of generated
 instances. Furthermore, G-SMOTE is designed to avoid noisy sample generation
-since it modifies the SMOTE selection strategy. G-SMOTE has been shown to
-outperform SMOTE and its above mentioned variations across 69 imbalanced
-datasets for various classifiers and evaluation metrics.
+since it modifies the SMOTE selection strategy. G-SMOTE has been shown to 
+outperform SMOTE and its above  mentioned variations across 69 imbalanced
+datasets for various classifiers and evaluation metrics. Figure
+\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and G-
+SMOTE using a deformed geometric region.
 
-% EDIT - Add figure that shows SMOTE vs G-SMOTE
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
+	\caption{Example of minority class oversampled by SMOTE and G-SMOTE
+	algorithms. G-SMOTE generates non-noisy samples
+	with higher variety than SMOTE.}
+	\label{fig:gsmote_smote}
+\end{figure}
 
 \section{Methodology}
 
@@ -444,7 +452,7 @@ presented in table \ref{tab:grid}:
 The implementation of the experimental procedure was based on the Python
 programming language, using the
 \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2011},
-\href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{JMLR:v18:16-365} 
+\href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{JMLR:v18:16-365}
 and
 \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{Geometric-SMOTE}
 libraries. All functions, algorithms, experiments and results reported are
