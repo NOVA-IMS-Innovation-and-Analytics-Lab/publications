@@ -49,7 +49,7 @@ hurdle for any classifier. In this work, we propose Geometric-SMOTE as a means
 of addressing the imbalanced learning problem in remote sensing. Geometric-SMOTE
 is a sophisticated oversampling algorithm which increases the quality of the
 generated instances over previous methods, such as Synthetic Minority
-Oversampling TEchnique. The performance of Geometric-SMOTE, in the the LUCAS
+Oversampling TEchnique. The performance of Geometric-SMOTE, in the LUCAS
 dataset, is compared to other oversamplers using a variety of classifiers. The
 results show that Geometric-SMOTE significantly outperforms all the other
 oversamplers and improves the robustness of the classifiers. These results
@@ -81,7 +81,7 @@ different levels of area coverage, which causes some of them to be frequent in
 the training dataset, while others are limited \cite{Feng2019}. In remote
 sensing classification problems, the number of instances of some classes is
 often smaller when compared to the rest of the classes. This is especially true
-in  in LUCAS data, where a squared grid sampling strategy is used.
+for LUCAS dataset, where a squared grid sampling strategy is used.
 \cite{Williams2009, Cenggoro2018}.
 
 % EDIT - Remove 81-83 lines
@@ -325,7 +325,7 @@ terms of the true positives \( TP \), true negatives \(TN \), false positives
 \) and \(\textit{Recall} =  \frac{TP}{TP + FN} \). For the multi-class case, the
 average value across classes is used, as explained below.
 
-The LUCAS dataset is highly imbalanced, having wide a range of IRs for the
+The LUCAS dataset is highly imbalanced, having a wide range of IRs for the
 different minority classes. Therefore, the use of the metrics above is not an
 appropriate choice since they are mainly determined by the majority class
 contribution \cite{He2009}. An appropriate evaluation metric should consider the
@@ -359,7 +359,7 @@ finally average its values. For this purpose, \textit{F-score} and
 	\textit{Specificity}. \textit{Sensitivity} is identical to the
 	\textit{Recall} while \textit{Specificity} is given by the formula
 	\(\textit{Specificity} =  \frac{TN}{TN + FP} \). Therefore, they are equal
-	to the true positive and true negative rate, respectively. The
+	to the true positive and true negative rates, respectively. The
 	\textit{G-mean} for the multi-class case can be calculated using their
 	average per class values:
 
@@ -395,7 +395,7 @@ applications \cite{Khatami2016}, \cite{Maxwell2018}.
 In order to evaluate the performance of each oversampler, every possible
 combination of oversampler, classifier and metric is formed. The evaluation
 score for each of the above combinations is generated through a \( n \)-fold
-cross validation procedure with \( n = 5 \). Before starting the training of
+cross validation procedure with \( n = 3 \). Before starting the training of
 each classifier, and in each stage \(i \in \{1, 2 ,... , n \} \) of the \( n
 \)-fold cross validation procedure, synthetic data \( S_{i} \) were generated
 using the oversampler, based on the training data \(T_{i} \) of the \( n - 1 \)
@@ -577,7 +577,7 @@ multi-class imbalanced data classification as in most of the cases balancing
 data with oversampling resulted in higher \text{F-score} and \textit{G-mean}
 values.
 
-G-SMOTE can a be a useful tool for remote sensing researchers and practitioners,
+G-SMOTE can be a useful tool for remote sensing researchers and practitioners,
 as it systematically outperforms the previous widely used oversamplers, such as
 ROS and SMOTE. G-SMOTE is easily accessible to the users through an
 \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open
