@@ -171,22 +171,21 @@ the majority class or replicate instances from the minority class. More
 specifically, the selection of the data occurs in a random fashion without
 exploiting any additional information.
 
-% EDIT - Missing reference 176, 177
-
 Some of the existing remote sensing studies implement the Random Undersampling
-(RUS) method, which randomly reduces the number of the majority class training
-samples. However, this method has the disadvantage of information loss as it
-discards samples from the majority class \cite{Feng2019}. Contrary to it, ROS, a
-method that can be considered as equivalent to Bootstrapping, avoids information
-loss. However, ROS simply replicates randomly selected instances of the minority
-class, increasing the risk of overfitting \cite{Krawczyk2016}.
-\cite{Maxwell2018} reports that balancing data with ROS affects the
-classification performance differently for various classifiers. In their paper,
-land cover classification with highly imbalanced data is carried out with six
-different models. Application of ROS slightly improved the performance of Random
-Forest (RF) and Support Vector Machine (SVM) classifiers. On the other hand, it
-reduced the classification accuracy for classifiers such as Decision Tree (DT),
-Artificial Neural Network (ANN), K-Nearest Neighbors (KNN) and Boosted DT.
+(RUS) method \cite{Azadbakht2016}, which randomly reduces the number of the 
+majority class training samples. However, this method has the disadvantage of 
+information loss as it discards samples from the majority class 
+\cite{Feng2019}. Contrary to it, ROS, a method that can be considered as 
+equivalent to Bootstrapping, avoids information loss. However, ROS simply 
+replicates randomly selected instances of the minority class, increasing the 
+risk of overfitting \cite{Krawczyk2016}. \cite{Maxwell2018} reports that 
+balancing data with ROS affects the classification performance differently for 
+various classifiers. In their paper, land cover classification with highly 
+imbalanced data is carried out with six different models. Application of ROS 
+slightly improved the performance of Random Forest (RF) and Support Vector 
+Machine (SVM) classifiers. On the other hand, it reduced the classification 
+accuracy for classifiers such as Decision Tree (DT), Artificial Neural Network 
+(ANN), K-Nearest Neighbors (KNN) and Boosted DT.
 
 \subsection{Informed resampling}
 
@@ -379,16 +378,16 @@ oversampler. ADASYN and B-SMOTE were selected for representing popular
 modifications of the original SMOTE algorithm. Finally, no oversampling was also
 applied as an additional baseline method.
 
-% EDIT - Missing references for classifiers
-
 For the evaluation of the oversampling methods, the classifiers Logistic
-Regression (LR), K-Nearest Neighbors (KNN), Decision Tree (DT), Gradient
-Boosting Classifier (GBC) and Random Forest (RF) were selected. The choice of
-classifiers was done according to the following criteria: learning type,
-training time and popularity within the remote sensing community. All these
-algorithms were found to be computationally efficient and commonly used for the
-proposed task, with the exception of LR which is rarely used in remote sensing
-applications \cite{Khatami2016}, \cite{Maxwell2018}.
+Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN) 
+\cite{Cover1967}, Decision Tree (DT) \cite{Salzberg1994}, Gradient
+Boosting Classifier (GBC) \cite{Friedman2001} and Random Forest (RF) 
+\cite{Liaw2002} were selected. The choice of classifiers was done according 
+to the following criteria: learning type, training time and popularity within 
+the remote sensing community. All these algorithms were found to be 
+computationally efficient and commonly used for the proposed task, with the 
+exception of LR which is rarely used in remote sensing applications 
+\cite{Khatami2016}, \cite{Maxwell2018}.
 
 \subsection{Experiment settings}
 
