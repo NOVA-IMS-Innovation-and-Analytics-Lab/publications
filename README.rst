@@ -1,6 +1,6 @@
-=========
-Structure
-=========
+=================
+Project structure
+=================
 
 Every research project contains the scripts, data, results, analysis
 and content directories.
