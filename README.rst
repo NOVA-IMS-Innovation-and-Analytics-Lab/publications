@@ -16,22 +16,19 @@ first activate a Python 3 virtual environment and then run the command::
 In order to generate the content of the publication in a reproducible format,
 various scripts are provided.
 
-data.py
-#######
+**data.py**
 
 Download and save the experimental datasets::
 
     python data.py
 
-results.py
-##########
+**results.py**
 
 Run the experiments and get the experimental results::
 
     python results.py
 
-analysis.py
-###########
+**analysis.py**
 
 Analyze the experimental results::
 
