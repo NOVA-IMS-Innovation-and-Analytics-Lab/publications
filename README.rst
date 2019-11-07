@@ -9,7 +9,8 @@ scripts
 =======
 
 It is the entry point of the project. To install the required dependencies,
-first activate a Python 3 virtual environment and then run the command::
+first activate a Python 3 virtual environment and from the scripts directory
+run the command::
 
     pip install -r requirements.txt
 
