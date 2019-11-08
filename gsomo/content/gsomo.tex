@@ -89,8 +89,8 @@ happens because the minority classes contributes less to the minimization of
 accuracy, the commonly used objective function. It is well known that accuracy
 is heavily biased towards the majority class, and can be misleading when
 assessing the performance of a classifier. For instance, assuming a dataset with
-\( 99\% \) majority instances and only \( 1\% \) minority instances, the model
-accuracy would still be \( 99\% \) without classifying a single minority
+$ 99\% $ majority instances and only $ 1\% $ minority instances, the model
+accuracy would still be $ 99\% $ without classifying a single minority
 instance correctly.
 
 It is also important to note that most methods assume equal costs in the
@@ -187,11 +187,11 @@ that clarify the decision boundaries are created.
 
 The most popular approach among practitioners in the domain of oversampling is
 SMOTE, introduced in 2002. The algorithm chooses a random minority instance and
-identifies its \( k \) nearest neighboring minority instances. The parameter \(k
-\) is chosen beforehand. A synthetic instance is created on a random point along
+identifies its $ k $ nearest neighboring minority instances. The parameter $k
+$ is chosen beforehand. A synthetic instance is created on a random point along
 the line segment joining the selected minority instance and one of its neighbors
 \cite{Chawla2002}.  Depending upon the amount of oversampling required,
-neighbors from the \( k \) nearest neighbors are randomly chosen. Figure
+neighbors from the $ k $ nearest neighbors are randomly chosen. Figure
 \ref{fig:Schubach} constitutes the process of SMOTE.
 
 \begin{figure}[H]
@@ -735,15 +735,15 @@ repeated 3 times to avoid bias due to random grouping \cite{Japkowicz2013}.
 A variety of hyper-parameters were used for the the oversamplers. For SMOTE the
 optimal value of $k$ nearest neighbors was selected as $k \in \{3, 5 \}$. For
 G-SOMO a hyper-parameter grid was generated from the Cartesian product of the
-number of nearest neighbors $k \in \{3, 5\}$, the truncation factor 
-$a_{trunc} \in \{−1.0, 0.0, 0.25, 1.0 \}$, the deformation factor $a_{def} \in \{0.0, 0.25, 1.0\}$, 
-the dimension of the SOM grid $N_{Grid} \in \{20\%, 50\% \}$ in units
+number of nearest neighbors $k \in \{3, 5\} $, the truncation factor 
+$ a_{trunc} \in \{-1.0, 0.0, 0.25, 1.0\} $, the deformation factor $ a_{def} \in \{0.0, 0.25, 1.0\} $, 
+the dimension of the SOM grid $ N_{Grid} \in \{20\%, 50\% \} $ in units
 that correspond to the percentage of samples for each dataset and the ratio
-$\frac{N_{intra}}{N_{intra} + N_{inter}} \in \{0.75, 1.0 \}$. The rest of G-SOMO
-hyper-parameters are fixed to the following values: For each dataset $N_{intra} + N_{inter}$ 
+$ \frac{N_{intra}}{N_{intra} + N_{inter}} \in \{0.75, 1.0 \} $. The rest of G-SOMO
+hyper-parameters are fixed to the following values: For each dataset $ N_{intra} + N_{inter} $ 
 is adjusted so that the oversampled dataset is perfectly balanced
-while the selected strategy $\alpha_{sel}$ is the combined one. The threshold
-$IR_{f}$ was set equal to $1.0$. 
+while the selected strategy $ \alpha_{sel} $ is the combined one. The threshold
+$ IR_{f} $ was set equal to $ 1.0 $.
 
 Using the above hyper-parameters, the highest cross validation score for each
 combination of datasets, classifiers, oversamplers and evaluation metrics was
@@ -944,13 +944,13 @@ ratio (R). Specifically we can conclude the following:
 
 	\item High IR or low R.
 	
-	The \( majority \) (or \( combined \)) selection strategy and lower absolute
+	The $ majority $ (or $ combined $) selection strategy and lower absolute
 	values of the truncation and deformation factors dominate as optimal
 	hyper-parameters.
 
 	\item Low IR or high R. 
 	
-	The \( minority \) selection strategy and higher absolute values of the
+	The $ minority $ selection strategy and higher absolute values of the
 	truncation and deformation factors dominate as optimal hyper-parameters.
 
 \end{itemize}
