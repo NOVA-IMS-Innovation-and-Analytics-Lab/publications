@@ -31,7 +31,7 @@ minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
 \Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca
 $^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$} \AuthorNames{Georgios
 Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan} \address{$^{1}$ \quad
-NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca,
+NOVA Information Management School; \{gdouzas, bacao, jpfonseca,
 mkhudinyan\}@novaims.unl.pt}
 \corres{Correspondence: bacao@novaims.unl.pt; Tel.: +351 21 382 8610}
 \firstnote{These authors contributed equally to this work.}
@@ -168,19 +168,19 @@ selection of the data occurs in a random fashion without exploiting any
 additional information.
 
 Some of the existing remote sensing studies implement the Random Undersampling
-(RUS) method \cite{Azadbakht2016}, which randomly reduces the number of the 
-majority class training samples. However, this method has the disadvantage of 
-information loss as it discards samples from the majority class 
-\cite{Feng2019}. Contrary to it, ROS, a method that can be considered as 
-equivalent to Bootstrapping, avoids information loss. However, ROS simply 
-replicates randomly selected instances of the minority class, increasing the 
-risk of overfitting \cite{Krawczyk2016}. \cite{Maxwell2018} reports that 
-balancing data with ROS affects the classification performance differently for 
-various classifiers. In their paper, land cover classification with highly 
-imbalanced data is carried out with six different models. Application of ROS 
-slightly improved the performance of Random Forest (RF) and Support Vector 
-Machine (SVM) classifiers. On the other hand, it reduced the classification 
-accuracy for classifiers such as Decision Tree (DT), Artificial Neural Network 
+(RUS) method \cite{Azadbakht2016}, which randomly reduces the number of the
+majority class training samples. However, this method has the disadvantage of
+information loss as it discards samples from the majority class
+\cite{Feng2019}. Contrary to it, ROS, a method that can be considered as
+equivalent to Bootstrapping, avoids information loss. However, ROS simply
+replicates randomly selected instances of the minority class, increasing the
+risk of overfitting \cite{Krawczyk2016}. \cite{Maxwell2018} reports that
+balancing data with ROS affects the classification performance differently for
+various classifiers. In their paper, land cover classification with highly
+imbalanced data is carried out with six different models. Application of ROS
+slightly improved the performance of Random Forest (RF) and Support Vector
+Machine (SVM) classifiers. On the other hand, it reduced the classification
+accuracy for classifiers such as Decision Tree (DT), Artificial Neural Network
 (ANN), K-Nearest Neighbors (KNN) and Boosted DT.
 
 \subsection{Informed resampling}
@@ -238,10 +238,10 @@ defines a flexible geometric region around each minority class instance for
 synthetic data generation. The shape of this area is controlled by a set of
 hyperparameters. This significantly increases the diversity of generated
 instances. Furthermore, G-SMOTE is designed to avoid noisy sample generation
-since it modifies the SMOTE selection strategy. G-SMOTE has been shown to 
+since it modifies the SMOTE selection strategy. G-SMOTE has been shown to
 outperform SMOTE and its above  mentioned variations across 69 imbalanced
 datasets for various classifiers and evaluation metrics. Figure
-\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and 
+\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and
 G-SMOTE using a deformed geometric region.
 
 \begin{figure}[H]
@@ -384,14 +384,14 @@ modifications of the original SMOTE algorithm. Finally, no oversampling was also
 applied as an additional baseline method.
 
 For the evaluation of the oversampling methods, the classifiers Logistic
-Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN) 
+Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN)
 \cite{Cover1967}, Decision Tree (DT) \cite{Salzberg1994}, Gradient
-Boosting Classifier (GBC) \cite{Friedman2001} and Random Forest (RF) 
-\cite{Liaw2002} were selected. The choice of classifiers was done according 
-to the following criteria: learning type, training time and popularity within 
-the remote sensing community. All these algorithms were found to be 
-computationally efficient and commonly used for the proposed task, with the 
-exception of LR which is rarely used in remote sensing applications 
+Boosting Classifier (GBC) \cite{Friedman2001} and Random Forest (RF)
+\cite{Liaw2002} were selected. The choice of classifiers was done according
+to the following criteria: learning type, training time and popularity within
+the remote sensing community. All these algorithms were found to be
+computationally efficient and commonly used for the proposed task, with the
+exception of LR which is rarely used in remote sensing applications
 \cite{Khatami2016}, \cite{Maxwell2018}.
 
 \subsection{Experiment settings}
@@ -595,7 +595,7 @@ Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
 J.F., M.K.; Supervision, F.B.; Funding Acquisition, F.B.}
 
 \funding{This research was funded by "Fundação para a Ciência e Tecnologia"
-(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 - 
+(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 -
 IPSTERS.}
 
 \acknowledgments{The authors would like to thank Direção Geral do Território
