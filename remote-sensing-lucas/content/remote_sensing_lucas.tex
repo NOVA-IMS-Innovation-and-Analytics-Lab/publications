@@ -79,11 +79,40 @@ dataset. Often, the problem is that different land cover types have very
 different levels of area coverage, which causes some of them to be frequent in
 the training dataset, while others are limited \cite{Feng2019}.
 
+% changed to this:
+The production of accurate Land Use/Land Cover (LULC) maps offers unique 
+monitoring
+capabilities within the remote sensing domain [1]. LULC maps are being used for 
+a variety of applications, ranging from environmental monitoring, land change 
+detection, natural hazard assessment up to agriculture and water/wetland 
+monitoring [2], therefore, accurate and timely production of LULC maps is of 
+great significance. LULC maps are usually produced by two main procedures: 
+photo-interpretation by human eye, which is time and resource consuming and is 
+not suitable for operational LULC-mapping over large areas, and second, 
+automatic mapping using remotely sensed data and different classification 
+algorithms. 
+The availability and quick update of high quality satellite remote sensing data 
+has brought tremendous progress in providing up-to-date and accurate land cover 
+information.
+
+Particularly, multispectral remote sensing images are an important resource to 
+build LULC maps, allowing for the use of classification algorithms, both 
+supervised and unsupervised, to automate the production of these maps. Although 
+significant progress has been made in the use of supervised learning techniques 
+for automatic image classification [3], the acquisition of labeled training 
+sets continues to be a bottleneck [4]. In order to build accurate and robust 
+supervised classifiers it is crucial to have a large enough training dataset. 
+Often, the problem is that different land cover types have very different 
+levels of area coverage, which causes some of them to be frequent in the 
+training dataset, while others are limited
+
+
+
 A particular case where this phenomenon happens is the LUCAS dataset: Land Use
 and Coverage Area frame Survey coordinated by The Statistical Office of the
-European Commission (Eurostat) \cite{LUCAS2015}. LUCAS surveys are carried out
-every 3 year since 2006 and are freely accessible.  For this statistical
-sampling survey 2 km regular grid is implemented and over 1,000,000 points are
+European Commission (Eurostat) \cite{LUCAS2015C1}. LUCAS surveys are carried 
+out every 3 year since 2006 and are freely accessible.  For this statistical
+sampling survey 2 km regular grid is implemented and over 1,000,000 points were
 observed in European Union territory for the year of 2015. Although, LUCAS
 dataset is designed for  statistical estimation, some existing studies are
 successfully using this data for training machine learning classifiers for land
@@ -143,15 +172,15 @@ problem, which can be divided into three groups:
 
 In this paper, we compare the performance of various oversampling algorithms on
 the publicly available EUROSTAT's Land Use/Cover Area Statistical Survey
-(LUCAS) dataset \cite{LUCAS2015} with Landsat 8 dense time-series. The
-experimental procedure includes a comparison of five oversamplers using five
-classifiers and three evaluation metrics. Specifically, the oversampling
-algorithms are Geometric SMOTE (G-SMOTE) \cite{Douzas2019}, Synthetic Minority
-Oversampling TEchnique (SMOTE) \cite{Chawla2002}, Borderline SMOTE (B-SMOTE)
-\cite{Han2005}, Adaptive Synthetic Sampling Technique (ADASYN)
-\cite{HaiboHe2008} and Random Oversampling (ROS), while no oversampling is
-included as a baseline method. Results show that G-SMOTE outperforms every other
-oversampling technique, for the selected evaluation metrics.
+(LUCAS) dataset \cite{LUCAS2015C3} with Landsat 8 data. The experimental 
+procedure includes a comparison of five oversamplers using five classifiers and 
+three evaluation metrics. Specifically, the oversampling algorithms are 
+Geometric SMOTE (G-SMOTE) \cite{Douzas2019}, Synthetic Minority Oversampling 
+TEchnique (SMOTE) \cite{Chawla2002}, Borderline SMOTE (B-SMOTE) \cite{Han2005}, 
+Adaptive Synthetic Sampling Technique (ADASYN) \cite{HaiboHe2008} and Random 
+Oversampling (ROS), while no oversampling is included as a baseline method. 
+Results show that G-SMOTE outperforms every other oversampling technique, for 
+the selected evaluation metrics.
 
 This paper is organized in 5 sections: Section 2 analyses the resampling methods,
 section 3 describes the proposed methodology, section 4 shows the results and
@@ -273,7 +302,7 @@ experiment.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
+	\includegraphics[width=1\linewidth]{../analysis/g_smote_flow_chart}
 	\caption{Flowchart containing the steps applied in the entire method.}
 	\label{fig:flowchart}
 \end{figure}
@@ -282,51 +311,59 @@ experiment.
 
 The area of study is in the north-western Portugal, corresponding to the area
 covered by Landsat 8ETM+ image from the track 204 and row 32, shown in figure
-\ref{fig:studyarea}. The area contains all 8 main land cover types present in
-LUCAS 2015.
+\ref{fig:studyarea}. The area contains all 8 main land cover types defined by
+LUCAS 2015: artificial land, cropland, woodland, shrubland, grassland, bare 
+land, water and wetlands.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
-	\caption{Study area and ground-truth data.}
+	\includegraphics[width=1\linewidth]{../analysis/study_area}
+	\caption{Study area and LUCAS reference data (Landsat 8 image from the date 
+	of 2015/05/25)}
 	\label{fig:studyarea}
 \end{figure}
 
 \subsection{Remote sensing data}
 
-The remotely sensed data includes 8 images from Landsat 8ETM+ multi-spectral
-sensor. The images are Level-1 terrain corrected products (L1TP) and are
-acquired in 2015 from February to September, 1 image each month. The acquisition
-mode is Descending.  Data was preprocessed in order to remove pixels with cloud
-cover. Only bands 2, 3, 4, 5, 6 and 7 are used from each image. Accordingly,
-each reference point from LUCAS dataset has 48 features.
-
+The remotely sensed data includes 8 images from moderate-resolution Landsat 
+8ETM+ multi-spectral sensor. The images are Level-1 terrain corrected products 
+(L1TP) and are acquired in 2015 from February to September, 1 image each month. 
+The acquisition mode is Descending.  Data was pre-processed in order to remove 
+pixels with cloud cover. Only bands 2, 3, 4, 5, 6 and 7 are used from each 
+image. Accordingly, each reference point from LUCAS dataset has 48 features,
+representing pixel values from each spectral band from each image.
 
 \subsection{LUCAS dataset}
 
 The 2015 LUCAS data was used as reference data for both model training and
 validation. The label of LUCAS point represents the corresponding land cover
 type within the radius of 1.5 m, gathered  by field observation and very high
-resolution photo interpretation  [reference: LUCAS2015 C1 instruction]. If the
-land cover is homogeneous in the sampling point area, then the land cover type
-within the defined area is assigned to the LUCAS point. When the land cover is
-not homogeneous, systematic observation of land cover is carried out  in the
+resolution photo interpretation  \cite{LUCAS2015C1}. If the land cover is 
+homogeneous in the sampling point area, then the land cover type within the 
+defined area is assigned to the LUCAS point. When the land cover is not 
+homogeneous, systematic observation of land cover is carried out  in the
 vicinity of the sampling point in an area of 20 m radius extents. This
 information is recorded in the metadata of each point. Furthermore, LUCAS
 dataset provides the area coverage of homogeneous patches, where the point is
 located. In order to avoid having pixels in a mixed environment, filters were
 applied and points having extended observation window and points having
 homogeneous patches less than 1 ha (or 0.5 ha)  were excluded. This was not
-applied only on the class of “Artificial land”, as this would remove most part
+applied only on the class of "artificial land", as this would remove most part
 of the samples. Furthermore, points with cloudy pixels on Landsat data were also
 excluded. This way, 1694 LUCAS points were kept out of 2060. This dataset
 contains 8 classes that represent the main land cover types for the study area.
 
 This pixel selection excluded large number of unacceptable reference points, and
 we assume for the remaining ones to be suitable enough to represent the land
-cover type in Landsat pixel coverage area of 30x30 m. Further, we assume that
-classifiers are capable to overcoming the noise caused by pixels having mixed
-land cover representation, if such pixels are still available in the dataset.
+cover type in Landsat pixel coverage area of 30x30 m (or: area with 30x30m 
+extent). Further, we assume that classifiers are capable to overcoming the 
+noise caused by pixels having mixed land cover representation, if such pixels 
+are still available in the dataset.
+
+The number of samples per class and the Imbalance Ratio (IR), defined as the
+ratio of number of samples for the majority class over the number of samples for
+any of the minority classes, is presented in Table
+\ref{tab:classes_distribution}.
 
 \begin{table}[H]
 	\centering
@@ -347,11 +384,6 @@ land cover representation, if such pixels are still available in the dataset.
 	\end{tabular}
 	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
 \end{table}
-
-The number of samples per class and the Imbalance Ratio (IR), defined as the
-ratio of number of samples for the majority class over the number of samples for
-any of the minority classes, is presented in Table
-\ref{tab:classes_distribution}.
 
 Table \ref{tab:LUCAS} presents a description of the LUCAS dataset, including
 information about the majority class C and the smallest minority class H to
