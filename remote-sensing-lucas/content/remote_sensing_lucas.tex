@@ -31,27 +31,26 @@ minority classes' prediction accuracy using the Geometric SMOTE algorithm}}
 \Author{Georgios Douzas $^{1}$, Fernando Bacao$^{1}$*, Joao Fonseca
 $^{1,\dagger}$ and Manvel Khudinyan $^{1,\dagger}$} \AuthorNames{Georgios
 Douzas, Fernando Bacao, Joao Fonseca and Manvel Khudinyan} \address{$^{1}$ \quad
-NOVA Information Management School; gdouzas@icloud.com, \{bacao, jpfonseca,
+NOVA Information Management School; \{gdouzas, bacao, jpfonseca,
 mkhudinyan\}@novaims.unl.pt}
 \corres{Correspondence: bacao@novaims.unl.pt; Tel.: +351 21 382 8610}
 \firstnote{These authors contributed equally to this work.}
 
-\abstract{In spite of its importance in sustainable resource management, the
-automatic production of Land Use/Land Cover maps continues to be a challenging
-problem. The ability to build robust automatic classifiers able to produce
-accurate maps can have a significant impact in the way we manage and optimize
-natural resources. The difficulty in achieving these results comes from many
-different factors, such as data quality and uncertainty. In this
-paper, we address the imbalanced learning problem, a common and difficult
-problem in remote sensing that affects the quality of classifiers. Having very
-asymmetric distributions of the different classes constitutes a significant
-hurdle for any classifier. In this work, we propose Geometric-SMOTE as a means
-of addressing the imbalanced learning problem in remote sensing. Geometric-SMOTE
-is a sophisticated oversampling algorithm which increases the quality of the
-generated instances over previous methods, such as Synthetic Minority
-Oversampling TEchnique. The performance of Geometric-SMOTE, in the LUCAS
-dataset, is compared to other oversamplers using a variety of classifiers. The
-results show that Geometric-SMOTE significantly outperforms all the other
+\abstract{The automatic production of Land Use/Land Cover maps continues to be a
+challenging problem, with important impacts on the ability to promote
+sustainability and good resource management. The ability to build robust
+automatic classifiers, able to produce accurate maps, can have a significant
+impact on the way we manage and optimize natural resources. The difficulty in
+achieving these results comes from many different factors, such as data quality
+and uncertainty. In this paper, we address the imbalanced learning problem, a
+common and difficult problem in remote sensing that affects the quality of
+classification results. We propose Geometric-SMOTE, a novel oversampling method,
+as a tool for addressing the imbalanced learning problem in remote sensing.
+Geometric-SMOTE is a sophisticated oversampling algorithm which increases the
+quality of the generated instances over previous methods, such as Synthetic
+Minority Oversampling TEchnique. The performance of Geometric-SMOTE, in the
+LUCAS dataset, is compared to other oversamplers using a variety of classifiers.
+The results show that Geometric-SMOTE significantly outperforms all the other
 oversamplers and improves the robustness of the classifiers. These results
 indicate that, when using imbalanced datasets, remote sensing researchers should
 consider the use of these new generation oversamplers to increase the quality of
@@ -78,9 +77,20 @@ continues to be a bottleneck \cite{Rajan2008}. In order to build accurate and
 robust supervised classifiers it is crucial to have a large enough training
 dataset. Often, the problem is that different land cover types have very
 different levels of area coverage, which causes some of them to be frequent in
-the training dataset, while others are limited \cite{Feng2019}. This is
-especially true for LUCAS dataset, where a squared grid sampling strategy is
-used \cite{Williams2009, Cenggoro2018}.
+the training dataset, while others are limited \cite{Feng2019}.
+
+A particular case where this phenomenon happens is the LUCAS dataset: Land Use
+and Coverage Area frame Survey coordinated by The Statistical Office of the
+European Commission (Eurostat) \cite{LUCAS2015}. LUCAS surveys are carried out
+every 3 year since 2006 and are freely accessible.  For this statistical
+sampling survey 2 km regular grid is implemented and over 1,000,000 points are
+observed in European Union territory for the year of 2015. Although, LUCAS
+dataset is designed for  statistical estimation, some existing studies are
+successfully using this data for training machine learning classifiers for land
+cover classification \cite{Pflugmacher2019, Mack2017}, since each of the
+observation is empirically registered in the field (in-situ). This sampling
+strategy is particularly interesting for this research, as it causes for uneven
+representation of different land cover classes in dataset for the given area.
 
 The above mentioned asymmetry in class distribution affects negatively the
 performance of classifiers. In the machine learning community, the problem is
@@ -168,19 +178,19 @@ selection of the data occurs in a random fashion without exploiting any
 additional information.
 
 Some of the existing remote sensing studies implement the Random Undersampling
-(RUS) method \cite{Azadbakht2016}, which randomly reduces the number of the 
-majority class training samples. However, this method has the disadvantage of 
-information loss as it discards samples from the majority class 
-\cite{Feng2019}. Contrary to it, ROS, a method that can be considered as 
-equivalent to Bootstrapping, avoids information loss. However, ROS simply 
-replicates randomly selected instances of the minority class, increasing the 
-risk of overfitting \cite{Krawczyk2016}. \cite{Maxwell2018} reports that 
-balancing data with ROS affects the classification performance differently for 
-various classifiers. In their paper, land cover classification with highly 
-imbalanced data is carried out with six different models. Application of ROS 
-slightly improved the performance of Random Forest (RF) and Support Vector 
-Machine (SVM) classifiers. On the other hand, it reduced the classification 
-accuracy for classifiers such as Decision Tree (DT), Artificial Neural Network 
+(RUS) method \cite{Azadbakht2016}, which randomly reduces the number of the
+majority class training samples. However, this method has the disadvantage of
+information loss as it discards samples from the majority class
+\cite{Feng2019}. Contrary to it, ROS, a method that can be considered as
+equivalent to Bootstrapping, avoids information loss. However, ROS simply
+replicates randomly selected instances of the minority class, increasing the
+risk of overfitting \cite{Krawczyk2016}. \cite{Maxwell2018} reports that
+balancing data with ROS affects the classification performance differently for
+various classifiers. In their paper, land cover classification with highly
+imbalanced data is carried out with six different models. Application of ROS
+slightly improved the performance of Random Forest (RF) and Support Vector
+Machine (SVM) classifiers. On the other hand, it reduced the classification
+accuracy for classifiers such as Decision Tree (DT), Artificial Neural Network
 (ANN), K-Nearest Neighbors (KNN) and Boosted DT.
 
 \subsection{Informed resampling}
@@ -238,10 +248,10 @@ defines a flexible geometric region around each minority class instance for
 synthetic data generation. The shape of this area is controlled by a set of
 hyperparameters. This significantly increases the diversity of generated
 instances. Furthermore, G-SMOTE is designed to avoid noisy sample generation
-since it modifies the SMOTE selection strategy. G-SMOTE has been shown to 
+since it modifies the SMOTE selection strategy. G-SMOTE has been shown to
 outperform SMOTE and its above  mentioned variations across 69 imbalanced
 datasets for various classifiers and evaluation metrics. Figure
-\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and 
+\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and
 G-SMOTE using a deformed geometric region.
 
 \begin{figure}[H]
@@ -256,21 +266,67 @@ G-SMOTE using a deformed geometric region.
 \section{Methodology}
 
 This section describes the evaluation process of G-SMOTE's performance. A
-description of the oversamplers, classifiers, evaluation metrics, LUCAS dataset
-characteristics as well as the experimental procedure is provided.
+description of the study area, dataset, oversamplers, classifiers, evaluation
+metrics as well as the experimental procedure is provided. Figure
+\ref{fig:flowchart} represents the flowchart of the steps applied in this
+experiment.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
+	\caption{Flowchart containing the steps applied in the entire method.}
+	\label{fig:flowchart}
+\end{figure}
+
+\subsection{Study area}
+
+The area of study is in the north-western Portugal, corresponding to the area
+covered by Landsat 8ETM+ image from the track 204 and row 32, shown in figure
+\ref{fig:studyarea}. The area contains all 8 main land cover types present in
+LUCAS 2015.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
+	\caption{Study area and ground-truth data.}
+	\label{fig:studyarea}
+\end{figure}
+
+\subsection{Remote sensing data}
+
+The remotely sensed data includes 8 images from Landsat 8ETM+ multi-spectral
+sensor. The images are Level-1 terrain corrected products (L1TP) and are
+acquired in 2015 from February to September, 1 image each month. The acquisition
+mode is Descending.  Data was preprocessed in order to remove pixels with cloud
+cover. Only bands 2, 3, 4, 5, 6 and 7 are used from each image. Accordingly,
+each reference point from LUCAS dataset has 48 features.
+
 
 \subsection{LUCAS dataset}
 
-LUCAS dataset and Landsat-8 time series from 2015 were used for the experimental
-procedure. 1694 ground-truth points were included as reference data. This
-dataset contains 8 classes that represent the main land cover types for the
-study area. The later is in the continental part of north-western Portugal,
-corresponding to the area covered by Landsat image from the track 204 and row
-32.
+The 2015 LUCAS data was used as reference data for both model training and
+validation. The label of LUCAS point represents the corresponding land cover
+type within the radius of 1.5 m, gathered  by field observation and very high
+resolution photo interpretation  [reference: LUCAS2015 C1 instruction]. If the
+land cover is homogeneous in the sampling point area, then the land cover type
+within the defined area is assigned to the LUCAS point. When the land cover is
+not homogeneous, systematic observation of land cover is carried out  in the
+vicinity of the sampling point in an area of 20 m radius extents. This
+information is recorded in the metadata of each point. Furthermore, LUCAS
+dataset provides the area coverage of homogeneous patches, where the point is
+located. In order to avoid having pixels in a mixed environment, filters were
+applied and points having extended observation window and points having
+homogeneous patches less than 1 ha (or 0.5 ha)  were excluded. This was not
+applied only on the class of “Artificial land”, as this would remove most part
+of the samples. Furthermore, points with cloudy pixels on Landsat data were also
+excluded. This way, 1694 LUCAS points were kept out of 2060. This dataset
+contains 8 classes that represent the main land cover types for the study area.
 
-The number of samples per class and the Imbalance Ratio (IR), defined as the ratio of
-number of samples for the majority class over the number of samples for any of
-the minority classes, is presented in Table \ref{tab:classes_distribution}:
+This pixel selection excluded large number of unacceptable reference points, and
+we assume for the remaining ones to be suitable enough to represent the land
+cover type in Landsat pixel coverage area of 30x30 m. Further, we assume that
+classifiers are capable to overcoming the noise caused by pixels having mixed
+land cover representation, if such pixels are still available in the dataset.
 
 \begin{table}[H]
 	\centering
@@ -292,16 +348,14 @@ the minority classes, is presented in Table \ref{tab:classes_distribution}:
 	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
 \end{table}
 
-The experiment's dataset includes 8 images from Landsat 8ETM+ multi-spectral
-sensor. The images are Level-1 terrain corrected products (L1TP) and are
-acquired in 2015 from February to September, 1 image each month. The acquisition
-mode is Descending. Only bands 2, 3, 4, 5, 6 and 7 are used from each image.
-Thus, each reference point from LUCAS dataset has 48 features. The features'
-values are digital numbers of the pixels from each spectral band of the image
-time series representing LUCAS point location. Table \ref{tab:LUCAS} presents a
-description of the LUCAS dataset, including information about the majority class
-C and the smallest minority class H to emphasize the imbalance character of the
-dataset:
+The number of samples per class and the Imbalance Ratio (IR), defined as the
+ratio of number of samples for the majority class over the number of samples for
+any of the minority classes, is presented in Table
+\ref{tab:classes_distribution}.
+
+Table \ref{tab:LUCAS} presents a description of the LUCAS dataset, including
+information about the majority class C and the smallest minority class H to
+emphasize the imbalance character of the dataset:
 
 \pgfplotstabletypeset[
 begin table=\begin{longtable},
@@ -322,9 +376,9 @@ every last row/.style={after row=\bottomrule
 Amongst the possible choices existing for classifier's performance evaluation,
 \textit{Accuracy}, user's accuracy (or \textit{Precision}) and
 producer's accuracy (or \textit{Recall}) are the most common in LULC
-classification. For a binary classification task their calculation is given in
-terms of the true positives \( TP \), true negatives \(TN \), false positives
-\( FP \) and false negatives \( FN \)
+classification \cite{Liu2007, Olofsson2013}. For a binary classification task
+their calculation is given in terms of the true positives \( TP \), true
+negatives \(TN \), false positives \( FP \) and false negatives \( FN \)
 \cite{Liu2007}. More specifically,  \( \textit{Precision} =  \frac{TP}{TP + FP}
 \) and \(\textit{Recall} =  \frac{TP}{TP + FN} \). For the multi-class case, the
 average value across classes is used, as explained below.
@@ -354,7 +408,7 @@ finally average its values. For this purpose, \textit{F-score} and
 
 	\item The \textit{F-score} is the harmonic mean of \textit{Precision} and
 	\textit{Recall}. The \textit{F-score} for the multi-class case can be
-	calculated using their average per class values:
+	calculated using their average per class values \cite{He2009}:
 
 	$$\textit{F-score}=2\frac{\overline{Precision} \times \overline{Recall}}{\overline{Precision} +
 	\overline{Recall}}$$
@@ -384,14 +438,14 @@ modifications of the original SMOTE algorithm. Finally, no oversampling was also
 applied as an additional baseline method.
 
 For the evaluation of the oversampling methods, the classifiers Logistic
-Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN) 
+Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN)
 \cite{Cover1967}, Decision Tree (DT) \cite{Salzberg1994}, Gradient
-Boosting Classifier (GBC) \cite{Friedman2001} and Random Forest (RF) 
-\cite{Liaw2002} were selected. The choice of classifiers was done according 
-to the following criteria: learning type, training time and popularity within 
-the remote sensing community. All these algorithms were found to be 
-computationally efficient and commonly used for the proposed task, with the 
-exception of LR which is rarely used in remote sensing applications 
+Boosting Classifier (GBC) \cite{Friedman2001} and Random Forest (RF)
+\cite{Liaw2002} were selected. The choice of classifiers was done according
+to the following criteria: learning type, training time and popularity within
+the remote sensing community. All these algorithms were found to be
+computationally efficient and commonly used for the proposed task, with the
+exception of LR which is rarely used in remote sensing applications
 \cite{Khatami2016}, \cite{Maxwell2018}.
 
 \subsection{Experiment settings}
@@ -578,8 +632,12 @@ oversamplers while LR, KNN, DT, GBC and RF were used as classifiers.
 
 The experiment results show the importance of oversampling methods for
 multi-class imbalanced data classification as in most of the cases balancing
-data with oversampling resulted in higher \text{F-score} and \textit{G-mean}
+data with oversampling resulted in higher \textit{F-score} and \textit{G-mean}
 values.
+
+Readers should consider using G-SMOTE when the model’s predictive power on
+minority class instances is of equal or higher importance than the majority
+class(es), such as change detection for rare land cover types in a landscape.
 
 G-SMOTE can be a useful tool for remote sensing researchers and practitioners,
 as it systematically outperforms the previous widely used oversamplers, such as
@@ -595,7 +653,7 @@ Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
 J.F., M.K.; Supervision, F.B.; Funding Acquisition, F.B.}
 
 \funding{This research was funded by "Fundação para a Ciência e Tecnologia"
-(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 - 
+(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 -
 IPSTERS.}
 
 \acknowledgments{The authors would like to thank Direção Geral do Território
