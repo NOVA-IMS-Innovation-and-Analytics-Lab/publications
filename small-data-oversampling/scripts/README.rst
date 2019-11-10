@@ -24,8 +24,8 @@ To run the experiments and get the experimental results, run the command::
 
     python results.py
 
-The results for each oversampler are saved in the *results* directory as pickled
-pandas dataframes.
+The results for each oversampler are saved in the *results* directory as
+pickled pandas dataframes.
 
 ========
 Analysis
