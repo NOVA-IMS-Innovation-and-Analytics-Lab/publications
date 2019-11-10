@@ -140,15 +140,15 @@ into three main groups \cite{Fernandez2013}:
 \begin{enumerate}
 
 	\item Cost-sensitive solutions. They introduce a cost matrix that applies
-	higher misclassification costs for the examples of the minority class.
-
+	      higher misclassification costs for the examples of the minority class.
+	      
 	\item Algorithmic level solutions. They modify the algorithmic procedure to
-	reinforce the learning of the minority class.
-
+	      reinforce the learning of the minority class.
+	      
 	\item Resampling solutions. They rebalance the class distribution either by
-	removing instances from the majority class or by generating artificial data
-	for the minority class(es).
-
+	      removing instances from the majority class or by generating artificial data
+	      for the minority class(es).
+	      
 \end{enumerate}
 
 The later method constitutes a more general approach since it can be used for
@@ -161,13 +161,13 @@ problem, which can be divided into three groups:
 \begin{enumerate}
 
 	\item Undersampling algorithms reduce the size of the majority class.
-
+	      
 	\item Oversampling algorithms attempt to even the distributions by
-	generating artificial data for the minority class(es).
-
+	      generating artificial data for the minority class(es).
+	      
 	\item Hybrid approaches use both oversampling and undersampling techniques
-	to ensure a balanced dataset.
-
+	      to ensure a balanced dataset.
+	      
 \end{enumerate}
 
 In this paper, we compare the performance of various oversampling algorithms on
@@ -287,8 +287,8 @@ G-SMOTE using a deformed geometric region.
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
 	\caption{Example of minority class oversampled by SMOTE and G-SMOTE
-	algorithms. G-SMOTE generates non-noisy samples
-	with higher variety than SMOTE.}
+		algorithms. G-SMOTE generates non-noisy samples
+		with higher variety than SMOTE.}
 	\label{fig:gsmote_smote}
 \end{figure}
 
@@ -318,8 +318,8 @@ land, water and wetlands.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/study_area}
-	\caption{Study area and LUCAS reference data (Landsat 8 image from the date 
-	of 2015/05/25)}
+	\caption{Study area and LUCAS reference data (Landsat 8 image from the date
+		of 2015/05/25)}
 	\label{fig:studyarea}
 \end{figure}
 
@@ -370,16 +370,16 @@ any of the minority classes, is presented in Table
 	\begin{tabular}{llrrrr}
 		\toprule
 		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
-		& \textbf{IR} \\
+		                        & \textbf{IR}                                            \\
 		\hline
-		A & Artificial land & 131 & 5.81 \\
-		B & Cropland        & 270 & 2.81 \\
-		C & Woodland        & 761 & 1.00 \\
-		D & Shrubland       & 296 & 2.61 \\
-		E & Grassland       & 185 & 4.11 \\
-		F & Bareland        & 37  & 20.56 \\
-		G & Water           & 10  & 76.10 \\
-		H & Wetlands        & 4   & 190.25\\
+		A                       & Artificial land          & 131                & 5.81   \\
+		B                       & Cropland                 & 270                & 2.81   \\
+		C                       & Woodland                 & 761                & 1.00   \\
+		D                       & Shrubland                & 296                & 2.61   \\
+		E                       & Grassland                & 185                & 4.11   \\
+		F                       & Bareland                 & 37                 & 20.56  \\
+		G                       & Water                    & 10                 & 76.10  \\
+		H                       & Wetlands                 & 4                  & 190.25 \\
 		\bottomrule
 	\end{tabular}
 	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
@@ -390,16 +390,16 @@ information about the majority class C and the smallest minority class H to
 emphasize the imbalance character of the dataset:
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Dataset, LUCAS},
-columns/Dataset/.style={column type=l,string type},
-columns/LUCAS/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:LUCAS}Description of the LUCAS dataset.}}
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Dataset, LUCAS},
+	columns/Dataset/.style={column type=l,string type},
+	columns/LUCAS/.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:LUCAS}Description of the LUCAS dataset.}}
 ]
 {../analysis/dataset_descrip.csv}
 
@@ -429,33 +429,33 @@ finally average its values. For this purpose, \textit{F-score} and
 \begin{itemize}
 
 	\renewcommand\labelitemi{--}
-
+	
 	\item The \textit{Accuracy} is the number of correctly classified
-	samples divided by the sum of all samples. Assuming that the various classes
-	are labeled by the index \( c \), \textit{Accuracy} is given by the
-	following formula:
-
-	$$\textit{Accuracy} = \frac{ \sum\limits_{c}{ \text{TP}_{c} } }{
-	\sum\limits_{c}{ (\text{TP}_{c}  + \text{FP}_{c}) } } $$
-
+	      samples divided by the sum of all samples. Assuming that the various classes
+	      are labeled by the index \( c \), \textit{Accuracy} is given by the
+	      following formula:
+	      
+	      $$\textit{Accuracy} = \frac{ \sum\limits_{c}{ \text{TP}_{c} } }{
+			      \sum\limits_{c}{ (\text{TP}_{c}  + \text{FP}_{c}) } } $$
+	      
 	\item The \textit{F-score} is the harmonic mean of \textit{Precision} and
-	\textit{Recall}. The \textit{F-score} for the multi-class case can be
-	calculated using their average per class values \cite{He2009}:
-
-	$$\textit{F-score}=2\frac{\overline{Precision} \times \overline{Recall}}{\overline{Precision} +
-	\overline{Recall}}$$
-
+	      \textit{Recall}. The \textit{F-score} for the multi-class case can be
+	      calculated using their average per class values \cite{He2009}:
+	      
+	      $$\textit{F-score}=2\frac{\overline{Precision} \times \overline{Recall}}{\overline{Precision} +
+			      \overline{Recall}}$$
+	      
 	\item The \textit{G-mean} is the geometric mean of \textit{Sensitivity} and
-	\textit{Specificity}. \textit{Sensitivity} is identical to the
-	\textit{Recall} while \textit{Specificity} is given by the formula
-	\(\textit{Specificity} =  \frac{TN}{TN + FP} \). Therefore, they are equal
-	to the true positive and true negative rates, respectively. The
-	\textit{G-mean} for the multi-class case can be calculated using their
-	average per class values:
-
-	$$\textit{G-mean} = \sqrt{ \overline{Sensitivity} \times
-	\overline{Specificity}}$$
-
+	      \textit{Specificity}. \textit{Sensitivity} is identical to the
+	      \textit{Recall} while \textit{Specificity} is given by the formula
+	      \(\textit{Specificity} =  \frac{TN}{TN + FP} \). Therefore, they are equal
+	      to the true positive and true negative rates, respectively. The
+	      \textit{G-mean} for the multi-class case can be calculated using their
+	      average per class values:
+	      
+	      $$\textit{G-mean} = \sqrt{ \overline{Sensitivity} \times
+			      \overline{Specificity}}$$
+	      
 \end{itemize}
 
 \subsection{Machine learning algorithms}
@@ -503,27 +503,27 @@ presented in table \ref{tab:grid}:
 	\centering
 	\begin{tabular}{lll}
 		\toprule
-		Classifier       & Hyperparameters & Values\\
+		Classifier       & Hyperparameters      & Values                       \\
 		\hline
-		LR               & maximum iterations   & 10000   \\
-		KNN              & number of neighbors  & {3, 5} \\
-		DT               & maximum depth        & {3, 6} \\
-		GBC              & maximum depth        & {3, 6} \\
-    			 		 & number of estimators & {50, 100} \\
-		RF               & maximum depth        & {None, 3, 6} \\
-				 		 & number of estimators & {50, 100} \\
+		LR               & maximum iterations   & 10000                        \\
+		KNN              & number of neighbors  & {3, 5}                       \\
+		DT               & maximum depth        & {3, 6}                       \\
+		GBC              & maximum depth        & {3, 6}                       \\
+		                 & number of estimators & {50, 100}                    \\
+		RF               & maximum depth        & {None, 3, 6}                 \\
+		                 & number of estimators & {50, 100}                    \\
 		\toprule
-		Oversampler      &                      & \\
+		Oversampler      &                      &                              \\
 		\hline
-		G-SMOTE          & number of neighbors  & {3, 5} \\
-				 		 & selection strategy   & combined, minority, majority\\
-				 		 & truncation factor    & {-1.0, -0.5, .0, 0.25, 0.5,
-				 		 0.75, 1.0} \\
-				 		 & deformation factor   & {0, 0.2, 0.4, 0.5, 0.6, 0.8,
-				 		 1.0} \\
- 		SMOTE            & number of neighbors & {3, 5} \\
-		BORDERLINE SMOTE & number of neighbors & {3, 5} \\
-		ADASYN           & number of neighbors & {2, 3} \\
+		G-SMOTE          & number of neighbors  & {3, 5}                       \\
+		                 & selection strategy   & combined, minority, majority \\
+		                 & truncation factor    & {-1.0, -0.5, .0, 0.25, 0.5,
+				0.75, 1.0}                                                             \\
+		                 & deformation factor   & {0, 0.2, 0.4, 0.5, 0.6, 0.8,
+				1.0}                                                                   \\
+		SMOTE            & number of neighbors  & {3, 5}                       \\
+		BORDERLINE SMOTE & number of neighbors  & {3, 5}                       \\
+		ADASYN           & number of neighbors  & {2, 3}                       \\
 		\bottomrule
 	\end{tabular}
 	\caption{\label{tab:grid}Hyperpameters grid.}
@@ -552,23 +552,23 @@ LUCAS dataset. For each combination of classifier and metric, a cross-validation
 score is provided in Table \ref{tab:mean_cross_val}:
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-columns/Classifier/.style={column type=l,string type},
-columns/Metric/.style={column type=l,string type},
-columns/NONE/.style={column type=l,string type},
-columns/ROS/.style={column type=l,string type},
-columns/SMOTE/.style={column type=l,string type},
-columns/B-SMOTE/.style={column type=l,string type},
-columns/ADASYN/.style={column type=l,string type},
-columns/G-SMOTE/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:mean_cross_val}Results for cross validation scores of
-oversamplers.}}
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
+	columns/Classifier/.style={column type=l,string type},
+	columns/Metric/.style={column type=l,string type},
+	columns/NONE/.style={column type=l,string type},
+	columns/ROS/.style={column type=l,string type},
+	columns/SMOTE/.style={column type=l,string type},
+	columns/B-SMOTE/.style={column type=l,string type},
+	columns/ADASYN/.style={column type=l,string type},
+	columns/G-SMOTE/.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:mean_cross_val}Results for cross validation scores of
+				oversamplers.}}
 ]
 {../analysis/mean_scores.csv}
 
@@ -589,22 +589,22 @@ performing methods receiving scores equal to 1 and 6, respectively. This
 comparison is presented in Table \ref{tab:ranking}:
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-columns/Classifier/.style={column type=l,string type},
-columns/Metric/.style={column type=l,string type},
-columns/NONE/.style={column type=l,string type},
-columns/ROS/.style={column type=l,string type},
-columns/SMOTE/.style={column type=l,string type},
-columns/B-SMOTE/.style={column type=l,string type},
-columns/ADASYN/.style={column type=l,string type},
-columns/G-SMOTE/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:ranking}Results for ranking of oversamplers}}
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
+	columns/Classifier/.style={column type=l,string type},
+	columns/Metric/.style={column type=l,string type},
+	columns/NONE/.style={column type=l,string type},
+	columns/ROS/.style={column type=l,string type},
+	columns/SMOTE/.style={column type=l,string type},
+	columns/B-SMOTE/.style={column type=l,string type},
+	columns/ADASYN/.style={column type=l,string type},
+	columns/G-SMOTE/.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:ranking}Results for ranking of oversamplers}}
 ]
 {../analysis/mean_ranking.csv}
 
@@ -613,21 +613,21 @@ confirmed. Table \ref{tab:mean_rankings} was created by averaging the ranking
 scores over all classifiers per evaluation metric:
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-columns/Metric/.style={column type=l,string type},
-columns/NONE/.style={column type=l,string type},
-columns/ROS/.style={column type=l,string type},
-columns/SMOTE/.style={column type=l,string type},
-columns/B-SMOTE/.style={column type=l,string type},
-columns/ADASYN/.style={column type=l,string type},
-columns/G-SMOTE/.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
+	columns/Metric/.style={column type=l,string type},
+	columns/NONE/.style={column type=l,string type},
+	columns/ROS/.style={column type=l,string type},
+	columns/SMOTE/.style={column type=l,string type},
+	columns/B-SMOTE/.style={column type=l,string type},
+	columns/ADASYN/.style={column type=l,string type},
+	columns/G-SMOTE/.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
 ]
 {../analysis/model_mean_ranking.csv}
 
@@ -635,18 +635,18 @@ Table \ref{tab:smote_gsmote} presents the percentage difference between
 G-SMOTE and SMOTE:
 
 \pgfplotstabletypeset[
-begin table=\begin{longtable},
-end table=\end{longtable},
-col sep=comma,
-header=true,
-columns={Classifier,Metric,Perc. diff.},
-columns/Classifier/.style={column type=l,string type},
-columns/Metric/.style={column type=l,string type},
-columns/Perc. diff./.style={column type=l,string type},
-every head row/.style={before row=\toprule, after row=\midrule\endhead},
-every last row/.style={after row=\bottomrule
-\caption{\label{tab:smote_gsmote}Results for percentage difference
-between G-SMOTE and SMOTE.}}
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Classifier,Metric,Perc. diff.},
+	columns/Classifier/.style={column type=l,string type},
+	columns/Metric/.style={column type=l,string type},
+	columns/Perc. diff./.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:smote_gsmote}Results for percentage difference
+				between G-SMOTE and SMOTE.}}
 ]
 {../analysis/mean_perc_diff_scores.csv}
 
@@ -675,42 +675,42 @@ G-SMOTE can be a useful tool for remote sensing researchers and practitioners,
 as it systematically outperforms the previous widely used oversamplers, such as
 ROS and SMOTE. G-SMOTE is easily accessible to the users through an
 \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open
-source implementation}.
+	source implementation}.
 
 \vspace{6pt}
 
 \authorcontributions{Conceptualization, F.B.; Methodology, G.D.; Software,
-G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
-Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
-J.F., M.K.; Supervision, F.B.; Funding Acquisition, F.B.}
+	G.D.; Validation, F.B., G.D.; Formal Analysis, J.F and M.K.; Writing -
+	Original Draft Preparation, M.K., J.F.; Writing - Review \& Editing, F.B., G.D.,
+	J.F., M.K.; Supervision, F.B.; Funding Acquisition, F.B.}
 
 \funding{This research was funded by "Fundação para a Ciência e Tecnologia"
-(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 -
-IPSTERS.}
+	(Portugal), grants' number PCIF/SSI/0102/2017 and DSAIPA/AI/0100/2018 -
+	IPSTERS.}
 
 \acknowledgments{The authors would like to thank Direção Geral do Território
-(DGT) for supporting the used data in this study.}
+	(DGT) for supporting the used data in this study.}
 
 \conflictsofinterest{The authors declare no conflict of interest. The funders
-had no role in the design of the study; in the collection, analyses, or
-interpretation of data; in the writing of the manuscript, or in the decision to
-publish the results.}
+	had no role in the design of the study; in the collection, analyses, or
+	interpretation of data; in the writing of the manuscript, or in the decision to
+	publish the results.}
 
 \abbreviations{The following abbreviations are used in this manuscript:\\
-\noindent
-\begin{tabular}{@{}ll}
-  OS & Oversampling\\
-  CV & Cross-Validation\\
-  LULC & Land Use/Land Cover\\
-  LUCAS & Land Use/Cover Area Statistical Survey\\
-  SMOTE & Synthetic Minority Over-sampling Technique\\
-  ADASYN & Adaptive Synthetic Sampling Technique\\
-  LR & Logistic Regression\\
-  KNN & K-Nearest Neighbors\\
-  DT & Decision Trees\\
-  GBC & Gradient Boosting Classifier\\
-  RF & Random Forest\\
-\end{tabular}}
+	\noindent
+	\begin{tabular}{@{}ll}
+		OS     & Oversampling                               \\
+		CV     & Cross-Validation                           \\
+		LULC   & Land Use/Land Cover                        \\
+		LUCAS  & Land Use/Cover Area Statistical Survey     \\
+		SMOTE  & Synthetic Minority Over-sampling Technique \\
+		ADASYN & Adaptive Synthetic Sampling Technique      \\
+		LR     & Logistic Regression                        \\
+		KNN    & K-Nearest Neighbors                        \\
+		DT     & Decision Trees                             \\
+		GBC    & Gradient Boosting Classifier               \\
+		RF     & Random Forest                              \\
+	\end{tabular}}
 
 
 \reftitle{References}
