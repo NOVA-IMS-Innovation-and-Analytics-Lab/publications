@@ -1,5 +1,5 @@
 requests>=2.0.0
 research-learn>=0.2.0
 som-learn>=0.0.1
-geometric-smote>=0.1.3
-cluster-over-sampling>=0.1.3
+geometric-smote>=0.1.2
+cluster-over-sampling>=0.1.1
