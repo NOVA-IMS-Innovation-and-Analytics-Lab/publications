@@ -38,7 +38,7 @@ Analyze the experimental results::
 data
 ====
 
-It contains the experimental data as a sqlite3 database. They are download and
+It contains the experimental data. They are downloaded and
 saved, using the ``data.py`` script.
 
 results
