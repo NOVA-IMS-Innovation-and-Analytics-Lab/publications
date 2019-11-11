@@ -69,6 +69,9 @@ RANDOM_STATE = 0
 class Datasets:
     """Class to download and save datasets."""
 
+    def __init__(self, names):
+        self.names = names
+
     @staticmethod
     def _modify_columns(data):
         """Rename and reorder columns of dataframe."""
@@ -78,10 +81,13 @@ class Datasets:
     
     def download(self):
         """Download the datasets."""
+        if self.names == 'all':
+            func_names = [func_name for func_name in dir(self) if 'fetch_' in func_name]
+        else:
+            func_names = [f'fetch_{name}'.lower().replace(' ', '_') for name in self.names]
         self.datasets_ = []
-        func_names = [func_name for func_name in dir(self) if 'fetch_' in func_name]
         for func_name in tqdm(func_names, desc='Datasets'):
-            name = sub('fetch_', '', func_name).upper().replace('_', ' ')
+            name = func_name.upper().replace('_', ' ').replace('fetch', '')
             fetch_data = getattr(self, func_name)
             data = self._modify_columns(fetch_data())
             self.datasets_.append((name, data))
@@ -94,7 +100,7 @@ class Datasets:
                 data.to_sql(name, connection, index=False, if_exists='replace')
 
 
-class ImbalancedBinaryClassDatasets(Datasets):
+class ImbalancedBinaryDatasets(Datasets):
     """Class to download, transform and save binary class imbalanced datasets."""
 
     @staticmethod
@@ -117,7 +123,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
     
     def download(self):
         """Download the datasets and append undersampled versions of them."""
-        super(ImbalancedBinaryClassDatasets, self).download()
+        super(ImbalancedBinaryDatasets, self).download()
         undersampled_datasets = []
         for (name, data), factor in list(product(self.datasets_, MULTIPLICATION_FACTORS)):
             ratio = self._calculate_ratio(factor, data.target)
@@ -387,7 +393,7 @@ class ImbalancedBinaryClassDatasets(Datasets):
         return data
 
 
-class BinaryClassDatasets(Datasets):
+class BinaryDatasets(Datasets):
     """Class to download, transform and save binary class datasets."""
 
     def fetch_banknote_authentication(self):
