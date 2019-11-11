@@ -49,7 +49,8 @@ as a tool for addressing the imbalanced learning problem in remote sensing.
 Geometric-SMOTE is a sophisticated oversampling algorithm which increases the
 quality of the generated instances over previous methods, such as Synthetic
 Minority Oversampling TEchnique. The performance of Geometric-SMOTE, in the
-LUCAS dataset, is compared to other oversamplers using a variety of classifiers.
+LUCAS (Land Use/Cover Area frame Survey) dataset, is compared to other 
+oversamplers using a variety of classifiers.
 The results show that Geometric-SMOTE significantly outperforms all the other
 oversamplers and improves the robustness of the classifiers. These results
 indicate that, when using imbalanced datasets, remote sensing researchers should
@@ -66,47 +67,25 @@ The production of accurate Land Use/Land Cover (LULC) maps offers unique
 monitoring capabilities within the remote sensing domain \cite{Mellor2015}. LULC
 maps are being used for a variety of applications, ranging from environmental
 monitoring, land change detection, natural hazard assessment up to agriculture
-and water/wetland monitoring \cite{Khatami2016}.
+and water/wetland monitoring \cite{Khatami2016}, therefore, accurate and timely 
+production of LULC maps is of great significance. LULC maps are usually 
+produced by two main procedures: photo-interpretation by human eye, which is 
+time and resource consuming and is not suitable for operational LULC-mapping 
+over large areas, and second, automatic mapping using remotely sensed data and 
+different classification algorithms. 
 
-Multispectral images are an important resource to build LULC maps, allowing for
-the use of classification algorithms, both supervised and unsupervised, to
-automate the production of these maps. Although significant progress has been
-made in the use of supervised learning techniques for automatic image
-classification \cite{Tewkesbury2015}, the acquisition of labeled training sets
-continues to be a bottleneck \cite{Rajan2008}. In order to build accurate and
-robust supervised classifiers it is crucial to have a large enough training
-dataset. Often, the problem is that different land cover types have very
-different levels of area coverage, which causes some of them to be frequent in
-the training dataset, while others are limited \cite{Feng2019}.
-
-% changed to this:
-The production of accurate Land Use/Land Cover (LULC) maps offers unique 
-monitoring
-capabilities within the remote sensing domain [1]. LULC maps are being used for 
-a variety of applications, ranging from environmental monitoring, land change 
-detection, natural hazard assessment up to agriculture and water/wetland 
-monitoring [2], therefore, accurate and timely production of LULC maps is of 
-great significance. LULC maps are usually produced by two main procedures: 
-photo-interpretation by human eye, which is time and resource consuming and is 
-not suitable for operational LULC-mapping over large areas, and second, 
-automatic mapping using remotely sensed data and different classification 
-algorithms. 
 The availability and quick update of high quality satellite remote sensing data 
 has brought tremendous progress in providing up-to-date and accurate land cover 
-information.
-
-Particularly, multispectral remote sensing images are an important resource to 
+information. Particularly, multispectral images are an important resource to 
 build LULC maps, allowing for the use of classification algorithms, both 
 supervised and unsupervised, to automate the production of these maps. Although 
 significant progress has been made in the use of supervised learning techniques 
-for automatic image classification [3], the acquisition of labeled training 
-sets continues to be a bottleneck [4]. In order to build accurate and robust 
-supervised classifiers it is crucial to have a large enough training dataset. 
-Often, the problem is that different land cover types have very different 
-levels of area coverage, which causes some of them to be frequent in the 
-training dataset, while others are limited
-
-
+for automatic image classification \cite{Tewkesbury2015}, the acquisition of 
+labeled training sets continues to be a bottleneck \cite{Rajan2008}. In order 
+to build accurate and robust supervised classifiers it is crucial to have a 
+large enough training dataset. Often, the problem is that different land cover 
+types have very different levels of area coverage, which causes some of them to 
+be frequent in the training dataset, while others are limited \cite{Feng2019}.
 
 A particular case where this phenomenon happens is the LUCAS dataset: Land Use
 and Coverage Area frame Survey coordinated by The Statistical Office of the
@@ -318,8 +297,9 @@ land, water and wetlands.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/study_area}
-	\caption{Study area and LUCAS reference data (Landsat 8 image from the date
-		of 2015/05/25)}
+	\caption{Study area and LUCAS reference data (coordinate system: 
+			WGS-84 UTM Zone 29, projection: Transverse-Mercator, Landsat image 
+			date: 2015/05/25).}
 	\label{fig:studyarea}
 \end{figure}
 
@@ -370,19 +350,28 @@ any of the minority classes, is presented in Table
 	\begin{tabular}{llrrrr}
 		\toprule
 		\textbf{LUCAS Category} & \textbf{Land cover type} & \textbf{Instances}
-		                        & \textbf{IR}                                            \\
+		                        &\textbf{IR} \\
 		\hline
-		A                       & Artificial land          & 131                & 5.81   \\
-		B                       & Cropland                 & 270                & 2.81   \\
-		C                       & Woodland                 & 761                & 1.00   \\
-		D                       & Shrubland                & 296                & 2.61   \\
-		E                       & Grassland                & 185                & 4.11   \\
-		F                       & Bareland                 & 37                 & 20.56  \\
-		G                       & Water                    & 10                 & 76.10  \\
-		H                       & Wetlands                 & 4                  & 190.25 \\
+		A                       & Artificial land          & 131                
+		& 5.81   \\
+		B                       & Cropland                 & 270                
+		& 2.81   \\
+		C                       & Woodland                 & 761                
+		& 1.00   \\
+		D                       & Shrubland                & 296                
+		& 2.61   \\
+		E                       & Grassland                & 185                
+		& 4.11   \\
+		F                       & Bareland                 & 37                 
+		& 20.56  \\
+		G                       & Water                    & 10                 
+		& 76.10  \\
+		H                       & Wetlands                 & 4                  
+		& 190.25 \\
 		\bottomrule
 	\end{tabular}
-	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes distribution.}
+	\caption{\label{tab:classes_distribution}LUCAS nomenclature and classes 
+	distribution.}
 \end{table}
 
 Table \ref{tab:LUCAS} presents a description of the LUCAS dataset, including
