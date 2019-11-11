@@ -413,7 +413,7 @@ class BinaryDatasets(Datasets):
         url = FETCH_URLS['arcene']
         data, labels = [], []
         for data_type in ('train', 'valid'):
-            data.append(pd.read_csv(urljoin(url, f'ARCENE/arcene_{data_type}.data'), header=None, sep=' ').drop(columns=list(range(1999, 10001))))
+            data.append(pd.read_csv(urljoin(url, f'ARCENE/arcene_{data_type}.data'), header=None, sep=' ').drop(columns=list(range(1998, 10001))))
             labels.append(pd.read_csv(urljoin(url, ('ARCENE/' if data_type == 'train' else '') + f'arcene_{data_type}.labels'), header=None).rename(columns={0:'target'}))
         data = pd.concat(data, ignore_index=True)
         labels = pd.concat(labels, ignore_index=True)
