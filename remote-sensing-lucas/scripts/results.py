@@ -29,7 +29,7 @@ from utils import load_datasets
 SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
 CONFIG = {
     'oversamplers': [
-        ('NO OVERSAMPLING', {}),
+        ('NO OVERSAMPLING', None, {}),
         ('RANDOM OVERSAMPLING', RandomOverSampler(), {}),
         ('SMOTE', SMOTE(), {'k_neighbors': [3, 5]}),
         ('BORDERLINE SMOTE', BorderlineSMOTE(), {'k_neighbors': [3, 5]}),
@@ -47,7 +47,7 @@ CONFIG = {
         ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
         ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]}),
     ],
-    'scoring': ['accuracy', 'f1_score', 'geometric_mean_score'],
+    'scoring': ['accuracy', 'f1_macro', 'geometric_mean_score'],
     'n_splits': 5,
     'n_runs': 3,
     'rnd_seed': 0,
