@@ -10,7 +10,7 @@ Activate a Python 3 virtual environment and run the command::
 Data
 ====
 
-The data are saved in the *data* directory as a csv :file:`path` .
+The data are saved in the *data* directory as a csv file.
 
 =======
 Results
