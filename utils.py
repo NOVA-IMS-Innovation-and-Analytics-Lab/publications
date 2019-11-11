@@ -87,7 +87,7 @@ class Datasets:
             func_names = [f'fetch_{name}'.lower().replace(' ', '_') for name in self.names]
         self.datasets_ = []
         for func_name in tqdm(func_names, desc='Datasets'):
-            name = func_name.replace('fetch', '').upper().replace('_', ' ')
+            name = func_name.replace('fetch_', '').upper().replace('_', ' ')
             fetch_data = getattr(self, func_name)
             data = self._modify_columns(fetch_data())
             self.datasets_.append((name, data))
