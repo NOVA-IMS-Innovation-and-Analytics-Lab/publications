@@ -22,7 +22,7 @@ from rlearn.tools import (
     apply_holms_test
 )
 
-sys.path.append('../..')
+sys.path.append(join(dirname(__file__), '..', '..'))
 from utils import generate_mean_std_tbl, generate_pvalues_tbl, sort_tbl
 
 UNDERSAMPLING_RATIOS = [50, 75, 90, 95]

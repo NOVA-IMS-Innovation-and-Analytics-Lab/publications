@@ -24,7 +24,7 @@ from imblearn.metrics import geometric_mean_score
 from gsmote import GeometricSMOTE
 from rlearn.tools import ImbalancedExperiment
 
-sys.path.append('../..')
+sys.path.append(join(dirname(__file__), '..', '..'))
 from utils import load_datasets
 
 
