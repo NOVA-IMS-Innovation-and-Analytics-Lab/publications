@@ -69,7 +69,7 @@ RANDOM_STATE = 0
 class Datasets:
     """Class to download and save datasets."""
 
-    def __init__(self, names):
+    def __init__(self, names='all'):
         self.names = names
 
     @staticmethod

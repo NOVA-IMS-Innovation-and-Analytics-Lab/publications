@@ -10,7 +10,7 @@ from os.path import join, dirname
 from sqlite3 import connect
 
 sys.path.append(join(dirname(__file__), '..', '..'))
-from utils import BinaryClassDatasets
+from utils import BinaryDatasets
 
 DATA_PATH = join(dirname(__file__), '..', 'data', 'small_data_oversampling.db')
 
@@ -18,7 +18,7 @@ DATA_PATH = join(dirname(__file__), '..', 'data', 'small_data_oversampling.db')
 if __name__ == '__main__':
 
     # Download datasets
-    data = BinaryClassDatasets().download().datasets_
+    data = BinaryDatasets().download().datasets_
 
     # Save data to database
     with connect(DATA_PATH) as connection:
