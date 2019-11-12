@@ -654,10 +654,11 @@ compare the two oversamplers (G-SMOTE and SMOTE). Table \ref{tab:smote_gsmote}
 shows that G-SMOTE systematically outperforms SMOTE regardless of the classifier or metric
 used.
 
-Much like our experiment, results obatined in \cite{Feng2019} demonstrate
-increased classification performance when using SMOTE. Although, according to
-our experiment, performance can be further increased by using oversamplers other
-than SMOTE, ideally G-SMOTE. Cenggoro et al. \cite{Cenggoro2018} use Variational
+Much like our experiment, results obtained in \cite{Feng2019} demonstrate
+increased classification performance when using SMOTE. According to
+our experiment, performance can be further increased by using other 
+oversamplers, such as G-SMOTE. Cenggoro et al. \cite{Cenggoro2018} use 
+Variational
 Semi-Supervised Learning to deal with class imbalance. Their method shows
 improved performance over existing State-of-the-art methods, as well as a Neural
 Network trained on both the original dataset and on a SMOTE oversampled dataset.
@@ -673,6 +674,19 @@ imbalanced dataset, where random oversampling was applied. This method yielded
 increased Kappa scores, showing relative consistency with the results obtained
 in our study. Regardless, the oversampling method employed in this study appears
 to be sub-optimal.
+
+This is the first study performing a systematic comparison of oversampling 
+algorithms in the remote sensing domain. However, a number of previous studies, 
+implementing oversampling algorithms for imbalanced learning, reported results 
+consistent with our findings. \cite{Bogner2018} report increased F-score and 
+G-mean scores when oversampler is applied to balance the data, while 
+classification OA does not improve. Results obtained in \cite{Feng2019} 
+demonstrate increased classification performance when using SMOTE. According to 
+our experiment, performance can be further increased by using other 
+oversamplers, such as G-SMOTE. A number of other studies (\cite{Cenggoro2018}, 
+\cite{Maxwell2018}) are not using imbalance specific metrics for model 
+performance evaluation, therefore it cannot be directly compared with our 
+results. 
 
 \section{Conclusions}
 
