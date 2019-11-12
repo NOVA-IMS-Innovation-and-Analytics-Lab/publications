@@ -638,75 +638,47 @@ scores show the well known bias towards the majority class as discussed in
 \ref{Evaluation metrics}. In a multi-class classification problem with an
 imbalanced dataset, where the prediction of all the classes are of equal
 importance as in many remote sensing applications, \textit{Accuracy} should be
-of secondary importance compared to more robust metrics, such as \textit{F-
-	score} and \textit{G-mean}. Nevertheless, even for \textit{Accuracy} metric, G-
-SMOTE shows the best performance amongst the oversamplers.
+of secondary importance compared to more robust metrics, such as \textit{F-score} 
+and \textit{G-mean}. Nevertheless, even for \textit{Accuracy} metric, 
+G-SMOTE shows the best performance amongst the oversamplers.
 
-Tables \ref{tab:ranking} and \ref{tab:mean_rankings} are provided as a form to
-better visualize score rankings across oversamplers. The impact of not using an 
-oversampling method becomes noticeable. The rankings for metrics \textit{G-mean}
-and \textit{F-score} show that the superiority of G-SMOTE over all other approaches.
-Overall, G-SMOTE's improved performance observed in table \ref{tab:mean_cross_val} is 
-now easier to visualize.
+In tables \ref{tab:ranking} and \ref{tab:mean_rankings} the rankings of the 
+oversamplers are presented and show the superiority of G-SMOTE. Although SMOTE 
+is the most popular oversampling method in remote sensing applications, it is 
+clear from the tables that it produces suboptimal results. Therefore, we decided 
+to add a table directly comparing the performance of SMOTE and G-SMOTE 
+(Table \ref{tab:smote_gsmote}) which shows that G-SMOTE systematically 
+outperforms SMOTE, regardless of the classifier or metric used.
 
-Given the popularity of SMOTE in remote sensing, it makes sense to directly
-compare the two oversamplers (G-SMOTE and SMOTE). Table \ref{tab:smote_gsmote}
-shows that G-SMOTE systematically outperforms SMOTE regardless of the classifier or metric
-used.
-
-Much like our experiment, results obtained in \cite{Feng2019} demonstrate
-increased classification performance when using SMOTE. According to
-our experiment, performance can be further increased by using other 
-oversamplers, such as G-SMOTE. Cenggoro et al. \cite{Cenggoro2018} use 
-Variational Semi-Supervised Learning to deal with class imbalance. Their method shows
-improved performance over existing State-of-the-art methods, as well as a Neural
-Network trained on both the original dataset and on a SMOTE oversampled dataset.
-Although they found their method to be superior than the remaining methods, and
-the neural network trained on the original dataset to overperform the same
-classifier trained on a SMOTE oversampled classifier, the authors only employ OA
-for measuring the quality of these methods. Similar to their study, our results
-demonstrate that any oversampler will decrease the classifier's OA. Although, OA
-has also been found to be inappropriate to measure a classifier's performance
-when dealing with imbalanced datasets, making it an unreliable comparison. Wang
-et al. \cite{Wang2019} propose a new method on change detection using an
-imbalanced dataset, where random oversampling was applied. This method yielded
-increased Kappa scores, showing relative consistency with the results obtained
-in our study. Regardless, the oversampling method employed in this study appears
-to be sub-optimal.
-
-This is the first study performing a systematic comparison of oversampling 
-algorithms in the remote sensing domain. However, a number of previous studies, 
-implementing oversampling algorithms for imbalanced learning, reported results 
-consistent with our findings. \cite{Bogner2018} report increased F-score and 
-G-mean scores when oversampler is applied to balance the data, while 
-classification OA does not improve. Results obtained in \cite{Feng2019} 
-demonstrate increased classification performance when using SMOTE. According to 
-our experiment, performance can be further increased by using other 
-oversamplers, such as G-SMOTE. A number of other studies (\cite{Cenggoro2018}, 
-\cite{Maxwell2018}) are not using imbalance specific metrics for model 
-performance evaluation, therefore it cannot be directly compared with our 
-results.
+This is the first study presenting a systematic comparison of oversampling 
+algorithms in remote sensing. However, a number of previous studies 
+reported results consistent with our findings. \cite{Bogner2018} reported 
+an increase \textit{F-score} and \textit{G-mean} when oversampling was applied, 
+while classification overall accuracy did not improve. Similarly, results 
+obtained in \cite{Feng2019} demonstrate increased classification performance 
+when using SMOTE. According to our experiment, performance can be further 
+increased by using G-SMOTE. A number of other studies (\cite{Cenggoro2018}, \cite{Maxwell2018}) 
+do not use imbalance specific metrics, therefore it cannot be directly 
+compared to our results.
 
 \section{Conclusions}
 
 In this paper we applied G-SMOTE, a novel oversampling algorithm, on a LULC
-classification based on the LUCAS data, a highly imbalanced multi-class dataset.
+classification problem, using a highly imbalanced multi-class dataset (LUCAS).
 G-SMOTE's performance was evaluated and compared with other oversampling
 methods. More specifically, ROS, SMOTE, B-SMOTE and ADASYN were the selected
 oversamplers while LR, KNN, DT, GBC and RF were used as classifiers.
 
-The experiment results show the importance of oversampling methods for
-multi-class imbalanced data classification as in most of the cases balancing
-data with oversampling resulted in higher \textit{F-score} and \textit{G-mean}
-values.
-
-Readers should consider using G-SMOTE when the model’s predictive power on
-minority class instances is of equal or higher importance than the majority
-class(es), such as change detection for rare land cover types in a landscape.
+The experimental results show that using G-SMOTE oversampler can significantly 
+improve the classification performance, resulting in higher values of 
+\textit{F-score} and \textit{G-mean}. Therefore, readers should consider using G-SMOTE when 
+predicting accurately the minority classes is of equal or higher importance compared to 
+the accurate prediction of the majority class. Examples of the above case are the 
+land cover change detections and rare land cover type classification.
 
 G-SMOTE can be a useful tool for remote sensing researchers and practitioners,
-as it systematically outperforms the previous widely used oversamplers, such as
-ROS and SMOTE. G-SMOTE is easily accessible to the users through an
+as it systematically outperforms the previous widely used oversamplers. 
+G-SMOTE is easily accessible to the users through an
 \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open
 	source implementation}.
 
