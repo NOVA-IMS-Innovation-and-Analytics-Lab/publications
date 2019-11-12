@@ -76,16 +76,16 @@ different classification algorithms.
 
 The availability and quick update of high quality satellite remote sensing data
 has brought tremendous progress in providing up-to-date and accurate land cover
-information. Particularly, multispectral images are an important resource to
-build LULC maps, allowing for the use of classification algorithms, both
-supervised and unsupervised, to automate the production of these maps. Although
-significant progress has been made in the use of supervised learning techniques
-for automatic image classification \cite{Tewkesbury2015}, the acquisition of
-labeled training sets continues to be a bottleneck \cite{Rajan2008}. In order
-to build accurate and robust supervised classifiers it is crucial to have a
-large enough training dataset. Often, the problem is that different land cover
-types have very different levels of area coverage, which causes some of them to
-be frequent in the training dataset, while others are limited \cite{Feng2019}.
+information. Particularly, multispectral images are an important resource to 
+build LULC maps, allowing for the use of classification algorithms to automate 
+their production. Although significant progress has been made in the use of 
+supervised learning techniques for automatic image classification 
+\cite{Tewkesbury2015}, the acquisition of labeled training sets continues to be 
+a bottleneck \cite{Rajan2008}. In order to build accurate and robust supervised 
+classifiers it is crucial to have a large enough training dataset. Often, the 
+problem is that different land cover types have very different levels of area 
+coverage, which causes some of them to be frequent in the training dataset, 
+while others are limited \cite{Feng2019}.
 
 A particular case where this phenomenon happens is the LUCAS dataset: Land Use
 and Coverage Area frame Survey coordinated by The Statistical Office of the
@@ -298,39 +298,35 @@ land, water and wetlands.
 	\centering
 	\includegraphics[width=1\linewidth]{../analysis/study_area}
 	\caption{Study area and LUCAS reference data (coordinate system:
-			WGS-84 UTM Zone 29, projection: Transverse-Mercator, Landsat image
-			date: 2015/05/25).}
+			WGS-84 UTM Zone 29, projection: Transverse-Mercator, Landsat image 
+			acquisition date: 2015/05/25).}
 	\label{fig:studyarea}
 \end{figure}
 
 \subsection{Remote sensing data}
 
 The remotely sensed data includes 8 images from moderate-resolution Landsat
-8ETM+ multi-spectral sensor. The images are Level-1 terrain corrected products
-(L1TP) and are acquired in 2015 from February to September, 1 image each month.
-The acquisition mode is Descending.  Data was pre-processed in order to remove
-pixels with cloud cover. Only bands 2, 3, 4, 5, 6 and 7 are used from each
-image. Accordingly, each reference point from LUCAS dataset has 48 features,
-representing pixel values from each spectral band from each image.
+8ETM+ multi-spectral sensor. The images are Level-2 surface reflectance product 
+(OLI/TIRS) and are acquired in 2015 from February to September, 1 image each 
+month. The acquisition mode is Descending.  Data was pre-processed in order to 
+remove pixels with cloud cover. Only bands 2, 3, 4, 5, 6 and 7 are used from 
+each image. Accordingly, each reference point from LUCAS dataset has 48 
+features, representing pixel values from each spectral band from each image.
 
 \subsection{LUCAS dataset}
 
 The 2015 LUCAS data was used as reference data for both model training and
-validation. The label of LUCAS point represents the corresponding land cover
-type within the radius of 1.5 m, gathered  by field observation and very high
-resolution photo interpretation  \cite{LUCAS2015C1}. If the land cover is
-homogeneous in the sampling point area, then the land cover type within the
-defined area is assigned to the LUCAS point. When the land cover is not
-homogeneous, systematic observation of land cover is carried out  in the
-vicinity of the sampling point in an area of 20 m radius extents. This
-information is recorded in the metadata of each point. Furthermore, LUCAS
-dataset provides the area coverage of homogeneous patches, where the point is
-located. In order to avoid having pixels in a mixed environment, filters were
-applied and points having extended observation window and points having
-homogeneous patches less than 1 ha (or 0.5 ha)  were excluded. This was not
-applied only on the class of "artificial land", as this would remove most part
-of the samples. Furthermore, points with cloudy pixels on Landsat data were also
-excluded. This way, 1694 LUCAS points were kept out of 2060. This dataset
+validation. The label of LUCAS point represents the corresponding land cover/use
+type within the radius of 1.5 m for homogeneous classes and 20 m radius extent 
+("extended window") for heterogeneous classes (e.g. srubland), gathered  by 
+field observation and very high resolution photo interpretation  
+\cite{LUCAS2015C1}. In order to reduce the risk having Landsat pixel 
+information wrongly represented in the field, we kept points observed only 
+in-situ from close distance (<100 m). With the same objective we removed the 
+points having linear features in the observation (e.g. roads). This was not 
+applied only on the class of "artificial land", as this would remove most part 
+of the samples. Furthermore, points with cloudy pixels on Landsat data were 
+also excluded. This way, 1694 LUCAS points were kept out of 2060. This dataset 
 contains 8 classes that represent the main land cover types for the study area.
 
 This pixel selection excluded large number of unacceptable reference points, and
