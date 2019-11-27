@@ -3,6 +3,7 @@ Analyze the experimental results.
 """
 
 # Author: Georgios Douzas <gdouzas@icloud.com>
+#         João Fonseca <jpmrfonseca@gmail.com>
 # License: MIT
 
 import sys
@@ -96,14 +97,6 @@ def describe_dataset():
     desc.iloc[:-1] = desc.iloc[:-1].applymap('{:.0f}'.format)
     return desc
 
-def bold_best_value(df, maximum=True):
-    if maximum:
-        loc_best = df.T.astype(float).idxmax().reset_index().values
-    else:
-        loc_best = df.T.astype(float).idxmin().reset_index().values
-    id_best, ovs_best = loc_best[:,:-1], loc_best[:,-1]
-    df.loc[id_best]
-
 def mk_bold_round(row, maximum=True, decimals=2):
     row = row.astype(float)
     if maximum:
@@ -114,6 +107,14 @@ def mk_bold_round(row, maximum=True, decimals=2):
     row[val_ref] = '\\textbf{%s}' % row[val_ref]
     return row
 
+def percent_diff_table(combined, oversampler='G-SMOTE', comparison_ovs=['NO OVERSAMPLING','RANDOM OVERSAMPLING','SMOTE']):
+    all_perc_diff = []
+    for comp_ovs in comparison_ovs:
+        mean_perc_diff_scores = format_dataframe(
+            calculate_mean_sem_perc_diff_scores(combined, [comp_ovs, oversampler])[0]
+        ).applymap('{:,.2f}'.format).rename(columns={'Difference':OS_LABELS[comp_ovs]})
+        all_perc_diff.append(mean_perc_diff_scores)
+    return pd.concat(all_perc_diff, axis=1)
 
 def generate_main_results():
     """Generate the main results of the experiment."""
@@ -138,9 +139,11 @@ def generate_main_results():
     model_mean_ranking = _mean_ranking.groupby(['Metric']).mean()\
         .sort_index(ascending=False)\
         .apply(lambda x: mk_bold_round(x, False, 1), axis=1)
-    mean_perc_diff_scores = format_dataframe(
-        calculate_mean_sem_perc_diff_scores(combined, ['SMOTE', 'G-SMOTE'])[0]
-    ).applymap('{:,.2f}'.format).rename(columns={'Difference':'Perc. diff.'})
+    mean_perc_diff_scores = percent_diff_table(
+        combined,
+        oversampler='G-SMOTE',
+        comparison_ovs=['NO OVERSAMPLING','RANDOM OVERSAMPLING','SMOTE']
+    )
 
     # Get dataset description
     dataset_descrip = describe_dataset()
