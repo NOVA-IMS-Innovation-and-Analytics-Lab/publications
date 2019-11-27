@@ -544,8 +544,8 @@ covers their interpretation in detail.
 
 \subsection{Results}
 
-For each combination of classifier and metric, a cross-validation score for all oversamplers is
-provided in Table \ref{tab:mean_cross_val}:
+For each combination of classifier and metric, a cross-validation score for all
+oversamplers is provided in Table \ref{tab:mean_cross_val}:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -568,32 +568,10 @@ provided in Table \ref{tab:mean_cross_val}:
 ]
 {../analysis/mean_scores.csv}
 
-A ranking score was assigned to each oversampling method with the best and worst-
-performing methods receiving scores from 1 to 6, respectively. This
-comparison is presented in Table \ref{tab:ranking}:
-
-\pgfplotstabletypeset[
-	begin table=\begin{longtable},
-		end table=\end{longtable},
-	col sep=comma,
-	header=true,
-	columns={Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE},
-	columns/Classifier/.style={column type=l,string type},
-	columns/Metric/.style={column type=l,string type},
-	columns/NONE/.style={column type=l,string type},
-	columns/ROS/.style={column type=l,string type},
-	columns/SMOTE/.style={column type=l,string type},
-	columns/B-SMOTE/.style={column type=l,string type},
-	columns/ADASYN/.style={column type=l,string type},
-	columns/G-SMOTE/.style={column type=l,string type},
-	every head row/.style={before row=\toprule, after row=\midrule\endhead},
-	every last row/.style={after row=\bottomrule
-			\caption{\label{tab:ranking}Results for ranking of oversamplers}}
-]
-{../analysis/mean_ranking.csv}
-
-Table \ref{tab:mean_rankings} was created by averaging the ranking
-scores over all classifiers per evaluation metric:
+A ranking score was assigned to each oversampling method with the best and
+worst- performing methods receiving scores from 1 to 6, respectively. Table
+\ref{tab:mean_rankings} was created by averaging the ranking scores over all
+classifiers per evaluation metric:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -614,22 +592,25 @@ scores over all classifiers per evaluation metric:
 ]
 {../analysis/model_mean_ranking.csv}
 
-Table \ref{tab:smote_gsmote} presents the percentage difference between
-G-SMOTE and SMOTE:
+Table \ref{tab:smote_gsmote} presents the percentage difference between G-SMOTE
+and no oversampling (NONE), Random Oversampling (ROS) and SMOTE:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
 		end table=\end{longtable},
 	col sep=comma,
 	header=true,
-	columns={Classifier,Metric,Perc. diff.},
+	columns={Classifier,Metric,NONE,ROS,SMOTE},
 	columns/Classifier/.style={column type=l,string type},
 	columns/Metric/.style={column type=l,string type},
-	columns/Perc. diff./.style={column type=l,string type},
+	columns/NONE/.style={column type=l,string type},
+	columns/ROS/.style={column type=l,string type},
+	columns/SMOTE/.style={column type=l,string type},
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule
 			\caption{\label{tab:smote_gsmote}Results for the percentage difference
-				between G-SMOTE and SMOTE.}}
+				between G-SMOTE and no oversampling (NONE), Random Oversampling (ROS)
+				and SMOTE.}}
 ]
 {../analysis/mean_perc_diff_scores.csv}
 
@@ -647,13 +628,13 @@ of secondary importance compared to more robust metrics, such as \textit{F-
 score} and \textit{G-mean}. Nevertheless, even for the \textit{Accuracy} metric,
 G-SMOTE shows the best performance amongst the oversamplers.
 
-In tables \ref{tab:ranking} and \ref{tab:mean_rankings}, the rankings of the
-oversamplers are presented and show the superiority of G-SMOTE. Although SMOTE
-is the most popular oversampling method in remote sensing applications, it is
-clear from the tables that it produces suboptimal results. Therefore, we decided
-to add a table directly comparing the performance of SMOTE and G-SMOTE
-(Table \ref{tab:smote_gsmote}), which shows that G-SMOTE systematically
-outperforms SMOTE, regardless of the classifier or metric used.
+In table \ref{tab:mean_rankings}, the rankings of the oversamplers are presented
+and show the superiority of G-SMOTE. Although SMOTE is the most popular
+oversampling method in remote sensing applications, it is clear from the tables
+that it produces suboptimal results. Therefore, we decided to add a table
+directly comparing the performance of G-SMOTE with NONE, ROS and SMOTE (Table
+\ref{tab:smote_gsmote}), which shows that G-SMOTE systematically outperforms
+the remaining oversamplers, regardless of the classifier or metric used.
 
 This study is the first to present a systematic comparison of oversampling
 algorithms in remote sensing. However, several previous studies reported results
@@ -662,9 +643,9 @@ consistent with our findings. \cite{Bogner2018} reported an increase in
 classification overall accuracy did not improve. Similarly, results obtained in
 \cite{Feng2019} demonstrate increased classification performance when using
 SMOTE. According to our experiment, performance can be further increased by
-using G-SMOTE. A number of other studies (\cite{Cenggoro2018},
-\cite{Maxwell2018}) do not use imbalance specific metrics, therefore it cannot
-be directly compared to our results.
+using G-SMOTE. A number of other studies \cite{Cenggoro2018, Maxwell2018} do not
+use imbalance specific metrics, therefore it cannot be directly compared to our
+results.
 
 \section{Conclusions}
 
