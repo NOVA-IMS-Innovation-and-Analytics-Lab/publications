@@ -1,4 +1,0 @@
-Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE
-Accuracy,\textbf{1.0},3.8,5.0,3.0,6.0,2.2
-F-score,3.8,5.2,3.8,2.2,4.8,\textbf{1.2}
-G-mean,5.2,5.0,3.6,2.0,4.2,\textbf{1.0}

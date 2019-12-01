@@ -268,7 +268,7 @@ G-SMOTE using a deformed geometric region.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../analysis/gsmote_smote}
+	\includegraphics[width=1\linewidth]{../analysis/smote_vs_gsmote}
 	\caption{Example of minority class oversampled by SMOTE and G-SMOTE
 		algorithms. G-SMOTE generates non-noisy samples
 		with greater variety than SMOTE.}
@@ -285,7 +285,7 @@ experiment.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../analysis/g_smote_flow_chart}
+	\includegraphics[width=1\linewidth]{../analysis/experiment_flow_chart}
 	\caption{Flowchart containing the steps applied in the entire method.}
 	\label{fig:flowchart}
 \end{figure}
@@ -392,7 +392,7 @@ emphasize the imbalance character of the dataset:
 	every last row/.style={after row=\bottomrule
 			\caption{\label{tab:LUCAS}Description of the LUCAS dataset.}}
 ]
-{../analysis/dataset_descrip.csv}
+{../analysis/dataset_description.csv}
 
 \subsection{Evaluation metrics}  \label{Evaluation metrics}
 
@@ -566,7 +566,7 @@ oversamplers is provided in Table \ref{tab:mean_cross_val}:
 			\caption{\label{tab:mean_cross_val}Results for cross-validation scores of
 				oversamplers.}}
 ]
-{../analysis/mean_scores.csv}
+{../analysis/wide_optimal.csv}
 
 A ranking score was assigned to each oversampling method with the best and worst performing methods receiving scores from 1 to 6, respectively. Table
 \ref{tab:mean_rankings} presents the ranking scores per classifier and evaluation metric:
@@ -589,7 +589,7 @@ A ranking score was assigned to each oversampling method with the best and worst
 	every last row/.style={after row=\bottomrule
 			\caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
 ]
-{../analysis/mean_ranking.csv}
+{../analysis/ranking.csv}
 
 Table \ref{tab:smote_gsmote} presents the percentage difference between G-SMOTE
 and NONE, ROS and SMOTE:
@@ -609,7 +609,7 @@ and NONE, ROS and SMOTE:
 	every last row/.style={after row=\bottomrule 
 	\caption{\label{tab:smote_gsmote}Results for the percentage difference between G-SMOTE and other popular methods.}}
 ]
-{../analysis/mean_perc_diff_scores.csv}
+{../analysis/perc_diff_scores.csv}
 
 \subsection{Discussion}
 

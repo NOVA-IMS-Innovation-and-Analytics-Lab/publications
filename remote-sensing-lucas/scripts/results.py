@@ -6,33 +6,34 @@ Generate the main experimental results.
 # License: MIT
 
 import sys
-from collections import Counter, OrderedDict
 from os.path import join, dirname
 
-import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors.classification import KNeighborsClassifier
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import make_scorer, SCORERS
-from imblearn.under_sampling import RandomUnderSampler
-from imblearn.over_sampling.base import BaseOverSampler
 from imblearn.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN
 from imblearn.metrics import geometric_mean_score
 from gsmote import GeometricSMOTE
 from rlearn.tools import ImbalancedExperiment
 
 sys.path.append(join(dirname(__file__), '..', '..'))
-from utils import load_datasets
+from utils import load_datasets, generate_paths
 
-SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
+def geometric_mean_score_macro(y_true, y_pred):
+    """Geometric mean score with macro average."""
+    return geometric_mean_score(y_true, y_pred, average='macro')
+
+SCORERS['geometric_mean_score_macro'] = make_scorer(geometric_mean_score_macro)
 CONFIG = {
     'oversamplers': [
-        ('NO OVERSAMPLING', None, {}),
-        ('RANDOM OVERSAMPLING', RandomOverSampler(), {}),
+        ('NONE', None, {}),
+        ('ROS', RandomOverSampler(), {}),
         ('SMOTE', SMOTE(), {'k_neighbors': [3, 5]}),
-        ('BORDERLINE SMOTE', BorderlineSMOTE(), {'k_neighbors': [3, 5]}),
+        ('B-SMOTE', BorderlineSMOTE(), {'k_neighbors': [3, 5]}),
+        ('ADASYN', ADASYN(), {'n_neighbors': [2, 3]}),
         ('G-SMOTE', GeometricSMOTE(), {
             'k_neighbors': [3, 5],
             'selection_strategy': ['combined', 'minority', 'majority'],
@@ -46,21 +47,23 @@ CONFIG = {
         ('KNN', KNeighborsClassifier(), {'n_neighbors': [3, 5]}),
         ('DT', DecisionTreeClassifier(), {'max_depth': [3, 6]}),
         ('GBC', GradientBoostingClassifier(), {'max_depth': [3, 6], 'n_estimators': [50, 100]}),
+        ('RF', RandomForestClassifier(), {'max_depth': [None, 3, 6], 'n_estimators': [10, 50, 100]})
     ],
-    'scoring': ['accuracy', 'f1_macro', 'geometric_mean_score'],
+    'scoring': ['accuracy', 'f1_macro', 'geometric_mean_score_macro'],
     'n_splits': 5,
     'n_runs': 3,
     'rnd_seed': 0,
     'n_jobs': -1
 }
-DATA_PATH = join(dirname(__file__), '..', 'data')
-FILE_PATH = join(dirname(__file__), '..', 'results', '{}.pkl')
 
 
 if __name__ == '__main__':
 
+    # Extract paths
+    data_path, results_path, _ = generate_paths()
+
     # Load lucas dataset
-    datasets = load_datasets(data_path=DATA_PATH, data_type='csv')
+    datasets = load_datasets(data_path=data_path, data_type='csv')
     
     # Extract oversamplers
     oversamplers = CONFIG['oversamplers']
@@ -80,7 +83,5 @@ if __name__ == '__main__':
         ).fit(datasets)
 
         # Save results
-        experiment.results_.to_pickle(
-            FILE_PATH.format(oversampler[0].replace("-", "").replace(" ", "_").lower()
-            )
-        )
+        file_name = f'{oversampler[0].replace("-", "").lower()}.pkl'
+        experiment.results_.to_pickle(join(results_path, file_name))

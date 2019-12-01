@@ -16,145 +16,103 @@ from os.path import (
     basename
 )
 import pickle
-import numpy as np
-import pandas as pd
+from collections import Counter, OrderedDict
 from itertools import product
 
+import numpy as np
+import pandas as pd
 from rlearn.tools import (
     combine_results,
-    calculate_mean_sem_perc_diff_scores,
-    calculate_wide_optimal
+    select_results,
+    calculate_wide_optimal,
+    calculate_ranking,
+    calculate_mean_sem_perc_diff_scores
 )
 
-RESULTS_PATH = realpath(join(dirname(__file__), '..', 'results'))
-ANALYSIS_PATH = realpath(join(dirname(__file__), '..', 'analysis'))
-DATA_PATH = realpath(join(dirname(__file__), '..', 'data', 'lucas.csv'))
+sys.path.append(join(dirname(__file__), '..', '..'))
+from utils import (
+    generate_mean_std_tbl, 
+    generate_pvalues_tbl, 
+    sort_tbl, 
+    generate_paths, 
+    load_datasets, 
+    make_bold, 
+    SCORERS
+)
 
-OS_LABELS = {
-    'NO OVERSAMPLING':'NONE',
-    'RANDOM OVERSAMPLING':'ROS',
-    'SMOTE': 'SMOTE',
-    'BORDERLINE SMOTE':'B-SMOTE',
-    'ADASYN': 'ADASYN',
-    'G-SMOTE': 'G-SMOTE',
-}
-METRICS = {
-    'mean_test_geometric_mean_macro_score':'G-mean',
-    'mean_test_f1_macro':'F-score' ,
-    'mean_test_accuracy':'Accuracy'
-}
-CLASSIFIERS = ['LR', 'KNN', 'DT', 'GBC', 'RF']
-TARGET_LABELS = {'A':1, 'B':2, 'C':0, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7}
-ANALYSIS_OUTPUT = [
-    'mean_scores',
-    'mean_ranking',
-    'model_mean_ranking',
-    'mean_perc_diff_scores',
-    'dataset_descrip'
-]
-
-def format_dataframe(optimal):
-    """Renames metrics, drops redundant classifiers, and sorts table"""
-    optimal = optimal[
-        optimal['Classifier']\
-            .isin(CLASSIFIERS)
-            ]
-    optimal['Metric'] = optimal['Metric'].map(METRICS)
-    optimal = optimal.set_index(['Classifier', 'Metric'])\
-        .sort_index(ascending=[True, False])\
-        .reindex([
-            (clf, scorer)
-            for clf, scorer
-            in product(CLASSIFIERS,
-                np.sort(list(METRICS.values())))
-        ])
-    return optimal
+LABELS_MAPPING = {'A':1, 'B':2, 'C':0, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7}
+RESULTS_NAMES = ('none', 'ros', 'smote', 'bsmote', 'adasyn', 'gsmote')
+OVRS_NAMES = ('NONE', 'ROS', 'SMOTE', 'B-SMOTE', 'ADASYN', 'G-SMOTE')
+CLFS_NAMES = ('LR', 'KNN', 'DT', 'GBC', 'RF')
+METRICS_MAPPING = OrderedDict([('accuracy', 'Accuracy'), ('f1_macro', 'F-score'), ('geometric_mean_score_macro', 'G-mean')])
+BASELINE_OVRS = ('NONE', 'ROS', 'SMOTE')
+MAIN_RESULTS_NAMES = ('dataset_description', 'wide_optimal', 'ranking', 'perc_diff_scores')
 
 
-def generate_mean_table(mean_vals):
-    """Calculates optimal results oversamplers and classifiers"""
-    mean_vals = mean_vals\
-            .rename(columns=OS_LABELS)\
-            [OS_LABELS.values()]
-    return mean_vals
-
-
-def describe_dataset():
-    """Generates dataframe with dataset description"""
-    df = pd.read_csv(DATA_PATH)
-    count_c = df[df['target']==TARGET_LABELS['C']].shape[0]
-    count_h = df[df['target']==TARGET_LABELS['H']].shape[0]
-    columns = ['Dataset', splitext(basename(DATA_PATH))[0].upper()]
-    description = {
-        'Features': df.shape[-1]-1,
-        'Instances': df.shape[0],
-        'Instances of class C': count_c,
-        'Instances of class H': count_h,
-        'IR of class H': count_c/count_h
-    }
-    desc = pd.DataFrame(data=description.items(), columns=columns)\
-        .set_index('Dataset')
-    desc.iloc[:-1] = desc.iloc[:-1].applymap('{:.0f}'.format)
-    return desc
-
-def mk_bold_round(row, maximum=True, decimals=2):
-    row = row.astype(float)
-    if maximum:
-        val_ref = row.idxmax()
-    else:
-        val_ref = row.idxmin()
-    row = row.map(('{:,.%sf}' % decimals).format )
-    row[val_ref] = '\\textbf{%s}' % row[val_ref]
-    return row
-
-def percent_diff_table(combined, oversampler='G-SMOTE', comparison_ovs=['NO OVERSAMPLING','RANDOM OVERSAMPLING','SMOTE']):
-    all_perc_diff = []
-    for comp_ovs in comparison_ovs:
-        mean_perc_diff_scores = format_dataframe(
-            calculate_mean_sem_perc_diff_scores(combined, [comp_ovs, oversampler])[0]
-        ).applymap('{:,.2f}'.format).rename(columns={'Difference':OS_LABELS[comp_ovs]})
-        all_perc_diff.append(mean_perc_diff_scores)
-    return pd.concat(all_perc_diff, axis=1)
-
-def generate_main_results():
-    """Generate the main results of the experiment."""
-    # read pickled objects
-    objs = os.listdir(RESULTS_PATH)
-    results = [
-        pickle.load(open(join(RESULTS_PATH, obj), 'rb'))
-        for obj in objs
-        if obj.split('.')[-1]=='pkl'
+def describe_dataset(dataset):
+    """Generates dataframe with dataset description."""
+    name, (X, y) = dataset
+    counts = Counter(y)
+    description = [
+        ['Features', X.shape[-1] - 1],
+        ['Instances', X.shape[0]],
+        ['Instances of class C', counts[LABELS_MAPPING['C']]],
+        ['Instances of class H', counts[LABELS_MAPPING['H']]],
+        ['IR of class H', counts[LABELS_MAPPING['C']] / counts[LABELS_MAPPING['H']]]
     ]
+    return pd.DataFrame(description, columns=['Dataset', name])
 
-    # Create combined resuls dataframe
-    combined = combine_results(*results)
+
+def generate_main_results(data_path, results_path):
+    """Generate the main results of the experiment."""
+    
+    # Load dataset
+    dataset = load_datasets(data_path=data_path, data_type='csv')[0]
+
+    # Load results
+    results = []
+    for name in RESULTS_NAMES:
+        file_path = join(results_path, f'{name}.pkl')
+        results.append(pd.read_pickle(file_path))
+        
+    # Combine and select results
+    results = combine_results(*results)
+    results = select_results(results, oversamplers_names=OVRS_NAMES, classifiers_names=CLFS_NAMES)
 
     # Calculate results
-    mean_vals = format_dataframe(calculate_wide_optimal(combined))
-    _mean_table = generate_mean_table(mean_vals)
-    _mean_ranking = _mean_table.rank(ascending=False, axis=1).astype(int)
+    metrics_names, *_ = zip(*METRICS_MAPPING.items())
+    dataset_description = describe_dataset(dataset)
+    wide_optimal = calculate_wide_optimal(results).drop(columns='Dataset')
+    ranking = calculate_ranking(results).drop(columns='Dataset')
+    ranking.iloc[:, 2:] = ranking.iloc[:, 2:].astype(int)
+    perc_diff_scores = []
+    for oversampler in BASELINE_OVRS:
+        perc_diff_scores_ovs = calculate_mean_sem_perc_diff_scores(results, [oversampler, 'G-SMOTE'])[0]
+        perc_diff_scores_ovs = perc_diff_scores_ovs[['Difference']].rename(columns={'Difference': oversampler})
+        perc_diff_scores.append(perc_diff_scores_ovs)
+    perc_diff_scores = sort_tbl(pd.concat([ranking[['Classifier', 'Metric']], pd.concat(perc_diff_scores, axis=1)], axis=1), clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
+    perc_diff_scores.iloc[:, 2:] = round(perc_diff_scores.iloc[:, 2:], 2)
 
-    mean_scores = _mean_table.apply(lambda x: mk_bold_round(x, True), axis=1)
-    mean_ranking = _mean_ranking.apply(lambda x: mk_bold_round(x, False, 0), axis=1)
-    model_mean_ranking = _mean_ranking.groupby(['Metric']).mean()\
-        .sort_index(ascending=False)\
-        .apply(lambda x: mk_bold_round(x, False, 1), axis=1)
-    mean_perc_diff_scores = percent_diff_table(
-        combined,
-        oversampler='G-SMOTE',
-        comparison_ovs=['NO OVERSAMPLING','RANDOM OVERSAMPLING','SMOTE']
-    )
+    # Format results
+    main_results = [(MAIN_RESULTS_NAMES[0], dataset_description)]
+    for name, result in zip(MAIN_RESULTS_NAMES[1:], (wide_optimal, ranking, perc_diff_scores)):
+        result = sort_tbl(result, clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
+        result['Metric'] = result['Metric'].apply(lambda metric: METRICS_MAPPING[metric])
+        if name == 'wide_optimal':
+            result.iloc[:, 2:] = result.iloc[:, 2:].apply(make_bold, axis=1)
+        elif name == 'ranking':
+            result.iloc[:, 2:] = result.iloc[:, 2:].apply(lambda row: make_bold(row, False, 0), axis=1)
+        main_results.append((name, result))
 
-    # Get dataset description
-    dataset_descrip = describe_dataset()
+    return main_results
 
-    return ((k,v) for k,v in
-        zip(ANALYSIS_OUTPUT,
-            (mean_scores, mean_ranking, model_mean_ranking,
-            mean_perc_diff_scores, dataset_descrip))
-    )
 
 if __name__ == '__main__':
-    results = generate_main_results()
+
+    # Extract paths
+    data_path, results_path, analysis_path = generate_paths()
+
+    # Generate and save main results
+    results = generate_main_results(data_path, results_path)
     for name, result in results:
-        result.to_csv(join(ANALYSIS_PATH, f'{name}.csv'), index=True)
+        result.to_csv(join(analysis_path, f'{name}.csv'), index=False)

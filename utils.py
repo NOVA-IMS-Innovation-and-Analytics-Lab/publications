@@ -5,7 +5,8 @@ Download, transform and simulate various datasets.
 # Author: Georgios Douzas <gdouzas@icloud.com>
 # License: MIT
 
-from os.path import join
+from sys import argv
+from os.path import join, dirname, abspath
 from os import remove, listdir
 from re import sub
 from collections import Counter
@@ -21,16 +22,10 @@ import requests
 import numpy as np
 import pandas as pd
 from sklearn.utils import check_X_y
+from sklearn.metrics import SCORERS, make_scorer
+from imblearn.metrics import geometric_mean_score
 from imblearn.datasets import make_imbalance
 
-METRICS_NAMES_MAPPING = {
-    'roc_auc': 'AUC', 
-    'f1': 'F-SCORE', 
-    'geometric_mean_score': 'G-MEAN',
-    'geometric_mean_macro_score': 'G-MEAN MACRO',
-    'f1_macro': 'F-SCORE MACRO',
-    'accuracy': 'ACCURACY'
-}
 UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 KEEL_URL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
 FETCH_URLS = {
@@ -522,5 +517,30 @@ def sort_tbl(tbl, ds_order=None, ovrs_order=None, clfs_order=None, metrics_order
     key_cols = [col for col in cols if col in keys]
     tbl.sort_values(key_cols, inplace=True)
     if ovrs_order is not None and set(ovrs_order).issubset(cols):
-        tbl = tbl[key_cols + ovrs_order]
+        tbl = tbl[key_cols + list(ovrs_order)]
     return tbl
+
+
+def generate_paths():
+    """Generate data, results and analysis paths."""
+    prefix_path = join(dirname(argv[0]), '..')
+    paths = [join(prefix_path, name) for name in ('data', 'results', 'analysis')]
+    return  paths
+
+
+def make_bold(row, maximum=True, num_decimals=2):
+    """Make bold the lowest or highest value(s)."""
+    row = round(row, num_decimals)
+    val = row.max() if maximum else row.min()
+    mask = (row == val)
+    formatter = '{0:.%sf}' % num_decimals
+    val = formatter.format(val)
+    row[mask] = '\\textbf{%s}' % val
+    return row
+
+
+def geometric_mean_score_macro(y_true, y_pred):
+    """Geometric mean score with macro average."""
+    return geometric_mean_score(y_true, y_pred, average='macro')
+
+SCORERS['geometric_mean_score_macro'] = make_scorer(geometric_mean_score_macro)
