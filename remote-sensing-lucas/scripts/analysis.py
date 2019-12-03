@@ -7,18 +7,10 @@ Analyze the experimental results.
 # License: MIT
 
 import sys
-import os
-from os.path import (
-    join,
-    dirname,
-    realpath,
-    splitext,
-    basename
-)
-import pickle
+from os.path import join, dirname
 from collections import Counter, OrderedDict
-from itertools import product
 
+from scipy.stats import wilcoxon
 import numpy as np
 import pandas as pd
 from rlearn.tools import (
@@ -31,12 +23,11 @@ from rlearn.tools import (
 
 sys.path.append(join(dirname(__file__), '..', '..'))
 from utils import (
-    generate_mean_std_tbl, 
-    generate_pvalues_tbl, 
     sort_tbl, 
     generate_paths, 
     load_datasets, 
     make_bold, 
+    generate_pvalues_tbl,
     SCORERS
 )
 
@@ -46,7 +37,7 @@ OVRS_NAMES = ('NONE', 'ROS', 'SMOTE', 'B-SMOTE', 'ADASYN', 'G-SMOTE')
 CLFS_NAMES = ('LR', 'KNN', 'DT', 'GBC', 'RF')
 METRICS_MAPPING = OrderedDict([('accuracy', 'Accuracy'), ('f1_macro', 'F-score'), ('geometric_mean_score_macro', 'G-mean')])
 BASELINE_OVRS = ('NONE', 'ROS', 'SMOTE')
-MAIN_RESULTS_NAMES = ('dataset_description', 'wide_optimal', 'ranking', 'perc_diff_scores')
+MAIN_RESULTS_NAMES = ('dataset_description', 'wide_optimal', 'ranking', 'perc_diff_scores', 'wilcoxon_results')
 
 
 def describe_dataset(dataset):
@@ -80,12 +71,20 @@ def generate_main_results(data_path, results_path):
     results = combine_results(*results)
     results = select_results(results, oversamplers_names=OVRS_NAMES, classifiers_names=CLFS_NAMES)
 
-    # Calculate results
+    # Extract metrics names
     metrics_names, *_ = zip(*METRICS_MAPPING.items())
+
+    # Dataset description
     dataset_description = describe_dataset(dataset)
+    
+    # Scores
     wide_optimal = calculate_wide_optimal(results).drop(columns='Dataset')
+    
+    # Ranking
     ranking = calculate_ranking(results).drop(columns='Dataset')
     ranking.iloc[:, 2:] = ranking.iloc[:, 2:].astype(int)
+    
+    # Percentage difference
     perc_diff_scores = []
     for oversampler in BASELINE_OVRS:
         perc_diff_scores_ovs = calculate_mean_sem_perc_diff_scores(results, [oversampler, 'G-SMOTE'])[0]
@@ -93,16 +92,26 @@ def generate_main_results(data_path, results_path):
         perc_diff_scores.append(perc_diff_scores_ovs)
     perc_diff_scores = sort_tbl(pd.concat([ranking[['Classifier', 'Metric']], pd.concat(perc_diff_scores, axis=1)], axis=1), clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
     perc_diff_scores.iloc[:, 2:] = round(perc_diff_scores.iloc[:, 2:], 2)
-
+    
+    # Wilcoxon test
+    pvalues = []
+    for ovr in OVRS_NAMES[:-1]:
+        mask = (wide_optimal['Metric'] != 'accuracy') if ovr == 'NONE' else np.repeat(True, len(wide_optimal))
+        pvalues.append(wilcoxon(wide_optimal.loc[mask, ovr], wide_optimal.loc[mask, 'G-SMOTE']).pvalue)
+    wilcoxon_results = pd.DataFrame({'Oversampler': OVRS_NAMES[:-1], 'p-value': pvalues, 'Significance': np.array(pvalues) < 0.05})
+        
     # Format results
     main_results = [(MAIN_RESULTS_NAMES[0], dataset_description)]
-    for name, result in zip(MAIN_RESULTS_NAMES[1:], (wide_optimal, ranking, perc_diff_scores)):
-        result = sort_tbl(result, clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
-        result['Metric'] = result['Metric'].apply(lambda metric: METRICS_MAPPING[metric])
+    for name, result in zip(MAIN_RESULTS_NAMES[1:], (wide_optimal, ranking, perc_diff_scores, wilcoxon_results)):
+        if name != 'wilcoxon_results':
+            result = sort_tbl(result, clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
+            result['Metric'] = result['Metric'].apply(lambda metric: METRICS_MAPPING[metric])
         if name == 'wide_optimal':
             result.iloc[:, 2:] = result.iloc[:, 2:].apply(make_bold, axis=1)
         elif name == 'ranking':
             result.iloc[:, 2:] = result.iloc[:, 2:].apply(lambda row: make_bold(row, False, 0), axis=1)
+        elif name == 'wilcoxon_results':
+            wilcoxon_results = generate_pvalues_tbl(wilcoxon_results)
         main_results.append((name, result))
 
     return main_results

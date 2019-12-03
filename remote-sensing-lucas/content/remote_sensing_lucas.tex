@@ -263,7 +263,7 @@ generated instances. Furthermore, G-SMOTE is designed to avoid noisy sample
 generation since it modifies the SMOTE selection strategy. G-SMOTE has been
 shown to outperform SMOTE and its above  mentioned variations across 69
 imbalanced datasets for various classifiers and evaluation metrics. Figure
-\ref{fig:gsmote_smote} depicts the data generation mechanism of both SMOTE and
+\ref{fig:smote_vs_gsmote} depicts the data generation mechanism of both SMOTE and
 G-SMOTE using a deformed geometric region.
 
 \begin{figure}[H]
@@ -272,7 +272,7 @@ G-SMOTE using a deformed geometric region.
 	\caption{Example of minority class oversampled by SMOTE and G-SMOTE
 		algorithms. G-SMOTE generates non-noisy samples
 		with greater variety than SMOTE.}
-	\label{fig:gsmote_smote}
+	\label{fig:smote_vs_gsmote}
 \end{figure}
 
 \section{Methodology}
@@ -537,15 +537,11 @@ fully integrated with the Scikit-Learn ecosystem.
 
 \section{Results and discussion}
 
-This section presents the results and analyses of oversamplers comparisons on the
-LUCAS dataset. The classification results are shown for all
-combinations of oversamplers and classifiers used in the experiment. The next subsection
-covers their interpretation in detail.
+This section presents the results and analyses of oversamplers comparisons on the LUCAS dataset. The classification results are shown for all combinations of oversamplers and classifiers used in the experiment. The next subsection covers their interpretation in detail.
 
 \subsection{Results}
 
-For each combination of classifier and metric, a cross-validation score for all
-oversamplers is provided in Table \ref{tab:mean_cross_val}:
+For each combination of classifier and metric, a cross-validation score for all oversamplers is provided in Table \ref{tab:cross_validation_scores}:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -563,13 +559,11 @@ oversamplers is provided in Table \ref{tab:mean_cross_val}:
 	columns/G-SMOTE/.style={column type=l,string type},
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule
-			\caption{\label{tab:mean_cross_val}Results for cross-validation scores of
-				oversamplers.}}
+			\caption{\label{tab:cross_validation_scores}Cross-validation scores of oversamplers.}}
 ]
 {../analysis/wide_optimal.csv}
 
-A ranking score was assigned to each oversampling method with the best and worst performing methods receiving scores from 1 to 6, respectively. Table
-\ref{tab:mean_rankings} presents the ranking scores per classifier and evaluation metric:
+A ranking score was assigned to each oversampling method with the best and worst performing methods receiving scores from 1 to 6, respectively. Table \ref{tab:ranking} presents the ranking scores per classifier and evaluation metric:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -587,12 +581,15 @@ A ranking score was assigned to each oversampling method with the best and worst
 	columns/G-SMOTE/.style={column type=l,string type},
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule
-			\caption{\label{tab:mean_rankings}Results for mean ranking of oversamplers}}
+			\caption{\label{tab:ranking}Ranking of oversamplers.}}
 ]
 {../analysis/ranking.csv}
 
-Table \ref{tab:smote_gsmote} presents the percentage difference between G-SMOTE
-and NONE, ROS and SMOTE:
+The percentage difference between G-SMOTE and NONE, ROS and SMOTE respectively for every combination of metric and classifier is calculated from the following formula: 
+
+$$ \text{Percentage Difference} = 100 \times \frac{Score(G-SMOTE) - Score(Oversampler)}{Score(Oversampler)} $$. 
+
+Table \ref{tab:perc_diff_scores} presents the results of the above calculation:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -607,28 +604,37 @@ and NONE, ROS and SMOTE:
 	columns/SMOTE/.style={column type=l,string type},
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule 
-	\caption{\label{tab:smote_gsmote}Results for the percentage difference between G-SMOTE and other popular methods.}}
+	\caption{\label{tab:perc_diff_scores}Results for the percentage difference between G-SMOTE and other popular methods.}}
 ]
 {../analysis/perc_diff_scores.csv}
 
+The Wilcoxon signed-rank test is applied to test the null hypothesis that the pairwise difference between G-SMOTE's scores and the scores of the remaining oversampling methods follows a symmetric distribution around zero, i.e. G-SMOTE performs similarly to them. The values for the \textit{Accuracy} metric are excluded in the NONE case while for the remaining oversampling methods all metrics are used. This choice will be justified in the next section. Table \ref{tab:wilcoxon} presents the p-values for the Wilcoxon tests:
+
+\pgfplotstabletypeset[
+	begin table=\begin{longtable},
+		end table=\end{longtable},
+	col sep=comma,
+	header=true,
+	columns={Oversampler,p-value,Significance},
+	columns/Oversampler/.style={column type=l,string type},
+	columns/p-value/.style={column type=l,string type},
+	columns/Significance/.style={column type=l,string type},
+	every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	every last row/.style={after row=\bottomrule
+			\caption{\label{tab:wilcoxon}Results of Wilcoxon test.}}
+]
+{../analysis/wilcoxon_results.csv}
+
 \subsection{Discussion}
 
-From table \ref{tab:mean_cross_val}, we can observe that G-SMOTE outperforms all
-other oversampling methods for both \textit{F-score} and \textit{G-mean} metrics
-on all classifiers. The absolute best results are achieved when G-SMOTE is
-combined with LR and RF. It is vital to notice that the \textit{Accuracy} scores
-show the well-known bias towards the majority class as discussed in
-\ref{Evaluation metrics}. In a multi-class classification problem with an
-imbalanced dataset, where the prediction of all the classes are of equal
-importance as in many remote sensing applications, \textit{Accuracy} should be
-of secondary importance compared to more robust metrics, such as \textit{F-
-score} and \textit{G-mean}. Nevertheless, even for the \textit{Accuracy} metric,
-G-SMOTE shows the best performance amongst the oversamplers.
+From table \ref{tab:cross_validation_scores}, we can observe that G-SMOTE outperforms all other oversampling methods for both \textit{F-score} and \textit{G-mean} metrics on all classifiers. The absolute best results are achieved when G-SMOTE is combined with LR and RF. It is vital to notice that the \textit{Accuracy} scores show the well-known bias towards the majority class as discussed in \ref{Evaluation metrics}. In a multi-class classification problem with an imbalanced dataset, where the prediction of all the classes are of equal importance as in many remote sensing applications, \textit{Accuracy} should be of secondary importance compared to more robust metrics, such as \textit{F-score} and \textit{G-mean}. Nevertheless, even for the \textit{Accuracy} metric, G-SMOTE shows the best performance amongst the oversamplers.
 
-In table \ref{tab:mean_rankings}, the rankings of the oversamplers are presented
+In table \ref{tab:ranking}, the rankings of the oversamplers are presented
 and show the superiority of G-SMOTE. Although ROS and SMOTE are the most popular
 oversampling methods in remote sensing applications, it is clear from the tables
-that they produce suboptimal results. Table \ref{tab:smote_gsmote} directly compares the performance of G-SMOTE with ROS and SMOTE, including also NONE as a baseline method.
+that they produce suboptimal results. Table \ref{tab:perc_diff_scores} directly compares the performance of G-SMOTE with ROS and SMOTE, including also NONE as a baseline method.
+
+Table \ref{tab:wilcoxon}, provides a statistical confiramtion of the previous conclusions. Using the Wilcoxon signed-rank test, the null hypothesis that the pairwise difference of scores between G-SMOTE and any of the remaining oversampling methods follows a symmetric distribution around zero is rejected at a significance level of $\alpha = 0.05$. 
 
 This study is the first to present a systematic comparison of oversampling
 algorithms in remote sensing. However, several previous studies reported results
