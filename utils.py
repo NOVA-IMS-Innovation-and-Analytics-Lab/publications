@@ -534,8 +534,8 @@ def make_bold(row, maximum=True, num_decimals=2):
     val = row.max() if maximum else row.min()
     mask = (row == val)
     formatter = '{0:.%sf}' % num_decimals
-    val = formatter.format(val)
-    row[mask] = '\\textbf{%s}' % val
+    row = row.apply(lambda el: formatter.format(el))
+    row[mask] = '\\textbf{%s}' % formatter.format(val)
     return row
 
 

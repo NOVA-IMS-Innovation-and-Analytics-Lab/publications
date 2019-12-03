@@ -54,13 +54,14 @@ def describe_dataset(dataset):
     name, (X, y) = dataset
     counts = Counter(y)
     description = [
+        ['Dataset', name],
         ['Features', X.shape[-1] - 1],
         ['Instances', X.shape[0]],
         ['Instances of class C', counts[LABELS_MAPPING['C']]],
         ['Instances of class H', counts[LABELS_MAPPING['H']]],
         ['IR of class H', counts[LABELS_MAPPING['C']] / counts[LABELS_MAPPING['H']]]
     ]
-    return pd.DataFrame(description, columns=['Dataset', name])
+    return pd.DataFrame(description)
 
 
 def generate_main_results(data_path, results_path):
@@ -115,4 +116,4 @@ if __name__ == '__main__':
     # Generate and save main results
     results = generate_main_results(data_path, results_path)
     for name, result in results:
-        result.to_csv(join(analysis_path, f'{name}.csv'), index=False)
+        result.to_csv(join(analysis_path, f'{name}.csv'), index=False, header=(name != 'dataset_description'))

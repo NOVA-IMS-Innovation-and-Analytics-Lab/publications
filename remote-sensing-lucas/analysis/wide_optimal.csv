@@ -1,6 +1,6 @@
 Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE
-LR,Accuracy,\textbf{0.57},0.5,0.5,0.53,0.48,0.51
-LR,F-score,0.3,0.29,0.29,0.3,0.28,\textbf{0.31}
+LR,Accuracy,\textbf{0.57},0.50,0.50,0.53,0.48,0.51
+LR,F-score,0.30,0.29,0.29,0.30,0.28,\textbf{0.31}
 LR,G-mean,0.51,0.53,0.52,0.53,0.52,\textbf{0.57}
 KNN,Accuracy,\textbf{0.56},0.45,0.43,0.49,0.42,\textbf{0.56}
 KNN,F-score,0.27,0.24,0.25,0.26,0.24,\textbf{0.28}
