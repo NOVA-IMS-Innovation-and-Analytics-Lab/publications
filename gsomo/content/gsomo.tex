@@ -418,7 +418,7 @@ Table 2 shows that G-SOMO performs better on average than the rest of the method
 	columns/SOMO/.style={column type=c,string type},
 	columns/G-SMOTE/.style={column type=c,string type},
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
-	every last row/.style={after row=\bottomrule \caption{Results for percentage difference between G-SOMO and SMOTE across the datasets.}}
+	every last row/.style={after row=\bottomrule \caption{Results for percentage difference between G-SOMO and the rest of main oversamplers.}}
 ]
 {../analysis/mean_sem_perc_diff_scores.csv}
 
@@ -493,7 +493,7 @@ presented in Table 6:
 {../analysis/holms_test.csv}
 
 Therefore, the null hypothesis of the Holm's test is rejected at a significance
-level of $a = 0.05$ for all cases, i.e. the hypothesis that G-SOMO's performance is similar to the rest of the methods is rejected.
+level of $a = 0.05$ for 69 out of 72 cases, i.e. the hypothesis that G-SOMO's performance is similar to the rest of the methods is rejected. The 3 remaining cases correspond to G-SOMO and G-SMOTE performance comparison.
 
 \subsection{Analysis and tuning of optimal hyper-parameters}
 
