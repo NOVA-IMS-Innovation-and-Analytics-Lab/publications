@@ -608,7 +608,7 @@ Table \ref{tab:perc_diff_scores} presents the results of the above calculation:
 ]
 {../analysis/perc_diff_scores.csv}
 
-The Wilcoxon signed-rank test is applied to test the null hypothesis that the pairwise difference between G-SMOTE's scores and the scores of the remaining oversampling methods follows a symmetric distribution around zero, i.e. G-SMOTE performs similarly to them. The values for the \textit{Accuracy} metric are excluded in the NONE case while for the remaining oversampling methods all metrics are used. This choice will be justified in the next section. Table \ref{tab:wilcoxon} presents the p-values for the Wilcoxon tests:
+Wilcoxon signed-rank test is used as an alternative to the paired Student's t-test when the distribution of the differences between the two samples cannot be assumed to be normally distributed. In our case, it is applied to test the null hypothesis that the pairwise difference between G-SMOTE's scores and the scores of the remaining oversampling methods follows a symmetric distribution around zero, i.e. G-SMOTE performs similarly to them. The values for the \textit{Accuracy} metric are excluded in the NONE case while for the remaining oversampling methods all metrics are used. This choice will be justified in the next section. Table \ref{tab:wilcoxon} presents the p-values for the Wilcoxon tests:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -634,7 +634,7 @@ and show the superiority of G-SMOTE. Although ROS and SMOTE are the most popular
 oversampling methods in remote sensing applications, it is clear from the tables
 that they produce suboptimal results. Table \ref{tab:perc_diff_scores} directly compares the performance of G-SMOTE with ROS and SMOTE, including also NONE as a baseline method.
 
-Table \ref{tab:wilcoxon}, provides a statistical confiramtion of the previous conclusions. Using the Wilcoxon signed-rank test, the null hypothesis that the pairwise difference of scores between G-SMOTE and any of the remaining oversampling methods follows a symmetric distribution around zero is rejected at a significance level of $\alpha = 0.05$. 
+Table \ref{tab:wilcoxon}, provides a statistical confirmation of the previous conclusions. Using the Wilcoxon signed-rank test, the null hypothesis that the pairwise difference of scores between G-SMOTE and any of the remaining oversampling methods follows a symmetric distribution around zero is rejected at a significance level of $\alpha = 0.05$. 
 
 This study is the first to present a systematic comparison of oversampling
 algorithms in remote sensing. However, several previous studies reported results
