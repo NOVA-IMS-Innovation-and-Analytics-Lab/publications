@@ -589,7 +589,7 @@ The percentage difference between G-SMOTE and NONE, ROS and SMOTE respectively f
 
 $$ \text{Percentage Difference} = 100 \times \frac{Score(G-SMOTE) - Score(Oversampler)}{Score(Oversampler)} $$. 
 
-Table \ref{tab:perc_diff_scores} presents the results of the above calculation:
+For each combination of an oversampler, classifier and metric, a positive (negative) value of the above formula indicates the G-SMOTE's relative performance gain (loss) compared to the oversampler. Table \ref{tab:perc_diff_scores} presents the results of the above calculation:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -634,7 +634,7 @@ and show the superiority of G-SMOTE. Although ROS and SMOTE are the most popular
 oversampling methods in remote sensing applications, it is clear from the tables
 that they produce suboptimal results. Table \ref{tab:perc_diff_scores} directly compares the performance of G-SMOTE with ROS and SMOTE, including also NONE as a baseline method.
 
-Table \ref{tab:wilcoxon}, provides a statistical confirmation of the previous conclusions. Using the Wilcoxon signed-rank test, the null hypothesis that the pairwise difference of scores between G-SMOTE and any of the remaining oversampling methods follows a symmetric distribution around zero is rejected at a significance level of $\alpha = 0.05$. 
+Table \ref{tab:wilcoxon}, provides a statistical confirmation of the previous conclusions. Using the Wilcoxon signed-rank test, the null hypothesis that the pairwise difference of scores between G-SMOTE and any of the remaining oversampling methods follows a symmetric distribution around zero is rejected at a significance level of $\alpha = 0.01$. 
 
 This study is the first to present a systematic comparison of oversampling
 algorithms in remote sensing. However, several previous studies reported results

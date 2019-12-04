@@ -38,6 +38,7 @@ CLFS_NAMES = ('LR', 'KNN', 'DT', 'GBC', 'RF')
 METRICS_MAPPING = OrderedDict([('accuracy', 'Accuracy'), ('f1_macro', 'F-score'), ('geometric_mean_score_macro', 'G-mean')])
 BASELINE_OVRS = ('NONE', 'ROS', 'SMOTE')
 MAIN_RESULTS_NAMES = ('dataset_description', 'wide_optimal', 'ranking', 'perc_diff_scores', 'wilcoxon_results')
+ALPHA = 0.01
 
 
 def describe_dataset(dataset):
@@ -98,7 +99,7 @@ def generate_main_results(data_path, results_path):
     for ovr in OVRS_NAMES[:-1]:
         mask = (wide_optimal['Metric'] != 'accuracy') if ovr == 'NONE' else np.repeat(True, len(wide_optimal))
         pvalues.append(wilcoxon(wide_optimal.loc[mask, ovr], wide_optimal.loc[mask, 'G-SMOTE']).pvalue)
-    wilcoxon_results = pd.DataFrame({'Oversampler': OVRS_NAMES[:-1], 'p-value': pvalues, 'Significance': np.array(pvalues) < 0.05})
+    wilcoxon_results = pd.DataFrame({'Oversampler': OVRS_NAMES[:-1], 'p-value': pvalues, 'Significance': np.array(pvalues) < ALPHA})
         
     # Format results
     main_results = [(MAIN_RESULTS_NAMES[0], dataset_description)]
