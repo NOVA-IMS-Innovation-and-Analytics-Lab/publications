@@ -1,7 +1,0 @@
-string title = "This is a Unicode π in the sky"
-/*
-Defined as $\pi=\lim_{n\to\infty}\frac{P_n}{d}$ where $P$ is the perimeter
-of an $n$-sided regular polygon circumscribing a
-circle of diameter $d$.
-*/
-const double pi = 3.1415926535
