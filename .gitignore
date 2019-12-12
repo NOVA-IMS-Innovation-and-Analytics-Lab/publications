@@ -7,9 +7,11 @@ __pycache__
 *.out
 *.log
 *.synctex.gz
-content/*.pdf
+*/content/*.pdf
 *.docx
 *.fls
 *.fdb_latexmk
 *.egg-info
+*.pyg
+*.spl
 .*venv
