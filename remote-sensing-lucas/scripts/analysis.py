@@ -108,7 +108,7 @@ def generate_main_results(data_path, results_path):
             result = sort_tbl(result, clfs_order=CLFS_NAMES, ovrs_order=OVRS_NAMES, metrics_order=metrics_names)
             result['Metric'] = result['Metric'].apply(lambda metric: METRICS_MAPPING[metric])
         if name == 'wide_optimal':
-            result.iloc[:, 2:] = result.iloc[:, 2:].apply(make_bold, axis=1)
+            result.iloc[:, 2:] = result.iloc[:, 2:].apply(lambda row: make_bold(row, True, 3), axis=1)
         elif name == 'ranking':
             result.iloc[:, 2:] = result.iloc[:, 2:].apply(lambda row: make_bold(row, False, 0), axis=1)
         elif name == 'wilcoxon_results':
