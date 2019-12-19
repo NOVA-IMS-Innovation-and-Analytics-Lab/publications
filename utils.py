@@ -16,6 +16,9 @@ from string import ascii_lowercase
 from zipfile import ZipFile
 from io import BytesIO, StringIO
 from sqlite3 import connect
+from scipy.io import loadmat
+import io
+import requests
 
 from tqdm import tqdm
 import requests
@@ -28,6 +31,7 @@ from imblearn.datasets import make_imbalance
 
 UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 KEEL_URL = 'http://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/'
+GIC_URL = 'http://www.ehu.eus/ccwintco/uploads/'
 FETCH_URLS = {
     'breast_tissue': urljoin(UCI_URL, '00192/BreastTissue.xls'),
     'ecoli': urljoin(UCI_URL, 'ecoli/ecoli.data'),
@@ -55,7 +59,14 @@ FETCH_URLS = {
     'spambase': urljoin(UCI_URL, 'spambase/spambase.data'),
     'parkinsons': urljoin(UCI_URL, 'parkinsons/parkinsons.data'),
     'ionosphere': urljoin(UCI_URL, 'ionosphere/ionosphere.data'),
-    'breast_cancer': urljoin(UCI_URL, 'breast-cancer-wisconsin/wdbc.data')
+    'breast_cancer': urljoin(UCI_URL, 'breast-cancer-wisconsin/wdbc.data'),
+    'indian_pines': [urljoin(GIC_URL,'2/22/Indian_pines.mat'), urljoin(GIC_URL,'c/c4/Indian_pines_gt.mat')],
+    'salinas': [urljoin(GIC_URL,'f/f1/Salinas.mat'), urljoin(GIC_URL,'f/fa/Salinas_gt.mat')],
+    'salinas_a': [urljoin(GIC_URL,'d/df/SalinasA.mat'), urljoin(GIC_URL,'a/aa/SalinasA_gt.mat')],
+    'pavia_centre': [urljoin(GIC_URL,'e/e3/Pavia.mat'), urljoin(GIC_URL,'5/53/Pavia_gt.mat')],
+    'pavia_university': [urljoin(GIC_URL,'e/ee/PaviaU.mat'), urljoin(GIC_URL,'5/50/PaviaU_gt.mat')],
+    'kennedy_space_center': [urljoin(GIC_URL,'2/26/KSC.mat'), urljoin(GIC_URL,'a/a6/KSC_gt.mat')],
+    'botswana': [urljoin(GIC_URL,'7/72/Botswana.mat'), urljoin(GIC_URL,'5/58/Botswana_gt.mat')]
 }
 MULTIPLICATION_FACTORS = [2, 3]
 RANDOM_STATE = 0
@@ -73,7 +84,7 @@ class Datasets:
         X, y = data.drop(columns='target'), data.target
         X.columns = range(len(X.columns))
         return pd.concat([X, y], axis=1)
-    
+
     def download(self):
         """Download the datasets."""
         if self.names == 'all':
@@ -87,7 +98,7 @@ class Datasets:
             data = self._modify_columns(fetch_data())
             self.datasets_.append((name, data))
         return self
-    
+
     def save(self, path, db_name):
         """Save datasets."""
         with connect(join(path, f'{db_name}.db')) as connection:
@@ -115,7 +126,7 @@ class ImbalancedBinaryDatasets(Datasets):
         data = pd.DataFrame(np.column_stack((X, y)))
         data.iloc[:, -1] = data.iloc[:, -1].astype(int)
         return data
-    
+
     def download(self):
         """Download the datasets and append undersampled versions of them."""
         super(ImbalancedBinaryDatasets, self).download()
@@ -127,7 +138,7 @@ class ImbalancedBinaryDatasets(Datasets):
                 undersampled_datasets.append((f'{name} ({factor})', data))
         self.datasets_ += undersampled_datasets
         return self
-                
+
     def fetch_breast_tissue(self):
         """Download and transform the Breast Tissue Data Set.
         The minority class is identified as the `car` and `fad`
@@ -436,7 +447,7 @@ class BinaryDatasets(Datasets):
         data.rename(columns={57: 'target'}, inplace=True)
         return data
 
-    
+
     def fetch_parkinsons(self):
         """Download and transform the Parkinsons Data Set.
 
@@ -468,6 +479,77 @@ class BinaryDatasets(Datasets):
         data = pd.concat([data.drop(columns=[0, 1]), data[[1]].rename(columns={1: 'target'})], axis=1)
         data['target'] = data['target'].isin(['M']).astype(int)
         return data
+
+
+class RemoteSensingDatasets(Datasets):
+    """Class to download, transform and save remote sensing datasets."""
+
+    def _load_gic_dataset(self, dataset_name):
+        for url in FETCH_URLS[dataset_name]:
+            r = requests.get(url, stream=True)
+            content = loadmat(io.BytesIO(r.content))
+            arr = np.array(list(content.values())[-1])
+            arr = np.expand_dims(arr, -1) if arr.ndim==2 else arr
+            yield arr
+
+    def fetch_indian_pines(self):
+        """Download and transform the Indian Pines Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Indian_Pines
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('indian_pines'))
+
+    def fetch_salinas(self):
+        """Download and transform the Salinas Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Salinas_scene
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('salinas'))
+
+    def fetch_salinas_a(self):
+        """Download and transform the Salinas-A Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Salinas-A_scene
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('salinas_a'))
+
+    def fetch_pavia_centre(self):
+        """Download and transform the Pavia Centre Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Pavia_Centre_scene
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('pavia_centre'))
+
+    def fetch_pavia_university(self):
+        """Download and transform the Pavia University Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Pavia_University_scene
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('pavia_university'))
+
+    def fetch_kennedy_space_center(self):
+        """Download and transform the Kennedy Space Center Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Kennedy_Space_Center_.28KSC.29
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('kennedy_space_center'))
+
+    def fetch_botswana(self):
+        """Download and transform the Botswana Data Set.
+
+        http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes#Botswana
+        """
+        return img_array_to_pandas(*self._load_gic_dataset('botswana'))
+
+
+def img_array_to_pandas(X, y):
+    """Converts an image numpy array (with ground truth) to a pandas dataframe"""
+    shp  = X.shape
+    columns = [i for i in range(shp[-1])]+['target']
+    dat = np.concatenate([
+        np.moveaxis(X, -1, 0), np.moveaxis(y, -1, 0)
+    ], axis=0).reshape((len(columns), shp[0]*shp[1]))
+    return pd.DataFrame(data=dat.T, columns=columns)
 
 
 def load_datasets(data_path, data_type='db'):
