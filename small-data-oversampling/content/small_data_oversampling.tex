@@ -52,7 +52,7 @@
 \maketitle
 
 \begin{abstract}
-In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm Geometric SMOTE for Small Data utilizes the Geometric SMOTE data generation mechanism to generate new high quality instances. Experimental results present a significant improvement in accuracy when compared with the use of the initial small dataset and also over other oversampling techniques such as Random OverSampling, SMOTE and Borderline SMOTE. These findings show that oversampling research, developed in the context of imbalanced learning, can also be a valid option to deal with the small data problem.
+In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm, Geometric SMOTE for Small Data, utilizes the Geometric SMOTE data generation mechanism to generate new high quality instances. Experimental results show a significant improvement in accuracy when compared with the use of the initial small dataset and also over other oversampling techniques such as Random OverSampling, SMOTE and Borderline SMOTE. These findings provide evidence that oversampling research, developed in the context of imbalanced learning, can also be a valid option to deal with the small data problem.
 \end{abstract}
 
 \section{Introduction}
@@ -113,7 +113,7 @@ However, SMOTE and some of its variants show limitations when it comes to the sa
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1.0\linewidth]{../analysis/noisy_examples.png}
-	\caption{Generation of noisy examples.}
+	\caption{Generation of a noisy example $x_{gen}$ as a linear interpolation of $x$ and $x'$.}
 	\label{fig:noisy-examples}
 \end{figure}
 
@@ -131,21 +131,19 @@ The oversampling algorithm Geometric SMOTE (G-SMOTE) has been presented with the
 	\label{fig:smotevsgsmote}
 \end{figure}
 
-The experimental study of \cite{Douzas.2019} includes an extensive comparison between oversampling approaches using 69 imbalanced datasets and several classifiers. The results show that G-SMOTE outperforms SMOTE, Random OverSampling and the case of no oversampling, across all datasets, classifiers and performance metrics.
+The experimental study of \cite{Douzas.2019} includes an extensive comparison between oversampling approaches using 69 imbalanced datasets and several classifiers. The results results provide empirical evidence supporting the idea that G-SMOTE constitutes a significant improvement over previous oversampling methods.
 
 \section{Proposed method}
 \label{proposed}
 
-In the following section, we present Geometric SMOTE for Small Data (G-SMOTESD) as a novel data generation procedure suitable for the small data problem. G-SMOTESD uses the G-SMOTE data generation mechanism, while it generates artificial data for the entire dataset independent from the class distribution. 
+In this section, we present Geometric SMOTE for Small Data (G-SMOTESD) as a novel data generation procedure suitable for the small data problem. While G-SMOTESD uses the G-SMOTE data generation mechanism, to generate data, it does so for the entire dataset, independent from the class distribution. This way, G-SMOTESD constitutes a new algorithm modified to generate data for all the classes in the dataset.
+
+In what follows, G-SMOTESD is applied to the case of binary classification task with the objective to generate artificial data for both classes, called
+arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. Finally, regression tasks require an extensive modification of the data generation process and they will be a topic of future research.
 
 \subsection{Data generation area}
 
 G-SMOTESD algorithm randomly generates artificial data within a geometric region of the input space. The size of this area is derived from the distance of the selected sample to one of its nearest neighbors, whereas the shape is determined by the hyperparameters called \textit{truncation factor} and \textit{deformation factor}. Additionally, the \textit{selection strategy} hyperparameter modifies the standard SMOTE selection process and also affects the size of the geometric region.
-
-\subsection{Supervised learning task}
-
-In what follows, G-SMOTESD is applied to the case of binary classification task with the objective to generate artificial data for both classes, called
-arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. Finally, regression tasks require an extensive modification of the data generation process and they will be a topic of future research.
 
 \subsection{G-SMOTESD algorithm}
 \label{algorithm}
@@ -201,7 +199,7 @@ algorithms for the small data problem. Therefore, we use a variety of datasets, 
 
 \subsection{Experimental data}
 
-The ten datasets used to test the performance of G-SMOTESD are retrieved from UCI Machine Learning Repository \cite{Dua.2019}. The focus on their selection lies on binary classification problems with a balanced distribution of the two classes. In order to assure generalizability of the results, the datasets are related to different topics such as health care, finance, business and physics. Details of the datasets are presented in the following table:
+The ten datasets used to test the performance of G-SMOTESD are retrieved from UCI Machine Learning Repository \cite{Dua.2019}. The focus on their selection lies on binary classification problems with a balanced distribution of the two classes. In order to assure generalizability of the results, the datasets are related to different topics such as health care, finance, business and physics. Details of the datasets are presented in table \ref{tab:description}:
 
 \begin{longtable}{llll}
 	\specialrule{.1em}{.05em}{.05em}
@@ -219,7 +217,8 @@ The ten datasets used to test the performance of G-SMOTESD are retrieved from UC
 	Musk & 6.598 & 168 & Physics\\
 	Parkinsons & 197 & 23 & Health Care\\
 	\specialrule{.1em}{.05em}{.05em}
-\caption{\label{tab:datasets}Description of the datasets.} 
+\caption{\label{tab:datasets}Description of the datasets.}
+\label{tab:description}
 \end{longtable}
 
 The approach to test whether oversamplers, and particularly G-SMOTESD, are able to produce high quality artificial data, is to generate randomly undersampled versions of the above datasets and try to reconstruct them. Specifically, random sampling of $50\%$, $75\%$, $90\%$ and $95\%$ is applied on them, called undersampling ratio, followed by their enhancement with artificial data that are created from the various oversampling methods. The details of the process are presented in subsection \ref{experimental}.
@@ -246,7 +245,7 @@ For the evaluation of the oversampling methods, a variety of classifiers are inc
 
 As explained above, the main goal of the paper is to evaluate how well G-SMOTESD algorithm, as presented in subsection \ref{algorithm}, compares to other oversampling methods, when small datasets are enhanced with artificial samples. 
 
-The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is presented in table \ref{tab:datasets}:
+The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is described below:
 
 \begin{enumerate}
 
@@ -313,7 +312,7 @@ The mean cross validation scores and the standard error across all datasets per 
 \label{tab:mean_sem_scores}
 \end{center}
 
-The above table shows that G-SMOTESD outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of G-SMOTESD are the closest to the ones of the BENCHMARK method, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the oversamplers.
+Table \ref{tab:mean_sem_scores} shows that G-SMOTESD outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of G-SMOTESD are the closest to the ones of the BENCHMARK method, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the oversamplers.
 
 Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
 of percentage difference between G-SMOTESD and NONE. It shows that G-SMOTESD performs significantly better compared to the case where no oversampling is applied for every combination of undersampling ratio, classifier and metric. Particularly, the performance gap increases for higher undersampling ratios.
@@ -338,7 +337,7 @@ of percentage difference between G-SMOTESD and NONE. It shows that G-SMOTESD per
 	\label{tab:mean_sem_perc_diff_scores}
 \end{center}
 
-A ranking score in the range 1 to 5 is assigned to each oversampler as well as the two special case NONE and BENCHMARK. The mean ranking across the datasets of all methods is presented in the following table: 
+A ranking score in the range 1 to 5 is assigned to each oversampler as well as the two special case NONE and BENCHMARK. The mean ranking across the datasets of all methods is presented in table \ref{tab:mean_rankings}:
 
 \begin{center}
 	\begin{footnotesize}
@@ -360,14 +359,14 @@ A ranking score in the range 1 to 5 is assigned to each oversampler as well as t
 	\end{footnotesize}
 	\addtocounter{table}{-1}
 	\captionof{table}{Results for mean rankings of all methods.}
-	\label{tab:mean_sem_scores}
+	\label{tab:mean_rankings}
 	\end{center}
 
 The highest rankings for each row, excluding the BENCHMARK case, are highlighted. Looking at the table, G-SMOTESD is ranked on the top place when comparing with NONE, ROS, SMOTE and B-SMOTE.
 
 \subsection{Statistical Analysis}
 
-To confirm the significance of the above presented results we apply the Friedman test as well as the Holm Test on the above results. The application of the Friedman test is presented below:
+To confirm the significance of the above presented results we apply the Friedman test as well as the Holm Test on the above results. The application of the Friedman test is presented in table \ref{tab:friedman_test}:
 
 \begin{center}
 	\begin{footnotesize}
@@ -387,7 +386,7 @@ To confirm the significance of the above presented results we apply the Friedman
 	\end{footnotesize}
 	\addtocounter{table}{-1}
 	\captionof{table}{Results for Friedman test.}
-	\label{tab:friedman_test.csv}
+	\label{tab:friedman_test}
 \end{center}
 
 Therefore, the null hypothesis of the Friedman test is rejected at a significance level of a = 0.05, i.e. the oversamplers do not perform similarly in the mean rankings for any combination of classifier and evaluation metric.
@@ -422,7 +421,7 @@ outperforms all other methods in most cases.
 \section{Conclusions}
 \label{conclusions}
 
-This paper proposes an effective solution to mitigate the small data problem in binary classification tasks. As shown above, the algorithm G-SMOTESD has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to its capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that G-SMOTESD significantly improves classification performance compared to the case where only the small data are used. Also G-SMOTESD outperforms standard oversampling approaches such as ROS and SMOTE, being closer to the BENCHMARK scores than any of them. Finally, G-SMOTESD implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}.
+Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the G-SMOTESD algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that G-SMOTESD significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed G-SMOTESD. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the G-SMOTESD algorithm, in order to generate artificial samples and improve the performance of classifiers. Also G-SMOTESD outperforms standard oversampling approaches such as ROS and SMOTE, being closer to the BENCHMARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, G-SMOTESD outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The G-SMOTESD implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
 
 \bibliography{references}
 \bibliographystyle{apalike}
