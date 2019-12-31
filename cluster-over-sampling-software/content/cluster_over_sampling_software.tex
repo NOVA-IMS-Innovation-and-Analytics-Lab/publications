@@ -15,7 +15,7 @@
 
 \begin{frontmatter}
 
-\title{cluster-over-sampling: A package for clustering based over-sampling}
+\title{cluster-over-sampling: A package for clustering based oversampling}
 
 \author{Georgios Douzas}
 \ead{gdouzas@novaims.unl.pt}
@@ -28,13 +28,7 @@
 \cortext[nova]{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal, Telephone: +351 21 382 8610}
 
 \begin{abstract}
-	Learning from class-imbalanced data is a common and challenging
-	problem in supervised learning. Standard classification algorithms are
-	designed to handle balanced class distributions. While different strategies
-	exist to tackle this problem, methods which generate artificial data to achieve a balanced class distribution are more versatile than modifications to the classification algorithm. SMOTE algorithm, as well as any other
-	over-sampling method based on the SMOTE mechanism, generates synthetic samples along line segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, by clustering the input space and applying any over-sampling algorithm for each resulting cluster with appropriate resampling ratio, the within-classes imbalanced issue can be addressed.
-	
-	Learning from class-imbalanced data continues to be a frequent and challenging problem in machine learning. Standard classification algorithms are designed under the assumption that the distribution of classes is balanced. To mitigate this problem several approaches have been proposed. The most general and popular approach is the generation of artificial data for the minority classes, known as oversampling. Geometric SMOTE is a state-of-the-art oversampling algorithm that has been shown to outperform other standard oversamplers in a large number of datasets. In order to make available Geometric SMOTE to the machine learning community, in this paper we provide a Python implementation. It is important to note that this implementation integrates seamlessly with the Scikit-Learn ecosystem. Therefore, machine learning researchers and practitioners can benefit from its use in a straightforward manner.
+	Learning from class-imbalanced data is a common and challenging problem in supervised learning. Standard classification algorithms are designed to handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial data to achieve a balanced class distribution, called oversampling algorithms, are more versatile than modifications to the classification algorithms. SMOTE algorithm, the most popular oversampler, as well as any other oversampling method based on it, generates synthetic samples along line segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, by clustering the input space and applying any oversampling algorithm for each resulting cluster with appropriate resampling ratio, the within-classes imbalanced issue can be addressed. This approach, implemented in the cluster-over-sampling Python open source project, has been shown in various publications to outperform other standard oversamplers in a large number of datasets. In this paper we describe cluster-over-sampling in detail and make it available to the machine learning community. An important point is that the implementation integrates effortlessly with the Scikit-Learn ecosystem. Therefore, machine learning researchers and practitioners can integrate it directly to any pre-existing work.
 \end{abstract}
 
 \begin{keyword}
@@ -50,7 +44,7 @@ Code metadata & \\
 \hline
 Current code version & v0.1.2 \\
 \hline
-Permanent link to code/repository used for this code version & \url{https://github.com/AlgoWit/geometric-smote} \\
+Permanent link to code/repository used for this code version & \url{https://github.com/AlgoWit/cluster-over-sampling} \\
 \hline
 Legal Code License & MIT \\
 \hline
@@ -60,7 +54,7 @@ Software code languages, tools, and services used & Python, Travis CI, AppVeyor,
 \hline
 Compilation requirements, operating environments \& dependencies & Linux, Mac OS, Windows \\
 \hline
-If available Link to developer documentation/manual & \url{https://geometric-smote.readthedocs.io/} \\
+If available Link to developer documentation/manual & \url{https://cluster-over-sampling.readthedocs.io/} \\
 \hline
 Support email for questions & \href{mailto:georgios.douzas@gmail.com}{georgios.douzas@gmail.com} \\
 \hline
@@ -81,20 +75,31 @@ Support email for questions & \href{mailto:georgios.douzas@gmail.com}{georgios.d
 
 The imbalanced learning problem is defined as a machine learning classification task using datasets with binary or multi-class targets where one of the classes, called the majority class, outnumbers significantly the remaining classes, called the minority class(es) \cite{Chawla2003}. Learning from imbalanced data is a frequent and non-trivial problem for academic researchers and industry practitioners alike. The imbalance learning problem can be found in multiple domains such as chemical and biochemical engineering, financial management, information technology, security, business, agriculture or emergency management \cite{Haixiang2017}.
 
-Standard machine learning classification algorithms induce a bias towards the majority class during training. This results in low performance when metrics suitable for imbalanced data are used for the classifier's evaluation. An important characteristic of imbalanced data is the Imbalance Ratio ($IR$) which is defined as the ratio between the number of samples of the majority class and each of the minority classes. For example, in a fraud detection task with 1\% of fraudulent transactions, corresponding to an $IR=\frac{0.99}{0.01}=99$, a trivial classifier that always labels a transaction as legit will score a classification accuracy of 99\%. However in this case, all fraud cases remain undetected. $IR$ values between 100 and 100.000 have been observed \cite{Chawla2002}, \cite{Barua2014}. Figure \ref{fig:imbalanced} shows an example of imbalanced data in two dimensions and the resulting decision boundary of a typical classifier when they are used as a training set.
+The imbalanced learning problem describes the case where in a machine learning classification task using datasets with binary or multi-class targets, one of the classes, called the majority class, has a significantly higher number of samples compared to the remaining classes, called the minority class(es) \cite{Chawla2003}. Learning from imbalanced data is a non-trivial problem for both academic researchers and industry practitioners. Additionaly, imbalanced data can be frequently found in multiple domains such as chemical and biochemical engineering, financial management, information technology, security, business, agriculture or emergency management \cite{Haixiang2017}.
+
+A bias towards the majority class is induced when imbalanced data are used to train standard machine learning algorithms. This results in low classification accuracy, especially for the minority class(es), when the classifier is evaluated on unseen data. An important measure for the degree of data imbalance is the Imbalance Ratio ($IR$), defined as the ratio between the number of samples of the majority class and each of the minority classes. Using a rare disease detection task as an example, with 1\% of positive cases corresponding to an $IR=\frac{0.99}{0.01}=99$, a trivial classifier that always labels a person as healthy will score a classification accuracy of 99\%. However in this case, all positive cases remain undetected. The observed values of $IR$ are often between 100 and 100.000 \cite{Chawla2002}, \cite{Barua2014}. Figure \ref{fig:imbalanced} presents an example of imbalanced data in two dimensions as well as the decision boundary identified by a typical classifier when they are used as a training set.
 
 \begin{figure}[H]
 	\centering
     \includegraphics[width=14cm, keepaspectratio]{../analysis/imbalanced_problem}
-    \caption{Imbalanced data in two dimensions. The decision boundary of a classifier shows a bias towards the majority class.}
+    \caption{Imbalanced data in two dimensions. The decision boundary of a typical classifier shows a bias towards the majority class.}
     \label{fig:imbalanced}
 \end{figure}
 
 \subsection{Oversampling algorithms}
 \label{oversampling}
 
-Various approaches have been proposed to deal with the imbalanced learning problem. The most general approach is the modification at the data level by oversampling the minority class(es) \cite{Fernandez2013}. Synthetic Minority
-Oversampling Technique (SMOTE) was the first informed oversampling algorithm proposed and continuous to be extensively used \cite{Chawla2002}. It generates synthetic instances along a line segment that joins minority class samples. Although SMOTE has been shown to be effective for generating artificial data, it also has some weaknesses \cite{He2009}. In order to improve the quality of the generated data, many variants of SMOTE have been proposed. Nevertheless, all of these variations use the same data generation mechanism, i.e. linear interpolation between minority class samples as shown in figure \ref{fig:smote_vs_gsmote}.
+Various approaches have been proposed to improve classification results when the training data are imbalanced. The most general approach, called oversampling, is the generation of artificial data for the minority class(es) \cite{Fernandez2013}. Synthetic Minority Oversampling Technique (SMOTE) \cite{Chawla2002} was the first informed oversampler proposed and still is the most popular one. SMOTE generates synthetic instances along a line segment that joins samples from the minority class(es). 
+
+One such drawback stems from the
+fact that SMOTE randomly chooses a minority instance to oversample with
+uniform probability. While this allows the method to effectively combat
+between-class imbalance, the issues of within-class imbalance and small
+disjuncts are ignored. Input areas counting many minority samples have a high
+probability of being inflated further, while sparsely populated minority areas
+are likely to remain sparse~\citep{Prati.2004}.
+
+Although this approach has been shown to be effective for generating artificial data, it also has some drawbacks \cite{He2009}. In order to improve the quality of the artificial data, many variants of SMOTE have been proposed. Nevertheless, all of these variations use the same data generation mechanism, i.e. linear interpolation between minority class samples as shown in figure \ref{fig:smote_vs_gsmote}.
 
 A Python implementation of SMOTE and several of its variants is available in the \href{https://imbalanced-learn.org/stable/}{Imbalanced-Learn} \cite{Lemaitre2016} library, which is fully compatible with the popular machine learning toolbox \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2011}. 
 
