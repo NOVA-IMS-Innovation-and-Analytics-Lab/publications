@@ -1,0 +1,4 @@
+requests>=2.0.0
+research-learn>=0.2.0
+geometric-smote>=0.1.2
+

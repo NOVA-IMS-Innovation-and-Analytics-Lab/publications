@@ -556,14 +556,16 @@ def load_datasets(data_path, data_type='db'):
     """Load datasets from sqlite database or csv files."""
     datasets = []
     if data_type == 'db':
-        with connect(data_path) as connection:
-            datasets_names = [name[0] for name in connection.execute("SELECT name FROM sqlite_master WHERE type='table';")]
-            for dataset_name in datasets_names:
-                ds = pd.read_sql(f'select * from "{dataset_name}"', connection)
-                X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
-                datasets.append((dataset_name, (X, y)))
+        db_paths = [name for name in listdir(data_path) if name.endswith('.db')]
+        for db_path in db_paths:
+            with connect(join(data_path, db_path)) as connection:
+                datasets_names = [name[0] for name in connection.execute("SELECT name FROM sqlite_master WHERE type='table';")]
+                for dataset_name in datasets_names:
+                    ds = pd.read_sql(f'select * from "{dataset_name}"', connection)
+                    X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
+                    datasets.append((dataset_name, (X, y)))
     elif data_type == 'csv':
-        datasets_names = [name for name in listdir(data_path) if name[-4:] == '.csv']
+        datasets_names = [name for name in listdir(data_path) if name.endswith('.csv')]
         for dataset_name in datasets_names:
             ds = pd.read_csv(join(data_path, dataset_name))
             name = dataset_name.replace('.csv', '').replace('_', ' ').upper()

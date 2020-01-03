@@ -1,0 +1,97 @@
+\documentclass[parskip=full]{scrartcl}
+
+\pdfoutput=1
+
+\title{Improving Imbalanced Learning in Land Cover Classification \\ \LARGE{A Heuristic Oversampling Method Based on K-Means and SMOTE}}
+\author{
+	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Joao Fonseca\(^{1}\), Manvel Khudinyan\(^{1}\)
+	\\
+	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
+	\\
+	\small{*Corresponding Author}
+	\\
+	\\
+	\small{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal}
+	\\
+	\small{Telephone: +351 21 382 8610}
+}
+
+\usepackage{breakcites}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=18mm,
+	right=18mm,
+	top=8mm,
+}
+\usepackage{amsmath}
+\newcommand{\inlineeqnum}{\refstepcounter{equation}~~\mbox{(\theequation)}}
+\usepackage{enumitem}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.14}
+\usepackage{longtable}
+\usepackage{tabu}
+\usepackage{hyperref}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Classification of imbalanced datasets is a challenging task for standard
+algorithms. Although many methods exist to address this problem in different
+ways, generating artificial data for the minority class is a more general
+approach compared to algorithmic modifications. SMOTE algorithm, as well as any
+other oversampling method based on the SMOTE mechanism, generates synthetic
+samples along line segments that join minority class instances. In this paper we
+propose Geometric SMOTE (G-SMOTE) as a enhancement of the SMOTE data generation
+mechanism. G-SMOTE generates synthetic samples in a geometric region of the
+input space, around each selected minority instance. While in the basic
+configuration this region is a hyper-sphere, G-SMOTE allows its deformation to a
+hyper-spheroid. The performance of G-SMOTE is compared against SMOTE as well as
+baseline methods. We present empirical results that show a significant
+improvement in the quality of the generated data when G-SMOTE is used as an
+oversampling algorithm. An implementation of G-SMOTE is made available in the
+Python programming language.
+\end{abstract}
+
+\section{Introduction}
+Learning from imbalanced data is a non trivial and important problem for the
+research community and the industry practitioners \cite{Chawla2003}. An
+imbalanced learning problem is defined as a classification task for binary or
+multi-class datasets where a significant asymmetry exists between the number of
+instances for the various classes. The dominant class is called the majority
+class while the rest of the classes are called the minority classes
+\cite{Chawla2003}. The Imbalance Ratio (IR), defined as the ratio between the
+majority class and each of the minority classes, depends on the type of
+application and for binary problems values between 100 and 100.000 have been
+observed \cite{Chawla2002}, \cite{Barua2014}.
+
+The imbalance learning problem can be found in numerous practical domains, such
+as chemical and biochemical engineering, financial management, information
+technology, security, business, agriculture or emergency management, for a more
+in depth review the reader is referred to \cite{Haixiang2017}. Standard
+learning methods induce a bias in favor of the majority class during training.
+This happens because the minority classes contribute less to the minimization of
+the objective function, defined often as the classification accuracy.
+Additionally, the distinction between noisy and minority class instances is
+frequently difficult. As a result the performance of the classifiers, evaluated
+on metrics suitable for imbalanced data, is low. It is also important to
+consider that the costs of misclassifying the minority class are frequently much
+higher than the costs of misclassification of the majority class
+\cite{Domingos1999}, \cite{Ting2002}. Diseases screening tests are a typical
+situation in in which false negatives involve a much higher cost than the false
+positives. Therefore, fundamentally the class imbalance challenge is to propose
+smart and simple ways is to improve the accuracy of classifiers for the minority
+class.
+
+\bibliography{references}
+\bibliographystyle{apalike}
+
+\end{document}
