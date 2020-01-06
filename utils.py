@@ -563,7 +563,7 @@ def load_datasets(data_path, data_type='db'):
                 X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
                 datasets.append((dataset_name, (X, y)))
     elif data_type == 'csv':
-        datasets_names = [name for name in listdir(data_path) if name[-4:] == '.csv']
+        datasets_names = [name for name in listdir(data_path) if name.endswith('.csv')]
         for dataset_name in datasets_names:
             ds = pd.read_csv(join(data_path, dataset_name))
             name = dataset_name.replace('.csv', '').replace('_', ' ').upper()
