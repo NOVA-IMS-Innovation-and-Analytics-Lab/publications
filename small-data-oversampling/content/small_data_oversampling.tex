@@ -1,20 +1,21 @@
-\documentclass[parskip=full]{scrartcl}
+\documentclass[titlepage]{article}
 
 \pdfoutput=1
 
 \title{Small Data Oversampling  \\ \LARGE{Improving small data prediction accuracy using the Geometric SMOTE for Small Data algorithm}}
 
 \author{
-	Georgios Douzas\(^{1*}\), Fernando Bacao\(^{1}\), Maria Lechleitner\(^{1}\) 
+	Georgios Douzas\(^{* 1, a}\), Fernando Bacao\(^{1, b}\), Maria Lechleitner\(^{1, c}\) 
 	\\
-	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
-	\\
-	\small{*Corresponding Author}
-	\\
+	\small{Affiliation: \(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
 	\\
 	\small{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal}
 	\\
 	\small{Telephone: +351 21 382 8610}
+	\\
+	\small{Email: \(^{a}\)gdouzas@novaims.unl.pt, \(^{b}\)bacao@novaims.unl.pt, \(^{c}\)mm.lechleitner@gmail.com}
+	\\
+	\small{*Corresponding Author}
 }
 
 \usepackage{breakcites}
@@ -53,9 +54,12 @@
 
 \begin{abstract}
 In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm, Geometric SMOTE for Small Data, utilizes the Geometric SMOTE data generation mechanism to generate new high quality instances. Experimental results show a significant improvement in accuracy when compared with the use of the initial small dataset and also over other oversampling techniques such as Random OverSampling, SMOTE and Borderline SMOTE. These findings provide evidence that oversampling research, developed in the context of imbalanced learning, can also be a valid option to deal with the small data problem.
+\\
+\\
+Keywords: Machine Learning, Classification, Small Data Problem, Oversampling.
 \end{abstract}
 
-Keywords: Machine Learning, Classification, Small Data Problem, Oversampling.
+
 
 \section{Introduction}
 Insufficient size of datasets is a common issue in many supervised learning tasks \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of training samples can be caused by different factors. First, data is becoming an increasingly expensive resource \cite{Li.2007} as the process to retain them is getting more complex due to strict privacy regulations such as the General Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the small dataset problem can be found in numerous industries where organizations simply do not have access to a reasonable amount of data. For example manufacturing industries are usually dealing with a small number of samples in the early stages of product development while health care organizations have to work with different kinds of rare diseases, where very few records are available \cite{AbdulLateh.2017}.
@@ -133,7 +137,7 @@ The oversampling algorithm Geometric SMOTE (G-SMOTE) has been presented with the
 	\label{fig:smotevsgsmote}
 \end{figure}
 
-The experimental study of \cite{Douzas.2019} includes an extensive comparison between oversampling approaches using 69 imbalanced datasets and several classifiers. The results results provide empirical evidence supporting the idea that G-SMOTE constitutes a significant improvement over previous oversampling methods.
+The experimental study of \cite{Douzas.2019} includes an extensive comparison between oversampling approaches using 69 imbalanced datasets and several classifiers. The results provide empirical evidence supporting the idea that G-SMOTE constitutes a significant improvement over previous oversampling methods.
 
 \section{Proposed method}
 \label{proposed}
@@ -180,11 +184,7 @@ The inputs of the G-SMOTESD algorithm are sets of the positive and negative clas
 
 \subsection{Considerations}
 
-As it is shown above, G-SMOTESD algorithm applies independently the G-SMOTE data generation process for both the positive and negative classes. The above description of the algorithm excludes mathematical formulas and details which
-can be found in \cite{Douzas.2019}. Figure \ref{fig:gsmotemechanism} shows an
-example of the G-SMOTESD data generation process for the three different
-values of the \textit{selection strategy} hyperparameter when positive class
-data generation is considered.
+As it is shown above, G-SMOTESD algorithm applies independently the G-SMOTE data generation process for both the positive and negative classes. The above description of step 2, that constitutes the data generation mechanism,  excludes mathematical formulas and details which can be found in \cite{Douzas.2019}. Figure \ref{fig:gsmotemechanism} shows an example of the G-SMOTESD data generation process for the three different values of the \textit{selection strategy} hyperparameter when positive class data generation is considered.
 
 \begin{figure}[H]
 	\centering
