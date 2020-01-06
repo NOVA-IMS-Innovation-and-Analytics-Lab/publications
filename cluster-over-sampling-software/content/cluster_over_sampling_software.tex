@@ -28,7 +28,7 @@
 \cortext[nova]{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal, Telephone: +351 21 382 8610}
 
 \begin{abstract}
-	Learning from class-imbalanced data is a common and challenging problem in supervised learning. Standard classification algorithms are designed to handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial data to achieve a balanced class distribution, called oversampling algorithms, are more versatile than modifications to the classification algorithms. SMOTE algorithm, the most popular oversampler, as well as any other oversampling method based on it, generates synthetic samples along line segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, by clustering the input space and applying any oversampling algorithm for each resulting cluster with appropriate resampling ratio, the within-classes imbalanced issue can be addressed. This approach, implemented in the cluster-over-sampling Python open source project, has been shown in various publications to outperform other standard oversamplers in a large number of datasets. In this paper we describe cluster-over-sampling in detail and make it available to the machine learning community. An important point is that the implementation integrates effortlessly with the Scikit-Learn ecosystem. Therefore, machine learning researchers and practitioners can integrate it directly to any pre-existing work.
+Learning from class-imbalanced data is a common and challenging problem in supervised learning. Standard classification algorithms are designed to handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial data to achieve a balanced class distribution, called oversampling algorithms, are more versatile than modifications to the classification algorithms. SMOTE algorithm, the most popular oversampler, as well as any other oversampling method based on it, generates synthetic samples along line segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, by clustering the input space and applying any oversampling algorithm for each resulting cluster with appropriate resampling ratio, the within-classes imbalanced issue can be addressed. This approach, implemented in the cluster-over-sampling Python open source project, has been shown in various publications to outperform other standard oversamplers in a large number of datasets. In this paper we describe cluster-over-sampling in detail and make it available to the machine learning community. An important point is that the implementation integrates effortlessly with the Scikit-Learn ecosystem. Therefore, machine learning researchers and practitioners can integrate it directly to any pre-existing work.
 \end{abstract}
 
 \begin{keyword}
@@ -42,7 +42,7 @@ Machine learning \sep Classification \sep Imbalanced learning \sep Oversampling
 \hline
 Code metadata & \\
 \hline
-Current code version & v0.1.2 \\
+Current code version & v0.1.1 \\
 \hline
 Permanent link to code/repository used for this code version & \url{https://github.com/AlgoWit/cluster-over-sampling} \\
 \hline
@@ -89,42 +89,38 @@ A bias towards the majority class is induced when imbalanced data are used to tr
 \subsection{Oversampling algorithms}
 \label{oversampling}
 
-Various approaches have been proposed to improve classification results when the training data are imbalanced. The most general approach, called oversampling, is the generation of artificial data for the minority class(es) \cite{Fernandez2013}. Synthetic Minority Oversampling Technique (SMOTE) \cite{Chawla2002} was the first informed oversampler proposed and still is the most popular one. SMOTE generates synthetic instances along a line segment that joins samples from the minority class(es). 
-
-One such drawback stems from the
-fact that SMOTE randomly chooses a minority instance to oversample with
-uniform probability. While this allows the method to effectively combat
-between-class imbalance, the issues of within-class imbalance and small
-disjuncts are ignored. Input areas counting many minority samples have a high
-probability of being inflated further, while sparsely populated minority areas
-are likely to remain sparse~\citep{Prati.2004}.
-
-Although this approach has been shown to be effective for generating artificial data, it also has some drawbacks \cite{He2009}. In order to improve the quality of the artificial data, many variants of SMOTE have been proposed. Nevertheless, all of these variations use the same data generation mechanism, i.e. linear interpolation between minority class samples as shown in figure \ref{fig:smote_vs_gsmote}.
-
-A Python implementation of SMOTE and several of its variants is available in the \href{https://imbalanced-learn.org/stable/}{Imbalanced-Learn} \cite{Lemaitre2016} library, which is fully compatible with the popular machine learning toolbox \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2011}. 
-
-\subsection{Geometric SMOTE}
-\label{gsmote}
-
-Geometric SMOTE (G-SMOTE) \cite{Douzas2019} uses a different approach compared to existing SMOTE's variations. More specifically, G-SMOTE oversampling algorithm substitutes the data generation mechanism of SMOTE by defining a flexible geometric region around each minority class instance and generating synthetic instances inside the boundaries of this region. The algorithm requires the selection of the hyperparameters \texttt{truncation\_factor}, \texttt{deformation\_factor}, \texttt{selection\_strategy} and \texttt{k\_neighbors}. The first three of them, called geometric hyperparameters, control the shape of the geometric region while the later adjusts its size. Figure \ref{fig:smote_vs_gsmote} presents a visual comparison between the data generation mechanisms of SMOTE and G-SMOTE.
+Various approaches have been proposed to improve classification results when the training data are imbalanced, a case also known as between-class imbalance. The most general approach, called oversampling, is the generation of artificial data for the minority class(es) \cite{Fernandez2013}. Synthetic Minority Oversampling Technique (SMOTE) \cite{Chawla2002} was the first non-trivial oversampler proposed and remains the most popular one. Although SMOTE has been shown to be effective for generating artificial data, it also has some drawbacks \cite{He2009}. In order to improve the quality of the artificial data many variants of SMOTE have been proposed. Nevertheless, they utilize the SMOTE data generation mechanism, which consists of a linear interpolation between minority class samples to generate synthetic instances as shown in figure \ref{fig:smote}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../analysis/smote_vs_gsmote}
-	\caption{Comparison between the data generation mechanisms of SMOTE and G-SMOTE. SMOTE uses linear interpolation, while G-SMOTE defines a circle as the permissible data generation area.}
-	\label{fig:smote_vs_gsmote}
+	\includegraphics[width=1\linewidth]{../analysis/smote}
+	\caption{Visual representation of the SMOTE data generation mechanism.}
+	\label{fig:smote}
 \end{figure}
 
-G-SMOTE algorithm has been shown to outperform SMOTE and its variants across 69 imbalanced datasets for various classifiers and evaluation metrics \cite{Douzas2019}. In this paper, we present a Python implementation of G-SMOTE. In section 2, the software description is given while section 3 provides a demonstrative example of its functionalities.
+A Python implementation of SMOTE and several of its variants is available in the \href{https://imbalanced-learn.org/stable/}{Imbalanced-Learn} \cite{Lemaitre2016} library, which is fully compatible with the popular machine learning toolbox \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2011}.
+
+\subsection{Clustering based oversampling}
+\label{clustering-oversampling}
+
+In addition to between-class imbalance, within-class imbalance refers to the case where areas of sparse and dense minority class instances exist. As a first step of generating synthetic samples, the SMOTE data generation mechanism selects randomly, with uniform probability, minority class instances. Consequently, dense minority class areas have a high probability of being inflated further, while the sparsely populated are likely to remain sparse. This allows to combat between-class imbalance, while the issue of within-class imbalance is ignored \cite{Prati2004}.
+
+On the other hand, clustering based oversampling, as presented in \cite{Douzas2017a} and \cite{Douzas2018}, aims to deal with both between-class and within-class imbalance problems. Initially a clustering algorithm is applied to the input space. The resulting clusters allow to identify sparse and dense minority class(es) areas. A small IR, compared to a threshold, of a particular cluster is used as an indicator that it can be safely used as a safe data generation area, i.e. noise generation is avoided. Furthermore, sparse minority clusters are assigned more synthetic samples, which alleviates within-class imbalance.
+
+Specific realizations of the above approach are SOMO \cite{Douzas2017a} and KMeans-SMOTE \cite{Douzas2018} algorithms. Empirical studies have shown that both algorithms outperform SMOTE and its variants across multiple imbalanced datasets, classifiers and evaluation metrics. In this paper, we present a generic Python implementation of clustering based oversampling, in the sense that any combination of a Scikit-Learn compatible clusterer and Imbalanced-Learn combatible oversampler can be selected to produce an algorithm that identifies clusters on the input space and apply oversampling on each one of them.  In section 2, the software description is given while section 3 provides a demonstrative example of its functionalities.
 
 \section{Software description}
 
-The \texttt{geometric-smote} software project is written in Python 3.7. It contains an object-oriented implementation of the G-SMOTE algorithm as well as an extensive \href{https://geometric-smote.readthedocs.io/}{online documentation}. The implementation provides an API that is compatible with Imbalanced-Learn and Scikit-Learn libraries, therefore it makes full use of various features that support standard machine learning functionalities.
+The \texttt{cluster-over-sampling} software project is written in Python 3.7. It contains an object-oriented implementation of the cluster based oversampling procedure as well as detailed \href{https://cluster-over-sampling.readthedocs.io/}{online documentation}. The implementation provides an API that is compatible with Imbalanced-Learn and Scikit-Learn libraries. Therefore, standard machine learning functionalities are supported while the generated clustering based oversampling algorithm includes any selected oversampler as a special case.
 
 \subsection{Software Architecture}
 \label{architecture}
 
-The \texttt{geometric-smote} project contains the Python package \texttt{gsmote}. The main module of \texttt{gsmote} is called \texttt{geometric-smote.py}. It contains the class \texttt{GeometricSMOTE} that implements the G-SMOTE algorithm. The initialization of a \texttt{GeometricSMOTE} instance includes G-SMOTE's hyperparameters that control the generation of synthetic data. Additionally, \texttt{GeometricSMOTE} inherits from the \texttt{BaseOverSampler} class of Imbalanced-Learn library. Therefore, an instance of \texttt{GeometricSMOTE} class provides the \texttt{fit} and \texttt{fit\_resample} methods, the two main methods for resampling as explained in subsection \ref{functionality}. This is achieved by implementing the \texttt{\_fit\_resample} abstract method of the parent class \texttt{BaseOverSampler}. More specifically, the function \texttt{\_make\_geometric\_sample} implements the data generation mechanism of G-SMOTE as shortly described in section \ref{gsmote}. This function is called in the \texttt{\_make\_geometric\_samples} method of the \texttt{GeometricSMOTE} class in order to generate the appropriate number of synthetic data for a particular minority class. Finally, the method \texttt{\_make\_geometric\_samples} is called in \texttt{\_fit\_resample} method to generate synthetic data for all minority classes. Figure \ref{fig:class_diagram} provides a visual representation of the above classes and functions hierarchy.
+The \texttt{cluster-over-sampling} project contains the Python package \texttt{clover}. The main modules of \texttt{clover} are called \texttt{distribution} and \texttt{over\_sampling}. 
+
+The module \texttt{distribution} implements the functionality related to the distribution of the generated samples to the identified clusters. It contains the files \texttt{base.py} and \texttt{density.py}. The former provides the implementation of the \texttt{BaseDistributor} class, the base class for distributors, while the later includes the \texttt{DensityDistributor} class, a generalization of the density based distributor presented in \cite{Douzas2017a} and \cite{Douzas2018}, that inherits from \texttt{BaseDistributor}. Following the Scikit-Learn API, \texttt{BaseDistributor} includes the public methods \texttt{fit} and \texttt{fit\_distribute}. The \texttt{fit\_distribute} method calls the \texttt{fit} method and returns two Python dictionaries that describe the distribution of generated samples inside each cluster and between clusters, respectively. Particularly, the \texttt{fit} method calculates various statistics related to the distribution process, while it calls \texttt{\_fit} method to calculate the actual intra-cluster and inter-cluster distributions. This is achieved by invoking the \texttt{\_intra\_distribute} and \texttt{\_inter\_distribute} methods. The \texttt{BaseDistributor} class provides a trivial implementation of them, that should be overwritten when a realization of a distributor class is considered. Therefore, \texttt{}{DensityDistributor} overwrites both methods as well as the \texttt{\_fit} method. The later calls the methods \texttt{\_identify\_filtered\_clusters} and \texttt{\_calculate\_clusters\_density} that identify the clusters used for data generation and calculate their density, respectively. Subsection \ref{functionality} provides a detailed description of the initialization and functionality of the \texttt{DensityDistributor} class. Figure \ref{fig:distributor_class_diagram} shows a visual representation of the above classes and functions hierarchy.
+
+The initialization of a \texttt{GeometricSMOTE} instance includes G-SMOTE's hyperparameters that control the generation of synthetic data. Additionally, \texttt{GeometricSMOTE} inherits from the \texttt{BaseOverSampler} class of Imbalanced-Learn library. Therefore, an instance of \texttt{GeometricSMOTE} class provides the \texttt{fit} and \texttt{fit\_resample} methods, the two main methods for resampling as explained in subsection \ref{functionality}. This is achieved by implementing the \texttt{\_fit\_resample} abstract method of the parent class \texttt{BaseOverSampler}. More specifically, the function \texttt{\_make\_geometric\_sample} implements the data generation mechanism of G-SMOTE as shortly described in section \ref{clustering-oversampling}. This function is called in the \texttt{\_make\_geometric\_samples} method of the \texttt{GeometricSMOTE} class in order to generate the appropriate number of synthetic data for a particular minority class. Finally, the method \texttt{\_make\_geometric\_samples} is called in \texttt{\_fit\_resample} method to generate synthetic data for all minority classes. Figure \ref{fig:class_diagram} provides a visual representation of the above classes and functions hierarchy.
 
 \begin{figure}[H]
 	\centering
