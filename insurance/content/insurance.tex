@@ -92,21 +92,21 @@ learning algorithms to most risk assessment problems the user will be faced with
 the need to solve, or at least mitigate, the negative effects of dataset
 imbalance.
 
-Building models with highly skewed datasets is usually known, in the machine
-learning literature, as imbalanced learning. Imbalance learning is a pervasive
-issue in risk analysis and assessment, as finding perfectly balanced datasets,
-with 50\% examples of each class, is very rare. Imbalance learning constitutes a
-significant obstacle when building accurate and robust predictive models. Skewed
-datasets present an imbalance between the different classes represented. In
-these cases, the datasets may even be very large, but they are characterized by
-having a large number of data points of one class (majority class) and a very
-small number of data points of the other class(es) (minority classes). This is
-not an optimal situation, as the objective of a classification algorithm is to
-learn a classifier that is able to discriminate the classes. Having a small
-number of data points from one of the classes will make the learning task much
-more challenging, eventually impossible. The ability to deal and mitigate the
-imbalance learning problem constitutes an important skill for both practitioners
-and researchers alike.
+Building models with highly skewed datasets is usually known, in the machine 
+learning literature, as imbalanced learning. Imbalance learning is a pervasive 
+issue in risk analysis and assessment, as finding perfectly balanced datasets, 
+with 50\% examples of each class, is very rare. Imbalance learning constitutes 
+asignificant obstacle when building accurate and robust predictive models. 
+Skewed datasets present an imbalance between the different classes represented. 
+In these cases, the datasets may even be very large, but they are characterized 
+by having a large number of data points of one class (majority class) and a 
+very small number of data points of the other class(es) (minority classes). 
+This is not an optimal situation, as the objective of a classification 
+algorithm is to learn a classifier that is able to discriminate the classes 
+\cite{HaiboHe2009}. Having a smallnumber of data points from one of the classes 
+will make the learning task much more challenging, eventually impossible. The 
+ability to deal and mitigate the imbalance learning problem constitutes an 
+important skill for both practitioners and researchers alike.
 
 There are several options to deal with imbalanced learning, which can be broadly
 classified into three main groups \cite{Fernandez2013}. One is the
@@ -172,39 +172,40 @@ insurance sector to improve business processes control, which frequently
 translate into significant overhead burden and tedious operational tasks, which 
 consume substantial resources, both in terms of budget and time. 
 For these reasons, the industry has invested significantly in the development 
-of machine learning models, in the hope of improving the ability to proactively 
-detect and prevent fraudulent behaviors \cite{Decker1998}. In fact, preventing 
-fraud and reducing its financial impact on the business can be the right 
-strategy to increase competitiveness and grow the bottom line \cite{Skeels 
-Pan2016}. A significant body of research can be found on the topic of fraud 
+of machine learning models, hoping to improve the ability to proactively detect 
+and prevent fraudulent behaviors \cite{Decker1998}. In fact, and given its 
+negative impacts, preventing fraud and reducing its financial impact on the 
+business can be the right strategy to increase competitiveness and grow the 
+bottom line. A significant body of research can be found on the topic of fraud 
 prevention \cite{Phua2004} \cite{Wei2012} \cite{Banarescu2015} 
-\cite{Ibrahim2015} \cite{Kim2016} \cite{Sahin2013}. Most of the research 
-efforts have been focused on finding the best models to identify fraudulent 
+\cite{Hassan2015} \cite{Kim2016} \cite{Sahin2013}. Most of the research efforts 
+have been focused on finding the best models to identify fraudulent 
 transactions or events, in order to expedite the operational procedures, saving 
 time and money.
-The Compulsory Auto Insurance (SOAT according to its acronym in Spanish) was 
-established in Colombia in 1986, as a response to the increase of automotive 
-accidents, with 1.3 million of fatal victims and more than 50 million injured, 
-which can be considered a public health problem. SOAT's objective is to 
-guarantee a basic medical attention to all the victims involved in this type of 
-accident in the country. Unfortunately, because of the mismanagement  carried 
-out by the government, health entities and users, most of the cases  related 
-with fraud, and the impossibility to determine the premium according to  the 
-risk, the insurance companies which provide this coverage had state annual 
-losses for more than 54 million dollars. 
-The SOAT is highly sensitive to fraud; the actions made by fraudsters can be 
+The Compulsory Auto Insurance (SOAT according to the Spanish acronym) was 
+established in Colombia in 1986, as a response to the increase in automotive 
+accidents. With a total of 1.3 million of fatal victims and more than 50 
+million injured, this problem can be considered a public health problem. SOAT's 
+objective is to guarantee basic medical treatment to all the victims involved 
+in this type of accident in the country. Unfortunately, because of the 
+mismanagement carried out by the government, health entities and users, many of 
+the cases are, in some way, fraudulent, and the impossibility to determine the 
+premium according to the risk, lead the insurance companies, which provide this 
+coverage, to an state annual losses of more than 54 million dollars. The SOAT 
+is highly susceptible to fraud; the actions made by fraudsters can be 
 enumerated as follows: 
 \begin{itemize}
-	\item Bills of services which cannot be proved.
-	\item Charging the same bill to different insurance companies
+	\item Bills of services which cannot be proved;
+	\item Charging the same bill to different insurance companies;
 	\item Using the policy to charge medical treatments resulting from 
-	different situations than car accidents.
+	different situations than car accidents;
 	\item Health companies can charge bills related to nonexistent patients or 
-	apply unnecessary treatments like surgeries to the injured person.
+	apply unnecessary treatments like surgeries to the injured person;
 	\item Nonexistent health entities charge fake bills to the insurance 
-	companies
+	companies;
 	\item Inflation of treatments and medicines costs.
 \end{itemize}
+<<<<<<< HEAD:insurance/content/insurance.tex
 Fraud is, by definition, an unusual event, in the insurance industry it is 
 supposed to expect fewer fraudulent claims than non-fraudulent cases. Also, the 
 cost of misclassified a fraudulent claim is higher than a considered rightful 
@@ -228,6 +229,23 @@ Because of the relevance of this situation and the importance of treat it the
 best way, a lot of research has been developed for deal with it, (Haixiang, 
 Yijing, Shang, Mingyun, & Yuanyue, 2016) presents a review from 527 papers 
 where the work of 10 years of study are shaped. 
+=======
+Fraud is, by definition, an unusual event, in the insurance industry fraudulent 
+claims are significantly fewer than non-fraudulent cases. Also, the cost of 
+misclassified a fraudulent claim is higher than a considered rightful claim as 
+a counterfeit claim. Hence, the development of machine learning models for the 
+identification of fraudulent claims in the insurance industry can be defined as 
+an imbalanced learning problem. Most machine learning models perform poorely in 
+imbalanced data: they can have a good accuracy for majority (negative) class 
+but poor results for the class of interest (positive) \cite{HaiboHe2009}.
+Additionally, differentiate between the minority class and noise is 
+challenging: examples belonging to the minority class can be identified by the 
+algorithm as noise, and in the same way noisy individuals can be 
+treated as the individuals of interest \cite{Beyan2015}
+The relevance of this problem can be seen by the 527 scientific papers 
+published in the last 10 years, with a significant increase in the last few 
+years \cite{Haixiang2017}. 
+>>>>>>> Initial modification of the paper:content/insurance/insurance.tex
 There exist four main groups were the proposed solutions can be categorized: 
 
 
