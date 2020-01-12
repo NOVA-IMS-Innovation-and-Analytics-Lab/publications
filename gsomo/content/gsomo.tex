@@ -5,16 +5,17 @@
 \title{G-SOMO \\ \LARGE{An Oversampling Approach based on Self-Organized Maps and Geometric SMOTE}}
 
 \author{
-	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Rene Rauch\(^{1}\)
+	Georgios Douzas\(^{* 1, a}\), Fernando Bacao\(^{1, b}\), Rene Rauch\(^{1, c}\) 
 	\\
-	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
-	\\
-	\small{*Corresponding Author: bacao@novaims.unl.pt}
-	\\
+	\small{Affiliation: \(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
 	\\
 	\small{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal}
 	\\
 	\small{Telephone: +351 21 382 8610}
+	\\
+	\small{Email: \(^{a}\)gdouzas@novaims.unl.pt, \(^{b}\)bacao@novaims.unl.pt, \(^{c}\)rene.rauch@outlook.de}
+	\\
+	\small{*Corresponding Author}
 }
 
 \usepackage{breakcites}
@@ -44,7 +45,10 @@
 \maketitle
 
 \begin{abstract}
-	Traditional supervised machine learning classifiers are challenged to learn highly skewed data distributions as they are designed to expect classes to equally contribute to the minimization of the classifiers cost function. Moreover, the classifiers design expects equal misclassification costs, causing a bias for overrepresented classes. Different strategies have been proposed to correct this issue. The modification of the data set has become a common practice since the procedure is generalizable to all classifiers. Various algorithms to rebalance the data distribution through the creation of synthetic instances were proposed in the past. In this paper, we propose a new oversampling algorithm named G-SOMO. The algorithm identifies optimal areas to create artificial data instances in an informed manner and utilizes a geometric region during the data generation process to increase their variability. Our empirical results on 69 datasets, validated with different classifiers and metrics against a benchmark of commonly used oversampling methods show that G-SOMO consistently outperforms competing oversampling methods. Additionally, the statistical significance of our results is established.
+Traditional supervised machine learning classifiers are challenged to learn highly skewed data distributions as they are designed to expect classes to equally contribute to the minimization of the classifiers cost function. Moreover, the classifiers design expects equal misclassification costs, causing a bias for overrepresented classes. Different strategies have been proposed to correct this issue. The modification of the data set has become a common practice since the procedure is generalizable to all classifiers. Various algorithms to rebalance the data distribution through the creation of synthetic instances were proposed in the past. In this paper, we propose a new oversampling algorithm named G-SOMO. The algorithm identifies optimal areas to create artificial data instances in an informed manner and utilizes a geometric region during the data generation process to increase their variability. Our empirical results on 69 datasets, validated with different classifiers and metrics against a benchmark of commonly used oversampling methods show that G-SOMO consistently outperforms competing oversampling methods. Additionally, the statistical significance of our results is established.
+\\
+\\
+Keywords: Machine Learning, Classification, Imbalanced Learning, Oversampling, G-SMOTE, SOM.
 \end{abstract}
 
 \section{Introduction}
