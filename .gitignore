@@ -8,11 +8,11 @@ __pycache__
 *.log
 *.synctex.gz
 */content/*.pdf
-*.docx
+*/supplementary
 *.fls
 *.fdb_latexmk
 *.egg-info
 *.pyg
 *.spl
 .*venv
-*.pptx
+
