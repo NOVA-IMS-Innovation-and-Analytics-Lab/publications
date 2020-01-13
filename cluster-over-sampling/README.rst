@@ -1,22 +1,25 @@
-===========================================================================================================================================================
-`Geometric SMOTE: A geometrically enhanced drop-in replacement for SMOTE <https://www.sciencedirect.com/science/article/pii/S0020025519305353?via%3Dihub>`_
-===========================================================================================================================================================
+=======================================================================================================================
+Comparing the performance of oversampling techniques in combination with a clustering algorithm for imbalanced learning
+=======================================================================================================================
 
 Abstract
 ========
 
-Classification of imbalanced datasets is a challenging task for standard
-algorithms. Although many methods exist to address this problem in different
-ways, generating artificial data for the minority class is a more general
-approach compared to algorithmic modifications. SMOTE algorithm, as well as any
-other oversampling method based on the SMOTE mechanism, generates synthetic
-samples along line segments that join minority class instances. In this paper we
-propose Geometric SMOTE (G-SMOTE) as a enhancement of the SMOTE data generation
-mechanism. G-SMOTE generates synthetic samples in a geometric region of the
-input space, around each selected minority instance. While in the basic
-configuration this region is a hyper-sphere, G-SMOTE allows its deformation to a
-hyper-spheroid. The performance of G-SMOTE is compared against SMOTE as well as
-baseline methods. We present empirical results that show a significant
-improvement in the quality of the generated data when G-SMOTE is used as an
-oversampling algorithm. An implementation of G-SMOTE is made available in the
-Python programming language.
+Imbalanced learning constitutes a recurring problem in machine learning.  
+Frequently, practitioners and researchers have access to large amounts of 
+data but its imbalanced nature hampers the possibility of building accurate 
+robust predictive models. Many problems are characterized by the rare nature 
+of the cases of interest, in domains such as health, security, quality control 
+business applications, it is frequent to have huge populations of negative 
+cases and just a very limited number of positive ones. The prevalence of the 
+imbalanced learning problem explains why it continues to be a very active 
+research topic, which in fact has grown in recent years. It is known that 
+imbalance can exist both between-classes (the imbalance occurring between 
+the two classes) and also within-classes (the imbalance occurring between 
+sub-clusters of each class). In this later case traditional oversamplers 
+will tend to perform poorly. In this paper we focus on testing the relevancy 
+of using clustering procedures in combination with oversamplers to improve 
+the quality of the results. We perform a series of extensive tests using 
+the most popular oversamplers, with and without a preceding clustering 
+procedure. The tests confirm that the use of a clustering procedure prior 
+to the application of an oversampler will improve the results.
