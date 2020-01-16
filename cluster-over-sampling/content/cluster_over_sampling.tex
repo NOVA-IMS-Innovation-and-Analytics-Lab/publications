@@ -54,7 +54,7 @@ Imbalanced learning can be described as the condition in which there is a
 significant difference between examples of different classes, in other words, 
 when the classes are significantly skewed. Imbalanced learning is a widespread 
 problem in the application of supervised learning in many different domains and 
-applications \cite{Fernandez2013} \cite{Haixiang2017} and can be seen as a 
+applications \cite{Fernandez2013, Haixiang2017} and can be seen as a 
 particular type of data scarcity.
 
 Imbalanced learning affects the performance of classifiers due to two main reasons. The first, relates with the fact that, by design, standard learning methods are biased towards the majority class. This happens because, during the training phase, most learning algorithms assign similar costs to misclassification errors on the majority and minority classes. Consequently, the most abundant class tends to dominate the process, as the minority classes contribute less to the maximisation of the objective function (i.e. accuracy). The second, relates with the fact that to learn a classifier the learner needs to be able to discriminate the classes; thus, having a small number of examples from one of the classes will make the learning task much more challenging.
@@ -288,8 +288,7 @@ The most common measures to assess the performance of classifiers when dealing
 with imbalanced problems are: F1 score, G-Mean and ROC-AUC \cite{He2009}. The 
 F1 score, or F-Measure metric, combines precision and recall as a measure of 
 the effectiveness of classification in terms of a ratio of the weighted 
-importance on either recall or precision as determined by the β coefficient set 
-by the user.
+importance on either recall or precision as determined by the $\beta$ coefficient set by the user.
 
 F1 FORMULA HERE
 
@@ -314,25 +313,24 @@ In the tests we use 4 different oversamplers, with and without a clustering
 procedure, before the oversampling process. The oversamplers used were: Random 
 Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two 
 variations, more specifically Borderline SMOTE and G-SMOTE, the optimal value 
-of k nearest neighbors was set to k ∈ {3, 5}. 
+of $k$-nearest neighbors was set to $k \in \{3, 5\}$. 
 
 Furthermore, a hyper-parameter grid was generated for G-SMOTE including the 
-three different selection strategies, the number of nearest neighbors k ∈ {3, 
-5}, the truncation factor αtrunc ∈ {−1.0, 0.0, 1.0} and the deformation factor 
-αdef ∈ {0.0, 0.5, 1.0}. 
+three different selection strategies, the number of nearest neighbors $k \in \{3, 5\}$, the truncation factor $\alpha_{trunc} \in \{-1.0, 0.0, 1.0\}$ and the deformation factor $\alpha_{def} \in \{0.0, 0.5, 1.0\}$. 
 
 Regarding the clustering procedure we used to most popular clustering algorithm 
 (i.e. k-means). The choice of the k-means algorithm was mainly due to its 
 simplicity and popularity. To use a clustering procedure before the 
 oversampling procedure requires the definition of 3 main parameters. First, the 
 number of clusters to consider, as in any clustering procedure using k-means. 
-The second paremeter, caled here distances_exponent, relates with XXX. Finally, 
-the last paremeter, the filtering_threshold, defines the XXX. These parameters 
-were tested with the following grid:
+The second paremeter, caled here $distances\_exponent$, relates with . Finally, 
+the last paremeter, the $filtering\_threshold$, defines the . These parameters were tested with the following grid:
 
-•	Number of clusters: n_clusters ∈ {0.0, 0.25,0.5,0.75, 1.0};
-•	distances_exponent ∈ {0, 1, 2};
-•	filtering_threshold ∈ {0.5, 1.0};
+$$n\_clusters \in \{0.0, 0.25,0.5,0.75, 1.0\}$$
+
+$$distances\_exponent \in \{0, 1, 2\}$$
+
+$$filtering\_threshold \in \{0.5, 1.0\}$$
 
 In summary, the four oversamplers presented above are tested with and without a 
 clustering procedure based on k-means.
@@ -375,10 +373,7 @@ to the number of stages, is a hyperparameter of the algorithm
 Different combinations of hyper-parameters were used and tested for each of the 
 classifiers mentioned above. The classifiers are used with the default 
 parameters unless stated otherwise. More specifically, the GBC hyper-parameter 
-grid included the combinations resulting from max depth ∈ {3, 6} and number of 
-estimators ∈ {50, 100}. For the DT Classifier, the combinations resulting from 
-max depth ∈ {3, 6} are tested. Additionally, for KNN, the number of neighbors ∈ 
-{3, 5}.
+grid included the combinations resulting from $max\_depth \in \{3, 6\}$ and $number\_estimators \in \{50, 100\}$. For the DT Classifier, the combinations resulting from $max\_depth \in \{3, 6\}$ are tested. Additionally, for KNN, the $k \in \{3, 5\}$.
 
 \subsection{Experimental Procedure}
 
