@@ -6,7 +6,7 @@ Download, transform and simulate various datasets.
 # License: MIT
 
 from sys import argv
-from os.path import join, dirname, abspath
+from os.path import join, dirname, abspath, isdir
 from os import remove, listdir
 from re import sub
 from collections import Counter
@@ -552,23 +552,24 @@ def img_array_to_pandas(X, y):
     return pd.DataFrame(data=dat.T, columns=columns)
 
 
-def load_datasets(data_path, data_type='db'):
-    """Load datasets from sqlite database or csv files."""
+def load_datasets(data_dir):
+    """Load datasets from sqlite database and/or csv files."""
+    assert isdir(data_dir), '`data_dir` must be a directory.'
     datasets = []
-    if data_type == 'db':
-        with connect(data_path) as connection:
-            datasets_names = [name[0] for name in connection.execute("SELECT name FROM sqlite_master WHERE type='table';")]
-            for dataset_name in datasets_names:
-                ds = pd.read_sql(f'select * from "{dataset_name}"', connection)
-                X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
-                datasets.append((dataset_name, (X, y)))
-    elif data_type == 'csv':
-        datasets_names = [name for name in listdir(data_path) if name.endswith('.csv')]
-        for dataset_name in datasets_names:
-            ds = pd.read_csv(join(data_path, dataset_name))
-            name = dataset_name.replace('.csv', '').replace('_', ' ').upper()
+    for dat_name in listdir(data_dir):
+        data_path = join(data_dir, dat_name)
+        if dat_name.endswith('.csv'):
+            ds = pd.read_csv(data_path)
+            name = dat_name.replace('.csv', '').replace('_', ' ').upper()
             X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
             datasets.append((name, (X, y)))
+        elif dat_name.endswith('.db'):
+            with connect(data_path) as connection:
+                datasets_names = [name[0] for name in connection.execute("SELECT name FROM sqlite_master WHERE type='table';")]
+                for dataset_name in datasets_names:
+                    ds = pd.read_sql(f'select * from "{dataset_name}"', connection)
+                    X, y = ds.iloc[:, :-1], ds.iloc[:, -1]
+                    datasets.append((dataset_name.replace('_', ' ').upper(), (X, y)))
     return datasets
 
 
