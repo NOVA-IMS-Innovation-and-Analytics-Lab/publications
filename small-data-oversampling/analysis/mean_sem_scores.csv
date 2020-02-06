@@ -1,4 +1,4 @@
-Ratio,Classifier,Metric,NONE,RANDOM,SMOTE,B-SMOTE,G-SMOTESD,BENCHMARK
+Ratio,Classifier,Metric,NONE,RANDOM,SMOTE,B-SMOTE,GSDOT,BENCHMARK
 50,LR,ACCURACY,0.91 $\pm$ 0.03,0.91 $\pm$ 0.03,0.91 $\pm$ 0.02,0.91 $\pm$ 0.03,\textbf{0.92} $\pm$ 0.02,0.92 $\pm$ 0.02
 50,LR,G-MEAN,0.88 $\pm$ 0.04,0.88 $\pm$ 0.04,\textbf{0.89} $\pm$ 0.04,\textbf{0.89} $\pm$ 0.04,\textbf{0.89} $\pm$ 0.04,0.90 $\pm$ 0.04
 50,KNN,ACCURACY,0.88 $\pm$ 0.03,0.88 $\pm$ 0.03,\textbf{0.89} $\pm$ 0.03,0.88 $\pm$ 0.03,\textbf{0.89} $\pm$ 0.03,0.90 $\pm$ 0.03
