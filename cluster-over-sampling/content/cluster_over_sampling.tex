@@ -310,21 +310,39 @@ the decision criterion \cite{He2009}.
 \subsection{Oversamplers}
 
 In the tests we use 4 different oversamplers, with and without a clustering 
-procedure, before the oversampling process. The oversamplers used were: Random 
-Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two 
-variations, more specifically Borderline SMOTE and G-SMOTE, the optimal value 
-of $k$-nearest neighbors was set to $k \in \{3, 5\}$. 
+procedure, before the oversampling process. The oversamplers used were are: 
+Random Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two 
+variations, more specifically Borderline SMOTE and G-SMOTE, the value of 
+$k$-nearest neighbors was set to $k \in \{3, 5\}$. 
 
 Furthermore, a hyper-parameter grid was generated for G-SMOTE including the 
 three different selection strategies, the number of nearest neighbors $k \in \{3, 5\}$, the truncation factor $\alpha_{trunc} \in \{-1.0, 0.0, 1.0\}$ and the deformation factor $\alpha_{def} \in \{0.0, 0.5, 1.0\}$. 
 
-Regarding the clustering procedure we used to most popular clustering algorithm 
-(i.e. k-means). The choice of the k-means algorithm was mainly due to its 
-simplicity and popularity. To use a clustering procedure before the 
-oversampling procedure requires the definition of 3 main parameters. First, the 
-number of clusters to consider, as in any clustering procedure using k-means. 
-The second paremeter, caled here $distances\_exponent$, relates with . Finally, 
-the last paremeter, the $filtering\_threshold$, defines the . These parameters were tested with the following grid:
+Regarding the clustering procedure we used the most popular clustering 
+algorithm (i.e. k-means). The choice of the k-means algorithm was mainly due to 
+its simplicity and popularity. The process of using a clustering algorithm in 
+the context of oversampling procedure can be divided into three steps: 
+clustering, filtering and oversampling. In the clustering step the input space 
+is clustered into k groups. The filtering step is composed of two substeps, 
+first it defines which are the clusters that are going to be oversampled and 
+secondly it defines how many instances are going to be generated in each one of 
+the clusters. The clusters choosed for oversampling are the ones in which there 
+is a high proportion of of minority classe instances. The distribution of the 
+synthetic instances is made in such a way that clusters where minority 
+instances are sparsely distributed are assigned more instances. Finally, the 
+oversampling step creates the synthetic instances according to the distribution 
+defined in the filtering step.  
+
+Three hyperparameters need to be defined when applying the clustering 
+procedure: the number of clusters, the exponent used for computation of density 
+and the filtering threshold. The first parameter, number of clusters, is a 
+required parameter for the k-means algorithms. The exponent used for 
+computation of density ($distances\_exponent$) is necessary to the number of 
+clusters to consider, as in any clustering procedure using k-means, the number 
+of clusters has to be defined before running the algorithm. The second 
+paremeter, caled here $distances\_exponent$, relates with . Finally, the 
+lastparemeter, the $filtering\_threshold$, defines the . These parameters were 
+tested with the following grid:
 
 $$n\_clusters \in \{0.0, 0.25,0.5,0.75, 1.0\}$$
 
