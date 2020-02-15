@@ -179,16 +179,26 @@ the years. They usually address a specific weakness from the original method,
 such as emphasizing certain minority class regions, combating within-class 
 imbalance, or even attempting to avoid noise generation \cite{Douzas2018}.
 
-The most frequent properties exploited by the techniques are the initial 
-selection and adaptive generation of synthetic examples. Filtering is becoming 
-more common in recent years, as well as the use of kernel functions. Regarding 
-the interpolation procedure, it is also usual to replace the original method 
-with other more complex ones, such as clustering-based or derived from a 
-probabilistic function \cite{Fernandez2018}. Safe-Level SMOTE modifies the 
-SMOTE algorithm by applying a weight degree, the safe level, in the data 
-generation process. The safe level provides a scale to differentiate between 
-noisy and safe instances \cite{Bunk2009}. 
+In their recent paper \cite{Fernandez2018} propose a framework with six 
+properties to characterize the extensions to the SMOTE-based extensions: (1) 
+initial selection of instances to be oversampled, (2) integration with 
+Undersampling, (3) type of interpolation, (4) operation with dimensionality 
+changes, (5) adaptive generation of synthetic examples, (6) relabeling and (7) 
+filtering of noisy generated instances. From these, the most exploit properties 
+in the extensions that have been proposed are the initial selection of 
+instances to be oversampled, which consists on the strategy to select the best 
+candidates to be oversampled, and adaptive generation of synthetic examples, 
+which uses a weighted distribution of the minority class to determine the areas 
+where more instances should be generated (this idea was originally introduced 
+in the ADASYN algorithm \cite{He2008}). The idea of filtering the noisy 
+generated samples has become more popular in recent years and the original 
+interpolation procedure is frequetely replaced by more complex ones, involving 
+such as clustering-based or derived from a probabilistic functions 
+\cite{Fernandez2018}. 
 
+Safe-Level SMOTE modifies the SMOTE algorithm by applying a weight degree, the 
+safe level, in the data generation process. The safe level provides a scale to 
+differentiate between noisy and safe instances \cite{Bunk2009}. 
 Similarly, there are two other enhancements of SMOTE called Borderline SMOTE1 
 and Borderline SMOTE2, in which only the minority examples near the borderline 
 are oversampled. For the minority class, experiments show that our approaches 
@@ -310,28 +320,30 @@ the decision criterion \cite{He2009}.
 \subsection{Oversamplers}
 
 In the tests we use 4 different oversamplers, with and without a clustering 
-procedure, before the oversampling process. The oversamplers used were are: 
-Random Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two 
+procedure, before the oversampling process. The oversamplers used are: Random 
+Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two 
 variations, more specifically Borderline SMOTE and G-SMOTE, the value of 
-$k$-nearest neighbors was set to $k \in \{3, 5\}$. 
+$k$-nearest neighbors was set to $k \in \{3, 5\}$. Furthermore, a 
+hyper-parameter grid was generated for G-SMOTE including the three different 
+selection strategies, the number of nearest neighbors $k \in \{3, 5\}$, the 
+truncation factor $\alpha_{trunc} \in \{-1.0, 0.0, 1.0\}$ and the deformation 
+factor $\alpha_{def} \in \{0.0, 0.5, 1.0\}$ (for more details on the G-SMOTE 
+algorithm please read \cite{Douzas2019}). 
 
-Furthermore, a hyper-parameter grid was generated for G-SMOTE including the 
-three different selection strategies, the number of nearest neighbors $k \in \{3, 5\}$, the truncation factor $\alpha_{trunc} \in \{-1.0, 0.0, 1.0\}$ and the deformation factor $\alpha_{def} \in \{0.0, 0.5, 1.0\}$. 
-
-Regarding the clustering procedure we used the most popular clustering 
-algorithm (i.e. k-means). The choice of the k-means algorithm was mainly due to 
-its simplicity and popularity. The process of using a clustering algorithm in 
-the context of oversampling procedure can be divided into three steps: 
-clustering, filtering and oversampling. In the clustering step the input space 
-is clustered into k groups. The filtering step is composed of two substeps, 
-first it defines which are the clusters that are going to be oversampled and 
-secondly it defines how many instances are going to be generated in each one of 
-the clusters. The clusters choosed for oversampling are the ones in which there 
-is a high proportion of of minority classe instances. The distribution of the 
-synthetic instances is made in such a way that clusters where minority 
-instances are sparsely distributed are assigned more instances. Finally, the 
-oversampling step creates the synthetic instances according to the distribution 
-defined in the filtering step.  
+Regarding the clustering procedure we use the most popular clustering algorithm 
+(i.e. k-means). The choice of the k-means algorithm was mainly due to its 
+simplicity and popularity. The process of using a clustering algorithm in the 
+context of oversampling procedure can be divided into three steps: (1) 
+clustering, (2) filtering and (3) oversampling. In the clustering step the 
+input space is clustered into k groups. The filtering step is composed of two 
+substeps, first it defines which are the clusters that are going to be 
+oversampled and secondly it defines how many instances are going to be 
+generated in each one of the clusters. The clusters choosed for oversampling 
+are the ones in which there is a high proportion of of minority classe 
+instances. The distribution of the synthetic instances is made in such a way 
+that clusters where minority instances are sparsely distributed are assigned 
+more instances. Finally, the oversampling step creates the synthetic instances 
+according to the distribution defined in the filtering step.  
 
 Three hyperparameters need to be defined when applying the clustering 
 procedure: the number of clusters, the exponent used for computation of density 
