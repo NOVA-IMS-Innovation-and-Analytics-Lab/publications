@@ -23,7 +23,6 @@
 \usepackage{geometry}
 \geometry{
 	a4paper,
-	total={170mm,257mm},
 	left=18mm,
 	right=18mm,
 	top=8mm,
@@ -89,7 +88,9 @@ machine-learning (ML) approaches face different challenges:
 	      the existence of classes with similar spectral signatures, making these classes
 	      difficult to distinguish \cite{Alonso-Sarria2019}.
 	\item Existence of rare land cover classes. Due to the varying levels of area
-	      coverage for each class, the acquisition of training datasets containing
+	      coverage for each class, using a purely random sampling strategy will amount to
+	      a dataset with a roughly proportional class distribution as the one on the
+	      landscape. On the other hand, the acquisition of training datasets containing
 	      balanced class frequencies is often unfeasible. This causes an asymmetry in
 	      class distribution, where some classes are frequent in the training dataset,
 	      while others have little expression \cite{Wang2019, Feng2019}.
@@ -103,17 +104,22 @@ distribution of observations found in a dataset among classes in both binary
 and multi-class problems \cite{Abdi2016}. This asymmetry in class
 distribution negatively impacts the performance of classifiers, especially in
 multi-class problems. During the learning phase, classifiers are optimized to
-best fit an objective function, being the most common overall accuracy. During
-this phase, observations belonging to rare classes contribute less towards the
-predictive power of the corresponding classes, consequently inducing a bias
-towards majority classes, as depicted in figure \ref{fig:oversampling_decision_function}a.
+best fit an objective function, being the most common overall accuracy
+\cite{Maxwell2018}. This means that observations belonging to rare/minority
+classes contribute less towards the predictive power of the corresponding
+classes and will induce a bias towards majority classes, as depicted in figure
+\ref{fig:oversampling_decision_function}a. As an example, a trivial classifier can achieve 99\%
+overall accuracy on a binary dataset where 1\% of the observations belong to
+the minority class if it classifies all observations as belonging to the
+majority class.
 
 Typical ML algorithms are designed to perform well on relatively balanced
 datasets. Although, defining a decision boundary on imbalanced datasets is a
-difficult task, since each class' importance is typically as high as its
-relative number of observations within the training dataset. There are three
-different types of approaches to deal with the class imbalance problem
-\cite{Fernandez2013}:
+difficult task since each class' weight in the learning phase is typically as
+high as its relative number of observations within the training dataset.
+
+There are three different types of approaches to deal with the class imbalance
+problem \cite{Fernandez2013,Kaur2019}:
 \begin{enumerate}
 	\item Cost-sensitive solutions. Introduces a cost matrix to the learning phase with
 	      misclassification costs attributed to each class. Minority classes will have a
@@ -129,7 +135,8 @@ different types of approaches to deal with the class imbalance problem
 	      and independency from the classifier used.
 \end{enumerate}
 
-Within resampling approaches there are three subgroups of approaches:
+Within resampling approaches there are three subgroups of approaches
+\cite{Fernandez2013,Kaur2019,Luengo2020}:
 \begin{enumerate}
 	\item Undersampling methods. They rebalance class distribution by removing instances
 	      from the majority classes.
@@ -140,33 +147,97 @@ Within resampling approaches there are three subgroups of approaches:
 	      artificial instances in the minority classes.
 \end{enumerate}
 
+Resampling methods can be further distinguished between non-informed and
+heuristic (i.e., informed) resampling techniques \cite{Fernandez2013,Luengo2020,Garcia2016}. The
+former resampling techniques consist of methods that duplicate/remove a random
+selection of data points to set class distributions to user-specified levels,
+and are therefore a simpler approach to the problem. The latter consists of
+more sophisticated approaches that aim to perform over/undersampling based on
+the points' contextual information within their data space.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.75\linewidth]{../analysis/oversampling_decision_function}
-	\caption{Example of a linear Support Vector Machine's decision function (a) without
-		resampling and (b) with resampling.}
+	\caption{Example of a linear Support Vector Machine's decision function (a) before
+		resampling and (b) after resampling.}
 	\label{fig:oversampling_decision_function}
 \end{figure}
 
-In this paper, we propose the K-means SMOTE (K-SMOTE) oversampler to address
-the imbalanced learning problem for LULC classification and test its efficacy
-on multiclass problems. To do so, we employ the both commonly used and
-state-of-the-art oversamplers as benchmarking methods: Random oversampling,
-SMOTE, ADASYN, Borderline-SMOTE and Geometric-SMOTE. As a baseline we also
-present classification results without the employment of any resampling method.
+In this paper, we propose the K-means SMOTE (K-SMOTE) \cite{Douzas2018}
+oversampler to address the imbalanced learning problem in a multiclass context
+for LULC classification in various reference remote sensing datasets, as well
+as a dataset extracted from publicly available portuguese LULC maps provided by
+Direção Geral do Território with Sentinel-2 data. K-SMOTE's efficacy is tested
+using different types of classifiers. To do so, we employ both commonly used
+and state-of-the-art oversamplers as benchmarking methods: Random oversampling
+(ROS), Synthetic Minority Oversampling Technique (SMOTE)
+\cite{Chawla2002}, Adaptive Synthetic Sampling (ADASYN)
+\cite{HaiboHe2008}, Borderline-SMOTE (B-SMOTE) \cite{Han2005} and
+Geometric-SMOTE (G-SMOTE) \cite{Douzas2019}. As a baseline we present
+classification results without the employment of any resampling method.
 
 % TODO: decide on the datasets
 
-This paper is organized in \#\# sections: (TODO)
+This paper is organized in \# sections: (TODO)
 
-\section{Literature Review}
+\section{Related Work}
 
-We divide our Literature Review analysis in related resampling methods and
-applications
+Existing methods that address imbalanced learning act on different stages. They
+can act in the preprocessing step (Over/Undersampling and hybrid approaches),
+in the learning process (cost-sensitive solutions) or in the algorithm itself
+(by adapting existing algorithms and/or ensemble methods)
+\cite{Kaur2019}.
 
-Even though existing approaches improve the predictive power of minority
-classes, they also tend to generate noisy data points, which might harm the
-quality of the final predictor
+All of the most common classifiers used for LULC classification tasks
+\cite{Khatami2016, Gavade2019} are sensitive to class imbalance \cite{Blagus2010}.
+Algorithm-based approaches typically focus on adaptations based on ensemble
+classification methods \cite{Mellor2015} or common non-ensemble based
+classifiers such as Support Vector Machines \cite{Shao2014}. In
+\cite{Lee2016}, the reported results show that algorithm-based methods
+have comparable performance to resampling methods.
+
+Cost-sensitive solutions refer to changes in the importance attributed to each
+instance through a cost matrix \cite{Huang2016,Cui2019,Dong2017}. Huang et al.
+\cite{Huang2016} employs the inverse class frequency (i.e.,
+$1/|C_i|$) to give higher weight to minority classes. Cui et al.
+\cite{Cui2019} extend this method by adding a hyperparameter
+$\beta$ to class weights as $(1-\beta)/(1-\beta^{|C_i|})$. When
+$\beta=0$, the weights are equal for all classes. When
+$\beta=1$, the weights are differentiated as in the original paper.
+Another method \cite{Dong2017} explores adaptations of Cross-entropy
+classification loss by adding different formulations of class rectification
+loss.
+
+Imbalanced Learning is most commonly addressed through data resampling in
+machine learning in general and remote sensing in particular
+\cite{Feng2019}. The generation of artificial instances (i.e.,
+augmenting the dataset) based on rare examples is done independently of any
+other classification and preprocessing step. Once this step is applied, any
+standard ML procedure can be applied. This simplicity makes resampling
+strategies particularly appealing for any user interested in applying several
+classifiers or maintaining a simple approach. Additionally, any of these
+methods can be naturally applied to multiclass problems and particularly to
+LULC classification tasks.
+
+\subsection{Non-informed resampling methods}
+
+There are two main non-informed resampling methods. Random Oversampling (ROS)
+generates artificial observations through random duplication of rare instances.
+This method is still used in remote sensing \cite{Sharififar2019, Hounkpatin2018} due to its
+simplicity, even though its mechanism makes the classifier prone to overfitting
+\cite{Krawczyk2016}.
+
+\subsection{Heuristic methods}
+
+% all other methods
+
+% K-SMOTE
+
+\subsection{Applications in Remote Sensing}
+
+% non-informed resampling
+
+% heuristic methods
 
 \bibliography{references}
 \bibliographystyle{apalike}
