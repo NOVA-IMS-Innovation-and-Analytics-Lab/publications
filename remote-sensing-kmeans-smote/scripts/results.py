@@ -15,10 +15,12 @@ from sklearn.neighbors.classification import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import make_scorer, SCORERS
-from imblearn.over_sampling import RandomOverSampler, SMOTE, BorderlineSMOTE, ADASYN
 from gsmote import GeometricSMOTE
 from clover.over_sampling import (
-    SMOTE as ClusterSMOTE,
+    SMOTE,
+    RandomOverSampler, 
+    BorderlineSMOTE, 
+    ADASYN
 )
 from sklearn.cluster import KMeans
 from rlearn.tools import ImbalancedExperiment
@@ -39,7 +41,7 @@ CONFIG = {
             'selection_strategy': ['combined', 'minority', 'majority'],
             'truncation_factor': [-1.0, -0.75, -0.5, -0.25, .0, 0.25, 0.5, 0.75, 1.0],
             'deformation_factor': [.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]}),
-        ('K-SMOTE', ClusterSMOTE(), {
+        ('K-SMOTE', SMOTE(), {
             'clusterer': [
                 KMeans(n_clusters=10), KMeans(n_clusters=30),
                 KMeans(n_clusters=50), KMeans(n_clusters=70),
