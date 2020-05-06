@@ -60,7 +60,7 @@ def generate_main_results(data_path, results_path):
     """Generate the main results of the experiment."""
     
     # Load dataset
-    dataset = load_datasets(data_path=data_path, data_type='csv')[0]
+    dataset = load_datasets(data_dir=data_path)[0]
 
     # Load results
     results = []
