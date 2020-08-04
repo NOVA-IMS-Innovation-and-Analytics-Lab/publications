@@ -1,0 +1,16 @@
+Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,K-SMOTE
+LR,Accuracy,0.87 $\pm$ 0.04,0.87 $\pm$ 0.04,0.87 $\pm$ 0.04,0.87 $\pm$ 0.04,\textbf{0.88 $\pm$ 0.03}
+LR,F-score,0.84 $\pm$ 0.04,\textbf{0.85 $\pm$ 0.04},\textbf{0.85 $\pm$ 0.04},\textbf{0.85 $\pm$ 0.04},\textbf{0.85 $\pm$ 0.04}
+LR,G-mean,0.91 $\pm$ 0.03,\textbf{0.92 $\pm$ 0.02},\textbf{0.92 $\pm$ 0.02},0.91 $\pm$ 0.02,\textbf{0.92 $\pm$ 0.02}
+KNN,Accuracy,\textbf{0.88 $\pm$ 0.04},0.87 $\pm$ 0.04,0.87 $\pm$ 0.04,0.87 $\pm$ 0.04,\textbf{0.88 $\pm$ 0.04}
+KNN,F-score,0.85 $\pm$ 0.05,\textbf{0.86 $\pm$ 0.04},\textbf{0.86 $\pm$ 0.04},0.85 $\pm$ 0.05,\textbf{0.86 $\pm$ 0.04}
+KNN,G-mean,0.92 $\pm$ 0.03,0.92 $\pm$ 0.02,\textbf{0.93 $\pm$ 0.02},0.92 $\pm$ 0.03,0.92 $\pm$ 0.02
+DT,Accuracy,\textbf{0.80 $\pm$ 0.05},0.70 $\pm$ 0.07,0.70 $\pm$ 0.07,0.74 $\pm$ 0.07,0.73 $\pm$ 0.06
+DT,F-score,\textbf{0.72 $\pm$ 0.07},0.66 $\pm$ 0.07,0.67 $\pm$ 0.07,0.67 $\pm$ 0.08,0.67 $\pm$ 0.06
+DT,G-mean,\textbf{0.84 $\pm$ 0.04},0.82 $\pm$ 0.04,0.83 $\pm$ 0.04,0.82 $\pm$ 0.05,0.83 $\pm$ 0.04
+GBC,Accuracy,\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03},0.89 $\pm$ 0.03,\textbf{0.90 $\pm$ 0.03}
+GBC,F-score,0.86 $\pm$ 0.05,0.87 $\pm$ 0.04,\textbf{0.88 $\pm$ 0.03},0.86 $\pm$ 0.05,0.87 $\pm$ 0.04
+GBC,G-mean,0.92 $\pm$ 0.03,0.92 $\pm$ 0.03,\textbf{0.93 $\pm$ 0.02},0.92 $\pm$ 0.03,\textbf{0.93 $\pm$ 0.02}
+RF,Accuracy,\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03},\textbf{0.90 $\pm$ 0.03}
+RF,F-score,0.87 $\pm$ 0.04,\textbf{0.89 $\pm$ 0.03},\textbf{0.89 $\pm$ 0.03},0.88 $\pm$ 0.03,\textbf{0.89 $\pm$ 0.03}
+RF,G-mean,0.92 $\pm$ 0.03,\textbf{0.94 $\pm$ 0.02},\textbf{0.94 $\pm$ 0.02},0.93 $\pm$ 0.02,\textbf{0.94 $\pm$ 0.02}

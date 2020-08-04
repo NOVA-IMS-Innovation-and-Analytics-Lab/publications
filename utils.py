@@ -20,7 +20,7 @@ from scipy.io import loadmat
 import io
 import requests
 
-from tqdm import tqdm
+from rich.progress import track
 import requests
 import numpy as np
 import pandas as pd
@@ -68,7 +68,6 @@ FETCH_URLS = {
     'kennedy_space_center': [urljoin(GIC_URL,'2/26/KSC.mat'), urljoin(GIC_URL,'a/a6/KSC_gt.mat')],
     'botswana': [urljoin(GIC_URL,'7/72/Botswana.mat'), urljoin(GIC_URL,'5/58/Botswana_gt.mat')]
 }
-MULTIPLICATION_FACTORS = [2, 3]
 RANDOM_STATE = 0
 
 
@@ -91,23 +90,26 @@ class Datasets:
             func_names = [func_name for func_name in dir(self) if 'fetch_' in func_name]
         else:
             func_names = [f'fetch_{name}'.lower().replace(' ', '_') for name in self.names]
-        self.datasets_ = []
-        for func_name in tqdm(func_names, desc='Datasets'):
+        self.content_ = []
+        for func_name in track(func_names, description='Datasets'):
             name = func_name.replace('fetch_', '').upper().replace('_', ' ')
             fetch_data = getattr(self, func_name)
             data = self._modify_columns(fetch_data())
-            self.datasets_.append((name, data))
+            self.content_.append((name, data))
         return self
 
     def save(self, path, db_name):
         """Save datasets."""
         with connect(join(path, f'{db_name}.db')) as connection:
-            for name, data in self.datasets_:
+            for name, data in self.content_:
                 data.to_sql(name, connection, index=False, if_exists='replace')
 
 
 class ImbalancedBinaryDatasets(Datasets):
-    """Class to download, transform and save binary class imbalanced datasets."""
+    """Class to download, transform and save binary class imbalanced
+    datasets."""
+    
+    MULTIPLICATION_FACTORS = [2, 3]
 
     @staticmethod
     def _calculate_ratio(multiplication_factor, y):
@@ -131,12 +133,12 @@ class ImbalancedBinaryDatasets(Datasets):
         """Download the datasets and append undersampled versions of them."""
         super(ImbalancedBinaryDatasets, self).download()
         undersampled_datasets = []
-        for (name, data), factor in list(product(self.datasets_, MULTIPLICATION_FACTORS)):
+        for (name, data), factor in list(product(self.content_, self.MULTIPLICATION_FACTORS)):
             ratio = self._calculate_ratio(factor, data.target)
             if ratio[1] >= 15:
                 data = self._make_imbalance(data, factor)
                 undersampled_datasets.append((f'{name} ({factor})', data))
-        self.datasets_ += undersampled_datasets
+        self.content_ += undersampled_datasets
         return self
 
     def fetch_breast_tissue(self):

@@ -1,0 +1,16 @@
+Classifier,Metric,NONE,ROS,SMOTE,B-SMOTE,ADASYN,G-SMOTE
+LR,Accuracy,\textbf{1},4,5,2,6,3
+LR,F-score,3,4,5,2,6,\textbf{1}
+LR,G-mean,6,3,4,2,5,\textbf{1}
+KNN,Accuracy,\textbf{1},4,5,3,6,2
+KNN,F-score,2,6,4,3,5,\textbf{1}
+KNN,G-mean,3,6,4,2,5,\textbf{1}
+DT,Accuracy,\textbf{1},4,5,3,6,2
+DT,F-score,5,6,4,\textbf{1},3,2
+DT,G-mean,5,6,4,2,3,\textbf{1}
+GBC,Accuracy,\textbf{1},4,5,3,6,2
+GBC,F-score,3,5,4,2,6,\textbf{1}
+GBC,G-mean,6,5,3,2,4,\textbf{1}
+RF,Accuracy,\textbf{1},3,5,4,6,2
+RF,F-score,6,5,2,3,4,\textbf{1}
+RF,G-mean,6,5,3,2,4,\textbf{1}

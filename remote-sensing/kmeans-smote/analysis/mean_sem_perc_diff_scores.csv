@@ -1,0 +1,16 @@
+Classifier,Metric,Difference
+LR,Accuracy,0.55 $\pm$ 0.50
+LR,F-score,-0.05 $\pm$ 0.38
+LR,G-mean,-0.08 $\pm$ 0.21
+KNN,Accuracy,0.51 $\pm$ 0.40
+KNN,F-score,-0.36 $\pm$ 0.27
+KNN,G-mean,-0.74 $\pm$ 0.30
+DT,Accuracy,5.13 $\pm$ 2.42
+DT,F-score,1.61 $\pm$ 2.41
+DT,G-mean,0.42 $\pm$ 1.01
+GBC,Accuracy,-0.31 $\pm$ 0.26
+GBC,F-score,-0.98 $\pm$ 0.71
+GBC,G-mean,-0.71 $\pm$ 0.40
+RF,Accuracy,0.01 $\pm$ 0.17
+RF,F-score,-0.77 $\pm$ 0.72
+RF,G-mean,-0.72 $\pm$ 0.49

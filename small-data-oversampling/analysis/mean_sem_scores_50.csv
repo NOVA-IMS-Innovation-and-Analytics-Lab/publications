@@ -1,9 +1,0 @@
-Classifier,Metric,NO OVERSAMPLING,RANDOM OVERSAMPLING,SMOTE,BORDERLINE SMOTE,GSDOT
-LR,ACCURACY,0.91 $\pm$ 0.03,0.91 $\pm$ 0.03,0.91 $\pm$ 0.02,0.91 $\pm$ 0.03,0.92 $\pm$ 0.02
-LR,G-MEAN,0.88 $\pm$ 0.04,0.88 $\pm$ 0.04,0.89 $\pm$ 0.04,0.89 $\pm$ 0.04,0.89 $\pm$ 0.04
-KNN,ACCURACY,0.88 $\pm$ 0.03,0.88 $\pm$ 0.03,0.89 $\pm$ 0.03,0.88 $\pm$ 0.03,0.89 $\pm$ 0.03
-KNN,G-MEAN,0.84 $\pm$ 0.04,0.85 $\pm$ 0.04,0.86 $\pm$ 0.04,0.85 $\pm$ 0.04,0.86 $\pm$ 0.04
-DT,ACCURACY,0.88 $\pm$ 0.04,0.88 $\pm$ 0.04,0.88 $\pm$ 0.04,0.88 $\pm$ 0.04,0.90 $\pm$ 0.03
-DT,G-MEAN,0.86 $\pm$ 0.05,0.86 $\pm$ 0.05,0.87 $\pm$ 0.05,0.87 $\pm$ 0.05,0.89 $\pm$ 0.04
-GBC,ACCURACY,0.91 $\pm$ 0.04,0.92 $\pm$ 0.03,0.92 $\pm$ 0.03,0.91 $\pm$ 0.04,0.93 $\pm$ 0.03
-GBC,G-MEAN,0.90 $\pm$ 0.04,0.90 $\pm$ 0.04,0.91 $\pm$ 0.03,0.90 $\pm$ 0.04,0.92 $\pm$ 0.03

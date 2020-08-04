@@ -1,0 +1,16 @@
+Classifier,Metric,p-value,Significance
+LR,Accuracy,7.9e-02,False
+LR,F-score,1.3e-01,False
+LR,G-mean,5.8e-02,False
+KNN,Accuracy,3.9e-02,True
+KNN,F-score,6.0e-02,False
+KNN,G-mean,2.6e-02,True
+DT,Accuracy,1.9e-02,True
+DT,F-score,1.1e-01,False
+DT,G-mean,8.0e-02,False
+GBC,Accuracy,2.8e-02,True
+GBC,F-score,3.8e-02,True
+GBC,G-mean,1.6e-03,True
+RF,Accuracy,3.0e-02,True
+RF,F-score,4.3e-04,True
+RF,G-mean,5.0e-03,True

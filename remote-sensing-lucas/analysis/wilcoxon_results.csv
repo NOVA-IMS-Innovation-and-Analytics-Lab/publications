@@ -1,6 +1,0 @@
-Oversampler,p-value,Significance
-NONE,5.1e-03,True
-ROS,6.5e-04,True
-SMOTE,6.5e-04,True
-B-SMOTE,9.0e-03,True
-ADASYN,6.5e-04,True

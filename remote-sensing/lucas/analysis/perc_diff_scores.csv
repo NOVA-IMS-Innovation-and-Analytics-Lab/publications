@@ -1,0 +1,16 @@
+Classifier,Metric,NONE,ROS,SMOTE
+LR,Accuracy,-11.96,1.34,2.11
+LR,F-score,5.74,6.79,8.48
+LR,G-mean,10.19,7.0,7.85
+KNN,Accuracy,-0.11,24.98,30.93
+KNN,F-score,1.98,15.24,12.92
+KNN,G-mean,1.51,5.46,3.5
+DT,Accuracy,-6.93,10.95,14.23
+DT,F-score,10.02,10.18,6.98
+DT,G-mean,6.36,7.48,6.01
+GBC,Accuracy,-1.75,2.39,2.46
+GBC,F-score,5.26,6.26,5.3
+GBC,G-mean,5.07,4.08,3.49
+RF,Accuracy,-1.34,0.55,4.03
+RF,F-score,11.65,8.88,7.6
+RF,G-mean,8.36,5.63,4.98
