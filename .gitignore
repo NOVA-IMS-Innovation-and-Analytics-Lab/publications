@@ -8,7 +8,7 @@ __pycache__
 *.log
 *.synctex.gz
 */content/*.pdf
-*/supplementary
+supplementary/
 *.fls
 *.fdb_latexmk
 *.egg-info
