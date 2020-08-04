@@ -1,17 +1,19 @@
-=================
-Project structure
-=================
-
-Every research project contains the scripts, data, results, analysis and content
-directories.
-
-installation
+============
+Installation
 ============
 
 To install the basic project dependencies, first activate a Python 3 virtual
 environment and from the root of the project run the command::
 
     pip install .
+
+
+=================
+Project structure
+=================
+
+Every research project contains the scripts, data, results, analysis and content
+directories.
 
 scripts
 =======
