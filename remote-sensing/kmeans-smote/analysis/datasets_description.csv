@@ -1,8 +1,8 @@
 Dataset,Features,Instances,Minority instances,Majority instances,IR,Classes
-Botswana,145,2000,59,193,3.27,14
-Salinas A,224,2000,146,570,3.9,6
-Kennedy Space Center,176,2000,40,356,8.9,13
-Salinas,224,2000,34,416,12.24,16
-Pavia University,103,2000,45,872,19.38,9
-Pavia Centre,102,2000,36,891,24.75,9
-Indian Pines,220,2000,4,479,119.75,16
+Botswana,145,288,20,41,2.05,11
+Pavia Centre,102,3898,278,879,3.16,7
+Kennedy Space Center,176,497,23,80,3.48,11
+Salinas A,224,535,37,166,4.49,6
+Pavia University,103,2392,89,679,7.63,8
+Salinas,224,4236,91,719,7.9,15
+Indian Pines,220,984,21,236,11.24,11

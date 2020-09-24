@@ -14,6 +14,7 @@ from os.path import join, dirname
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+sys.path.append(join(dirname(__file__), '..', '..', '..'))
 from utils import RemoteSensingDatasets
 
 DATA_PATH = join(dirname(__file__), pardir, 'data')
@@ -25,7 +26,7 @@ if __name__ == '__main__':
     datasets = RemoteSensingDatasets().download()
 
     # Sample datasets
-    min_n_samples, max_n_samples, fraction, rnd_seed = 20, 300, 0.1, 5
+    min_n_samples, max_n_samples, fraction, rnd_seed = 20, 1000, 0.1, 5
     content = []
     for name, data in datasets.content_:
         data = data.sample(frac=fraction, random_state=rnd_seed)
