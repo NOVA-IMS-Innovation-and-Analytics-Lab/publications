@@ -262,8 +262,12 @@ def summarize_multiclass_datasets(datasets):
         .rename(columns={'Dataset name':'Dataset', 'Imbalance Ratio': 'IR'})\
         .set_index('Dataset')\
         .join(pd.Series(dict([(name, dat[-1].unique().size) for name, dat in datasets]), name='Classes'))\
-        .reset_index()
-    summarized.loc[:,'Dataset'] = summarized.loc[:,'Dataset']\
+        .reset_index()\
+        .rename(columns={
+            'Minority instances': 'Min. Instances',
+            'Majority instances': 'Maj. Instances'
+        })
+    summarized.loc[:, 'Dataset'] = summarized.loc[:, 'Dataset']\
         .apply(lambda x: x.title())
     return summarized
 

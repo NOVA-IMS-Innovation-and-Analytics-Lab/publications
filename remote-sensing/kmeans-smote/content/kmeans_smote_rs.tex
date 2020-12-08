@@ -5,7 +5,7 @@
 \title{Improving Imbalanced Learning in Land Cover Classification \\ 
 	\LARGE{A Heuristic Oversampling Method Based on K-Means and SMOTE}}
 \author{
-	Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\), Joao Fonseca\(^{1}\)
+	Joao Fonseca\(^{1}\), Georgios Douzas\(^{1}\), Fernando Bacao\(^{1*}\) 
 	\\
 	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
 	\\
@@ -76,33 +76,43 @@ cover information \cite{Drusch2012}. This information is often materialized
 through Land Use/Land Cover (LULC) maps, which constitute an essential asset for
 various purposes, such as land cover change detection, urban planning,
 environmental monitoring and natural hazard assessment \cite{Khatami2016}.
-However, accurate and updated LULC maps are still a challenge within the remote
-sensing community \cite{Wulder2018}, while their production follows two main
-approaches: Photo-interpreted by the human eye, or Automatic mapping using
-remotely sensed data and classification algorithms.
+However, the timely production of accurate and updated LULC maps is still a
+challenge within the remote sensing community \cite{Wulder2018}. LULC maps are
+produced based on two main approaches: photo-interpreted by the human eye, or
+automatic mapping using remotely sensed data and classification algorithms.
 
-Although photo-interpreted LULC maps rely on human interaction and can be more
-reliable, they are not without its drawbacks: they are not frequently updated,
-their production is time and resource consuming, they are not suitable for
-operational mapping over large areas and are prone to overlook rare or
-small-area classes, due to factors such as the minimum mapping unit being used.
-Similarly, machine-learning (ML) approaches face different challenges:
+While photo-interpreted LULC maps rely on human operators and can be more
+reliable, they also present some significant disadvantages. The most important
+disadvantage are the production costs, in fact photo-interpretation consumes
+significant resources, both money and time. Because of that, they are not
+frequently updated and not suitable for operational mapping over large areas.
+Finally, there is also the issue of overlooking rare or small-area classes, due
+to factors such as the minimum mapping unit being used.
+
+Automatic mapping with classification algorithms based on machine-learning (ML)
+have been extensively researched and used to speed up and reduce the costs of
+the production process. Improvements in classification algorithms are sure to
+have significant impact in the efficiency with which remote sensing imagery is
+used. Several challenges need to be tackled in order to improve automatic
+classification:
+
 \begin{enumerate}
-	\item Mislabelled LULC patches. As mentioned, the usage of photo-interpreted
-	      training data poses a threat to the quality of any LULC map produced
-	      with this strategy, since factors such as the minimum mapping unit
-	      tend to cause the overlooking of small-area LULC patches and generates
-	      noisy training data that may reduce the prediction accuracy of a
-	      classifier \cite{Pelletier2017}.
-	\item High-dimensional datasets. Multi-spectral TS composites are
-	      high-dimensional, which increases the complexity of the problem and
-	      creates a strain on computational power \cite{Stromann2020}.
-	\item Class separability. The production of an accurate LULC map can be
-	      hindered by the existence of classes with similar spectral signatures,
-	      making these classes difficult to distinguish
-	      \cite{Alonso-Sarria2019}.
-	\item Existence of rare land cover classes. Due to the varying levels of
-	      area coverage for each class, using a purely random sampling strategy
+    \item Improve the ability to handle high-dimensional datasets, in cases such
+        as Multi-spectral TS composites high-dimensionality increases the
+        complexity of the problem and creates a strain on computational power
+        \cite{Stromann2020}.
+    \item Improve class separability, as the production of an accurate LULC map
+        can be hindered by the existence of classes with similar spectral
+        signatures, making these classes difficult to distinguish
+        \cite{Alonso-Sarria2019}.
+    \item Resilience to mislabelled LULC patches, as the use of
+        photo-interpreted training data poses a threat to the quality of any
+        LULC map produced with this strategy, since factors such as the minimum
+        mapping unit tend to cause the overlooking of small-area LULC patches
+        and generates noisy training data that may reduce the prediction
+        accuracy of a classifier \cite{Pelletier2017}.
+	\item Dealing with rare land cover classes, due to the varying levels of
+	      area coverage for each class. In this case using a purely random sampling strategy
 	      will amount to a dataset with a roughly proportional class
 	      distribution as the one on the landscape. On the other hand, the
 	      acquisition of training datasets containing balanced class frequencies
@@ -111,8 +121,6 @@ Similarly, machine-learning (ML) approaches face different challenges:
 	      have little expression \cite{Wang2019, Feng2019}.
 \end{enumerate}
 
-% problem definition
-
 The latter challenge is known as the imbalanced learning problem
 \cite{Chawla2004}. It is defined as a skewed distribution of observations found
 in a dataset among classes in both binary and multi-class problems
@@ -120,43 +128,55 @@ in a dataset among classes in both binary and multi-class problems
 performance of classifiers, especially in multi-class problems. During the
 learning phase, classifiers are optimized to maximize an objective function,
 with overall accuracy being the most common one \cite{Maxwell2018}. This means
-that observations belonging to minority classes contribute less towards the
-optimization process, translating into a bias towards majority classes. As
-depicted in figure \ref{fig:oversampling_decision_function}a. As an example, a
-trivial classifier can achieve 99\% overall accuracy on a binary dataset where
-1\% of the observations belong to the minority class if it classifies all
-observations as belonging to the majority class.
+that observations belonging to minority classes contribute less to the
+optimization process, translating into a bias towards majority classes.  As an
+example, a trivial classifier can achieve 99\% overall accuracy on a binary
+dataset where 1\% of the observations belong to the minority class if it
+classifies all observations as belonging to the majority class. This is an
+especially significant issue in the automatic classification of LULC maps, as
+the distribution of the different land-use classes tends to be highly
+imbalanced. Therefore, improvements in the ability to deal with imbalanced
+datasets will translate into important progress in the automatic classification
+of LULC maps.
 
 There are three different types of approaches to deal with the class imbalance
 problem \cite{Fernandez2013,Kaur2019}:
+
 \begin{enumerate}
-	\item Cost-sensitive solutions. Introduces a cost matrix to the learning
-	      phase with misclassification costs attributed to each class. Minority
-	      classes will have a higher cost than majority classes, forcing the
-	      algorithm to be more flexible and adapt better to predict minority
-	      classes.
-	\item Algorithmic level solutions. Specific classifiers are modified to
-	      reinforce the learning on minority classes. Consists on the creation
-	      or adaptation of classifiers.
-	\item Resampling solutions. Rebalances the dataset's class distribution by
-	      removing majority class instances and/or generating artificial
-	      minority instances (see Figure
-	      \ref{fig:oversampling_decision_function}). This is considered an
-	      external  approach, where the intervention occurs before the learning
-	      phase, benefitting from versatility and independency from the
-	      classifier used.
+    \item Cost-sensitive solutions. Introduces a cost matrix to the learning
+        phase with misclassification costs attributed to each class. Minority
+        classes will have a higher cost than majority classes, forcing the
+        algorithm to be more flexible and adapt better to predict minority
+        classes.
+    \item Algorithmic level solutions. Specific classifiers are modified to
+        reinforce the learning on minority classes. Consists on the creation or
+        adaptation of classifiers.
+    \item Resampling solutions. Rebalances the dataset's class distribution by
+        removing majority class instances and/or generating artificial minority
+        instances. This is considered an external approach, where the
+        intervention occurs before the learning phase, benefitting from
+        versatility and independency from the classifier used.
 \end{enumerate}
+
+It is important to note that resampling strategies have a significant advantage
+over the other approaches. By operating at the data level, resampling strategies
+allow the use of any off the shelf algorithm, without the need for any type of
+changes or adaptions to the algorithm. This is a significant advantage
+especially considering that most users in remote sensing are not expert machine
+learning engineers. 
 
 Within resampling approaches there are three subgroups of approaches
 \cite{Fernandez2013,Kaur2019,Luengo2020}:
+
 \begin{enumerate}
-	\item Undersampling methods. They rebalance class distribution by removing
-	      instances from the majority classes.
-	\item Oversampling methods. Dataset is rebalanced by generating new
-	      artificial instances belonging to the minority classes.
-	\item Hybrid methods. Combination of both oversampling and undersampling,
-	      resulting in the removal of instances in the majority classes and the
-	      generation of artificial instances in the minority classes.
+    \item Undersampling methods, which rebalance class distribution by removing
+        instances from the majority classes.
+    \item Oversampling methods, which rebalance datasets by generating new
+        artificial instances belonging to the minority classes.
+    \item Hybrid methods, which are a combination of both oversampling and
+        undersampling, resulting in the removal of instances in the majority
+        classes and the generation of artificial instances in the minority
+        classes.
 \end{enumerate}
 
 Resampling methods can be further distinguished between non-informed and
@@ -168,23 +188,22 @@ latter consists of more sophisticated approaches that aim to perform
 over/undersampling based on the points' contextual information within their data
 space.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.85\linewidth]{../analysis/resampling_decision_function}
-	\caption{Example of a linear Support Vector Machine's decision function (a) without
-		resampling and (b) with resampling.
-    }~\label{fig:oversampling_decision_function}
-\end{figure}
-
-In this paper, we propose the K-means SMOTE (K-SMOTE) \cite{Douzas2018}
-oversampler to address the imbalanced learning problem in a multiclass context
-for LULC classification using various remote sensing datasets. K-SMOTE's
-efficacy is tested using different types of classifiers. To do so, we employ
-both commonly used and state-of-the-art oversamplers as benchmarking methods:
-Random oversampling (ROS), Synthetic Minority Oversampling Technique (SMOTE)
-\cite{Chawla2002} and Borderline-SMOTE (B-SMOTE) \cite{Han2005}. Also as a
-baseline score we include classification results without the employment of any
-resampling method.
+The imbalanced learning problem is not new in machine learning but its relevancy
+has been growing, as attested by \cite{Haixiang2017}. The problem has also been
+addressed in the context of remote sensing \cite{Douzas2019rs}. In this paper,
+we propose the K-means SMOTE (K-SMOTE) \cite{Douzas2018} oversampler to address
+the imbalanced learning problem in a multiclass context for LULC classification
+using various remote sensing datasets. The K-SMOTE algorithm presents
+significant advantages over other oversamplers, by coupling two different
+procedures in the generation of artificial data. The algorithm starts by
+clustering the observations; next, the generation of the artificial observations
+is done taking into consideration the distribution of majority/minority cases in
+each individual cluster. The efficacy of K-SMOTE is tested using
+different types of classifiers. To do so, we employ both commonly used and
+state-of-the-art oversamplers as benchmarking methods: Random oversampling
+(ROS), Synthetic Minority Oversampling Technique (SMOTE) \cite{Chawla2002} and
+Borderline-SMOTE (B-SMOTE) \cite{Han2005}. Also as a baseline score we include
+classification results without the use of any resampling method.
 
 This paper is organized in 5 sections: section \ref{sec:sota} provides an
 overview of the state-of-art, section \ref{sec:methodology} describes the
@@ -194,10 +213,12 @@ this study.
 
 \section{Imbalanced Learning Approaches} \label{sec:sota}
 
-Existing methods that address imbalanced learning act on different stages. They
-can act in the preprocessing step (Over/Undersampling and hybrid approaches), in
-the learning process (cost-sensitive solutions) or in the algorithm itself (by
-adapting existing algorithms and/or ensemble methods) \cite{Kaur2019}. In this
+Imbalanced learning has been addressed in three different ways:
+over/undersampling, cost-sensitive training and changes/adaptations in the
+learning algorithms \cite{Kaur2019}. These approaches impact different
+phases of the learning process, while over/undersampling can be seen as a
+pre-processing step, cost-sensitive and changes in the algorithm imply a more
+customized and complex intervention in the algorithms. In this
 section, we focus on previous work related with resampling methods, while
 providing a brief explanation of cost-sensitive and algorithmic level solutions.
 
@@ -220,34 +241,35 @@ class matrix. Another method \cite{Dong2017} explores adaptations of
 Cross-entropy classification loss by adding different formulations of class
 rectification loss.
 
-Imbalanced Learning is most commonly addressed through data resampling in
-machine learning in general and remote sensing in particular \cite{Feng2019}.
-The generation of artificial instances (i.e., augmenting the dataset) based on
-rare examples is done independently of any other classification and
-preprocessing step. Once this step is applied, any standard machine learning
-procedure can be applied. This simplicity makes resampling strategies
-particularly appealing for any user interested in applying several classifiers
-or maintaining a simple approach. Additionally, any of these methods can be
-naturally applied to multiclass problems and particularly to LULC classification
-tasks.
+Resampling (over/undersampling) is the most common approach to imbalanced
+Learning is most commonly addressed through data resampling in machine learning
+in general and remote sensing in particular \cite{Feng2019}. The generation of
+artificial instances (i.e., augmenting the dataset), based on rare examples, is
+done independently of any other step in the learning process. Once the procedure
+is applied, any standard machine learning algorithm can be used. Its
+simplicity makes resampling strategies particularly appealing for any user
+(especially the non-sophisticated user) interested in applying several
+classifiers, while maintaining a simple approach.
+It is also important to notice that over/undersampling methods can also be
+easily applied to multiclass problems, common in LULC classification tasks.
 
 \subsection{Non-informed resampling methods}
 
 There are two main non-informed resampling methods. Random Oversampling (ROS)
-generates artificial observations through random duplication of rare instances.
-This method is used in remote sensing \cite{Sharififar2019, Hounkpatin2018} for
-its simplicity, even though its mechanism makes the classifier prone to
-overfitting \cite{Krawczyk2016}. Hounkpatin et al. \cite{Hounkpatin2018} found
-that using ROS returned worse results than keeping the original imbalance in
-their dataset.
+generates artificial observations through random duplication of minority
+instances.  This method is used in remote sensing \cite{Sharififar2019,
+Hounkpatin2018} for its simplicity, even though its mechanism makes the
+classifier prone to overfitting \cite{Krawczyk2016}. Hounkpatin et al.
+\cite{Hounkpatin2018} found that using ROS returned worse results than keeping
+the original imbalance in their dataset.
 
 A few of the recent remote sensing studies employed Random Undersampling (RUS)
-\cite{Ferreira2019}. This method, on the other hand, randomly removes
-observations belonging to common classes. Although it's not as prone to
+\cite{Ferreira2019}, which randomly removes
+observations belonging to majority classes. Although it's not as prone to
 overfitting as ROS, it incurs into information loss by eliminating observations
 from the majority class \cite{Feng2019}.
 
-Another downfall of non-informed resampling methods is their performance-wise
+Another disadvantage of non-informed resampling methods is their performance-wise
 inconsistency across classifiers. ROS' impact on the Indian Pines dataset was
 found inconsistent between Random Forest Classifiers (RFC) and Support Vector
 Machines (SVM) and lowered the predictive power of an artificial neural network
@@ -263,8 +285,8 @@ populate the minority classes and/or remove irrelevant instances from majority
 classes. In a comparative analysis between over- and undersamplers' performance
 for LULC classification \cite{Feng2018} using the rotation forest ensemble
 classifier, authors found that oversampling methods consistently outperform
-undersampling methods. Due to the scope of this study, heuristic undersampling
-algorithms will not be analysed.
+undersampling methods. This result led us to exclude undersampling from our
+study.
 
 SMOTE \cite{Chawla2002} was the first heuristic oversampling algorithm to be
 proposed and has been the most popular one since then, likely due to its fair
@@ -294,69 +316,63 @@ combines both typical computer vision data augmentation techniques, such as
 image rotation, scaling and flipping on the generated instances to populate
 minority classes. Another algorithmic implementation is the variational
 semi-supervised learning model \cite{Cenggoro2018}. It consists of a generative
-model that allows learning from both labelled and unlabelled instances while
+model that allows learning from both labeled and unlabeled instances while
 using SMOTE to balance the data.
 
-Despite SMOTE's popularity, its drawbacks motivated the development of more
-sophisticated oversampling algorithms \cite{Douzas2019}:
+Despite SMOTE's popularity, its limitations have motivated the development of more
+sophisticated oversampling algorithms \cite{Douzas2019, Han2005, Ma2017,
+Douzas2017, Douzas2018, HaiboHe2008}. \cite{Douzas2019} identify four major
+weaknesses of the SMOTE algorithm, which can be summarized as:
 \begin{enumerate}
-	\item Generation of noisy instances due to random selection of a minority
-	      observation to oversample. The random selection of a minority
-	      observation makes SMOTE oversampling prone to the amplification of
-	      existing noisy data. In Figure \ref{fig:smote_example} it is possible
-	      to observe a minority sample located within a cluster of majority
-	      instances. Performing a linear interpolation between the noisy sample
-	      $\overrightarrow{a}$ and one of its nearest neighbors
-	      $\overrightarrow{b}$ will generate a noisy sample
-	      $\overrightarrow{c}$. B-SMOTE \cite{Han2005} attempts to circumvent
-	      the noisy data selection problem by performing a targeted selection of
-	      instances close to the presumed class border, determined by the labels
-	      of each sample's $k$ nearest neighbors. Alternatively, a sample will
-	      discarded because it was deemed as either noisy, or being far from the
-	      class boundary. Another algorithm that addresses this problem is
-	      ADASYN \cite{HaiboHe2008}. It calculates a density distribution ratio
-	      for each sample based on its $k$-nearest neighbors to determine the
-	      number of synthetic observations to generate for each minority class
-	      observation using the described SMOTE procedure.
+    \item Generation of noisy instances due to random selection of a minority
+        observation to oversample. The random selection of a minority
+        observation makes SMOTE oversampling prone to the amplification of
+        existing noisy data. This has been addressed by variants such as B-SMOTE
+        \cite{Han2005} and ADASYN \cite{HaiboHe2008}. 
 
-	\item Generation of noisy instances due to the selection of the $k$ nearest
-	      neighbors. In the event an observation (or a small number thereof) is
-	      not noisy but is isolated from the remaining clusters, known as the
-	      "small disjuncts problem" \cite{holte1989}, much like sample
-	      $\overrightarrow{b}$ from Figure \ref{fig:smote_example}, the
-	      selection of any nearest neighbor of the same class will have a high
-	      likelihood of producing a noisy sample.
+    \item Generation of noisy instances due to the selection of the $k$ nearest
+        neighbors. In the event an observation (or a small number thereof) is
+        not noisy but is isolated from the remaining clusters, known as the
+        "small disjuncts problem" \cite{holte1989}, much like sample
+        $\overrightarrow{b}$ from Figure \ref{fig:smote_example}, the selection
+        of any nearest neighbor of the same class will have a high likelihood of
+        producing a noisy sample.
 
-	\item Generation of nearly duplicated instances. Whenever the linear
-	      interpolation is done between two observations that are close to each
-	      other, the generated instance becomes very similar to its parents and
-	      increases the risk of overfitting. G-SMOTE \cite{Douzas2019} attempts
-	      to address both the $k$ nearest neighbor selection mechanism problem
-	      as well as the generation of nearly duplicated instances problem. It
-	      proposes a variation on SMOTE's data generation mechanism by
-	      generating data within an oval geometry (instead of a line segment)
-	      around the selected observation and the selected nearest neighbor. In
-	      its turn, the $k$ nearest neighbors selection can include observations
-	      from the remaining classes. To an extent, this algorithm can be
-	      considered a generalized version of SMOTE, since under specific
-	      hyperparameter definitions it replicates SMOTE's behavior.
+    \item Generation of nearly duplicated instances. Whenever the linear
+        interpolation is done between two observations that are close to each
+        other, the generated instance becomes very similar to its parents and
+        increases the risk of overfitting. G-SMOTE \cite{Douzas2019} attempts to
+        address both the $k$ nearest neighbor selection mechanism problem as
+        well as the generation of nearly duplicated instances problem. 
 
-	\item Generation of noisy instances due to the use of observations from two
-	      different minority class clusters. Although an increased $k$ could
-	      potentially avoid the previous problem, it can also lead to the
-	      generation of artificial data between different minority clusters.
-	      Cluster-based oversampling methods, as well as ADASYN, attempt to
-	      address this problem. B-SMOTE \cite{Han2005} and G-SMOTE also address
-	      this problem by allowing the interpolation to be performed with
-	      majority class instances.
+    \item Generation of noisy instances due to the use of observations from two
+        different minority class clusters. Although an increased $k$ could
+        potentially avoid the previous problem, it can also lead to the
+        generation of artificial data between different minority clusters, as
+        depicted Figure \ref{fig:smote_example} with the generation of point
+        $\overrightarrow{r}$ using minority class observations
+        $\overrightarrow{p}$ and $\overrightarrow{q}$. Cluster-based
+        oversampling methods attempt to address this problem. 
 \end{enumerate}
 
-Although no cluster-based oversampling approach applied within the remote
-sensing domain was found in the literature, there are numerous methods to
-consider. Cluster-based oversampling approaches introduce an additional layer to
-SMOTE's selection mechanism, which is done according to the clustering process.
-This is done to ensure both between-class data balance, but also ensure that the
-data distribution within each class is preserved. The self-organizing map
+This last issue, the generation of noisy instances due to the existence of
+several minority class clusters, is particularly relevant in remote sensing. It
+is frequent that instances belonging to the same minority class can have
+different spectral signatures, meaning that they will be clustered in different
+parts of the input space. In this context, the use of SMOTE will lead to the
+generation of noisy instances of the minority class. This problem can be
+efficiently mitigated through the use of a cluster-based oversampling. According
+to our literature review cluster-based oversampling approaches have never been
+applied in the context of remote sensing. On the other hand, while there are
+several references of the application of cluster-based oversampling in the
+context of machine learning, there is no such application for the multiclass
+case, a fundamental requirement for the application of oversampling in the
+context of LULC. 
+
+Cluster-based oversampling approaches introduce an additional layer to
+SMOTE's selection mechanism, which is done through the inclusion of a clustering
+process. This ensures that both between-class data balance and within each class
+balance is preserved. The self-organizing map
 oversampling (SOMO) \cite{Douzas2017} algorithm transforms the dataset into a
 2-dimensional input, where the areas with the highest density of minority
 samples are identified. SMOTE is then used to oversample each of the identified
@@ -403,16 +419,18 @@ ADASYN, B-SMOTE and G-SMOTE in a highly imbalanced LULC classification dataset.
 The authors found that G-SMOTE consistently outperformed the remaining
 oversampling algorithms regardless of the classifier used.
 
-This paper main contributions are:
+This paper's main contributions are:
 \begin{itemize}
-	\item Testing these oversampling methods in multiple widely used LULC classification
-	      datasets. Allows us to check for oversamplers' performance statistical
-	      significance across datasets and report K-SMOTE's performance in benchmark LULC
-	      datasets.
-	\item Introducing a cluster-based oversampling algorithm within the remote sensing
-	      domain, as well as comparing its performance with the remaining oversamplers in
-	      a multiclass context.
-
+    \item Propose a cluster-based multiclass oversampling method appropriate
+        for LULC classification;
+    \item Compare its performance with the remaining oversamplers in a
+        multiclass context with a set of widely used LULC classification
+        datasets. Allows us to check for oversamplers' performance statistical
+        significance across datasets and report K-SMOTE's performance in
+        benchmark LULC datasets.
+    \item Introducing a cluster-based oversampling algorithm within the remote
+        sensing domain, as well as comparing its performance with the remaining
+        oversamplers in a multiclass context.
 \end{itemize}
 
 \section{Methodology}\label{sec:methodology}
@@ -441,7 +459,7 @@ final datasets used for this work.
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
 		end table=\end{longtable},  col sep=comma, header=true,
-	columns={Dataset,Features,Instances,Minority instances,Majority instances,IR, Classes}, string type, every head row/.style={before row=\toprule, after row=\midrule\endhead},
+	columns={Dataset,Features,Instances,Min. Instances,Maj. Instances,IR, Classes}, string type, every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{\label{tab:datasets_description}
 				Description of the datasets used for this experiment.}}
 ]{../analysis/datasets_description.csv}
@@ -600,20 +618,33 @@ oversamplers in \cite{Douzas2019rs}. Additionally we include the classification
 results of no oversampling (NONE) as a baseline.
 
 To assess the performance of each oversampler, we use the classifiers Logistic
-Regression (LR) \cite{McCullagh1989}, K-Nearest Neighbors (KNN)
+Regression (LR) \cite{Nelder1972}, K-Nearest Neighbors (KNN)
 \cite{Cover1967}, Decision Tree (DT) \cite{Salzberg1994}, Gradient Boosting
 Classifier (GBC) \cite{Friedman2001} and Random Forest (RF) \cite{Liaw2002}.
 This choice was based on the classifiers' popularity for LULC classification,
 learning type and training time \cite{Maxwell2018,Gavade2019}.
 
 \subsection{Experimental Procedure}
+
 The procedure for the experiment reported in this study is similar to the one
 proposed in \cite{Douzas2019rs}. We start by defining a hyperparameter search
 grid, where a list of possible values for each relevant hyperparameter in both
 classifiers and oversamplers is stored. Based on this search grid, all possible
 combinations of oversamplers, classifiers and hyperparameters are formed.
-Finally, for each dataset we employ a $k$-fold cross-validation strategy where
-$k=5$ to train each model defined and save the averaged scores of each split.
+Finally, for each dataset, hyperparameter combination and initialization we use
+the evaluation strategy shown in Figure \ref{fig:experiment_pipeline}: $k$-fold
+cross-validation strategy where $k=5$ to train each model defined and save the
+averaged scores of each split.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../analysis/experiment_pipeline}
+	\caption{Experimental procedure. The performance metrics are averaged over
+    the 5 folds across each of the 3 different initializations of this procedure
+    for a given combination of oversampler, classifier and hyperparameter
+    definition.}
+	\label{fig:experiment_pipeline}
+\end{figure}
 
 Each combination of oversampler, classifier and parameters definition is fit 5
 times (once for each fold) per dataset. Each time, an oversampler will use the

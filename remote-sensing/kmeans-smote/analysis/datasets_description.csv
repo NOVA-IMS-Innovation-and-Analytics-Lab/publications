@@ -1,4 +1,4 @@
-Dataset,Features,Instances,Minority instances,Majority instances,IR,Classes
+Dataset,Features,Instances,Min. Instances,Maj. Instances,IR,Classes
 Botswana,145,288,20,41,2.05,11
 Pavia Centre,102,3898,278,879,3.16,7
 Kennedy Space Center,176,497,23,80,3.48,11
