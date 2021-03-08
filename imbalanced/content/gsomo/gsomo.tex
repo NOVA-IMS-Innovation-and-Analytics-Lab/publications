@@ -71,7 +71,7 @@ The method presented in this paper, G-SOMO, extends the Self-Organizing Map Over
 
 SOMO is a clustering based oversampling algorithm which uses the Self-Organizing Map (SOM) and has been shown to outperform related algorithms over various datasets. It preserves the topology of the input space, while reducing the dimensionality to a two-dimensional representation. The emerging clusters are then used as a map to guide the generation of minority instances within, but also between neighboring minority clusters. In the original SOMO paper the generation process was done through the application of the SMOTE mechanism \cite{Chawla2002}.
 
-The new algorithm presented in this paper, replaces SMOTE with G-SMOTE as the data generation mechanism. G-SMOTE generates synthetic samples in a geometric region of the input space, around each selected minority instance. It has been shown that G-SMOTE produces significant improvements in the generated data quality. We evaluate G-SOMO performance using 69 datasets, 4 different classifiers and 3 different performance measures and compare it with Random Oversampling (ROS), SMOTE, K-Means SMOTE \cite{Douzas2018}, SOMO and G-SMOTE.
+The new algorithm presented in this paper, replaces SMOTE with G-SMOTE as the data generation mechanism. G-SMOTE generates synthetic samples in a geometric region of the input space, around each selected minority instance. It has been shown that G-SMOTE produces significant improvements in the generated data quality. We evaluate G-SOMO performance on binary classification problems using 69 datasets, 4 different classifiers and 3 different performance measures and compare it with Random Oversampling (ROS), SMOTE, K-Means SMOTE \cite{Douzas2018}, SOMO and G-SMOTE.
 
 In the next section we will outline related methods that have been shown to be efficient. In section 3, we explain some of the shortcomings of oversampling methods and explain the motivation for using G-SOMO. Next, we present in detail the G-SOMO algorithm, followed by a description of the experimental setup. In section 6 the results and their statistical analysis is presented. The last section summarizes our findings and provides some ideas for further research.
 
@@ -85,7 +85,7 @@ The most popular approach among practitioners in the domain of oversampling is S
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{../analysis/fig1.png}
+	\includegraphics[width=16.5cm, height=5cm, keepaspectratio]{../../analysis/gsomo/fig1.png}
 	\captionbelow{SMOTE data generation machanism, adopted from \cite{Schubach2017}}.
 	\label{fig:Schubach}
 \end{figure}
@@ -106,39 +106,38 @@ The section briefly outlines the challenges and shortcomings of competitive
 oversampling methods and clarifies the motivation for our proposed algorithm
 G-SOMO.
 
-A classifiers performance is significantly influenced by the positioning of the instances in the dataset \ref{fig:Sez}. A common challenge in real-world problems, is that the instances of a class can be spread over the boundaries of the majority class \cite{Tang2007}. Furthermore, the different types of instances can be labeled as safe and unsafe, while the latter are further divided as borderline and outlier instances \cite{Sez2016}.
+A classifiers performance is significantly influenced by the positioning of the instances in the dataset as presented in Figure \ref{fig:Sez}. A common challenge in real-world problems, is that the instances of a class can be spread over the boundaries of the majority class \cite{Tang2007}. Furthermore, the different types of instances can be labeled as safe and unsafe, while the latter are further divided as borderline and outlier instances \cite{Sez2016}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm,height=7cm, keepaspectratio]{../analysis/fig2.png}
+	\includegraphics[width=10cm,height=7cm, keepaspectratio]{../../analysis/gsomo/fig2.png}
 	\captionbelow{Challenging data formations, adopted from  \cite{Sez2016}.}
 	\label{fig:Sez}
 \end{figure}
 
-Safe instances are located in the homogeneous regions and populated by the
-examples from one class only \cite{rodriguez2012}. They are clearly separated from examples of other classes. Most classifiers are able to correctly identify those instances \cite{Prati2004B}. Instances that are not clearly separated are considered unsafe ones, like borderline instances and outliers \cite{Kubat1997}. Borderline instances are placed in the boundary region between classes, where instances of multiple classes overlap \cite{Sez2016}. Outliers are isolated distinct instances, also termed as noise.
+Safe instances are located in the homogeneous regions and populated by the examples from one class only \cite{rodriguez2012}. They are clearly separated from examples of other classes. Most classifiers are able to correctly identify those instances \cite{Prati2004B}. Instances that are not clearly separated are considered unsafe ones, like borderline instances and outliers \cite{Kubat1997}. Borderline instances are placed in the boundary region between classes, where instances of multiple classes overlap \cite{Sez2016}. Outliers are isolated distinct instances, also termed as noise.
 
-Learning algorithms are challenged when they are confronted with overlapping areas between classes, especially unsafe instances. Therefore, oversampling algorithms should be able to carefully consider in which areas to create artificial instances and which areas to ignore. Inefficiencies that were observed with SMOTE and similar algorithms are the generation of noise penetrating the area of majority class, as well as the generation of nearly duplicated examples. Noisy examples can be created when applying $k$-nearest neighbor approaches, since they can either choose a noisy instance as a starting point or select a noisy instance as nearest neighbor, as seen in figure \ref{fig:Douzas}a and \ref{fig:Douzas}b. Similar or nearly duplicated instances are created while generating new artificial instances within the borders of a minority cluster since they do not help to strengthen the decision boundary and might lead to overfitting, as it can be seen in figure \ref{fig:Douzas}c. Figure \ref{fig:Douzas}d outlines the case, in which the parameter $k$ is too high and observations from another cluster are selected.
+Learning algorithms are challenged when they are confronted with overlapping areas between classes, especially unsafe instances. Therefore, oversampling algorithms should be able to carefully consider in which areas to create artificial instances and which areas to ignore. Inefficiencies that were observed with SMOTE and similar algorithms are the generation of noise penetrating the area of majority class, as well as the generation of nearly duplicated examples. Noisy examples can be created when applying $k$-nearest neighbor approaches, since they can either choose a noisy instance as a starting point or select a noisy instance as nearest neighbor, as seen in Figure \ref{fig:Douzas}a and \ref{fig:Douzas}b. Similar or nearly duplicated instances are created while generating new artificial instances within the borders of a minority cluster since they do not help to strengthen the decision boundary and might lead to overfitting, as it can be seen in Figure \ref{fig:Douzas}c. Figure \ref{fig:Douzas}d outlines the case, in which the parameter $k$ is too high and observations from another cluster are selected.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{../analysis/fig3.png}
+	\includegraphics[width=16.5cm, height=14cm, keepaspectratio]{../../analysis/gsomo/fig3.png}
 	\captionbelow{Shortcomings of SMOTE, adopted from \cite{Douzas2017}}
 	\label{fig:Douzas}
 \end{figure}
 
-SOMO algorithm improves the selection criteria of the minority class samples, which are used to generate synthetic examples. Through the synthetic data generation in and between neighboring minority clusters, as well as the consideration of the density, the algorithm also manages to generate the synthetic instances in more productive areas of the data space. Therefore, the generation of noisy examples is avoided. Although SOMO manages to identify efficient oversampling areas, the generation of synthetic instances handled by the SMOTE algorithm still provides several drawbacks. Challenges, as outlined in figure \ref{fig:Douzas}d, are prevented through the above identification of clusters, nevertheless, the SMOTE algorithm introduces a high correlation between samples, since it only creates synthetic instances that are on the line segment between two minority class instances.
+SOMO algorithm improves the selection criteria of the minority class samples, which are used to generate synthetic examples. Through the synthetic data generation in and between neighboring minority clusters, as well as the consideration of the density, the algorithm also manages to generate the synthetic instances in more productive areas of the data space. Therefore, the generation of noisy examples is avoided. Although SOMO manages to identify efficient oversampling areas, the generation of synthetic instances handled by the SMOTE algorithm still provides several drawbacks. Challenges, as outlined in Figure \ref{fig:Douzas}d, are prevented through the above identification of clusters, nevertheless, the SMOTE algorithm introduces a high correlation between samples, since it only creates synthetic instances that are on the line segment between two minority class instances.
 
 G-SMOTE extends the linear interpolation mechanism by introducing a geometric region, in which the data generation process occurs. Figure \ref{fig:GSMOTE} illustrates this idea.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{../analysis/fig4.png}
+	\includegraphics[width=12cm, height=9.5cm, keepaspectratio]{../../analysis/gsomo/fig4.png}
 	\captionbelow{Synthetic data generation based on a geometric region, adopted from \cite{Douzas2019}}
 	\label{fig:GSMOTE}
 \end{figure}
 
-Besides utilizing a geometric region for the data generation mechanism, G-SMOTE also introduced the \textit{majority} and \textit{combined} selection strategies, which avoid the scenarios shown in figures \ref{fig:Douzas}a, \ref{fig:Douzas}b and \ref{fig:Douzas}d. More specifically, the synthetic sample is created between the initially selected minority instance and the closest majority instance, as it can be seen in figure \ref{fig:GSMOTE}. It has been empirically shown that G-SMOTE \cite{Douzas2019} significantly increased the performance of SMOTE.
+Besides utilizing a geometric region for the data generation mechanism, G-SMOTE also introduced the \textit{majority} and \textit{combined} selection strategies, which avoid the scenarios shown in Figures \ref{fig:Douzas}a, \ref{fig:Douzas}b and \ref{fig:Douzas}d. More specifically, the synthetic sample is created between the initially selected minority instance and the closest majority instance, as it can be seen in Figure \ref{fig:GSMOTE}. It has been empirically shown that G-SMOTE \cite{Douzas2019} significantly increased the performance of SMOTE.
 
 SOMO provides an efficient process to identify areas that should be populated
 with minority instances, but lacks the improvements provided by G-SMOTE. On the
@@ -251,9 +250,9 @@ The G-SOMO algorithm requires the following input parameters:
 
 	\item $IR_{f}$ represents the maximum imbalance ratio of any filtered cluster and takes positive values. Higher values allow more clusters to be included in the set of filtered clusters.
 
-	\item $SOM_{parameters}$ represents the set of all SOM hyper-parameters. One notable SOM hyper-parameter is the size of the grid $N_{Grid}$, which determines the number of nodes and therefore clusters.
+	\item $SOM_{parameters}$ represents the set of all SOM hyper-parameters. One notable SOM hyper-parameter is the size of the grid $N_{grid}$, which determines the number of nodes and therefore clusters.
 
-	\item $\alpha_{trunc}$, $\alpha_{def}$ and $\alpha_{def}$, known as geometric hyper-parameters, control the geometric characteristics of the G-SMOTE data generation mechanism.
+	\item $\alpha_{trunc}$, $\alpha_{def}$ and $\alpha_{sel}$, known as geometric hyper-parameters, control the geometric characteristics of the G-SMOTE data generation mechanism.
 
 \end{itemize}
 
@@ -263,13 +262,13 @@ These steps correspond to the SOMO algorithm minus the data generation phase.
 Initially the input data are normalized and SOM algorithm is applied with the
 provided hyper-parameters $SOM_{parameters}$. The set of filtered clusters $cl_{f}$ is identified by comparing the imbalance ratio $IR_{i} = \frac{n_{-i}}{n_{+i}}$ of each cluster $i \in cl_{f}$, where $n_{-i}$ and $n_{+i}$ are the number of instances belonging to the minority and majority classes respectively, to a threshold called $IR_{f}$. Filtered clusters are areas of the input space where the number of minority instances dominate over the number of majority instances and therefore can be considered as safe areas to apply any local data generation mechanism. An important point is that the G-SOMO algorithm will not create any artificial instances if no filtered clusters are found. Additionally the set $cl_{f, n}$ of neighboring filtered clusters pairs is identified by including only pairs of filtered clusters that are topological neighbors.
 
-For each identified filtered cluster $i$, the average Euclidean distance $dist_{i}$ is calculated between the minority instances. Using the average Euclidean distance, we define a density factor to each filtered cluster as $den_{i} = \frac{n_{+i}}{dist_{i}^2}$. This measure provides information about the distribution of the instances within each cluster and is used to assign the correct amount of artificial samples to each cluster. Also for each topological neighboring combination of filtered clusters $(i, j)$, the density $den^{i, j}$ is defined as the sum of both individual density factors. Figure \ref{fig:Somo_Overview}a illustrates the SOM Grid with all identified filtered clusters and figure \ref{fig:Somo_Overview}b outlines the topological neighbor structure.
+For each identified filtered cluster $i$, the average Euclidean distance $dist_{i}$ is calculated between the minority instances. Using the average Euclidean distance, we define a density factor to each filtered cluster as $den_{i} = \frac{n_{+i}}{dist_{i}^2}$. This measure provides information about the distribution of the instances within each cluster and is used to assign the correct amount of artificial samples to each cluster. Also for each topological neighboring combination of filtered clusters $(i, j)$, the density $den^{i, j}$ is defined as the sum of both individual density factors. Figure \ref{fig:Somo_Overview}a illustrates the SOM Grid with all identified filtered clusters and Figure \ref{fig:Somo_Overview}b outlines the topological neighbor structure.
 
 Utilizing the density information, a relative weight $w^{i}_{intra}$ is calculated for each filtered cluster, that represents the normalized inverse density. $N_{intra}$ and $N_{inter}$ provide the guideline of the total synthetic instances to be created in the intra-cluster and inter-cluster processes, respectively. $N_{intra}$ times the weight for each specific filtered cluster results in the amount of artificial data that is generated for the intra-cluster case. Similarly, the weights $w^{(i, j)}_{inter}$ of two neighboring filtered clusters $(i, j)$ are calculated. Once each neighboring pair of filtered clusters has a relative weight assigned, $N_{inter}$ times the relative weight results in the number of synthetic instances that are generated for the inter-cluster case. If no neighborhood relations exist then the artificial samples are created through the intra-cluster process.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=18cm,height=13cm, keepaspectratio]{../analysis/fig5.png}
+	\includegraphics[width=18cm,height=13cm, keepaspectratio]{../../analysis/gsomo/fig5.png}
 	\captionbelow{Overview of identified filtered clusters and neighboring relations, adopted from \cite{Douzas2017}}
 	\label{fig:Somo_Overview}
 \end{figure}
@@ -280,11 +279,11 @@ In previous steps, the numbers of required synthetic instances for each filtered
 
 The set of minority instances is shuffled, minority instances are repetitively selected, where each minority instance can be selected multiple times if the number of required synthetic instances is higher than the number of minority instances. The current selected minority sample is named $x_{center}$. Based on $x_{center}$ a selection strategy given by $a_{sel}$ is applied and identifies $x_{surface}$, the final neighbor of $x_{center}$. Both are used to define the geometric area where new instances are generated and a radius $R$ is defined as their Euclidean distance.
 
-The data generation process starts by creating a unit hypersphere around the origin, as it can be seen in figure \ref{fig:Hypersphere}a. This hypersphere is going to be modified within the next steps. Initially, a random point $e_{sphere}$ is created on the surface of the unit hypersphere. Subsequent, $e_{sphere}$ is transformed to $x_{gen}$ a random point along the radius, uniformly distributed. Next, a truncation is applied, a partition of the hypersphere, as illustrated in \ref{fig:Hypersphere}b with $\alpha_{trunc}$ determining the degree of the truncation. Another transformation deforms the truncated hypersphere to a hyper spheroid, as it can be seen in \ref{fig:Hypersphere}c. The parameter $\alpha_{def}$ controls the degree of the deformation.  As a final transformation we translate and rescale the point $x_{gen}$ based on $x_{center}$ and the radius $R$.
+The data generation process starts by creating a unit hypersphere around the origin, as it can be seen in Figure \ref{fig:Hypersphere}a. This hypersphere is going to be modified within the next steps. Initially, a random point $e_{sphere}$ is created on the surface of the unit hypersphere. Subsequent, $e_{sphere}$ is transformed to $x_{gen}$ a random point along the radius, uniformly distributed. Next, a truncation is applied, a partition of the hypersphere, as illustrated in \ref{fig:Hypersphere}b with $\alpha_{trunc}$ determining the degree of the truncation. Another transformation deforms the truncated hypersphere to a hyper spheroid, as it can be seen in \ref{fig:Hypersphere}c. The parameter $\alpha_{def}$ controls the degree of the deformation.  As a final transformation we translate and rescale the point $x_{gen}$ based on $x_{center}$ and the radius $R$.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm,height=10cm, keepaspectratio]{../analysis/fig6.png}
+	\includegraphics[width=15cm,height=10cm, keepaspectratio]{../../analysis/gsomo/fig6.png}
 	\captionbelow{Constructing the geometric region, based on the unit hyper sphere, truncation and
 		deformation, adopted from \cite{Douzas2017}}
 	\label{fig:Hypersphere}
@@ -292,13 +291,23 @@ The data generation process starts by creating a unit hypersphere around the ori
 
 The process is repeated until $N_{intra} + N_{inter}$ are generated. The final output of the G-SOMO algorithm is the oversampled matrix $S'$, consisting of the input data set and the set $S_{synthetic}$ of synthetic minority instances.
 
+\subsection{Time complexity of G-SOMO}
+
+As it was explained above, G-SOMO algorithm consists of three stages. Below we present the time complexity of G-SOMO, focusing on parameters that are related to the characteristics of the dataset. 
+
+The first stage is the application of the SOM algorithm.  The time complexity of SOM is \( \mathcal{O}(N_{samples} \cdot N_{grid}^2 ) \) where \( N_{samples} = |S_{maj} \cup S_{min}| \) is the number of the dataset's observations. 
+
+The second and third stages include the indetification of the filtered clusters and the creation of the synthetic instances using the G-SMOTE algorithm. Both of them require the calculation of the distance matrix between samples that has a time complexity \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \) where \( N_{features} \) is the number of the dataset's features.
+
+Since the number of SOM nodes is \( N_{grid}^2 ) \) and it is less than the number of samples, the final time complexity of G-SOMO is \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \). While this is identical to the time complexity of the underlying G-SMOTE oversampler when the $ majority $ or $ combined $ selection strategies are used, it can be considered as a limitation of G-SOMO since it is higher than the time complexity of the SMOTE algorithm and some of its variations that calculate the nearest neighbors only on the minority class samples.
+
 \section{Research methodology}
 
 This section describes the evaluation process of G-SOMO using multiple classifiers, datasets and metrics. The experimental data as well as the experimental procedure are presented in details, while a description of the evaluation measures, the classification algorithms and the software implementation is provided.
 
 \subsection{Experimental data}
 
-To ensure meaningful and significant insights we evaluated our models on a total of \href{https://github.com/AlgoWit/publications/blob/master/gsomo/data/gsomo.db}{69 datasets}. These datasets consist of commonly used datasets mainly from UCI Machine Learning repository. In order to reach this high number of datasets, we randomly undersampled the minority class of some of them so that their IR is increased. Using this approach, we managed to create additional and more challenging datasets. Table 1 provides an overview of our datasets, the number of features, instances and their IR:
+To ensure meaningful and significant insights we evaluated our models on binary classification problems for a total of \href{https://github.com/AlgoWit/publications/blob/master/gsomo/data/gsomo.db}{69 datasets}, mainly from the UCI Machine Learning repository. In order to reach this high number of datasets, we randomly undersampled the minority class of some of them so that their IR is increased. Using this approach, we managed to create additional and more challenging datasets. Table 1 provides an overview of our datasets, the number of features, instances and their IR:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -315,7 +324,7 @@ To ensure meaningful and significant insights we evaluated our models on a total
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Overview of experimental data.}}
 ]
-{../analysis/datasets_summary.csv}
+{../../analysis/gsomo/datasets_summary.csv}
 
 \subsection{Evaluation measures}
 
@@ -365,7 +374,7 @@ A variety of hyper-parameters were used for the oversamplers. Below we group the
 
 	\item For SOMO, G-SOMO
 
-	$ N_{Grid} \in \{0\%, 25\%, 50\%, 75\% \} $ where $N_{Grid}$ is the dimension of the SOM grid in units that correspond to the percentage of samples for each dataset (particulalrly $ 0\% $ does not cluster the input space). Also, instead of selecting $N_{intra}$ and $N_{inter}$ seperately, the ratio $ \frac{N_{intra}}{N_{intra} + N_{inter}} \in \{0.75, 1.0 \} $ is selected with the constrain that $N_{intra} + N_{inter} = N$, where $N$ is the number of generated instances that make the initial dataset perfectly balanced. Finally, the threshold $ IR_{f} $ was set equal to $ 1.0 $.
+	$ N_{grid} \in \{0\%, 25\%, 50\%, 75\% \} $ where $N_{grid}$ is the dimension of the SOM grid in units that correspond to the percentage of samples for each dataset (particulalrly $ 0\% $ does not cluster the input space). Also, instead of selecting $N_{intra}$ and $N_{inter}$ seperately, the ratio $ \frac{N_{intra}}{N_{intra} + N_{inter}} \in \{0.75, 1.0 \} $ is selected with the constrain that $N_{intra} + N_{inter} = N$, where $N$ is the number of generated instances that make the initial dataset perfectly balanced. Finally, the threshold $ IR_{f} $ was set equal to $ 1.0 $.
 
 	\item For G-SMOTE, G-SOMO
 	
@@ -405,7 +414,7 @@ The mean and standard error of cross validation scores across datasets for each 
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Results for mean cross validation scores of oversamplers across the datasets.}}
 ]
-{../analysis/mean_sem_scores.csv}
+{../../analysis/gsomo/mean_sem_scores.csv}
 
 Table 2 shows that G-SOMO performs better on average than the rest of the methods. Particularly, the mean and standard error of percentage difference between G-SOMO and SMOTE, K-Means SMOTE, SOMO and G-SMOTE is presented in Table 3:
 
@@ -424,7 +433,7 @@ Table 2 shows that G-SOMO performs better on average than the rest of the method
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Results for percentage difference between G-SOMO and the rest of main oversamplers.}}
 ]
-{../analysis/mean_sem_perc_diff_scores.csv}
+{../../analysis/gsomo/mean_sem_perc_diff_scores.csv}
 
 Table 4 below illustrates the mean ranking of each oversampler on each metric and each classifier averaged across all datasets:
 
@@ -446,7 +455,7 @@ Table 4 below illustrates the mean ranking of each oversampler on each metric an
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Results for mean ranking of oversamplers across the datasets.}}
 ]
-{../analysis/mean_sem_ranking.csv}
+{../../analysis/gsomo/mean_sem_ranking.csv}
 
 Based on the insights from the above tables we can conclude, that G-SOMO
 successfully outperforms the rest of oversampling methods, for any combination of metrics and classifiers.
@@ -468,7 +477,7 @@ The results of the application of the Friedman test are shown in Table 5:
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Results for Friedman test.}}
 ]
-{../analysis/friedman_test.csv}
+{../../analysis/gsomo/friedman_test.csv}
 
 Therefore at a significance level of $a = 0.05$ the null hypothesis is rejected,
 i.e. the classifiers do not perform similarly in the mean rankings across the
@@ -494,7 +503,7 @@ presented in Table 6:
 	every head row/.style={before row=\toprule, after row=\midrule\endhead},
 	every last row/.style={after row=\bottomrule \caption{Adjusted p-values using the Holm's method.}}
 ]
-{../analysis/holms_test.csv}
+{../../analysis/gsomo/holms_test.csv}
 
 Therefore, the null hypothesis of the Holm's test is rejected at a significance
 level of $a = 0.05$ for 69 out of 72 cases, i.e. the hypothesis that G-SOMO's performance is similar to the rest of the methods is rejected. The 3 remaining cases correspond to G-SOMO and G-SMOTE performance comparison.
@@ -503,7 +512,7 @@ level of $a = 0.05$ for 69 out of 72 cases, i.e. the hypothesis that G-SOMO's pe
 
 G-SOMO's hyper-parameters can be divided into two different categories. The first category is related to the SOMO parametrization while the second category are the $\alpha_{trunc}$, $\alpha_{def}$, $\alpha_{sel}$ hyper-parameters that control the G-SMOTE data generation mechanism.
 
-The most crucial hyper-parameter of the first category is the optimal size $N_{Grid}$ of the SOM grid. After SOM training is applied, the high dimensional input space will be transformed into a two-dimensional grid that consists of $N_{Grid}^2$ clusters, which are used to identify safe areas for the data generation process. The challenge hereby is to select a value allowing to discriminate between sparse and dense minority class areas.  A very small value will not be able to identify sub-clusters, since the identified clusters will have a very large size of instances. Assuming a uniform distribution on the SOM map, one can set the threshold to $\sqrt{|S_{min}|}$ to ensure that each cluster contains on average one minority class. On the other hand, high values of $N_{Grid}$ will result in smaller sized clusters, which might lead to filtered clusters in areas that we would usually like to ignore, because they are considered outliers. $\sqrt{|S_{maj}|}$ provides a reasonable upper bound for $N_{Grid}$. The optimal value for $N_{Grid}$ is dependent on the characteristics of the data set and can only be approximated in an experimental approach.
+The most crucial hyper-parameter of the first category is the optimal size $N_{grid}$ of the SOM grid. After SOM training is applied, the high dimensional input space will be transformed into a two-dimensional grid that consists of $N_{grid}^2$ clusters, which are used to identify safe areas for the data generation process. The challenge hereby is to select a value allowing to discriminate between sparse and dense minority class areas.  A very small value will not be able to identify sub-clusters, since the identified clusters will have a very large size of instances. Assuming a uniform distribution on the SOM map, one can set the threshold to $\sqrt{|S_{min}|}$ to ensure that each cluster contains on average one minority class. On the other hand, high values of $N_{grid}$ will result in smaller sized clusters, which might lead to filtered clusters in areas that we would usually like to ignore, because they are considered outliers. $\sqrt{|S_{maj}|}$ provides a reasonable upper bound for $N_{grid}$. The optimal value for $N_{grid}$ is dependent on the characteristics of the data set and can only be approximated in an experimental approach.
 
 An analysis of the second category of G-SOMO hyper-parameters shows a dependence on Imbalance Ratio (IR) as well as the number of samples over number of features ratio (R). Specifically we can conclude the following:
 
@@ -525,11 +534,11 @@ An analysis of the second category of G-SOMO hyper-parameters shows a dependence
 
 In this paper, we proposed a new oversampling algorithm G-SOMO. The algorithm examines the characteristics of the multi-dimensional input space while grouping the data to identify filtered clusters where minority instances dominate. Within these filtered clusters, as well as between neighboring filtered clusters, synthetic minority class instances are created inside the geometric region of a hyper-ellipsis.
 
-G-SOMO was evaluated on 69 different datasets and compared to popular oversampling methods that included also G-SOMO components i.e. SOMO and G-SMOTE algorithms. The performance was evaluated using the AUC, F-score and G-mean metrics. In order to avoid dependence of the results to a specific classifier, multiple ones were selected that differ in their characteristics. Each experiment was repeated 3 times with a 5-fold cross-validation procedure. The statistical significance of the results was established by appropriate statistical tests.
+G-SOMO was evaluated on binary classification problems using 69 different datasets and compared to popular oversampling methods that included also G-SOMO components i.e. SOMO and G-SMOTE algorithms. The performance was evaluated using the AUC, F-score and G-mean metrics. In order to avoid dependence of the results to a specific classifier, multiple ones were selected that differ in their characteristics. Each experiment was repeated 3 times with a 5-fold cross-validation procedure. The statistical significance of the results was established by appropriate statistical tests.
 
 In particular, our empirical results highlight the need for oversampling algorithms. Utilizing no oversampling method produced the worst results in our mean ranking, while simple methods like ROS increased the performance when compared with it. The popular method SMOTE performed better than ROS, whereas it was confirmed that K-Means SMOTE, SOMO and G-SMOTE performed better than SMOTE. G-SOMO dominated the ranking and outperformed all the other oversamplers. Therefore, we are confident that G-SOMO is a new appealing approach for researchers and practitioners working with imbalanced datasets.
 
-Finally, the behavior of the algorithm on imbalanced datasets with multiple target classes is worth to explore, since research about oversampling on multi-class classification problems is limited compared to the binary case.
+Future work may include the behavior of the algorithm on multi-class imbalanced datasets, since research about oversampling on these type of classification problems is limited compared to the binary case. Additionally, the data we used include only numerical features, therefore the underlying G-SMOTE data generation mechanism may be extended to generate also categorical data. While the proposed algorithm outperforms the rest state-of-the-art oversampling methods, a shift of the nearest-neighbors paradigm, using Conditional Generative Adversarial Network (CGAN) as an oversampler, may be worth to explore. Finally, another important future work is the theoretical analysis of various oversampling methods, including ROS, SMOTE and G-SMOTE.
 
 \bibliography{references}
 \bibliographystyle{apalike}
