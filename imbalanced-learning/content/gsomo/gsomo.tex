@@ -5,7 +5,7 @@
 \title{G-SOMO \\ \LARGE{An Oversampling Approach based on Self-Organized Maps and Geometric SMOTE}}
 
 \author{
-	Georgios Douzas\(^{* 1, a}\), Fernando Bacao\(^{1, b}\), Rene Rauch\(^{1, c}\) 
+	Georgios Douzas\(^{* 1, a}\), Rene Rauch\(^{1, b}\), Fernando Bacao\(^{1, c}\)
 	\\
 	\small{Affiliation: \(^{1}\)NOVA Information Management School, Universidade Nova de Lisboa}
 	\\
@@ -13,7 +13,7 @@
 	\\
 	\small{Telephone: +351 21 382 8610}
 	\\
-	\small{Email: \(^{a}\)gdouzas@novaims.unl.pt, \(^{b}\)bacao@novaims.unl.pt, \(^{c}\)rene.rauch@outlook.de}
+	\small{Email: \(^{a}\)gdouzas@novaims.unl.pt, \(^{b}\)rene.rauch@outlook.de}, \(^{c}\)bacao@novaims.unl.pt
 	\\
 	\small{*Corresponding Author}
 }
@@ -71,13 +71,13 @@ The method presented in this paper, G-SOMO, extends the Self-Organizing Map Over
 
 SOMO is a clustering based oversampling algorithm which uses the Self-Organizing Map (SOM) and has been shown to outperform related algorithms over various datasets. It preserves the topology of the input space, while reducing the dimensionality to a two-dimensional representation. The emerging clusters are then used as a map to guide the generation of minority instances within, but also between neighboring minority clusters. In the original SOMO paper the generation process was done through the application of the SMOTE mechanism \cite{Chawla2002}.
 
-The new algorithm presented in this paper, replaces SMOTE with G-SMOTE as the data generation mechanism. G-SMOTE generates synthetic samples in a geometric region of the input space, around each selected minority instance. It has been shown that G-SMOTE produces significant improvements in the generated data quality. We evaluate G-SOMO performance on binary classification problems using 69 datasets, 4 different classifiers and 3 different performance measures and compare it with Random Oversampling (ROS), SMOTE, K-Means SMOTE \cite{Douzas2018}, SOMO and G-SMOTE.
+The new algorithm presented in this paper, replaces SMOTE with G-SMOTE as the data generation mechanism. G-SMOTE generates synthetic samples in a geometric region of the input space, around each selected minority instance. It has been shown that G-SMOTE produces significant improvements in the generated data quality. We evaluate G-SOMO performance on binary classification problems using 69 datasets, 4 different classifiers and 3 different performance measures and compare it with Random Oversampling (ROS), SMOTE, K-Means SMOTE \cite{Douzas2018a}, SOMO and G-SMOTE.
 
 In the next section we will outline related methods that have been shown to be efficient. In section 3, we explain some of the shortcomings of oversampling methods and explain the motivation for using G-SOMO. Next, we present in detail the G-SOMO algorithm, followed by a description of the experimental setup. In section 6 the results and their statistical analysis is presented. The last section summarizes our findings and provides some ideas for further research.
 
 \section{Related work}
 
-The section outlines the current state of the art oversampling methods. Oversampling algorithms generate synthetic examples for the minority class that are added to the training set. In contrast to oversampling, undersampling methods remove samples from the majority class to establish a class balance. This implies that information is excluded, which might affect the learning process negatively, especially when the data set is small. Both methods have shown to be effective, depending on the problem addressed \cite{Chawla2002}. More information on undersampling methods can be found in \cite{Ganganwar2012} and \cite{Yen2006}. Synthetic data instances can be created uninformed, by randomly duplicating minority instances or informed, by identifying areas where oversampling is deemed to be most effective \cite{Douzas2018}.
+The section outlines the current state of the art oversampling methods. Oversampling algorithms generate synthetic examples for the minority class that are added to the training set. In contrast to oversampling, undersampling methods remove samples from the majority class to establish a class balance. This implies that information is excluded, which might affect the learning process negatively, especially when the data set is small. Both methods have shown to be effective, depending on the problem addressed \cite{Chawla2002}. More information on undersampling methods can be found in \cite{Ganganwar2012} and \cite{Yen2006}. Synthetic data instances can be created uninformed, by randomly duplicating minority instances or informed, by identifying areas where oversampling is deemed to be most effective \cite{Douzas2018a}.
 
 The simplest form of oversampling is ROS, an uninformed approach, which randomly selects minority samples and duplicates them. The method stands out through its simplicity, but it increases the risk of overfitting, since the same information is used multiple times during the training process.
 
@@ -96,7 +96,7 @@ To tackle the problems of SMOTE several modifications were created. SMOTE + Edit
 
 The prior algorithms focus exclusively on between-class imbalance. On the other hand, within-class-imbalance refers to identifying sparse or dense clusters of minority or majority instances. To tackle this challenge, different clustering based oversampling methods have been proposed. These methods are segmenting the instances and then apply traditional oversampling algorithms to each segment.
 
-Cluster SMOTE \cite{Cieslak2006} utilizes the K-means clustering algorithm, to identify clusters with a specific threshold of minority instances, before applying SMOTE within these clusters. In addition, K-means SMOTE \cite{Douzas2018} method applies a similar approach, but also considers the density within the clusters. Then sparse clusters receive a higher number of generated samples compared to dense clusters. DBSMOTE \cite{Bunkhumpornpat2012} provides another approach to cluster based oversampling, by applying the density-based DBSCAN algorithm to discover arbitrarily shaped clusters and create artificial data instances along the shortest path from each minority class instance to a pseudo-centroid of the cluster. A-SUWO \cite{Nekooeimehr2016} uses a hierarchical clustering approach and adaptively determines the size to oversample each sub-cluster using its classification complexity and cross-validation procedure.
+Cluster SMOTE \cite{Cieslak2006} utilizes the K-means clustering algorithm, to identify clusters with a specific threshold of minority instances, before applying SMOTE within these clusters. In addition, K-means SMOTE \cite{Douzas2018a} method applies a similar approach, but also considers the density within the clusters. Then sparse clusters receive a higher number of generated samples compared to dense clusters. DBSMOTE \cite{Bunkhumpornpat2012} provides another approach to cluster based oversampling, by applying the density-based DBSCAN algorithm to discover arbitrarily shaped clusters and create artificial data instances along the shortest path from each minority class instance to a pseudo-centroid of the cluster. A-SUWO \cite{Nekooeimehr2016} uses a hierarchical clustering approach and adaptively determines the size to oversample each sub-cluster using its classification complexity and cross-validation procedure.
 
 The SOMO algorithm \cite{Douzas2017} applies a self-organizing map to create a two-dimensional representation of the multidimensional input space and creates inter-cluster and intra-cluster synthetic samples based on the underlying manifold structure. Specifically, the algorithm maps the input space in a two-dimensional space where clusters are identified. The next step is to apply SMOTE in order to generate synthetic instances within selected clusters as well as between them. Besides clustering based algorithms, further approaches have been proposed, that are based on ensemble methods like SMOTEBoost \cite{Chawla2003} and DataBoost-IM \cite{Guo2004}.
 
@@ -299,7 +299,7 @@ The first stage is the application of the SOM algorithm.  The time complexity of
 
 The second and third stages include the indetification of the filtered clusters and the creation of the synthetic instances using the G-SMOTE algorithm. Both of them require the calculation of the distance matrix between samples that has a time complexity \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \) where \( N_{features} \) is the number of the dataset's features.
 
-Since the number of SOM nodes is \( N_{grid}^2 ) \) and it is less than the number of samples, the final time complexity of G-SOMO is \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \). While this is identical to the time complexity of the underlying G-SMOTE oversampler when the $ majority $ or $ combined $ selection strategies are used, it can be considered as a limitation of G-SOMO since it is higher than the time complexity of the SMOTE algorithm and some of its variations that calculate the nearest neighbors only on the minority class samples.
+Since the number of SOM nodes is \( N_{grid}^2 \) and it is less than the number of samples, the final time complexity of G-SOMO is \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \). While this is identical to the time complexity of the underlying G-SMOTE oversampler when the $ majority $ or $ combined $ selection strategies are used, it can be considered as a limitation of G-SOMO since it is higher than the time complexity of the SMOTE algorithm and some of its variations that calculate the nearest neighbors only on the minority class samples.
 
 \section{Research methodology}
 
@@ -538,7 +538,12 @@ G-SOMO was evaluated on binary classification problems using 69 different datase
 
 In particular, our empirical results highlight the need for oversampling algorithms. Utilizing no oversampling method produced the worst results in our mean ranking, while simple methods like ROS increased the performance when compared with it. The popular method SMOTE performed better than ROS, whereas it was confirmed that K-Means SMOTE, SOMO and G-SMOTE performed better than SMOTE. G-SOMO dominated the ranking and outperformed all the other oversamplers. Therefore, we are confident that G-SOMO is a new appealing approach for researchers and practitioners working with imbalanced datasets.
 
-Future work may include the behavior of the algorithm on multi-class imbalanced datasets, since research about oversampling on these type of classification problems is limited compared to the binary case. Additionally, the data we used include only numerical features, therefore the underlying G-SMOTE data generation mechanism may be extended to generate also categorical data. While the proposed algorithm outperforms the rest state-of-the-art oversampling methods, a shift of the nearest-neighbors paradigm, using Conditional Generative Adversarial Network (CGAN) as an oversampler, may be worth to explore. Finally, another important future work is the theoretical analysis of various oversampling methods, including ROS, SMOTE and G-SMOTE.
+Future work may include the behavior of the algorithm on multi-class imbalanced datasets, since research about oversampling on these type of classification problems is limited compared to the binary case. Additionally, the data we used include only numerical features, therefore the underlying G-SMOTE data generation mechanism may be extended to generate also categorical data. While the proposed algorithm outperforms the rest state-of-the-art oversampling methods, a shift from the nearest-neighbors paradigm, using Conditional Generative Adversarial Network (CGAN) as an oversampler, may be worth to explore. An initial exploration of this approach has already been done in \cite{Douzas2018b} with encouraging results. Finally, another important future work is the theoretical analysis of various oversampling methods, including ROS, SMOTE and G-SMOTE.
+
+\section*{Funding}
+
+This research was funded by Fundação para a Ciência e Tecnologia (Portugal) \\
+Grant number DSAIPA/DS/0116/2019 – MapIntel.
 
 \bibliography{references}
 \bibliographystyle{apalike}
