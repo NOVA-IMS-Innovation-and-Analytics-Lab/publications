@@ -307,7 +307,7 @@ This section describes the evaluation process of G-SOMO using multiple classifie
 
 \subsection{Experimental data}
 
-To ensure meaningful and significant insights we evaluated our models on binary classification problems for a total of \href{https://github.com/AlgoWit/publications/blob/master/gsomo/data/gsomo.db}{69 datasets}, mainly from the UCI Machine Learning repository. In order to reach this high number of datasets, we randomly undersampled the minority class of some of them so that their IR is increased. Using this approach, we managed to create additional and more challenging datasets. Table 1 provides an overview of our datasets, the number of features, instances and their IR:
+To ensure meaningful and significant insights we evaluated our models on binary classification problems for a total of \href{https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications/blob/master/imbalanced-learning/data/imbalanced.db}{69 datasets}, mainly from the UCI Machine Learning repository. In order to reach this high number of datasets, we randomly undersampled the minority class of some of them so that their IR is increased. Using this approach, we managed to create additional and more challenging datasets. Table 1 provides an overview of our datasets, the number of features, instances and their IR:
 
 \pgfplotstabletypeset[
 	begin table=\begin{longtable},
@@ -386,7 +386,7 @@ Using the above hyper-parameters, the highest cross validation score for each co
 
 \subsection{Software implementation}
 
-The implementation of the classifiers and oversamplers are based on the Python libraries \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2012} and \href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{Lemaitre2016}. All functions, algorithms, experiments and results reported are provided at the GitHub repository of the \href{https://github.com/AlgoWit/publications/tree/master/gsomo}{project}, while the \href{https://github.com/AlgoWit/cluster-over-sampling}{ G-SOMO implementation} is also available as an open-source library. Additionally, \href{https://research-learn.readthedocs.io/en/latest/?badge=latest}{Research-Learn} library provides a framework to implement comparative experiments, being also fully integrated with the Scikit-Learn ecosystem.
+The implementation of the classifiers and oversamplers are based on the Python libraries \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa2012} and \href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{Lemaitre2016}. All functions, algorithms, experiments and results reported are provided at the GitHub repository of the \href{https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications}{project}, while the \href{https://github.com/AlgoWit/cluster-over-sampling}{ G-SOMO implementation} is also available as an open-source library. Additionally, \href{https://research-learn.readthedocs.io/en/latest/?badge=latest}{Research-Learn} library provides a framework to implement comparative experiments, being also fully integrated with the Scikit-Learn ecosystem.
 
 \section{Results and discussion}
 
