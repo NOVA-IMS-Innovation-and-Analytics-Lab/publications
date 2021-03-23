@@ -297,9 +297,9 @@ As it was explained above, G-SOMO algorithm consists of three stages. Below we p
 
 The first stage is the application of the SOM algorithm.  The time complexity of SOM is \( \mathcal{O}(N_{samples} \cdot N_{grid}^2 ) \) where \( N_{samples} = |S_{maj} \cup S_{min}| \) is the number of the dataset's observations. 
 
-The second and third stages include the indetification of the filtered clusters and the creation of the synthetic instances using the G-SMOTE algorithm. Both of them require the calculation of the distance matrix between samples that has a time complexity \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \) where \( N_{features} \) is the number of the dataset's features.
+The second and third stages include the identification of the filtered clusters and the creation of the synthetic instances using the G-SMOTE algorithm. Both of them require the calculation of the distance matrix between samples that has a time complexity \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \) where \( N_{features} \) is the number of the dataset's features.
 
-Since the number of SOM nodes is \( N_{grid}^2 \) and it is less than the number of samples, the final time complexity of G-SOMO is \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \). While this is identical to the time complexity of the underlying G-SMOTE oversampler when the $ majority $ or $ combined $ selection strategies are used, it can be considered as a limitation of G-SOMO since it is higher than the time complexity of the SMOTE algorithm and some of its variations that calculate the nearest neighbors only on the minority class samples.
+Since the number of SOM nodes \( N_{grid}^2 \) is less than the number of samples, the final time complexity of G-SOMO is \( \mathcal{O}(N_{samples}^2 \cdot N_{features}) \). While this is identical to the time complexity of the underlying G-SMOTE oversampler when the $ majority $ or $ combined $ selection strategies are used, it can be considered as a limitation of G-SOMO since it is higher than the time complexity of the SMOTE algorithm and some of its variations that calculate the nearest neighbors only on the minority class samples.
 
 \section{Research methodology}
 
