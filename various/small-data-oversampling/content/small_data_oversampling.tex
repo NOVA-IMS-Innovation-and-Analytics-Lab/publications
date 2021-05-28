@@ -36,14 +36,14 @@ grestore
 \usepackage{csvsimple}
 \usepackage{caption}
 
-\journalname{Annals of Operations Research}
+\journalname{Information Sciences}
 
 \begin{document}
 
-\title{Geometric Small Data Oversampling Technique}
-\subtitle{A new algorithm for generating synthetic samples to improve small data prediction accuracy}
+\title{Improving the quality of predictive models in small data}
+\subtitle{GSDOT: A new algorithm for generating synthetic data}
 
-\author{Georgios Douzas \and Fernando Bacao \and Maria Lechleitner}
+\author{Georgios Douzas \and Maria Lechleitner \and Fernando Bacao}
 
 \institute{G. Douzas \at
             NOVA Information Management School \\
@@ -69,7 +69,7 @@ grestore
 \maketitle
 
 \begin{abstract}
-In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm, Geometric Small Data Oversampling Technique, uses geometric regions around existing samples to generate new high quality instances. Experimental results show a significant improvement in accuracy when compared with the use of the initial small dataset and also over other oversampling techniques such as Random OverSampling, SMOTE and Borderline SMOTE.
+In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm, Geometric Small Data Oversampling Technique, uses geometric regions around existing samples to generate new high quality instances. Experimental results show a significant improvement in accuracy when compared with the use of the initial small dataset as well as other popular artificial data generation techniques.
 \keywords{Machine Learning \and Classification \and Small Data Problem \and Oversampling}
 \end{abstract}
 
@@ -78,7 +78,7 @@ Insufficient size of datasets is a common issue in many supervised learning task
 
 In machine learning, researchers are usually concerned with the design of sophisticated learning algorithms when aiming to improve prediction performance. However, increasing the sample size is often a more effective approach. A rule of thumb is that "a dumb algorithm with lots and lots of data beats a clever one with modest amounts of it" \cite{Domingos.2012}. Generally, a small number of training samples is characterized by a loose data structure with multiple information gaps. This lack of information negatively impacts the performance of machine learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained from models trained with small sample sizes is considered unreliable as well as imprecise and does not lead to a robust performance \cite{AbdulLateh.2017}.
 
-Considering the size of data, there are two types of problems: First, the insufficiency of data belonging to one or more of the classes (imbalance learning problem) for a binary or multi-class classification task and second, the size of the whole dataset (small data problem) for any classification or regression task \cite{Sezer.2014}. In both cases, small training samples affect the performance of machine learning models \cite{Tsai.2008}. 
+Considering the size of data, there are two types of problems: First, the insufficiency of data belonging to one or more of the classes (imbalance learning problem) for a binary or multi-class classification task and second, the size of the whole dataset (small data problem) for any classification or regression task \cite{Sezer.2014}. In both cases, small training samples affect the performance of machine learning models \cite{Tsai.2008}. In this work, we consider only the second type of problems i.e. the small data problem proposing an efficient algorithm that increases the classification performance.
 
 A theoretical definition of "small" can be found in statistical learning theory by Vapnik. A sample size is defined as small, if the ratio between the number of training samples and Vapnik-Chervonenkis (VC) dimensions is approximately less than 20. VC dimensions are determined as the maximum number of vectors that can be separated into two classes in all possible ways by a set of functions \cite{Vapnik.2008}.
 
@@ -92,7 +92,7 @@ Under-representation of observations in the sample set can be solved in differen
 \end{figure*}
 
 The next sections will describe an effective way to tackle the small data
-problem. Specifically, the focus in this paper is the case of binary classification tasks with the objective to generate artificial data for both classes, called arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. On the other hand, regression tasks require an extensive modification of the data generation process and they will be a topic of future research. 
+problem. Specifically, the focus in this paper is the case of binary classification tasks with the objective to generate artificial data for both of the classes, called arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. On the other hand, regression tasks require an extensive modification of the data generation process and they will be a topic of future research. 
 
 In section \ref{related}, the previously studied solutions are reviewed, while a detailed description of the proposed method is presented in section \ref{proposed}. This is followed by the research methodology and the experimental results in sections \ref{research} and \ref{results}. Finally, the conclusions of the paper are presented in section \ref{conclusions}.
 
@@ -115,60 +115,18 @@ In order to fully fill the information gaps, Mega-Trend-Diffusion (MTD) \cite{Li
 
 A drawback of MTD is that only considers the data attributes as independent and does not deal with their relationships. Genetic Algorithm Based Virtual Sample Generation was proposed that takes the relationship among the attributes into account and explores the integrated effects of attributes instead of dealing with them individually. The algorithm has three steps: Initially, samples are randomly selected to determine the range of each attribute by using MTD functions. Next, a Genetic Algorithm is applied to find the most feasible virtual samples. Finally, the average error of these new samples is calculated. The results outperformed the ones using MTD and also showed better performance in prediction than in the case of no generation of synthetic samples \cite{Li.2014}, \cite{Lin.2010}.
 
-\subsection{Random OverSampling}
+\subsection{Bootstrapping Procedure or Random OverSampling}
 
 An alternative approach to fuzzy theory as well the most well-known artificial sample generation method is the Bootstrapping Procedure \cite{AbdulLateh.2017} or Random OverSampling (ROS) as is known in the imbalanced learning research area. The main difference to the previously presented techniques is that ROS expands the training set by duplicating instances from the original dataset \cite{Efron.1993}. The selection is done with replacement, thus it allows the algorithms to use the same sample more than one time. However, ROS may cause overfitting when applied to small data because it repetitively uses the same information \cite{Tsai.2015}, \cite{Li.2018}. Nevertheless, \cite{Ivanescu.2006} applied ROS in batch process industries where it was shown that it may help mitigate the small data problem.
-
-\subsection{Informed oversampling}
-
-A different approach to fill information gaps is informed oversampling. It is a family of artificial data generation approaches, that create new instances and not copies of the existing ones like ROS, originally developed in the context of machine learning to deal with the imbalanced learning problem. Therefore, its origin comes from a different research community than the fuzzy and bootstrapping methods presented above. 
-
-Although the small data and imbalanced learning problems have common characteristics, it seems that their proposed solutions had very few connections so far. In this paper, we provide such a connection by extending the application of the data generation process of the selected oversampling algorithms to the majority class.
-
-There are several informed oversampling algorithms presented in the literature. The first method to be proposed and still the most popular is the Synthetic Minority Oversampling TEchnique (SMOTE) \cite{Chawla.2002}. Numerous variants of SMOTE have been created, increasing its status as the staple idea in oversampling \cite{Fernandez.2018}, with one of the most popular and effective variants being Borderline SMOTE (B-SMOTE) \cite{Han.2005}. 
-
-Contrary to the above SMOTE variants, the oversampling algorithm Geometric SMOTE (G-SMOTE) \cite{Douzas.2019}, not only modifies the selection process of existing instances but also substitutes the SMOTE data generation mechanism. The experimental study of \cite{Douzas.2019} includes an extensive comparison between oversampling approaches using 69 imbalanced datasets and several classifiers. The results provide empirical evidence supporting the idea that G-SMOTE constitutes a significant improvement over previous oversampling methods.
-
-\subsubsection{SMOTE data generation mechanism}
-\label{SMOTE}
-
- SMOTE algorithm is based on the concepts of \( k \)-nearest neighbors and the linear interpolation between existing samples as a data generation mechanism. More specifically, SMOTE proposes to form a line segment between neighboring minority class instances and generate synthetic data between them. The algorithm is very popular due to its simplicity as well as its robustness. B-SMOTE retains the same data generation mechanism as SMOTE but modifies the selected minority class instances by generating samples closer to the decision boundary. 
- 
- In the case of the small data problem, when SMOTE and B-SMOTE are used, the data generation process is trivially extended to include not only the minority classes but also the majority class. Using this approach, \cite{Li.2018} showed that SMOTE is able to successfully fill the information gaps of small data with synthetic samples. However, given its limitations as described below, SMOTE did not achieve the best results within their study.
-
-A drawback of the SMOTE data generation process is that in practice, the separation between majority and minority class areas is often not clearly definable. Consequently, noisy samples may be generated when a minority sample lies in the region of the majority classes. Furthermore, redundant instances may be generated within dense minority regions, as so that they do not add any relevant information to the classifier and may lead to overfitting. Figure \ref{fig:noisy-examples} presents an example of the first case, i.e. noisy sample generation.
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=0.75\textwidth]{../analysis/noisy_examples.png}
-	\caption{Generation of a noisy example $x_{gen}$ as a linear interpolation of $x$ and $x'$.}
-	\label{fig:noisy-examples}
-\end{figure*}
-
-\subsubsection{G-SMOTE data generation mechanism}
-
-G-SMOTE can be seen as a substitute of the SMOTE data generation mechanism, enhanced by geometric properties. Compared to SMOTE, it expands the data generation area and prevents the creation of noise. Specifically, instead of connecting a minority sample and one of its minority class nearest neighbors with a line segment, the instances are generated in a geometrical region around the initially selected minority sample. Furthermore, G-SMOTE is designed to avoid the generation of noisy samples by introducing the \textit{selection strategy} hyperparameter.   
-
-Figure \ref{fig:smotevsgsmote} demonstrates the distribution of artificially created samples by SMOTE versus G-SMOTE. When the number of \( k \)-nearest neighbors is increased, SMOTE tends to generate noisy samples, whereas G-SMOTE avoids this scenario.
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=0.75\textwidth]{../analysis/smote_vs_gsmote}
-	\caption{Three positive class instances are used by SMOTE and G-SMOTE 
-	to generate synthetic data. Contrary to SMOTE, G-SMOTE generates non-noisy samples with high variety.}
-	\label{fig:smotevsgsmote}
-\end{figure*}
-
-Similarly to SMOTE and its variants, the G-SMOTE data generation process can be applied to the small data problem, although it requires a non-trivial modification. The details are provided in section \ref{proposed}.
 
 \section{Proposed method}
 \label{proposed}
 
-In this section, we present Geometric Small Data Oversampling Technique (GSDOT) as a novel data generation procedure suitable for the small data problem. While GSDOT uses the G-SMOTE data generation mechanism, to generate data, it does so for the entire dataset, independent from the class distribution. This way, GSDOT constitutes a new algorithm modified to generate data for all the classes in the dataset.
+In this section, we present Geometric Small Data Oversampling Technique (GSDOT) as a novel data generation procedure suitable for the small data problem. Compared to the previous section, a different approach to fill information gaps is informed oversampling. It is a family of artificial data generation approaches, that create new instances and not copies of the existing ones like ROS, originally developed in the context of machine learning to deal with the imbalanced learning problem. Therefore, its origin comes from a different research community than the fuzzy and bootstrapping methods presented above.
 
-\subsection{Data generation area}
+The data generation mechanism of GSDOT is based on the oversampling algorithm Geometric SMOTE (G-SMOTE) \cite{Douzas.2019}. A significant difference is that GSDOT is applied on the entire dataset, independent from the class distribution. Therefore, GSDOT constitutes a new algorithm modified to generate data for all the classes in the dataset.
 
-GSDOT algorithm randomly generates artificial data within a geometric region of the input space. The size of this area is derived from the distance of the selected sample to one of its nearest neighbors, whereas the shape is determined by the hyperparameters called \textit{truncation factor} and \textit{deformation factor}. Additionally, the \textit{selection strategy} hyperparameter modifies the standard SMOTE selection process and also affects the size of the geometric region.
+GSDOT algorithm randomly generates artificial data within a geometric region of the input space. The size of this area is derived from the distance of the selected sample, either from the positive or negative class, to one of its nearest neighbors, whereas the shape is determined by the hyperparameters called \textit{truncation factor} and \textit{deformation factor}. Additionally, the \textit{selection strategy} hyperparameter modifies the selection process and also affects the size of the geometric region. Details of hte algorithm are provided below.
 
 \subsection{GSDOT algorithm}
 \label{algorithm}
@@ -215,8 +173,7 @@ As it is shown above, GSDOT algorithm applies independently the G-SMOTE data gen
 \section{Research methodology}
 \label{research}
 
-The main objective of this work is to compare GSDOT to other oversampling
-algorithms for the small data problem. Therefore, we use a variety of datasets, metrics and classifiers to evaluate the performance of oversamplers. A description of this set-up, the experimental procedure as well as the software implementation is provided in this section.
+The main objective of this work is to compare GSDOT to other algorithms that deal with the the small data problem. Therefore, we use a variety of datasets, metrics and classifiers to evaluate the performance of the various methods. A description of this set-up, the experimental procedure as well as the software implementation is provided in this section.
 
 \subsection{Experimental data}
 
@@ -258,14 +215,14 @@ $$\textit{G-Mean} = \sqrt{sensitivity \times specificity} = \sqrt{\frac{TP}{TP +
 
 \subsection{Machine learning algorithms}
 
-Three oversampling algorithms are used in the experiment along with GSDOT. ROS is chosen for its simplicity, while SMOTE is selected for being the most widely used oversampler. B-SMOTE is also included since it represents the most popular modification of the original SMOTE algorithm. Finally, no oversampling is also applied as an additional baseline method. The oversampling algorithms are used to generate artificial data for both the positive and negative class.
-
 For the evaluation of the oversampling methods, a variety of classifiers are included to ensure that the results are independent of their characteristics. Specifically, the experiment is conducted using the following four classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient Boosting (GB) \cite{Friedman.2001}.
+
+To deal with the small data problem, GSDOT is compared to three other algorithms. One of them, ROS is chosen for its simplicity. As explained in the sections above, although GSDOT is a novel algorithm, its data generation mechanism is based on G-SMOTE. Besides G-SMOTE, there are several other informed oversampling algorithms presented in the literature. The first method to be proposed and still the most popular is the Synthetic Minority Oversampling TEchnique (SMOTE) \cite{Chawla.2002}. Numerous variants of SMOTE have been created, increasing its status\cite{Fernandez.2018}, with one of the most popular and effective variants being Borderline SMOTE (B-SMOTE) \cite{Han.2005}. In the case of the small data problem, when SMOTE and B-SMOTE are used, the data generation process is trivially extended to include not only the minority classes but also the majority class \cite{Li.2018}. We include both of them in the experimental procedure. Finally, using only the original data is also included as an additional baseline approach.
 
 \subsection{Experimental procedure}
 \label{experimental}
 
-As explained above, the main goal of the paper is to evaluate how well GSDOT algorithm, as presented in subsection \ref{algorithm}, compares to other oversampling methods, when small datasets are enhanced with artificial samples. 
+As explained above, the main goal of the paper is to evaluate how well GSDOT algorithm, as presented in subsection \ref{algorithm}, compares to other methods, when small datasets are enhanced with artificial samples. 
 
 The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is described below:
 
@@ -274,8 +231,8 @@ The performance of the classifiers is assessed using \(k \)-fold cross-validatio
 	\item The \( k - 1 \) folds are undersampled using an undersampling ratio
 	of $50\%$, $75\%$, $90\%$ and $95\%$, equal to the percentage of the dataset that is removed (1). Alternatively, no undersampling is applied and the original data are presented to the classifiers, a case identified as BENCHMARK (2).
 
-	\item Oversampling is applied to the undersampled data (3) of the previous
-	step that increases their size and class distribution back to the initial (4). Alternatively, no oversampling is applied and the small data are presented to the classifiers, a case identified as NONE (5).
+	\item Synthetic data generation is applied to the undersampled data (3) of the previous
+	step that increases their size and class distribution back to the initial (4). Alternatively, no synthetic data are generated and the small data are presented to the classifiers, a case identified as NONE (5).
 
 	\item The resampled data of the previous step as well as the data from two special cases as described above are used to train the classifiers.
 	
@@ -292,9 +249,9 @@ The performance of the classifiers is assessed using \(k \)-fold cross-validatio
 	\label{fig:experimentalprocedure}
 \end{figure*}
 
-This procedure results in a cross validation score for each combination of dataset, classifier, oversampler and evaluation metric. It is also repeated three times and the average cross-validation score is calculated across runs. The algorithms used in the experiment have various hyperparameters that yield different scores. The maximum of these scores is reported.
+This procedure results in a cross validation score for each combination of dataset, classifier, synthetic data generation method and evaluation metric. It is also repeated three times and the average cross-validation score is calculated across runs. The algorithms used in the experiment have various hyperparameters that yield different scores. The maximum of these scores is reported.
 
-In order to confirm the statistical significance of the experimental results, the Friedman test as well as the Holm test \cite{JanezDemsar.2006} are applied. Ranking scores are assigned to each oversampling method, as well as the BENCHMARK and NONE cases, with scores of 1 to 5 for the best and worst performing methods, respectively. The Friedman test is a non-parametric procedure that compares the average rankings of the algorithms under the null hypothesis that all show identical performance independent of the selected classifier and evaluation metric. If the null-hypothesis is rejected to our favor, we proceed with the Holm test. The Holm test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method. It is a powerful non-parametric test in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed GSDOT method and is tested under the null hypothesis that it performs similarly to the rest of over-samplers for every combination of classifier and metric.
+In order to confirm the statistical significance of the experimental results, the Friedman test as well as the Holm test \cite{JanezDemsar.2006} are applied. Ranking scores are assigned to each synthetic data generation method, as well as the BENCHMARK and NONE cases, with scores of 1 to 5 for the best and worst performing methods, respectively. The Friedman test is a non-parametric procedure that compares the average rankings of the algorithms under the null hypothesis that all show identical performance independent of the selected classifier and evaluation metric. If the null-hypothesis is rejected to our favor, we proceed with the Holm test. The Holm test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method. It is a powerful non-parametric test in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed GSDOT method and is tested under the null hypothesis that it performs similarly to the rest of synthetic data generation methods for every combination of classifier and metric.
 
 \subsection{Software Implementation}
 
@@ -334,10 +291,10 @@ The mean cross validation scores and the standard error across all datasets per 
 \addtocounter{table}{-1}
 \end{center}
 
-Table \ref{tab:mean_sem_scores} shows that GSDOT outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of GSDOT are the closest to the ones of the BENCHMARK method, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the oversamplers.
+Table \ref{tab:mean_sem_scores} shows that GSDOT outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of GSDOT are the closest to the ones of the BENCHMARK method, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the synthetic data generation methods.
 
 Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
-of percentage difference between GSDOT and NONE. It shows that GSDOT performs significantly better compared to the case where no oversampling is applied for every combination of undersampling ratio, classifier and metric. Particularly, the performance gap increases for higher undersampling ratios.
+of percentage difference between GSDOT and NONE. It shows that GSDOT performs significantly better compared to the case where no synthetic data generation is applied for every combination of undersampling ratio, classifier and metric. Particularly, the performance gap increases for higher undersampling ratios.
 
 \begin{center}
   \begin{footnotesize}
@@ -411,7 +368,7 @@ To confirm the significance of the above presented results we apply the Friedman
 	\addtocounter{table}{-1}
 \end{center}
 
-Therefore, the null hypothesis of the Friedman test is rejected at a significance level of a = 0.05, i.e. the oversamplers do not perform similarly in the mean rankings for any combination of classifier and evaluation metric.
+Therefore, the null hypothesis of the Friedman test is rejected at a significance level of a = 0.05, i.e. the synthetic data generation methods do not perform similarly in the mean rankings for any combination of classifier and evaluation metric.
 
 The Holm method is applied to adjust the $\text{p-values}$ of the paired difference test with GSDOT algorithm as the control method. The results are shown in table \ref{tab:holm_test}:
 
@@ -443,7 +400,7 @@ outperforms all other methods in most cases.
 \section{Conclusions}
 \label{conclusions}
 
-Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the GSDOT algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that GSDOT significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed GSDOT. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the GSDOT algorithm, in order to generate artificial samples and improve the performance of classifiers. Also GSDOT outperforms standard oversampling approaches such as ROS and SMOTE, being closer to the BENCHMARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, GSDOT outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The GSDOT implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
+Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the GSDOT algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that GSDOT significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed GSDOT. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the GSDOT algorithm, in order to generate artificial samples and improve the performance of classifiers. Also GSDOT outperforms standard artificial data generation approaches such as ROS and SMOTE, being closer to the BENCHMARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, GSDOT outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The GSDOT implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
 
 \section*{Conflict of interest}
 The authors declare that they have no conflict of interest.
