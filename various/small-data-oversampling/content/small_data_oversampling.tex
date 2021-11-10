@@ -1,98 +1,96 @@
-\begin{filecontents*}{example.eps}
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{changepage}
+\usepackage[utf8x]{inputenc}
+\usepackage{textcomp,marvosym}
+\usepackage{cite}
+\usepackage{nameref,hyperref}
+\usepackage[right]{lineno}
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+\usepackage[table]{xcolor}
+\usepackage{array}
 
-gsave
-newpath
-  20 20 moveto
-  20 220 lineto
-  220 220 lineto
-  220 20 lineto
-closepath
-2 setlinewidth
-gsave
-  .4 setgray fill
-grestore
-stroke
-grestore
-\end{filecontents*}
-\RequirePackage{fix-cm}
-\documentclass[smallextended]{svjour3}
-\smartqed 
-\usepackage{geometry}
-\geometry{
-	a4paper,
-	total={170mm,257mm},
-	left=18mm,
-	right=18mm,
-	top=18mm,
+\newcolumntype{+}{!{\vrule width 2pt}}
+\newlength\savedwidth
+\newcommand\thickcline[1]{%
+  \noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+  \cline{#1}%
+  \noalign{\vskip\arrayrulewidth}%
+  \noalign{\global\arrayrulewidth\savedwidth}%
 }
-\usepackage{amsmath}
-\newcommand{\inlineeqnum}{\refstepcounter{equation}~~\mbox{(\theequation)}}
-\usepackage{enumitem}
-\usepackage{booktabs}
-\usepackage{pgfplotstable}
-\pgfplotsset{compat=1.14}
-\usepackage{longtable}
-\usepackage{hyperref}
-\usepackage{csvsimple}
-\usepackage{caption}
-
-\journalname{PLOS ONE}
+\newcommand\thickhline{\noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+\hline
+\noalign{\global\arrayrulewidth\savedwidth}}
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in 
+\textheight 8.75in
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+\renewcommand{\figurename}{Fig}
+\bibliographystyle{plos2015}
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\today}
+\newcommand{\lorem}{{\bf LOREM}}
+\newcommand{\ipsum}{{\bf IPSUM}}
 
 \begin{document}
-
-\title{Improving the quality of predictive models in small data}
-\subtitle{GSDOT: A new algorithm for generating synthetic data}
-
-\author{Georgios Douzas \and Maria Lechleitner \and Fernando Bacao}
-
-\institute{G. Douzas \at
-            NOVA Information Management School \\
-            Campus de Campolide, 1070-312 Lisboa, Portugal \\
-            Tel.: +351 21 382 8610\\
-            \email{gdouzas@novaims.unl.pt}
-          \and
-          F. Bacao \at
-            NOVA Information Management School \\
-            Campus de Campolide, 1070-312 Lisboa, Portugal \\
-            Tel.: +351 21 382 8610\\
-            \email{bacao@novaims.unl.pt}
-          \and
-          M. Lechleitner \at
-            NOVA Information Management School \\
-            Campus de Campolide, 1070-312 Lisboa, Portugal \\
-            Tel.: +351 21 382 8610\\
-            \email{mm.lechleitner@gmail.com}
+\vspace*{0.2in}
+\begin{flushleft}
+{\Large
+\textbf\newline{Improving the quality of predictive models in small data} % 
 }
+\textbf\newline{GSDOT: A new algorithm for generating synthetic data}
+\newline
+\\
+Georgios Douzas\textsuperscript{1},
+Maria Lechleitner\textsuperscript{1},
+Fernando Bacao\textsuperscript{1}
+\\
+\bigskip
+\textbf{1} NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal
+\\
+\bigskip
+* gdouzas@novaims.unl.pt
+\end{flushleft}
 
-\date{Received: date / Accepted: date}
-
-\maketitle
-
-\begin{abstract}
+\section*{Abstract}
 In the age of the data deluge there are still many domains and applications restricted to the use of small datasets. The ability to harness these small datasets to solve problems through the use of supervised learning methods can have a significant impact in many important areas. The insufficient size of training data usually results in unsatisfactory performance of machine learning algorithms. The current research work aims to contribute to mitigate the small data problem through the creation of artificial instances, which are added to the training process. The proposed algorithm, Geometric Small Data Oversampling Technique, uses geometric regions around existing samples to generate new high quality instances. Experimental results show a significant improvement in accuracy when compared with the use of the initial small dataset as well as other popular artificial data generation techniques.
-\keywords{Machine Learning \and Classification \and Small Data Problem \and Artificial Data Generation}
-\end{abstract}
+
+\linenumbers
 
 \section{Introduction}
+
 Insufficient size of datasets is a common issue in many supervised learning tasks \cite{Niyogi.1998}, \cite{AbdulLateh.2017}. The limited availability of training samples can be caused by different factors. First, data is becoming an increasingly expensive resource \cite{Li.2007} as the process to retain them is getting more complex due to strict privacy regulations such as the General Data Protection Regulation (GDPR) \cite{EuropeanCommission.2019}. Additionally, the small dataset problem can be found in numerous industries where organizations simply do not have access to a reasonable amount of data. For example manufacturing industries are usually dealing with a small number of samples in the early stages of product development while health care organizations have to work with different kinds of rare diseases, where very few records are available \cite{AbdulLateh.2017}.
 
 In machine learning, researchers are usually concerned with the design of sophisticated learning algorithms when aiming to improve prediction performance. However, increasing the sample size is often a more effective approach. A rule of thumb is that "a dumb algorithm with lots and lots of data beats a clever one with modest amounts of it" \cite{Domingos.2012}. Generally, a small number of training samples is characterized by a loose data structure with multiple information gaps. This lack of information negatively impacts the performance of machine learning algorithms \cite{Lin.2018}. Consequently, the knowledge gained from models trained with small sample sizes is considered unreliable as well as imprecise and does not lead to a robust performance \cite{AbdulLateh.2017}.
 
-Considering the size of data, there are two types of problems: First, the insufficiency of data belonging to one or more of the classes (imbalance learning problem) for a binary or multi-class classification task and second, the size of the whole dataset (small data problem) for any classification or regression task \cite{Sezer.2014}. In both cases, small training samples affect the performance of machine learning models \cite{Tsai.2008}. In this work, we consider only the second type of problems i.e. the small data problem proposing an efficient algorithm that increases the classification performance.
+Considering the size of data, there are two types of problems: The first, is the insufficiency of data belonging to one or more of the classes (imbalance learning problem) for a binary or multi-class classification task while the second is the small size of the whole dataset (small data problem) for any classification or regression task \cite{Sezer.2014}. In both cases, the performance of machine learning models is affected \cite{Tsai.2008}. In this work, we consider only the second type of problems i.e. the small data problem proposing an efficient algorithm, GSDOT, that increases the classification performance.
 
 A theoretical definition of "small" can be found in statistical learning theory by Vapnik. A sample size is defined as small, if the ratio between the number of training samples and Vapnik-Chervonenkis (VC) dimensions is approximately less than 20. VC dimensions are determined as the maximum number of vectors that can be separated into two classes in all possible ways by a set of functions \cite{Vapnik.2008}.
 
-Under-representation of observations in the sample set can be solved in different ways. Techniques to artificially add information by extending the sample size, and eventually improving the performance of the algorithms, can translate into significant improvements in many application domains \cite{Sezer.2014}. However, it is important to note that the challenge in artificial data generation is to create data which extend the training set without creating noise \cite{Li.2006}. Additionally, generating artificial data will only work if the initial sample is representative of the underlying population. Figure \ref{fig:relationship} shows the relationship between population, sample and synthetic data.
+Under-representation of observations in the sample set can be solved in different ways. Techniques to artificially add information by extending the sample size, and eventually improving the performance of the algorithms, can translate into significant improvements in many application domains \cite{Sezer.2014}. However, it is important to note that the challenge in artificial data generation is to create data which extend the training set without creating noise \cite{Li.2006}. Additionally, generating artificial data will only work if the initial sample is representative of the underlying population. Fig \ref{fig:relationship} shows the relationship between population, sample and synthetic data.
 
-\begin{figure*}
+\begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{../analysis/relationship.png}
-	\caption{Relationship between population, sample and synthetic data \cite{Li.2006}.}
+	\caption{\bf Relationship between population, sample and synthetic data \cite{Li.2006}.}
 	\label{fig:relationship}
-\end{figure*}
+\end{figure}
 
 The next sections will describe an effective way to tackle the small data
-problem. Specifically, the focus in this paper is the case of binary classification tasks with the objective to generate artificial data for both of the classes, called arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. On the other hand, regression tasks require an extensive modification of the data generation process and they will be a topic of future research. 
+problem. Specifically, the focus in this paper is the case of binary classification tasks with the objective to generate artificial data for both of the classes, called arbitrarily the positive and negative class. The application for the multi-class case is also straightforward and it is based on the binarization of the problem through the one-vs-all approach. On the other hand, regression tasks require an extensive modification of the data generation process and they will be a topic of future research.
 
 In section \ref{related}, the previously studied solutions are reviewed, while a detailed description of the proposed method is presented in section \ref{proposed}. This is followed by the research methodology and the experimental results in sections \ref{research} and \ref{results}. Finally, the conclusions of the paper are presented in section \ref{conclusions}.
 
@@ -117,14 +115,14 @@ A drawback of MTD is that only considers the data attributes as independent and 
 
 \subsection{Bootstrapping Procedure or Random OverSampling}
 
-An alternative approach to fuzzy theory as well the most well-known artificial sample generation method is the Bootstrapping Procedure \cite{AbdulLateh.2017} or Random OverSampling (ROS) as is known in the imbalanced learning research area. The main difference to the previously presented techniques is that ROS expands the training set by duplicating instances from the original dataset \cite{Efron.1993}. The selection is done with replacement, thus it allows the algorithms to use the same sample more than one time. However, ROS may cause overfitting when applied to small data because it repetitively uses the same information \cite{Tsai.2015}, \cite{Li.2018}. Nevertheless, \cite{Ivanescu.2006} applied ROS in batch process industries where it was shown that it may help mitigate the small data problem.
+An alternative approach to fuzzy theory as well the most well-known artificial sample generation method is the Bootstrapping Procedure \cite{AbdulLateh.2017} or Random OverSampling (ROS). The main difference to the previously presented techniques is that ROS expands the training set by duplicating instances from the original dataset \cite{Efron.1993}. The selection is done with replacement, thus it allows the algorithms to use the same sample more than one time. However, ROS may cause overfitting when applied to small data because it repetitively uses the same information \cite{Tsai.2015}, \cite{Li.2018}. Nevertheless, \cite{Ivanescu.2006} applied ROS in batch process industries where it was shown that it may help mitigate the small data problem.
 
 \section{Proposed method}
 \label{proposed}
 
-In this section, we present Geometric Small Data Oversampling Technique (GSDOT) as a novel data generation procedure suitable for the small data problem. Compared to the previous section, a different approach to fill information gaps is informed oversampling. It is a family of artificial data generation approaches, that create new instances and not copies of the existing ones like ROS, originally developed in the context of machine learning to deal with the imbalanced learning problem. Therefore, its origin comes from a different research community than the fuzzy and bootstrapping methods presented above.
+Compared to the previous section, a different approach to fill information gaps is the creation of new instances and not copies of the existing ones like in ROS. These methods were originally developed in the context of machine learning to deal with the imbalanced learning problem. Therefore, their origin comes from a different research community than the fuzzy and bootstrapping methods presented above.
 
-The data generation mechanism of GSDOT is based on the oversampling algorithm Geometric SMOTE (G-SMOTE) \cite{Douzas.2019}. A significant difference is that GSDOT is applied on the entire dataset, independent from the class distribution. Therefore, GSDOT constitutes a new algorithm that generates artificial data for all the classes in the dataset.
+In this section, we present Geometric Small Data Oversampling Technique (GSDOT) as a novel data generation procedure suitable for the small data problem. The data generation mechanism of GSDOT is based on the oversampling algorithm Geometric SMOTE (G-SMOTE) \cite{Douzas.2019}. GSDOT is applied on the entire dataset, independent from the class distribution. Therefore, GSDOT constitutes a new algorithm that generates artificial data for all the classes in the dataset.
 
 GSDOT algorithm randomly generates artificial data within a geometric region of the input space. The size of this area is derived from the distance of the selected sample, either from the positive or negative class, to one of its nearest neighbors, whereas the shape is determined by the hyperparameters called \textit{truncation factor} and \textit{deformation factor}. Additionally, the \textit{selection strategy} hyperparameter modifies the selection process and also affects the size of the geometric region. Details of hte algorithm are provided below.
 
@@ -135,40 +133,39 @@ The inputs of the GSDOT algorithm are sets of the positive and negative class sa
 
 \begin{enumerate}
 
-\renewcommand{\labelenumii}{\theenumii}
-\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
-
-	\item An empty set \( S_{gen} \) is initialized. \( S_{gen} \) will be populated with artificial data from both classes.
-
-	\item \( S_{pos} \) is shuffled and the process described below is repeated \( N_{pos} \) times until \( N_{pos} \) artificial points have been generated.
-
-	\begin{enumerate}
-
-		\item A positive class instance \( \textbf{x}_{center} \) is selected randomly from \( S_{pos} \) as the center of the geometric region.
-
-		\item Depending on the values of \( \alpha_{sel} \) \( (positive, negative \) or \( combined) \), this step results in a randomly selected sample \(\textbf{x}_{surface} \) which belongs to either \( S_{pos} \) or \( S_{neg} \).
-
-		\item A random point \(\textbf{x}_{gen} \) is generated inside the hyperspheroid centered at \( \textbf{x}_{center} \). The major axis of the hyper-spheroid is defined by \( \textbf{x}_{surface} - \textbf{x}_{center} \) while the permissible data generation area as well as the rest of geometric characteristics are determined by the hyperparameters \textit{truncation factor} and \textit{deformation factor}.
-
-		\item \( \textbf{x}_{gen} \) is added to the set of generated samples
-		\( \textbf{S}_{gen} \).
-	
-	\end{enumerate}
-
-	\item Step 2 is repeated using the substitution \( pos \leftrightarrow neg \) until \( N_{neg} \) artificial points have been generated.
-
-\end{enumerate}
+  \renewcommand{\labelenumii}{\theenumii}
+  \renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+  
+    \item An empty set \( S_{gen} \) is initialized. \( S_{gen} \) will be populated with artificial data from both classes.
+  
+    \item \( S_{pos} \) is shuffled and the process described below is repeated \( N_{pos} \) times until \( N_{pos} \) artificial points have been generated.
+  
+    \begin{enumerate}
+  
+      \item A positive class instance \( \textbf{x}_{center} \) is selected randomly from \( S_{pos} \) as the center of the geometric region.
+  
+      \item Depending on the values of \( \alpha_{sel} \) \( (positive, negative \) or \( combined) \), this step results in a randomly selected sample \(\textbf{x}_{surface} \) which belongs to either \( S_{pos} \) or \( S_{neg} \).
+  
+      \item A random point \(\textbf{x}_{gen} \) is generated inside the hyperspheroid centered at \( \textbf{x}_{center} \). The major axis of the hyper-spheroid is defined by \( \textbf{x}_{surface} - \textbf{x}_{center} \) while the permissible data generation area as well as the rest of geometric characteristics are determined by the hyperparameters \textit{truncation factor} and \textit{deformation factor}.
+  
+      \item \( \textbf{x}_{gen} \) is added to the set of generated samples
+      \( \textbf{S}_{gen} \).
+    
+    \end{enumerate}
+  
+    \item Step 2 is repeated using the substitution \( pos \leftrightarrow neg \) until \( N_{neg} \) artificial points have been generated.
+  
+  \end{enumerate}
 
 \subsection{Considerations}
 
-As it is shown above, GSDOT algorithm applies independently the G-SMOTE data generation process for both the positive and negative classes. The above description of step 2, that constitutes the data generation mechanism,  excludes mathematical formulas and details which can be found in \cite{Douzas.2019}. Figure \ref{fig:gsmotemechanism} shows an example of the GSDOT data generation process for the three different values of the \textit{selection strategy} hyperparameter when positive class data generation is considered.
+As it is shown above, GSDOT algorithm applies independently the G-SMOTE data generation process for both the positive and negative classes. The above description of step 2, that constitutes the data generation mechanism,  excludes mathematical formulas and details which can be found in \cite{Douzas.2019}. Fig \ref{fig:gsmotemechanism} shows an example of the GSDOT data generation process when positive class data generation is considered.
 
-\begin{figure*}
+\begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{../analysis/gsmote_mechanism.png}
-	\caption{The GSDOT data generation mechanism for the three  different \textit{selection strategy} values, when positive class samples are generated. The hyperparameters \textit{deformation factor} and \textit{truncation factor} have also different values resulting in the permissible data generation areas of the figure.}
+	\caption{\bf The GSDOT data generation mechanism when positive class samples are generated. The process is repeated for the negative class.}
 	\label{fig:gsmotemechanism}
-\end{figure*}
+\end{figure}
 
 \section{Research methodology}
 \label{research}
@@ -179,14 +176,15 @@ The main objective of this work is to compare GSDOT to other algorithms that dea
 
 The ten datasets used to test the performance of GSDOT are retrieved from UCI Machine Learning Repository \cite{Dua.2019}. The focus on their selection lies on binary classification problems with a balanced distribution of the two classes. In order to assure generalizability of the results, the datasets are related to different topics such as health care, finance, business and physics. Details of the datasets are presented in table \ref{tab:description}:
 
-\begin{table}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.25in}{0in}
   \centering
-  \caption{\label{tab:datasets}Description of the datasets.}
+  \caption{{\bf Description of the datasets.}}
   \label{tab:description}
-  \begin{tabular}{llll}
-  \hline\noalign{\smallskip}
-  Dataset & Number of samples & Number of attributes & Area \\
-  \noalign{\smallskip}\hline\noalign{\smallskip}
+  \begin{tabular}{|l+l|l|l|l|}
+  \hline
+  {\bf Dataset} & {\bf Number of samples} & {\bf Number of attributes} & {\bf Area} \\
+  \thickhline
   Arcene & 900 & 10.000 & Health Care \\
 	Audit & 776 & 18 & Business \\
 	Banknote Authentication & 1.372 & 5 & Finance \\
@@ -197,8 +195,9 @@ The ten datasets used to test the performance of GSDOT are retrieved from UCI Ma
 	MAGIC Gamma Telescope & 19.020 & 11 & Physics\\
 	Musk & 6.598 & 168 & Physics\\
 	Parkinsons & 197 & 23 & Health Care\\
-  \noalign{\smallskip}\hline
+  \hline
   \end{tabular}
+\end{adjustwidth}
 \end{table}
 
 The approach to test whether oversamplers, and particularly GSDOT, are able to produce high quality artificial data, is to generate randomly undersampled versions of the above datasets and try to reconstruct them. Specifically, random sampling of $50\%$, $75\%$, $90\%$ and $95\%$ is applied on them, called undersampling ratio, followed by their enhancement with artificial data that are created from the various oversampling methods. The details of the process are presented in subsection \ref{experimental}.
@@ -217,19 +216,19 @@ $$\textit{G-Mean} = \sqrt{sensitivity \times specificity} = \sqrt{\frac{TP}{TP +
 
 For the evaluation of the oversampling methods, a variety of classifiers are included to ensure that the results are independent of their characteristics. Specifically, the experiment is conducted using the following four classifiers: Logistic Regression (LR) \cite{McCullagh.2019}, K-Nearest Neighbors (KNN) \cite{Cover.1967}, Decision Tree (DT) \cite{Salzberg.1994} and Gradient Boosting (GB) \cite{Friedman.2001}.
 
-To deal with the small data problem, GSDOT is compared to three other algorithms. One of them, ROS is chosen for its simplicity. As explained in the sections above, although GSDOT is a novel algorithm, its data generation mechanism is based on G-SMOTE. Besides G-SMOTE, there are several other informed oversampling algorithms presented in the literature. The first method to be proposed and still the most popular is the Synthetic Minority Oversampling TEchnique (SMOTE) \cite{Chawla.2002}. Numerous variants of SMOTE have been created, increasing its status\cite{Fernandez.2018}, with one of the most popular and effective variants being Borderline SMOTE (B-SMOTE) \cite{Han.2005}. In the case of the small data problem, when SMOTE and B-SMOTE are used, the data generation process is trivially extended to include not only the minority classes but also the majority class \cite{Li.2018}. We include both of them in the experimental procedure. Finally, using only the original data is also included as an additional baseline approach.
+To deal with the small data problem, GSDOT is compared to three other algorithms. One of them, ROS is chosen for its simplicity. As explained in the sections above, although GSDOT is a novel algorithm, its data generation mechanism is based on G-SMOTE. Besides G-SMOTE, there are several other informed oversampling algorithms presented in the literature. The first method to be proposed and still the most popular is the Synthetic Minority Oversampling TEchnique (SMOTE) \cite{Chawla.2002}. Numerous variants of SMOTE have been created, increasing its status\cite{Fernandez.2018}, with one of the most popular and effective variants being Borderline SMOTE (B-SMOTE) \cite{Han.2005}. In the case of the small data problem, when SMOTE and B-SMOTE are used, the data generation process is trivially extended to include not only the minority classes but also the majority class \cite{Li.2018}. We include both of them in the experimental procedure. Finally, the benchmark results (B-MARK) of using the original data are also included, as well as the case when no synthetic data are generated and the classifiers are trained using the undersampled data (NONE).
 
 \subsection{Experimental procedure}
 \label{experimental}
 
-As explained above, the main goal of the paper is to evaluate how well GSDOT algorithm, as presented in subsection \ref{algorithm}, compares to other methods, when small datasets are enhanced with artificial samples. 
+As explained above, the main goal of the paper is to evaluate how well GSDOT algorithm, as presented in subsection \ref{algorithm}, compares to other methods, when small datasets are enhanced with artificial samples.
 
 The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is described below:
 
 \begin{enumerate}
 
 	\item The \( k - 1 \) folds are undersampled using an undersampling ratio
-	of $50\%$, $75\%$, $90\%$ and $95\%$, equal to the percentage of the dataset that is removed (1). Alternatively, no undersampling is applied and the original data are presented to the classifiers, a case identified as BENCHMARK (2).
+	of $50\%$, $75\%$, $90\%$ and $95\%$, equal to the percentage of the dataset that is removed (1). Alternatively, no undersampling is applied and the original data are presented to the classifiers, a case identified as B-MARK (2).
 
 	\item Synthetic data generation is applied to the undersampled data (3) of the previous
 	step that increases their size and class distribution back to the initial (4). Alternatively, no synthetic data are generated and the small data are presented to the classifiers, a case identified as NONE (5).
@@ -240,18 +239,17 @@ The performance of the classifiers is assessed using \(k \)-fold cross-validatio
 
 \end{enumerate}
 
- Figure \ref{fig:experimentalprocedure} visualizes the experimental procedure: 
+ Fig \ref{fig:experimentalprocedure} provides a schematic represenation of the experimental procedure: 
 
-\begin{figure*}
+ \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{../analysis/experimental_procedure.png}
-	\caption{Visualization of the experimental procedure.}
+	\caption{\bf Visualization of the experimental procedure.}
 	\label{fig:experimentalprocedure}
-\end{figure*}
+\end{figure}
 
-This procedure results in a cross validation score for each combination of dataset, classifier, synthetic data generation method and evaluation metric. It is also repeated three times and the average cross-validation score is calculated across runs. The algorithms used in the experiment have various hyperparameters that yield different scores. The maximum of these scores is reported.
+This procedure results in a cross validation score for each combination of dataset, classifier, synthetic data generation method and evaluation metric. It is also repeated three times and the average cross-validation score is calculated across the three runs. The initialization in each of the runs is random, including the undersampling step of the process and all random parameters of the machine learning algorithms. The algorithms used in the experiment have various hyperparameters that yield different scores. The maximum of these scores is reported.
 
-In order to confirm the statistical significance of the experimental results, the Friedman test as well as the Holm test \cite{JanezDemsar.2006} are applied. Ranking scores are assigned to each synthetic data generation method, as well as the BENCHMARK and NONE cases, with scores of 1 to 5 for the best and worst performing methods, respectively. The Friedman test is a non-parametric procedure that compares the average rankings of the algorithms under the null hypothesis that all show identical performance independent of the selected classifier and evaluation metric. If the null-hypothesis is rejected to our favor, we proceed with the Holm test. The Holm test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method. It is a powerful non-parametric test in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed GSDOT method and is tested under the null hypothesis that it performs similarly to the rest of synthetic data generation methods for every combination of classifier and metric.
+In order to confirm the statistical significance of the experimental results, the Friedman test as well as the Holm test \cite{JanezDemsar.2006} are applied. Ranking scores are assigned to each synthetic data generation method, as well as the B-MARK and NONE cases, with scores of 1 to 5 for the best and worst performing methods, respectively. The Friedman test is a non-parametric procedure that compares the average rankings of the algorithms under the null hypothesis that all show identical performance independent of the selected classifier and evaluation metric. If the null-hypothesis is rejected to our favor, we proceed with the Holm test. The Holm test acts as a post-hoc test for the Friedman test for controlling the family-wise error rate when all algorithms are compared to a control method. It is a powerful non-parametric test in situations where we want to test whether a newly proposed method is better than existing ones. The control method in our case is the proposed GSDOT method and is tested under the null hypothesis that it performs similarly to the rest of synthetic data generation methods for every combination of classifier and metric.
 
 \subsection{Software Implementation}
 
@@ -266,148 +264,221 @@ of the statistical tests are presented and analyzed.
 
 \subsection{Comparative presentation}
 
-The mean cross validation scores and the standard error across all datasets per classifier, metric and undersampling ratio (Ratio) are presented in Table \ref{tab:mean_sem_scores}. The Ratio is included in order to evaluate how the methods perform as the dataset size diminishes. As explained above, we also include the BENCHMARK method that represents the performance of the classfiers on the original dataset. The BENCHMARK method is expected to obtain the best results by design. The highest scores for each row, excluding the BENCHMARK scores, are highlighted.
+The mean cross validation scores and the standard error across all datasets per classifier, metric and undersampling ratio (Ratio) are presented in Table \ref{tab:mean_sem_scores}. The Ratio is included in order to evaluate how the methods perform as the dataset size diminishes. As explained above, we also include the B-MARK method that represents the performance of the classfiers on the original dataset. The B-MARK method is expected to obtain the best results by design. Therefore, the highest scores for each row, excluding the B-MARK scores, are highlighted.
 
-\begin{center}
-\begin{footnotesize}
-\captionof{table}{Results for mean cross validation scores of all methods.}
-\label{tab:mean_sem_scores}
-\csvreader[
-	longtable=lllllllll,
-	table head=
-	\toprule\mdseries Ratio & \mdseries Classifier & \mdseries Metric & \mdseries NONE & \mdseries 
-	RANDOM & \mdseries SMOTE & \mdseries B-SMOTE & \mdseries GSDOT & \mdseries BENCHMARK \\
-	\midrule\endhead
-	\bottomrule\endfoot,
-	late after line=\\,
-	before reading={\catcode`\#12},
-	after reading={\catcode`\#12},
-	]{../analysis/mean_sem_scores.csv}
-	{1=\ratio,2=\classifier,3=\metric,4=\none,5=\random,6=\smote,7=\bsmote,
-		8=\gsmote,9=\benchmark}
-	{\ratio & \classifier & \metric & \none & \random & \smote & \bsmote & 	
-	\gsmote & \benchmark}
-\end{footnotesize}
-\addtocounter{table}{-1}
-\end{center}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.5in}{0in}
+  \centering
+  \caption{{\bf Results for mean cross validation scores of all methods.}}
+  \label{tab:mean_sem_scores}
+  \begin{tabular}{|l|l|l+l|l|l|l|l|l|l|}
+  \hline
+  {\bf Ratio} & {\bf Classifier} & {\bf Metric} & {\bf NONE} & {\bf ROS} & {\bf SMOTE} & {\bf B-SMOTE} & {\bf GSDOT} & {\bf B-MARK} \\
+  \thickhline
+  50 & LR & ACCURACY & 0.91 $\pm$ 0.03 & 0.91 $\pm$ 0.03 & 0.91 $\pm$ 0.02 & 0.91 $\pm$ 0.03 & \textbf{0.92} $\pm$ 0.02 & 0.92 $\pm$ 0.02 \\
+  50 & LR & G-MEAN & 0.88 $\pm$ 0.04 & 0.88 $\pm$ 0.04 & \textbf{0.89} $\pm$ 0.04 & \textbf{0.89} $\pm$ 0.04 & \textbf{0.89} $\pm$ 0.04 & 0.90 $\pm$ 0.04 \\
+  50 & KNN & ACCURACY & 0.88 $\pm$ 0.03 & 0.88 $\pm$ 0.03 & \textbf{0.89} $\pm$ 0.03 & 0.88 $\pm$ 0.03 & \textbf{0.89} $\pm$ 0.03 & 0.90 $\pm$ 0.03 \\
+  50 & KNN & G-MEAN & 0.84 $\pm$ 0.04 & 0.85 $\pm$ 0.04 & \textbf{0.86} $\pm$ 0.04 & 0.85 $\pm$ 0.04 & \textbf{0.86} $\pm$ 0.04 & 0.87 $\pm$ 0.04 \\
+  50 & DT & ACCURACY & 0.88 $\pm$ 0.04 & 0.88 $\pm$ 0.04 & 0.88 $\pm$ 0.04 & 0.88 $\pm$ 0.04 & \textbf{0.90} $\pm$ 0.03 & 0.90 $\pm$ 0.03 \\
+  50 & DT & G-MEAN & 0.86 $\pm$ 0.05 & 0.86 $\pm$ 0.05 & 0.87 $\pm$ 0.05 & 0.87 $\pm$ 0.05 & \textbf{0.89} $\pm$ 0.04 & 0.89 $\pm$ 0.03 \\
+  50 & GBC & ACCURACY & 0.91 $\pm$ 0.04 & 0.92 $\pm$ 0.03 & 0.92 $\pm$ 0.03 & 0.91 $\pm$ 0.04 & \textbf{0.93} $\pm$ 0.03 & 0.94 $\pm$ 0.02 \\
+  50 & GBC & G-MEAN & 0.90 $\pm$ 0.04 & 0.90 $\pm$ 0.04 & 0.91 $\pm$ 0.03 & 0.90 $\pm$ 0.04 & \textbf{0.92} $\pm$ 0.03 & 0.93 $\pm$ 0.03 \\
+  75 & LR & ACCURACY & \textbf{0.90} $\pm$ 0.03 & 0.89 $\pm$ 0.03 & 0.89 $\pm$ 0.03 & 0.89 $\pm$ 0.03 & \textbf{0.90} $\pm$ 0.03 & 0.92 $\pm$ 0.02 \\
+  75 & LR & G-MEAN & 0.86 $\pm$ 0.05 & 0.86 $\pm$ 0.05 & \textbf{0.87} $\pm$ 0.04 & \textbf{0.87} $\pm$ 0.04 & \textbf{0.87} $\pm$ 0.04 & 0.90 $\pm$ 0.04 \\
+  75 & KNN & ACCURACY & 0.86 $\pm$ 0.04 & 0.86 $\pm$ 0.04 & \textbf{0.87} $\pm$ 0.04 & 0.85 $\pm$ 0.04 & \textbf{0.87} $\pm$ 0.04 & 0.90 $\pm$ 0.03 \\
+  75 & KNN & G-MEAN & 0.80 $\pm$ 0.06 & 0.82 $\pm$ 0.05 & \textbf{0.84} $\pm$ 0.04 & 0.83 $\pm$ 0.05 & \textbf{0.84} $\pm$ 0.04 & 0.87 $\pm$ 0.04 \\
+  75 & DT & ACCURACY & 0.86 $\pm$ 0.05 & 0.86 $\pm$ 0.05 & 0.86 $\pm$ 0.05 & 0.85 $\pm$ 0.06 & \textbf{0.89} $\pm$ 0.04 & 0.90 $\pm$ 0.03 \\
+  75 & DT & G-MEAN & 0.83 $\pm$ 0.06 & 0.84 $\pm$ 0.05 & 0.84 $\pm$ 0.06 & 0.83 $\pm$ 0.06 & \textbf{0.86} $\pm$ 0.05 & 0.89 $\pm$ 0.03 \\
+  75 & GBC & ACCURACY & 0.87 $\pm$ 0.05 & 0.88 $\pm$ 0.05 & 0.88 $\pm$ 0.05 & 0.88 $\pm$ 0.05 & \textbf{0.90} $\pm$ 0.04 & 0.94 $\pm$ 0.02 \\
+  75 & GBC & G-MEAN & 0.85 $\pm$ 0.06 & 0.85 $\pm$ 0.06 & 0.86 $\pm$ 0.05 & 0.85 $\pm$ 0.06 & \textbf{0.89} $\pm$ 0.04 & 0.93 $\pm$ 0.03 \\
+  90 & LR & ACCURACY & 0.86 $\pm$ 0.04 & 0.86 $\pm$ 0.04 & 0.86 $\pm$ 0.04 & 0.85 $\pm$ 0.04 & \textbf{0.87} $\pm$ 0.04 & 0.92 $\pm$ 0.02 \\
+  90 & LR & G-MEAN & 0.81 $\pm$ 0.06 & 0.82 $\pm$ 0.06 & 0.82 $\pm$ 0.06 & 0.82 $\pm$ 0.05 & \textbf{0.83} $\pm$ 0.06 & 0.90 $\pm$ 0.04 \\
+  90 & KNN & ACCURACY & 0.81 $\pm$ 0.05 & 0.82 $\pm$ 0.05 & 0.82 $\pm$ 0.05 & 0.81 $\pm$ 0.05 & \textbf{0.83} $\pm$ 0.05 & 0.90 $\pm$ 0.03 \\
+  90 & KNN & G-MEAN & 0.69 $\pm$ 0.10 & 0.76 $\pm$ 0.07 & \textbf{0.78} $\pm$ 0.06 & 0.74 $\pm$ 0.09 & \textbf{0.78} $\pm$ 0.06 & 0.87 $\pm$ 0.04 \\
+  90 & DT & ACCURACY & 0.84 $\pm$ 0.05 & 0.83 $\pm$ 0.05 & 0.83 $\pm$ 0.06 & 0.83 $\pm$ 0.05 & \textbf{0.87} $\pm$ 0.04 & 0.90 $\pm$ 0.03 \\
+  90 & DT & G-MEAN & 0.81 $\pm$ 0.06 & 0.81 $\pm$ 0.06 & 0.80 $\pm$ 0.06 & 0.80 $\pm$ 0.06 & \textbf{0.84} $\pm$ 0.05 & 0.89 $\pm$ 0.03 \\
+  90 & GBC & ACCURACY & 0.84 $\pm$ 0.06 & 0.84 $\pm$ 0.06 & 0.84 $\pm$ 0.06 & 0.84 $\pm$ 0.05 & \textbf{0.88} $\pm$ 0.04 & 0.94 $\pm$ 0.02 \\
+  90 & GBC & G-MEAN & 0.82 $\pm$ 0.06 & 0.81 $\pm$ 0.06 & 0.81 $\pm$ 0.07 & 0.81 $\pm$ 0.06 & \textbf{0.86} $\pm$ 0.05 & 0.93 $\pm$ 0.03 \\
+  95 & LR & ACCURACY & 0.83 $\pm$ 0.05 & 0.83 $\pm$ 0.05 & 0.83 $\pm$ 0.05 & 0.83 $\pm$ 0.04 & \textbf{0.84} $\pm$ 0.05 & 0.92 $\pm$ 0.02 \\
+  95 & LR & G-MEAN & 0.75 $\pm$ 0.08 & 0.76 $\pm$ 0.07 & 0.76 $\pm$ 0.07 & \textbf{0.77} $\pm$ 0.07 & 0.76 $\pm$ 0.08 & 0.90 $\pm$ 0.04 \\
+  95 & KNN & ACCURACY & 0.79 $\pm$ 0.05 & 0.79 $\pm$ 0.05 & \textbf{0.81} $\pm$ 0.05 & 0.79 $\pm$ 0.05 & \textbf{0.81} $\pm$ 0.05 & 0.90 $\pm$ 0.03 \\
+  95 & KNN & G-MEAN & 0.60 $\pm$ 0.13 & 0.69 $\pm$ 0.09 & 0.71 $\pm$ 0.09 & \textbf{0.74} $\pm$ 0.06 & 0.73 $\pm$ 0.07 & 0.87 $\pm$ 0.04 \\
+  95 & DT & ACCURACY & 0.81 $\pm$ 0.05 & 0.81 $\pm$ 0.05 & 0.82 $\pm$ 0.05 & 0.81 $\pm$ 0.05 & \textbf{0.85} $\pm$ 0.05 & 0.90 $\pm$ 0.03 \\
+  95 & DT & G-MEAN & 0.77 $\pm$ 0.06 & 0.78 $\pm$ 0.06 & 0.78 $\pm$ 0.06 & 0.78 $\pm$ 0.06 & \textbf{0.81} $\pm$ 0.06 & 0.89 $\pm$ 0.03 \\
+  95 & GBC & ACCURACY & 0.82 $\pm$ 0.05 & 0.83 $\pm$ 0.05 & 0.83 $\pm$ 0.05 & 0.82 $\pm$ 0.05 & \textbf{0.85} $\pm$ 0.05 & 0.94 $\pm$ 0.02 \\
+  95 & GBC & G-MEAN & 0.77 $\pm$ 0.07 & 0.78 $\pm$ 0.07 & 0.78 $\pm$ 0.07 & 0.78 $\pm$ 0.07 & \textbf{0.81} $\pm$ 0.07 & 0.93 $\pm$ 0.03 \\
+  \hline
+  \end{tabular}
+\end{adjustwidth}
+\end{table}
 
-Table \ref{tab:mean_sem_scores} shows that GSDOT outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of GSDOT are the closest to the ones of the BENCHMARK method, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the synthetic data generation methods.
+Table \ref{tab:mean_sem_scores} shows that GSDOT outperforms all other methods, almost for all combinations of classifiers and metrics. Throughout the scores we can observe that all methods have a better performance as the dataset increase their size i.e. the Ratio gets smaller. Particularly, the scores of GSDOT are the closest to the ones of the B-MARK results, which implies that it is able to reconstruct the original dataset more effectively compared to the rest of the synthetic data generation methods.
 
 Table \ref{tab:mean_sem_perc_diff_scores} presents the mean and standard error
 of percentage difference between GSDOT and NONE. It shows that GSDOT performs significantly better compared to the case where no synthetic data generation is applied for every combination of undersampling ratio, classifier and metric. Particularly, the performance gap increases for higher undersampling ratios.
 
-\begin{center}
-  \begin{footnotesize}
-    \captionof{table}{Results for percentage difference between GSDOT and NONE.}
-	  \label{tab:mean_sem_perc_diff_scores}
-		\csvreader[
-		longtable=llll,
-		table head=
-		\toprule\mdseries Ratio & \mdseries Classifier & \mdseries Metric & \mdseries \% Difference \\
-		\midrule\endhead
-		\bottomrule\endfoot,
-		late after line=\\,
-		before reading={\catcode`\#12},
-		after reading={\catcode`\#12},
-		]{../analysis/mean_sem_perc_diff_scores.csv}
-		{1=\ratio,2=\classifier,3=\metric,4=\difference}
-		{\ratio & \classifier & \metric & \difference}
-	\end{footnotesize}
-	\addtocounter{table}{-1}
-\end{center}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.5in}{0in}
+  \centering
+  \caption{{\bf Results for percentage difference between GSDOT and NONE.}}
+  \label{tab:mean_sem_perc_diff_scores}
+  \begin{tabular}{|l|l|l + l|l|}
+  \hline
+  {\bf Ratio} & {\bf Classifier} & {\bf Metric} & {\bf Difference} \\
+  \thickhline
+  50 & LR & ACCURACY & 0.52 $\pm$ 0.27 \\
+  50 & LR & G-MEAN & 0.36 $\pm$ 0.14 \\
+  50 & KNN & ACCURACY & 1.30 $\pm$ 0.45 \\
+  50 & KNN & G-MEAN & 2.48 $\pm$ 0.96 \\
+  50 & DT & ACCURACY & 2.58 $\pm$ 1.02 \\
+  50 & DT & G-MEAN & 3.72 $\pm$ 1.61 \\
+  50 & GBC & ACCURACY & 2.75 $\pm$ 1.42 \\
+  50 & GBC & G-MEAN & 2.90 $\pm$ 1.46 \\
+  75 & LR & ACCURACY & 0.40 $\pm$ 0.15 \\
+  75 & LR & G-MEAN & 1.05 $\pm$ 0.58 \\
+  75 & KNN & ACCURACY & 1.93 $\pm$ 0.50 \\
+  75 & KNN & G-MEAN & 7.27 $\pm$ 4.51 \\
+  75 & DT & ACCURACY & 4.13 $\pm$ 1.88 \\
+  75 & DT & G-MEAN & 4.67 $\pm$ 1.97 \\
+  75 & GBC & ACCURACY & 4.39 $\pm$ 2.51 \\
+  75 & GBC & G-MEAN & 5.67 $\pm$ 3.00 \\
+  90 & LR & ACCURACY & 1.41 $\pm$ 0.52 \\
+  90 & LR & G-MEAN & 3.26 $\pm$ 1.58 \\
+  90 & KNN & ACCURACY & 2.95 $\pm$ 1.21 \\
+  90 & KNN & G-MEAN & 33.43 $\pm$ 26.93 \\
+  90 & DT & ACCURACY & 4.47 $\pm$ 1.46 \\
+  90 & DT & G-MEAN & 4.32 $\pm$ 1.88 \\
+  90 & GBC & ACCURACY & 5.17 $\pm$ 2.48 \\
+  90 & GBC & G-MEAN & 5.64 $\pm$ 2.35 \\
+  95 & LR & ACCURACY & 1.40 $\pm$ 0.63 \\
+  95 & LR & G-MEAN & 1.23 $\pm$ 3.71 \\
+  95 & KNN & ACCURACY & 2.94 $\pm$ 1.28 \\
+  95 & KNN & G-MEAN & 23.66 $\pm$ 20.31 \\
+  95 & DT & ACCURACY & 5.00 $\pm$ 2.04 \\
+  95 & DT & G-MEAN & 5.18 $\pm$ 1.79 \\
+  95 & GBC & ACCURACY & 4.11 $\pm$ 1.96 \\
+  95 & GBC & G-MEAN & 5.25 $\pm$ 2.43 \\
+  \hline
+  \end{tabular}
+\end{adjustwidth}
+\end{table}
 
-A ranking score in the range 1 to 5 is assigned to each oversampler as well as the two special case NONE and BENCHMARK. The mean ranking across the datasets of all methods is presented in table \ref{tab:mean_rankings}:
+A ranking score in the range 1 to 5 is assigned to each oversampler as well as the two special case NONE and B-MARK. The mean ranking across the datasets of all methods is presented in table \ref{tab:mean_rankings}:
 
-\begin{center}
-  \begin{footnotesize}
-  \captionof{table}{Results for mean rankings of all methods.}
-	\label{tab:mean_rankings}
-	\csvreader[
-		longtable=lllllllll,
-		table head=
-		\toprule\mdseries Ratio & \mdseries Classifier & \mdseries Metric & \mdseries NONE & \mdseries 
-		RANDOM & \mdseries SMOTE & \mdseries B-SMOTE & \mdseries GSDOT & \mdseries BENCHMARK \\
-		\midrule\endhead
-		\bottomrule\endfoot,
-		late after line=\\,
-		before reading={\catcode`\#12},
-		after reading={\catcode`\#12},
-		]{../analysis/mean_ranking.csv}
-		{1=\ratio,2=\classifier,3=\metric,4=\none,5=\random,6=\smote,7=\bsmote,
-			8=\gsmote,9=\benchmark}
-		{\ratio & \classifier & \metric & \none & \random & \smote & \bsmote & 	
-		\gsmote & \benchmark}
-	\end{footnotesize}
-	\addtocounter{table}{-1}
-	\end{center}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.5in}{0in}
+  \centering
+  \caption{{\bf Results for mean rankings of all methods.}}
+  \label{tab:mean_rankings}
+  \begin{tabular}{|l|l|l|l+ l|l|l|l|l|l|}
+  \hline
+  {\bf Ratio} & {\bf Classifier} & {\bf Metric} & {\bf NONE} & {\bf RANDOM} & {\bf SMOTE} & {\bf B-SMOTE} & {\bf GSDOT} & {\bf B-MARK} \\
+  \thickhline
+  50 & LR & ACCURACY & 4.64 & 4.64 & 3.07 & 5.14 & \textbf{1.71} & 1.79 \\
+ 50 & LR & G-MEAN & 5.14 & 4.57 & \textbf{2.57} & 4.14 & 2.71 & 1.86 \\
+ 50 & KNN & ACCURACY & 4.36 & 5.43 & 3.0 & 4.14 & \textbf{2.14} & 1.93 \\
+ 50 & KNN & G-MEAN & 4.71 & 5.0 & 3.0 & 4.0 & \textbf{2.43} & 1.86 \\
+ 50 & DT & ACCURACY & 4.43 & 4.57 & 3.79 & 4.71 & \textbf{1.71} & 1.79 \\
+ 50 & DT & G-MEAN & 4.79 & 4.64 & 3.36 & 4.64 & \textbf{1.86} & 1.71 \\
+ 50 & GBC & ACCURACY & 5.29 & 4.21 & 4.0 & 4.36 & \textbf{1.79} & 1.36 \\
+ 50 & GBC & G-MEAN & 5.21 & 4.5 & 3.93 & 4.21 & \textbf{1.86} & 1.29 \\
+ 75 & LR & ACCURACY & 4.0 & 4.64 & 3.86 & 5.36 & \textbf{2.14} & 1.0 \\
+ 75 & LR & G-MEAN & 4.43 & 4.86 & 3.71 & 4.57 & \textbf{2.29} & 1.14 \\
+ 75 & KNN & ACCURACY & 4.86 & 4.57 & 2.79 & 5.0 & \textbf{2.21} & 1.57 \\
+ 75 & KNN & G-MEAN & 5.43 & 4.57 & 2.57 & 4.57 & \textbf{2.29} & 1.57 \\
+ 75 & DT & ACCURACY & 4.14 & 4.29 & 4.14 & 5.0 & \textbf{2.14} & 1.29 \\
+ 75 & DT & G-MEAN & 4.43 & 4.0 & 4.14 & 4.86 & \textbf{2.43} & 1.14 \\
+ 75 & GBC & ACCURACY & 4.71 & 4.0 & 3.86 & 4.86 & \textbf{2.43} & 1.14 \\
+ 75 & GBC & G-MEAN & 4.86 & 4.14 & 4.0 & 4.43 & \textbf{2.43} & 1.14 \\
+ 90 & LR & ACCURACY & 4.21 & 4.29 & 3.64 & 5.43 & \textbf{2.43} & 1.0 \\
+ 90 & LR & G-MEAN & 5.14 & 4.29 & 3.86 & 4.43 & \textbf{2.29} & 1.0 \\
+ 90 & KNN & ACCURACY & 5.0 & 4.36 & 3.0 & 5.07 & \textbf{2.57} & 1.0 \\
+ 90 & KNN & G-MEAN & 5.43 & 4.57 & 2.57 & 5.0 & \textbf{2.43} & 1.0 \\
+ 90 & DT & ACCURACY & 4.21 & 4.36 & 4.21 & 5.21 & \textbf{2.0} & 1.0 \\
+ 90 & DT & G-MEAN & 4.5 & 4.07 & 4.36 & 4.93 & \textbf{2.14} & 1.0 \\
+ 90 & GBC & ACCURACY & 4.64 & 4.14 & 3.93 & 5.0 & \textbf{2.29} & 1.0 \\
+ 90 & GBC & G-MEAN & 4.43 & 4.14 & 4.14 & 5.0 & \textbf{2.29} & 1.0 \\
+ 95 & LR & ACCURACY & 4.29 & 4.71 & 3.29 & 5.14 & \textbf{2.57} & 1.0 \\
+ 95 & LR & G-MEAN & 4.64 & 4.79 & 3.29 & 4.43 & \textbf{2.86} & 1.0 \\
+ 95 & KNN & ACCURACY & 5.14 & 4.71 & \textbf{2.57} & 4.86 & 2.71 & 1.0 \\
+ 95 & KNN & G-MEAN & 5.57 & 4.29 & 3.0 & 4.29 & \textbf{2.86} & 1.0 \\
+ 95 & DT & ACCURACY & 5.36 & 4.29 & 3.93 & 4.43 & \textbf{2.0} & 1.0 \\
+ 95 & DT & G-MEAN & 5.14 & 4.29 & 3.86 & 4.43 & \textbf{2.29} & 1.0 \\
+ 95 & GBC & ACCURACY & 4.43 & 4.36 & 3.71 & 5.29 & \textbf{2.21} & 1.0 \\
+ 95 & GBC & G-MEAN & 4.5 & 4.5 & 3.64 & 4.86 & \textbf{2.5} & 1.0 \\
+  \hline
+  \end{tabular}
+\end{adjustwidth}
+\end{table}
 
-The highest rankings for each row, excluding the BENCHMARK case, are highlighted. Looking at the table, GSDOT is ranked on the top place when comparing with NONE, ROS, SMOTE and B-SMOTE.
+The highest rankings for each row, excluding the B-MARK case, are highlighted. Looking at the table, GSDOT is ranked on the top place when comparing with NONE, ROS, SMOTE and B-SMOTE.
 
 \subsection{Statistical Analysis}
 
 To confirm the significance of the above presented results we apply the Friedman test as well as the Holm Test on the above results. The application of the Friedman test is presented in table \ref{tab:friedman_test}:
 
-\begin{center}
-  \begin{footnotesize}
-    \captionof{table}{Results for Friedman test.}
-	  \label{tab:friedman_test}
-		\csvreader[
-		longtable=llll,
-		table head=
-		\toprule\mdseries Classifier & \mdseries Metric & \mdseries p-value & 
-		\mdseries Significance \\
-		\midrule\endhead
-		\bottomrule\endfoot,
-		late after line=\\,
-		before reading={\catcode`\#12},
-		after reading={\catcode`\#12},
-		]{../analysis/friedman_test.csv}
-		{1=\classifier,2=\metric,3=\pvalue,4=\significance}
-		{\classifier & \metric & \pvalue & \significance}
-	\end{footnotesize}
-	\addtocounter{table}{-1}
-\end{center}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.5in}{0in}
+  \centering
+  \caption{{\bf Results for Friedman test.}}
+  \label{tab:friedman_test}
+  \begin{tabular}{|l|l+l|l|l|l|}
+  \hline
+  {\bf Classifier} & {\bf Metric} & {\bf p-value} & {\bf Significance} \\
+  \thickhline
+  LR & ACCURACY & 1.2e-11 & True \\
+  LR & G-MEAN & 6.9e-08 & True \\
+  KNN & ACCURACY & 2.7e-12 & True \\
+  KNN & G-MEAN & 3.5e-13 & True \\
+  DT & ACCURACY & 2.9e-12 & True \\
+  DT & G-MEAN & 6.7e-11 & True \\
+  GBC & ACCURACY & 4.9e-11 & True \\
+  GBC & G-MEAN & 1.7e-09 & True \\
+  \hline
+  \end{tabular}
+\end{adjustwidth}
+\end{table}
 
 Therefore, the null hypothesis of the Friedman test is rejected at a significance level of a = 0.05, i.e. the synthetic data generation methods do not perform similarly in the mean rankings for any combination of classifier and evaluation metric.
 
 The Holm method is applied to adjust the $\text{p-values}$ of the paired difference test with GSDOT algorithm as the control method. The results are shown in table \ref{tab:holm_test}:
 
-\begin{center}
-  \begin{footnotesize}
-    \captionof{table}{Adjusted $\text{p-values}$ using Holm method.}
-	  \label{tab:holm_test}
-		\csvreader[
-		longtable=llllll,
-		table head=
-		\toprule\mdseries Classifier & \mdseries Metric & \mdseries NONE & 
-		\mdseries RANDOM & \mdseries SMOTE & \mdseries B-SMOTE\\
-		\midrule\endhead
-		\bottomrule\endfoot,
-		late after line=\\,
-		before reading={\catcode`\#12},
-		after reading={\catcode`\#12},
-		]{../analysis/holms_test.csv}
-		{1=\classifier,2=\metric,3=\none,4=\random,5=\smote,6=\bsmote}
-		{\classifier & \metric & \none & \random & \smote & \bsmote}
-	\end{footnotesize}
-	\addtocounter{table}{-1}
-\end{center}
+\begin{table}[!ht]
+  \begin{adjustwidth}{-2.5in}{0in}
+  \centering
+  \caption{{\bf The p-values of the Holm's test.}}
+  \label{tab:holm_test}
+  \begin{tabular}{|l|l+l|l|l|l|}
+  \hline
+  {\bf Classifier} & {\bf Metric} & {\bf NONE} & {\bf ROS} & {\bf SMOTE} & {\bf B-SMOTE} \\
+  \thickhline
+  LR & ACCURACY & 2.9e-03 & 7.6e-05 & 2.9e-03 & 5.4e-05 \\
+  LR & G-MEAN & 2.1e-01 & 2.1e-01 & 1.0e-00 & 1.0e-00 \\
+  KNN & ACCURACY & 2.7e-05 & 7.8e-08 & 1.4e-01 & 1.8e-03 \\
+  KNN & G-MEAN & 1.1e-02 & 3.3e-03 & 2.9e-01 & 2.9e-01 \\
+  DT & ACCURACY & 1.5e-05 & 1.5e-05 & 4.8e-05 & 3.3e-05 \\
+  DT & G-MEAN & 1.3e-05 & 4.4e-05 & 4.4e-05 & 4.4e-05 \\
+  GBC & ACCURACY & 2.2e-03 & 2.9e-03 & 5.8e-03 & 1.8e-03 \\
+  GBC & G-MEAN & 1.8e-03 & 3.9e-03 & 7.3e-03 & 7.3e-03 \\
+  \hline
+  \end{tabular}
+\end{adjustwidth}
+\end{table}
 
 At a significance level of a = 0.05 the null hypothesis of the Holm's test is
 rejected for 25 out 32 combinations. This indicates that the proposed method
-outperforms all other methods in most cases.  
+outperforms all other methods in most cases.
 
 \section{Conclusions}
 \label{conclusions}
 
-Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the GSDOT algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that GSDOT significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed GSDOT. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the GSDOT algorithm, in order to generate artificial samples and improve the performance of classifiers. Also GSDOT outperforms standard artificial data generation approaches such as ROS and SMOTE, being closer to the BENCHMARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, GSDOT outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The GSDOT implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
+Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the GSDOT algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that GSDOT significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed GSDOT. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the GSDOT algorithm, in order to generate artificial samples and improve the performance of classifiers. Also GSDOT outperforms standard artificial data generation approaches such as ROS and SMOTE, being closer to the B-MARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, GSDOT outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The GSDOT implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
 
 \section*{Conflict of interest}
 The authors declare that they have no conflict of interest.
 
-\bibliographystyle{spmpsci}
+\nolinenumbers
+
 \bibliography{references}
 
 \end{document}
-
-
