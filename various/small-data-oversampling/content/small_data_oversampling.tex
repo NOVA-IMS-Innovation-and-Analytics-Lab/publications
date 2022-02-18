@@ -223,7 +223,7 @@ To deal with the small data problem, GSDOT is compared to three other algorithms
 
 As explained above, the main goal of the paper is to evaluate how well GSDOT algorithm, as presented in subsection \ref{algorithm}, compares to other methods, when small datasets are enhanced with artificial samples.
 
-The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a validation set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is described below:
+The performance of the classifiers is assessed using \(k \)-fold cross-validation scores with \( k = 5 \). Each dataset \( D \) is randomly splitted into \( k \) subsets (folds) \( D_1, D_2, \cdots, D_k \) of approximately equal size. Each fold is used as a test set and the remaining folds are used to train the model. The process is repeated in \( k \) stages, until each \( D_k \) is used as a validation set \cite{Han.2012}. The experimental procedure for an arbritary dataset and cross-validation stage is described below:
 
 \begin{enumerate}
 
@@ -254,7 +254,7 @@ In order to confirm the statistical significance of the experimental results, th
 \subsection{Software Implementation}
 
 The implementation of the experimental procedure was based on the Python
-programming language, using the \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa.2011} and \href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{Lemaitre.2017} libraries. All functions, algorithms, experiments and results reported are provided at the \href{https://github.com/AlgoWit/publications/tree/master/small-data-oversampling}{GitHub repository} of the project. Additionally, the \href{https://research-learn.readthedocs.io/en/latest/?badge=latest}{Research-Learn} library provides a framework to implement comparative experiments, also being fully integrated with the Scikit-Learn ecosystem.
+programming language, using the \href{https://scikit-learn.org/stable/}{Scikit-Learn} \cite{Pedregosa.2011} and \href{https://imbalanced-learn.org/en/stable/}{Imbalanced-Learn} \cite{Lemaitre.2017} libraries. All functions, algorithms, experiments and results reported are provided at the \href{https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications/tree/master/various/small-data-oversampling}{GitHub repository} of the project. Additionally, the \href{https://research-learn.readthedocs.io/en/latest/?badge=latest}{Research-Learn} library provides a framework to implement comparative experiments, also being fully integrated with the Scikit-Learn ecosystem.
 
 \section{Results and discussion}
 \label{results}
