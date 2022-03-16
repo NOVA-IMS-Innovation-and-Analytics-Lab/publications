@@ -55,7 +55,7 @@
 \textbf\newline{GSDOT: A new algorithm for generating synthetic data}
 \newline
 \\
-Georgios Douzas\textsuperscript{1},
+Georgios Douzas\textsuperscript{1*},
 Maria Lechleitner\textsuperscript{1},
 Fernando Bacao\textsuperscript{1}
 \\
@@ -63,7 +63,9 @@ Fernando Bacao\textsuperscript{1}
 \textbf{1} NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal
 \\
 \bigskip
-* gdouzas@novaims.unl.pt
+* Corresponding author
+\newline
+Email: gdouzas@novaims.unl.pt
 \end{flushleft}
 
 \section*{Abstract}
@@ -473,12 +475,6 @@ outperforms all other methods in most cases.
 \label{conclusions}
 
 Many domains and applications continue to be limited to the use of small datasets. The insufficient size of training data usually results in inferior performance of machine learning algorithms. This paper proposes an effective solution to mitigate the small data problem in classification tasks. As shown above, the GSDOT algorithm has the ability to generate high quality artificial samples and improve the prediction accuracy of the classifiers used in the experiments. This improvement relates to the algorithm's capability of increasing the diversity of new instances while avoiding the generation of noisy samples. An important point is that GSDOT significantly improves classification performance compared to the case where only the small data are used, for every combination of undersampling ratio, classifier and metric as shown in table \ref{tab:mean_sem_scores}. Specifically, the full experimental results show that there is not a single instance where using the small data outperformed GSDOT. Table \ref{tab:mean_sem_perc_diff_scores} also shows that the performance gap increases for higher undersampling ratios. This is a clear indication that, when using a small dataset, it is safe and appropriate to apply the the GSDOT algorithm, in order to generate artificial samples and improve the performance of classifiers. Also GSDOT outperforms standard artificial data generation approaches such as ROS and SMOTE, being closer to the B-MARK scores than any of them. As presented in table \ref{tab:mean_sem_scores}, in 30 out of 32 combinations of classifiers and metrics, GSDOT outperforms all other methods. Finally, the statistical analysis of the experiments, tables \ref{tab:friedman_test} and \ref{tab:holm_test}, confirms the dominance of the proposed algorithm. The GSDOT implementation is available as an \href{https://geometric-smote.readthedocs.io/en/latest/?badge=latest}{open source project}, so that the research community and data science practitioners can make use of it to improve the performance of machine learning algorithms.
-
-\section*{Conflict of interest}
-The authors declare that they have no conflict of interest.
-
-\section*{Acknowledgements}
-This research was supported by a grant of the Portuguese Foundation for Science and Technology (``Fundação para a Ciência e a Tecnologia''), DSAIPA/DS/0116/2019.
 
 \nolinenumbers
 
