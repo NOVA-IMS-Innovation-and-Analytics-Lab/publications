@@ -1,0 +1,53 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass{article}
+
+% FONTS
+\usepackage[T1]{fontenc}
+
+% Import MathDesign (this brings along Bitstream Charter)
+% http://www.ctan.org/tex-archive/fonts/mathdesign/
+\usepackage[bitstream-charter]{mathdesign}
+\usepackage{amsmath}
+\usepackage[scaled=0.92]{PTSans}
+\usepackage{inconsolata}
+
+% GEOMETRY
+\usepackage[
+  paper  = letterpaper,
+  left   = 1.5in,
+  right  = 1.5in,
+  top    = 1.0in,
+  bottom = 1.0in,
+  ]{geometry}
+
+% COLOR
+\usepackage[usenames,dvipsnames]{xcolor}
+\definecolor{shadecolor}{gray}{0.9}
+
+% SPACING and TEXT
+\usepackage[final,expansion=alltext]{microtype}
+\usepackage[english]{babel}
+\usepackage[parfill]{parskip}
+
+% COUNTERS
+\renewcommand{\labelenumi}{\color{black!67}{\arabic{enumi}.}}
+\renewcommand{\labelenumii}{{\color{black!67}(\alph{enumii})}}
+\renewcommand{\labelitemi}{{\color{black!67}\textbullet}}
+
+% FIGURES
+\usepackage{graphicx}
+\usepackage[labelfont=bf]{caption}
+\usepackage[format=hang]{subcaption}
+
+% BIBLIOGRAPHY
+\usepackage{natbib}
+
+% HYPERREF
+\usepackage[colorlinks,linktoc=all]{hyperref}
+\usepackage[all]{hypcap}
+\hypersetup{citecolor=Violet}
+\hypersetup{linkcolor=black}
+\hypersetup{urlcolor=MidnightBlue}
+
+\newcommand{\red}[1]{\textcolor{BrickRed}{\textbf{#1}}}
+\pagenumbering{gobble}

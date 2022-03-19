@@ -1,0 +1,570 @@
+\documentclass[parskip=full]{scrartcl}
+
+\pdfoutput=1
+
+\title{Comparing the performance of oversampling techniques in combination with a clustering algorithm for imbalanced learning}
+
+\author{ Georgios Douzas\(^{*1}\), Fernando Bacao\(^{1}\) \\
+	\small{\(^{1}\)NOVA Information Management School, Universidade Nova de
+	Lisboa} \\
+	\small{*Corresponding Author}
+	\\
+	\\
+	\small{Postal Address: NOVA Information Management School, Campus de Campolide, 1070-312 Lisboa, Portugal}
+	\\
+	\small{Telephone: +351 21 382 8610}
+}
+
+\usepackage{breakcites}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{ a4paper, total={170mm,257mm}, left=18mm, right=18mm, top=8mm, }
+\usepackage{amsmath}
+\newcommand{\inlineeqnum}{\refstepcounter{equation}~~\mbox{(\theequation)}}
+\usepackage{enumitem}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.14}
+\usepackage{longtable}
+\usepackage{tabu}
+\usepackage{hyperref}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Imbalanced learning constitutes a recurring problem in machine learning.
+	Frequently, practitioners and researchers have access to large amounts of
+	data but its imbalanced nature hampers the possibility of building accurate
+	robust predictive models. Many problems are characterized by the rare nature
+	of the cases of interest, in domains such as health, security, quality
+	control business applications, it is frequent to have huge populations of
+	negative cases and just a very limited number of positive ones. The
+	prevalence of the imbalanced learning problem explains why it continues to
+	be a very active research topic, which in fact has grown in recent years. It
+	is known that imbalance can exist both between-classes (the imbalance
+	occurring between the two classes) and also within-classes (the imbalance
+	occurring between sub-clusters of each class). In this later case
+	traditional oversamplers will tend to perform poorly. In this paper we focus
+	on testing the relevancy of using clustering procedures in combination with
+	oversamplers to improve the quality of the results. We perform a series of
+	extensive tests using the most popular oversamplers, with and without a
+	preceding clustering procedure. The tests confirm that the use of a
+	clustering procedure prior to the application of an oversampler will improve
+	the results.
+\end{abstract}
+
+\section{Introduction}
+
+Imbalanced learning can be described as the condition in which there is a
+significant difference between examples of different classes, in other words,
+when the classes are significantly skewed. Imbalanced learning is a widespread
+problem in the application of supervised learning in many different domains and
+applications \cite{Fernandez2013, Haixiang2017} and can be seen as a particular
+type of data scarcity.
+
+Imbalanced learning affects the performance of classifiers due to two main
+reasons. The first, relates with the fact that, by design, standard learning
+methods are biased towards the majority class. This happens because, during the
+training phase, most learning algorithms assign similar costs to
+misclassification errors on the majority and minority classes. Consequently, the
+most abundant class tends to dominate the process, as the minority classes
+contribute less to the maximisation of the objective function (i.e. accuracy).
+The second, relates with the fact that to learn a classifier the learner needs
+to be able to discriminate the classes; thus, having a small number of examples
+from one of the classes will make the learning task much more challenging.
+
+Another relevant issue in imbalanced learning is related with misclassification
+costs. While learning a classifier in training both errors (i.e.
+misclassification of the majority and minority classes) are treated as similar,
+this is seldom the case in when the classifier is  deployed for use. The norm,
+in most real world applications, is that the misclassification of positive cases
+(i.e. minority class) is much more expensive than the misclassifications of the
+negative cases (i.e. the majority class). This is the rule rather than the
+exception, in medical diagnoses or fraud detection, for instance, misclassifying
+positive cases as negative ones is much more expensive than the inverse
+situation (REF NEEDED).
+
+We can divide the options to handle the negative effects of imbalance learning
+into three main approaches \cite{Fernandez2013}. The first one is by means of
+changing the cost function of the algorithm \cite{Wu2005}, so that it severely
+penalizes false negatives. Changing the cost function can be a painstaking
+process, especially if the user is considering making use of several different
+algorithms, a common practice nowadays. A second approach relies on designing
+new or changing existing algorithms to take into account the relevance of the
+minority class \cite{Chawla2008}. Again, this can be a difficult and lengthy
+procedure, restricting the algorithm options available to the user. Finally, the
+last option is to modify the data, by including a preprocessing step to correct
+the skewness of the class distribution (REF). This can be done by generating new
+synthetic data instances of the minority classes, a process usually referred to
+as oversampling, or by removing instances from the majority class, known as
+undersampling. The advantage of this last option is that, by dealing with the
+problem at the data level, once the imbalance is corrected, the user can use any
+(and as many) algorithm, without need for any further changes. In this paper we
+focus on the oversampling strategy because it allows for the use of any
+algorithm without any need change it and, contrary to undersampling, it doesn’t
+discard any available information.
+
+For the purposes of oversampling it is important to understand that the
+imbalance learning problem encompasses two different sub-problems: between-class
+imbalance and within-class imbalance \cite{Jo2004}. Between-class refers to the
+skewness in the distribution between majority and minority classes. Within-class
+imbalance is a less obvious, but equally important, problem and refers to the
+possible existence of several sub-clusters of minority or majority instances.
+Closely related with within-class imbalance is the "small disjuncts problem".
+Small disjuncts \cite{Galar2012}; \cite{Weiss2003} that occurs when the minority
+concept is represented by subconcepts, usually small subclusters scattered
+through the input space. This adds complexity to the imbalance learning problem
+as it is necessary to guaranty that all the subconcepts are represented in the
+data such that they can be learned by the algorithm.
+
+Many oversampling methods have been proposed and have proven to be effective in
+real-word domains. Particularly relevant is SMOTE \cite{Chawla2002}, which was
+the first algorithm  proposed and which considerably improved upon random
+oversampling. Since the initial SMOTE paper many variations have been proposed
+in order to improve some of the weaknesses of the original algorithm. However,
+many of these approaches suffer either from being too complex and not readily
+available to practitioners and researchers or being too focused on a single
+vulnerability of SMOTE.
+
+In order to mitigate the within-class imbalance problem, some algorithms
+proposed the use of clustering techniques before the oversampling procedure. The
+use of clustering should enable the oversampling algorithms to identify and
+target areas of the input space where the generation of artificial data is most
+effective and needed. This way, it is expected that the algorithms are able to
+address, both, between-class and within-class imbalances, while at the same time
+avoiding the generation of noisy samples. The goal of this paper is to assess
+the impact and effectiveness of adding a clustering procedure, prior to the
+oversampling step, in the imbalanced learning problem. The results of this extra
+clustering step and its value are explored by analyzing how each individual
+oversampling algorithm, with and without the clustering step, fares against each
+other.
+
+The remainder of this work is organized as follows. In section 2, we summarize
+the related literature and introduce some of the currently available
+oversampling methods, focusing on oversamplers that employ a clustering
+procedure. In section 3, the experimental framework is presented, while in
+section 4 the experimental results are presented. Finally, in section 5 we
+present the main conclusions of the study.
+
+\section{State of the art}
+
+As noted in the introduction the approaches to deal with imbalanced learning
+tasks are broadly divided into three main groups: changing the cost function of
+the algorithm \cite{Wu2005}; designing new or changing existing algorithms to
+take into account the relevance of the minority class \cite{Chawla2008}; modify
+the data, by including a preprocessing stage to correct the skewness of the
+class distribution (REF). Therefore, there are two options that operate at the
+level of the algorithm and the other one operates ate the data level. Clearly,
+this last option is more general, in the sense that once the data imbalance
+issues are solved any “off-the shelf” algorithm can be used, without the need
+for any additional modification.
+
+The aforementioned data level solutions include different forms of resampling.
+Resampling is the process of manipulating the distribution of the training
+examples in an effort to improve the performance of classifiers \cite{Jo2004}.
+Generally, resampling methods can be categorized as undersampling and
+oversampling. Undersampling reduces the number of majority class samples by
+removing samples from the training set. On the other hand, oversampling works by
+generating synthetic examples for the minority class and adding them to the
+training set. It has been shown that both oversampling and undersampling can be
+effective depending on the specific problem that is being addressed
+\cite{Chawla2002}. Both of these methods can be further categorized into random
+and heuristic approaches. It might be argued that while oversampling adds
+information to the problem, undersampling excludes information from the learning
+process which may negatively affect the performance of the classifier in cases
+where the data set is small \cite{He2008}. On the other hand, depending on the
+quality of the generation procedure, oversampling, by generating synthetic
+examples, can lead to overfitting.
+
+Several oversampling techniques have been proposed and studied in the past (MANY
+REFS). The simplest approach, which has been proven to perform well, is as
+Random Oversampling. This method works uninformed and aims to balance class
+distribution through the random replication of minority class examples. Given
+that the examples are merely replicated, the likelihood of overfitting occurring
+increases significantly \cite{Batista2004}. In 2002, as an attempt to add
+information to the training data, \cite{Chawla2002} proposed an alternative
+oversampling method called SMOTE (Synthetic Minority Oversampling Technique).
+Instead of replicating existing observations, synthetic samples are generated.
+This is achieved by linear interpolation between a randomly selected sample of
+the minority class and one of its minority neighboring observations
+\cite{Douzas2018} \cite{Fernandez2018} \cite{Liu2007}. SMOTE was the first
+method proposed to improve random oversampling and still is the most popular
+oversampling method.
+
+However, it is important to note that the skewed class distribution (i.e.
+between-class imbalance) is not the only difficulty posed by imbalanced datasets
+to deteriorate performance in supervised learning algorithms. The distribution
+of the data within each class (i.e. within-class imbalance) is also relevant.
+
+The fact that SMOTE randomly chooses a minority instance to oversample with
+uniform probability allows for an effective solution combating between-class
+imbalance, leaving other issues such as within-class and small disjuncts
+unsolved. Input areas containing a large number of minority samples have a high
+probability of being populated further, while there can be underrepresented
+concepts located in small areas of the data that are likely to remain sparse
+\cite{Fernandez2018}. Another concern is the fact that the method is susceptible
+to noise generation because it doesn’t distinguish overlapping class regions
+from so-called safe areas (REF).
+
+Despite its weaknesses, the SMOTE is still considered the standard in the
+framework of learning from imbalanced data. In order to mitigate its
+disadvantages and improve its performance under the different possible
+situations, several modifications and extensions have been proposed throughout
+the years. They usually address a specific weakness from the original method,
+such as emphasizing certain minority class regions, combating within-class
+imbalance, or even attempting to avoid noise generation \cite{Douzas2018}.
+
+In their recent paper \cite{Fernandez2018} propose a framework with six
+properties to characterize the extensions to the SMOTE-based extensions: (1)
+initial selection of instances to be oversampled, (2) integration with
+Undersampling, (3) type of interpolation, (4) operation with dimensionality
+changes, (5) adaptive generation of synthetic examples, (6) relabeling and (7)
+filtering of noisy generated instances. From these, the most exploit properties
+in the extensions that have been proposed are the initial selection of instances
+to be oversampled, which consists on the strategy to select the best candidates
+to be oversampled, and adaptive generation of synthetic examples, which uses a
+weighted distribution of the minority class to determine the areas where more
+instances should be generated (this idea was originally introduced in the ADASYN
+algorithm \cite{He2008}). The idea of filtering the noisy generated samples has
+become more popular in recent years and the original interpolation procedure is
+frequetely replaced by more complex ones, involving such as clustering-based or
+derived from a probabilistic functions \cite{Fernandez2018}.
+
+Safe-Level SMOTE modifies the SMOTE algorithm by applying a weight degree, the
+safe level, in the data generation process. The safe level provides a scale to
+differentiate between noisy and safe instances \cite{Bunk2009}. Similarly, there
+are two other enhancements of SMOTE called Borderline SMOTE1 and Borderline
+SMOTE2, in which only the minority examples near the borderline are oversampled.
+For the minority class, experiments show that our approaches achieve better TP
+rate and F-value than SMOTE and random over-sampling methods \cite{Han2005}.
+Along with this variation, MWMOTE (Majority Weighted Minority Oversampling
+Technique for Imbalanced Data Set Learning) \cite{Barua2014}, and its variation
+KernelADASYN \cite{Tang2015} aim to achieve the same result. G-SMOTE
+\cite{Douzas2019} improves the diversity of generated samples by linearly
+interpolating generated samples between two minority class instances. G-SMOTE
+extends the linear interpolation mechanism by introducing a geometric region
+where the data generation process occurs. The methods above described deal with
+the between-class imbalance problem and as previously mentioned, there can be
+two kinds of imbalance present in a data set. To solve this, there are
+clustering-based methods proposed to effectively reduce not only the
+between-class imbalance but also the within-class imbalance and to oversample
+the data set by rectifying these two types of imbalances simultaneously.
+Firstly, they divide the input space into clusters and in a posterior phase use
+sampling methods to adjust the size of the newly built clusters
+\cite{Douzas2017a} \cite{Jo2004}. Among these clustering-based approaches there
+is cluster-based oversampling. The algorithm applies random oversampling, after
+clustering the training examples in the minority and the majority classes, so
+that the majority and minority classes are of the same size \cite{Jo2004}.
+Nonetheless, since the approach does not generate new data and it merely
+replicates already existing samples, it is prone to overfitting. Cluster-SMOTE
+\cite{Cieslak2006} initially applies the k-means algorithm to the minority class
+and then SMOTE is used in the clusters in order to generate artificial data.
+Similarly, DBSMOTE \cite{Bunkhumpornpat2012} uses the DB-SCAN algorithm to
+discover arbitrarily shaped clusters and then generates synthetic instances
+along a shortest path from each minority class instance to a pseudo-centroid of
+the cluster. As a more sophisticated approach, there is A-SUWO
+\cite{Nekooeimehr2016} which creates clusters of the minority class instances
+with a size, which is determined using cross-validation and generates synthetic
+instances based on a proposed weighting system. SOMO (Self-Organizing Map
+Oversampling) \cite{Douzas2017a} creates a two- dimensional representation of
+the input space and based on it, applies the SMOTE procedure to generate
+intra-cluster and inter-cluster synthetic data, preserving the underlying
+manifold structure. Another clustering-based approach called CURE-SMOTE
+\cite{Ma2017} uses the hierarchical clustering algorithm CURE to cluster the
+samples of the minor class and remove the noise and outliers before applying
+SMOTE. The goal of the method is to eliminate the noise points at the end of the
+process and reduce the complexity because there is no need to eliminate the
+farthest generated artificial samples after the SMOTE algorithm runs. While it
+avoids noise generation, possible imbalances within the minority class are
+ignored. Consequently, another clustering-based approach that was introduced
+named K-Means SMOTE \cite{Douzas2018} employs the popular k-means clustering
+algorithm in conjunction with SMOTE oversampling in order to avoid the
+generation of noise by oversampling only in safe area and shifting its focus not
+only to fix between-class imbalance but also within-class imbalance. The method
+attempts to deal with the small disjuncts problem by inflating sparse minority
+areas and is easily implemented due to its simplicity and the widespread
+availability of both k-means and SMOTE.
+
+\section{Experimental Setup}
+
+In this section we describe the experimental setup used to test the relevance of
+using a clustering procedure before the oversampling task. In order to make sure
+the results are robust and generalizable we used a variety of classifiers,
+datasets and metrics, to assess the relevance of this strategy. The general
+design of the experiment is provided in Figure 1. A detailed description of the
+experimental data, the performance metrics, the classification algorithms and
+the experimental procedure is provided next.
+
+FIGURE 1 about here
+
+\subsection{Datasets}
+
+In order to test the performance of the different oversamplers, 13 imbalanced
+datasets from Machine Learning Repository UCI were used. Furthermore, to
+generate additional datasets with higher imbalance ratios, each of the
+aforementioned datasets was randomly undersampled to generate various other
+datasets. Table 2 shows a summary of the datasets and their characteristics.
+NOTE: Undersampled versions of the original datasets are omitted from the table
+we need to add them!
+
+Table 1 - Description of the datasets ABOUT HERE
+
+\subsection{Evaluation Metrics}
+
+The most popular evaluation metrics used to assess classifier performance are
+not suitable in the presence of a skewed class distribution. The most commonly
+used metric is classification problems is accuracy:
+
+ACURACCY FORMULA HERE
+
+Where TP represents the true positives, TN the true negatives, P the total
+number of positives and N the total number of negatives. The problem of using
+accuracy to assess the performance of a classifier in imbalanced datasets can be
+better explained with a simple example. Let’s say we have a highly imbalanced
+dataset, with 99 percent negative instances and 1 percent positive instances, in
+this case a trivial classifier, that always classifies examples as negative,
+will yield 99 percent accuracy. Although extremely high this accuracy value is
+meaningless, as the classifier will never identify a positive case.
+
+In the case of imbalanced datasets there are better alternatives to accuracy.
+The most common measures to assess the performance of classifiers when dealing
+with imbalanced problems are: F1 score, G-Mean and ROC-AUC \cite{He2009}. The F1
+score, or F-Measure metric, combines precision and recall as a measure of the
+effectiveness of classification in terms of a ratio of the weighted importance
+on either recall or precision as determined by the $\beta$ coefficient set by
+the user.
+
+F1 FORMULA HERE
+
+The G-Mean metric can be defined as the geometric mean of sensitivity and
+specificity \cite{He2009}.
+
+G-MEAN FORMULA HERE
+
+Finally, the last metric to be considered is the ROC-AUC (Area Under the ROC
+Curve). The ROC curve is obtained by plotting the False Positive Rate (FPR),
+defined as the proportion of misclassified negative examples relative to the
+total number of negative class observations, represented in the X-axis versus
+the Y-axis, the True Positive Rate. Varying the classification threshold of the
+classifier identifies different points of the ROC curve. Since the ROC curve
+depends on the classification threshold, the AUC (Area Under the ROC Curve) is a
+useful metric for the performance of the classifier as it is independent of the
+decision criterion \cite{He2009}.
+
+\subsection{Oversamplers}
+
+In the tests we use 4 different oversamplers, with and without a clustering
+procedure, before the oversampling process. The oversamplers used are: Random
+Oversampling, SMOTE, Borderline SMOTE and G-SMOTE. For SMOTE and its two
+variations, more specifically Borderline SMOTE and G-SMOTE, the value of
+$k$-nearest neighbors was set to $k \in \{3, 5\}$. Furthermore, a
+hyper-parameter grid was generated for G-SMOTE including the three different
+selection strategies, the number of nearest neighbors $k \in \{3, 5\}$, the
+truncation factor $\alpha_{trunc} \in \{-1.0, 0.0, 1.0\}$ and the deformation
+factor $\alpha_{def} \in \{0.0, 0.5, 1.0\}$ (for more details on the G-SMOTE
+algorithm please read \cite{Douzas2019}).
+
+Regarding the clustering procedure we use the most popular clustering algorithm
+(i.e. k-means). The choice of the k-means algorithm was mainly due to its
+simplicity and popularity. The process of using a clustering algorithm in the
+context of oversampling procedure can be divided into three steps: (1)
+clustering, (2) filtering and (3) oversampling. In the clustering step the input
+space is clustered into k groups. The filtering step is composed of two
+substeps, first it defines which are the clusters that are going to be
+oversampled and secondly it defines how many instances are going to be generated
+in each one of the clusters. The clusters choosed for oversampling are the ones
+in which there is a high proportion of of minority classe instances. The
+distribution of the synthetic instances is made in such a way that clusters
+where minority instances are sparsely distributed are assigned more instances.
+Finally, the oversampling step creates the synthetic instances according to the
+distribution defined in the filtering step.
+
+Three hyperparameters need to be defined when applying the clustering procedure:
+the number of clusters, the exponent used for computation of density and the
+filtering threshold. The first parameter, number of clusters, is a required
+parameter for the k-means algorithms. The exponent used for computation of
+density ($distances\_exponent$) is necessary to the number of clusters to
+consider, as in any clustering procedure using k-means, the number of clusters
+has to be defined before running the algorithm. The second paremeter, caled here
+$distances\_exponent$, relates with . Finally, the lastparemeter, the
+$filtering\_threshold$, defines the . These parameters were tested with the
+following grid:
+
+$$n\_clusters \in \{0.0, 0.25,0.5,0.75, 1.0\}$$
+
+$$distances\_exponent \in \{0, 1, 2\}$$
+
+$$filtering\_threshold \in \{0.5, 1.0\}$$
+
+In summary, the four oversamplers presented above are tested with and without a
+clustering procedure based on k-means.
+
+\subsection{Classifiers}
+
+In order to understand if the effect of using a clustering procedure preceding
+the application of an oversample would be different, and to make the results as
+general as possible we decided to use 4 different classifiers: Logistic
+Regression (LR), Gradient Boosting Classifier (GBC), K-Nearest Neighbors (KNN)
+and Decision Tree (DT).
+
+LR is a generalization of linear regression, which can be used for binary
+classification. Fitting the model is an optimization problem which can be solved
+using simple optimizers requiring no hyperparameters to be tuned
+\cite{McCullagh1989}. Because of this, results produced by LR are conveniently
+reproducible, and therefore, appropriate to be used as a benchmark for more
+sophisticated approaches.
+
+The KNN algorithm is a classical classifier and assigns an observation to the
+most represented class of its nearest neighbors. The number of neighbors that
+are considered is determined by the method’s hyperparameter k \cite{Fix1989}.
+
+DT’s \cite{Breiman1984} are also among the most popular and simple classifiers
+used in machine learning, nevertheless they continue to be frequently used,
+especially when the interpretation of the results needs to be simple and readily
+available.
+
+GBC is an ensemble technique used for classification, which as become very
+popular in recent years due to the quality of its results. In the case of binary
+classification, one shallow decision tree is induced at each stage of the
+algorithm. Each tree is fitted to observations which could not be correctly
+classified by decision trees of previous stages. Predictions of GBC are made by
+majority vote of all trees. In this way, the algorithm combines several simple
+models (referred to as weak learners) to create one effective classifier. The
+number of decision trees to generate, which in binary classification is equal to
+the number of stages, is a hyperparameter of the algorithm \cite{Friedman2001}.
+
+Different combinations of hyper-parameters were used and tested for each of the
+classifiers mentioned above. The classifiers are used with the default
+parameters unless stated otherwise. More specifically, the GBC hyper-parameter
+grid included the combinations resulting from $max\_depth \in \{3, 6\}$ and
+$number\_estimators \in \{50, 100\}$. For the DT Classifier, the combinations
+resulting from $max\_depth \in \{3, 6\}$ are tested. Additionally, for KNN, the
+$k \in \{3, 5\}$.
+
+\subsection{Experimental Procedure}
+
+In order to evaluate the performance of the algorithms the results are obtained
+by applying k-fold cross-validation with k = 3. For each each dataset, every
+metric is computed by averaging their values across the different runs. In
+addition to the arithmetic mean, the standard deviation is calculated.
+Furthermore, in order to achieve optimal results for all classifiers and
+oversamplers, a grid search procedure is used. All possible combinations of an
+algorithm’s hyperparameters are generated and the algorithms are executed once
+for each combination. All metrics are used to score all resulting
+classifications, and the best value obtained for each metric is saved. Summing
+up, the experimental procedure was repeated three times and the implementation
+of the classifiers and standard oversampling algorithms was based on the Python
+library Scikit-Learn \cite{Pedregosa2011}.
+
+\section{Experimental Results}
+
+Since the main objective of the analysis is to understand the effects of
+clustering preceding the application of the different oversampling techniques,
+results are shown for each individual technique without oversampling, with
+oversampling and with clustering and oversampling. Taking into consideration the
+recommendations for evaluating classifier performance across multiple datasets
+\cite{Demsar2006}, the scores obtained are not compared directly, but instead
+ordered so as to derive a ranking. Having said that, the goal is to compare
+oversamplers, hence the method being adapted to rank the oversampling
+techniques, instead of classification algorithms. To derive the rank order we
+use the cross-validated scores, assigning a ranking score to each oversampling
+method for every combination of the datasets, 3 metrics and the 4 classifiers.
+The result is a different ranking for each of the experiment repetitions,
+divided by dataset, metric and classifier.
+
+Keeping in mind that there are four methods being compared, rank one will be
+attributed to the best performing method and rank four to the worst performing
+one. Moreover, each method's rank is averaged across all datasets and experiment
+repetition. A method's rank is a real number from the interval [1;4]. The mean
+ranking results for each combination and classifier, regarding each individual
+oversampling technique are shown in Figures 1-4.
+
+By testing the null hypothesis that the classifiers perform similarly in the
+mean rankings across the oversampling methods and evaluation metrics, the
+Friedman test \cite{Friedman1937} is used to determine the statistical
+significance of the derived mean ranking. The Friedman test was chosen because
+it does not assume normality of the obtained scores \cite{Demsar2006}. At a
+significance level of a = 0.05, the null hypothesis is rejected for all
+evaluated classifiers and evaluation metrics. Therefore, all of the rankings are
+assumed to be significant. The results of the application of the Friedman test
+for each of the oversampling methods are shown in annex in Table 4.
+
+\subsection{Random Oversampling}
+
+Considering the mean ranking results when random oversampling is applied it is
+possible to observe that the random oversampler coupled with the clustering
+algorithm, which can be referred to as K-Means Random Oversampling, outperforms
+the other two methods (no oversampling and random oversampling) in all metrics
+and classifiers. In all possible twelve combinations, K-Means Random
+Oversampling achieves a superior mean rank (XXX). Furthermore, it is the only
+method with a mean ranking better than two in two particular metrics, F1 score
+and AUC. Additionally, in three out of nine cases, it can be seen that K-Random
+Oversampling boosts classification results when Random Oversampling accomplishes
+a rank worse than no oversampling. However, it is clear that when no
+oversampling is applied, the results tend to be the worst amongst the three
+methods.
+
+GRAPHICS HERE
+
+\subsection{SMOTE}
+
+Similarly, when the clustering procedure is added before applying SMOTE, called
+here K-Means SMOTE, the method outperforms the remaining two (no oversampling
+and SMOTE). Significantly, this can be observed regardless of the metric or
+classifier since the improvement can be seen in eleven out of twelve cases,
+consistently achieving a better mean rank. The only case in which the
+improvement does not happen is in the combination of G-Mean and the KNN
+classifier where it accomplishes a slightly inferior rank.
+
+GRAPHICS HERE
+
+\subsection{Borderline SMOTE}
+
+In the case of Borderline SMOTE, the evidence shows that the K-Means Borderline
+SMOTE algorithm outperforms the other two methods (no oversampling and
+Borderline SMOTE) in all metrics and regardless of the choice in classifiers.
+Similarly, it is possible to note that no oversampling provides the worst
+results.
+
+GRAPHICS HERE
+
+\subsection{G-SMOTE}
+
+In the case of G-SMOTE using the k-means procedure previous to the oversampling
+still improves the results in the majority of the tests, but the results are not
+so impressive. In eight, out of the twelve experiments, achieves the best
+results, but in four of the experiments G-SMOTE without any previous clustering
+procedure presents the best score. These four cases relate with the use of KNN
+and GBC classifier and the AUC and G-mean metrics. One possible explanation is
+that the quality of the G-SMOTE oversampling strategy mitigates, by itself, the
+problem of having subclusters of minority instances in the dataset. This means
+that when using G-SMOTE the negative impact of having minority subclusters has a
+smaller impact in the quality of the results. In any case, using k-means before
+applying G-SMOTE improves the results in the majority of the cases.
+
+GRAPHICS HERE
+
+Overall it is clear that the use of k-means clustering procedure before the
+application of an oversampling algorithm significantly improves the quality of
+the results. The existence of minority subclusters in the input space weakens
+the ability of the oversampler to produce robust results. Starting with a
+procedure that divides the input space into several subspaces to guide the
+oversampling process seems to be of great relevancy and usefulness. From these
+extensive tests we can conclude that using clustering before oversampling adds
+value to the classification process. Generally, it can be observed that the
+combination frequently achieves the best results in comparison with the other
+methods (no oversampling and the oversampling technique with no prior clustering
+step). This benefit can be seen across all classifiers and metrics used, which
+adds strength to the conclusion. To summarize, the mean ranking results of the
+different methods across the datasets for each combination of a classifier and
+evaluation metric is presented in Table 3.
+
+\bibliography{artifacts/references}
+\bibliographystyle{apalike}
+
+\end{document}

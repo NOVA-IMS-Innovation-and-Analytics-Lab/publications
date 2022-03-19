@@ -1,9 +1,0 @@
-Classifier,Metric,Difference
-LR,ACCURACY,1.41 $\pm$ 0.52
-LR,G-MEAN,3.26 $\pm$ 1.58
-KNN,ACCURACY,2.95 $\pm$ 1.21
-KNN,G-MEAN,33.43 $\pm$ 26.93
-DT,ACCURACY,4.47 $\pm$ 1.46
-DT,G-MEAN,4.32 $\pm$ 1.88
-GBC,ACCURACY,5.17 $\pm$ 2.48
-GBC,G-MEAN,5.64 $\pm$ 2.35
