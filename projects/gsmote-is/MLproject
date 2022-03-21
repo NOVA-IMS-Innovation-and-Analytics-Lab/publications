@@ -1,0 +1,11 @@
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+      n_splits: {type: int, default: 5}
+      n_runs: {type: int, default: 3}
+      rnd_seed: {type: int, default: 1}
+    command: "python generate.py experiment {n_splits} {n_runs} {rnd_seed}"
+  datasets:
+    command: "python generate.py datasets"
