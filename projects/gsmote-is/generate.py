@@ -14,6 +14,7 @@ from imblearn.metrics import geometric_mean_score
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from gsmote import GeometricSMOTE
 from rlearn.tools import ImbalancedExperiment
+import mlflow
 
 from tools.datasets import load_db_datasets_from_db, ImbalancedBinaryDatasets
 
@@ -38,15 +39,18 @@ if __name__ == '__main__':
             raise FileNotFoundError(
                 'Database not found. Download the database using the `datasets` subcommand.'
             )
-        experiment = ImbalancedExperiment(
-            oversamplers=OVERSAMPLERS,
-            classifiers=CLASSIFIERS,
-            scoring=SCORING,
-            n_splits=int(sys.argv[2]),
-            n_runs=int(sys.argv[3]),
-            random_state=int(sys.argv[4]),
-        )
-        experiment.fit(datasets)
+        with mlflow.start_run():
+            experiment = ImbalancedExperiment(
+                oversamplers=OVERSAMPLERS,
+                classifiers=CLASSIFIERS,
+                scoring=SCORING,
+                n_splits=int(sys.argv[2]),
+                n_runs=int(sys.argv[3]),
+                random_state=int(sys.argv[4]),
+            )
+            experiment.fit(datasets)
+            mlflow.sklearn.log_model(experiment, 'experiment')
+
     elif sys.argv[1] == 'datasets':
         datasets = ImbalancedBinaryDatasets()
-        datasets.download().save(path=PATH, db_name='imbalanced')
+        datasets.download().save_to_db(dir_name=PATH, db_name='imbalanced')

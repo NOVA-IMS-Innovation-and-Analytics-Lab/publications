@@ -26,6 +26,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.9',
 ]
 INSTALL_REQUIRES = [
+    'mlflow >= 1.0.0',
     'pandas >= 1.2.0',
     'rich >= 10.0.0',
     'requests >= 2.26.0',
