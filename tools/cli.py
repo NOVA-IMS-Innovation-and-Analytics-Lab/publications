@@ -1,5 +1,5 @@
 """
-Generate the experimental results and the manuscript.
+CLI for running and analyzing experiments.
 """
 
 # Author: Georgios Douzas <gdouzas@icloud.com>
@@ -58,12 +58,21 @@ def experiment(project, n_splits, n_runs, rnd_seed):
     )
 
 
-@run.command(help='Run analysis of MLflow project.')
+@run.command(help='Run analysis of the latest experiment of MLflow project.')
 @click.argument('project', type=click.Choice(list_projects()))
 def analysis(project):
     mlflow.set_tracking_uri(f'file://{join(ROOT_PATH, "mlruns")}')
+    client = mlflow.tracking.MlflowClient()
+    experiment = client.get_experiment_by_name(project)
+    if experiment is None:
+        click.echo('No experiment was found to analyze it.')
+        return
+    run_infos = client.list_run_infos(
+        experiment.experiment_id, order_by=['attribute.end_time DESC']
+    )
     mlflow.run(
         uri=join(ROOT_PATH, 'projects', project),
         entry_point='analysis',
         experiment_name=project,
+        run_id=run_infos[0].run_id,
     )

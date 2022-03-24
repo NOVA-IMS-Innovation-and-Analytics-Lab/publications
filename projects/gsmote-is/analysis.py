@@ -17,13 +17,7 @@ PATH = join(dirname(__file__), 'artifacts')
 
 def run_analysis(datasets):
 
-    client = mlflow.tracking.MlflowClient()
-    name = basename(dirname(__file__))
-    experiment_id = client.get_experiment_by_name(name).experiment_id
-    run_infos = client.list_run_infos(experiment_id=experiment_id)
-    run_id = sorted(run_infos, key=lambda ex: ex.end_time)[-1].run_id
-
-    with mlflow.start_run(run_id=run_id):
+    with mlflow.start_run():
 
         # Datasets summary
         datasets_summary_path = join(mkdtemp(), 'datasets_summary.csv')
