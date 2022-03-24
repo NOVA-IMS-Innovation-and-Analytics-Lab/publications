@@ -49,4 +49,5 @@ setup(
     packages=find_packages(),
     version=VERSION,
     install_requires=INSTALL_REQUIRES,
+    entry_points={'console_scripts': ['run=tools.cli:run', 'list=tools.cli:list']},
 )

@@ -1,9 +1,8 @@
-import imp
 from .binary import BinaryDatasets
 from .imbalanced_binary import ImbalancedBinaryDatasets
 from .categorical import CategoricalDatasets
 from .remote_sensing import RemoteSensingDatasets
-from .utils import load_datasets_from_csv, load_db_datasets_from_db
+from .utils import load_datasets_from_csv, load_datasets_from_db
 
 __all__ = [
     'BinaryDatasets',
@@ -11,5 +10,5 @@ __all__ = [
     'CategoricalDatasets',
     'RemoteSensingDatasets',
     'load_datasets_from_csv',
-    'load_db_datasets_from_db',
+    'load_datasets_from_db',
 ]

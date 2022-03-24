@@ -25,7 +25,7 @@ def load_datasets_from_csv(data_dir):
     return datasets
 
 
-def load_db_datasets_from_db(path):
+def load_datasets_from_db(path):
     """Load datasets from sqlite database."""
     datasets = []
     with connect(path) as connection:
