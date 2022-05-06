@@ -1,0 +1,12 @@
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - scikit-learn>=1.0.0
+      - imbalanced-learn>=0.7.0
+      - geometric-smote>=0.2.0
+      - research-learn>=0.2.1
+      - mlflow>=1.0.0
+      - git+https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications.git
