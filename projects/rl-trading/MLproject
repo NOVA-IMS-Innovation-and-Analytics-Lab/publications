@@ -3,9 +3,7 @@ conda_env: conda.yml
 entry_points:
   main:
     parameters:
-      n_splits: int
-      n_runs: int
       rnd_seed: int
-    command: "python experiment.py {n_splits} {n_runs} {rnd_seed}"
+    command: "python experiment.py {rnd_seed}"
   analysis:
     command: "python analysis.py"

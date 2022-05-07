@@ -34,7 +34,8 @@ FETCH_URLS = {
     'iris': urljoin(UCI_URL, 'iris/bezdekIris.data'),
     'libras': urljoin(UCI_URL, 'libras/movement_libras.data'),
     'liver': urljoin(UCI_URL, 'liver-disorders/bupa.data'),
-    'pima': 'https://gist.githubusercontent.com/ktisha/c21e73a1bd1700294ef790c56c8aec1f/raw/819b69b5736821ccee93d05b51de0510bea00294/pima-indians-diabetes.csv',
+    'pima': 'https://gist.githubusercontent.com/ktisha/c21e73a1bd1700294ef790c56c8aec1f/raw'
+    '/819b69b5736821ccee93d05b51de0510bea00294/pima-indians-diabetes.csv',
     'vehicle': urljoin(UCI_URL, 'statlog/vehicle/'),
     'wine': urljoin(UCI_URL, 'wine/wine.data'),
     'new_thyroid_1': urljoin(

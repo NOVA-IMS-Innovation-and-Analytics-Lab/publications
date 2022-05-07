@@ -6,16 +6,11 @@ Create a database of remote sensing datasets.
 #         Joao Fonseca <jpmrfonseca@gmail.com>
 # License: MIT
 
-from sys import argv
-from os.path import join, dirname
-from os import listdir
 from urllib.parse import urljoin
-from sqlite3 import connect
 from scipy.io import loadmat
 import io
 import requests
 
-import requests
 import numpy as np
 import pandas as pd
 

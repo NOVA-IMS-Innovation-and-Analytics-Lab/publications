@@ -16,3 +16,5 @@ supplementary/
 *.spl
 .*venv
 mlruns
+.pdm.toml
+pdm.lock

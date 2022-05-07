@@ -12,7 +12,6 @@ from zipfile import ZipFile
 from io import BytesIO, StringIO
 import requests
 
-import requests
 import pandas as pd
 
 from .base import Datasets

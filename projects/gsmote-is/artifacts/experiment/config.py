@@ -17,7 +17,14 @@ OVERSAMPLERS = [
     ('NONE', None, {}),
     ('ROS', RandomOverSampler(), {}),
     ('SMOTE', SMOTE(), {}),
-    ('G-SMOTE', GeometricSMOTE(), {'truncation_factor': [-1.0, -0.75, -0.5, 0.0, 0.25, 0.5, 0.75, 1.0], 'deformation_factor': [0.0, 0.25, 0.5, 0.75, 1.0]}),
+    (
+        'G-SMOTE',
+        GeometricSMOTE(),
+        {
+            'truncation_factor': [-1.0, -0.75, -0.5, 0.0, 0.25, 0.5, 0.75, 1.0],
+            'deformation_factor': [0.0, 0.25, 0.5, 0.75, 1.0],
+        },
+    ),
 ]
 CLASSIFIERS = [('LR', LogisticRegression(solver='liblinear', multi_class='auto'), {})]
 SCORING = ['accuracy', 'f1', 'geometric_mean_score']

@@ -15,6 +15,7 @@ PATH = join(dirname(__file__), 'artifacts')
 def run_experiment():
 
     with mlflow.start_run():
+
         pass
 
 

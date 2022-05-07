@@ -1,0 +1,34 @@
+[project]
+name = "novapubs"
+version = "0.0.1"
+description = "Tools to reproduce various publications of the NOVA IMS Innovation and Analytics Lab."
+authors = [
+    {name = "Georgios Douzas", email = "gdouzas@icloud.com"},
+]
+dependencies = [
+    "mlflow>=1.25.1",
+    "pandas>=1.4.2",
+    "rich>=12.3.0",
+    "requests>=2.27.1",
+    "scikit-learn>=1.0.2",
+    "imbalanced-learn>=0.9.0",
+    "xlrd>=2.0.1",
+]
+requires-python = ">=3.9"
+license = {text = "MIT"}
+
+[project.scripts]
+experiment = "tools.cli:experiment"
+analysis = "tools.cli:analysis"
+
+[project.optional-dependencies]
+code-format = ["black>=22.3.0"]
+code-analysis = ["pylint>=2.13.8", "flake8>=4.0.1"]
+
+[build-system]
+requires = ["pdm-pep517>=0.12.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.scripts]
+code-format = "black -S tools projects"
+code-analysis = {shell = "flake8 tools --max-line-length=95 --extend-ignore=E203,E741 && pylint -E tools/ -d E1103,E0611,E1101"}

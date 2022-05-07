@@ -9,7 +9,11 @@ from os.path import join, dirname
 from tempfile import mkdtemp
 
 import mlflow
-from rlearn.tools import summarize_datasets, calculate_wide_optimal, calculate_mean_sem_ranking
+from rlearn.tools import (
+    summarize_datasets,
+    calculate_wide_optimal,
+    calculate_mean_sem_ranking,
+)
 from tools.datasets import load_datasets_from_db
 
 PATH = join(dirname(__file__), 'artifacts')
@@ -33,6 +37,7 @@ def run_analysis(datasets):
         # Mean ranking
         from imblearn.metrics import geometric_mean_score
         from sklearn.metrics import SCORERS, make_scorer
+
         SCORERS['geometric_mean_score'] = make_scorer(geometric_mean_score)
         mean_ranking = calculate_mean_sem_ranking(experiment.results_)
         print(mean_ranking)

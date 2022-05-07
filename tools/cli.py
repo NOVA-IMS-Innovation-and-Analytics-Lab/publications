@@ -24,19 +24,7 @@ def list_projects():
     return projects
 
 
-@click.command(help='List MLflow projects.')
-def list():
-    projects = list_projects()
-    for project in projects:
-        click.echo(project)
-
-
-@click.group()
-def run():
-    pass
-
-
-@run.command(help='Run experiment of MLflow project.')
+@click.command(help='Run experiment of MLflow project.')
 @click.argument('project', type=click.Choice(list_projects()))
 @click.option(
     '--n-splits',
@@ -58,7 +46,7 @@ def experiment(project, n_splits, n_runs, rnd_seed):
     )
 
 
-@run.command(help='Run analysis of the latest experiment of MLflow project.')
+@click.command(help='Run analysis on the latest experiment of MLflow project.')
 @click.argument('project', type=click.Choice(list_projects()))
 def analysis(project):
     mlflow.set_tracking_uri(f'file://{join(ROOT_PATH, "mlruns")}')
