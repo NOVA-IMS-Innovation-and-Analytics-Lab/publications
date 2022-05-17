@@ -1,8 +1,3 @@
-conda_env: conda.yml
-
 entry_points:
   main:
-    parameters:
-    command: "python experiment.py {rnd_seed}"
-  analysis:
-    command: "python analysis.py"
+    command: "python experiment/main.py"
