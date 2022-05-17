@@ -14,7 +14,7 @@ import requests
 import numpy as np
 import pandas as pd
 
-from .base import Datasets
+from .base import BaseDatasets
 
 GIC_URL = 'http://www.ehu.eus/ccwintco/uploads/'
 FETCH_URLS = {
@@ -59,7 +59,7 @@ def img_array_to_pandas(X, y):
     return pd.DataFrame(data=dat.T, columns=columns)
 
 
-class RemoteSensingDatasets(Datasets):
+class RemoteSensingDatasets(BaseDatasets):
     """Class to download, transform and save remote sensing datasets."""
 
     def __init__(self, names='all', return_coords=False):

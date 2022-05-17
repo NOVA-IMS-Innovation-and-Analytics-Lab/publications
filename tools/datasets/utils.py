@@ -20,8 +20,7 @@ def load_datasets_from_csv(data_dir):
             file_path = join(data_dir, file_name)
             data = pd.read_csv(file_path)
             X, y = data.drop(columns='target'), data['target']
-            name = file_path.replace('.csv', '').replace('_', ' ').upper()
-            datasets.append((name, (X, y)))
+            datasets.append((file_path.replace('.csv', ''), (X, y)))
     return datasets
 
 
@@ -37,7 +36,7 @@ def load_datasets_from_db(path):
         ]
         for name in names:
             data = pd.read_sql(f'select * from "{name}"', connection)
-            X, y = data.drop(columns='target'), data['target']
-            name = name.replace('_', ' ').upper()
+            target_ind = str(data.shape[1] - 1)
+            X, y = data.drop(columns=target_ind).values, data[target_ind].values
             datasets.append((name, (X, y)))
     return datasets

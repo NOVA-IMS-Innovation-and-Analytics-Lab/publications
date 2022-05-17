@@ -14,7 +14,7 @@ from rich.progress import track
 import numpy as np
 import pandas as pd
 
-from .base import Datasets
+from .base import BaseDatasets
 
 UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 FETCH_URLS = {
@@ -41,7 +41,7 @@ FETCH_URLS = {
 }
 
 
-class CategoricalDatasets(Datasets):
+class CategoricalDatasets(BaseDatasets):
     """Class to download, transform and save datasets with both continuous
     and categorical features."""
 

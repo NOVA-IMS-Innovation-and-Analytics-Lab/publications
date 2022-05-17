@@ -10,11 +10,11 @@ from re import sub
 from urllib.parse import urljoin
 from zipfile import ZipFile
 from io import BytesIO, StringIO
-import requests
 
+import requests
 import pandas as pd
 
-from .base import Datasets
+from .base import BaseDatasets
 
 UCI_URL = 'https://archive.ics.uci.edu/ml/machine-learning-databases/'
 FETCH_URLS = {
@@ -30,7 +30,7 @@ FETCH_URLS = {
 }
 
 
-class BinaryDatasets(Datasets):
+class BinaryDatasets(BaseDatasets):
     """Class to download, transform and save binary class datasets."""
 
     def fetch_banknote_authentication(self):

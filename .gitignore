@@ -1,20 +1,26 @@
-.DS_Store
-.vscode
-__pycache__
+# Latex
 *.aux
 *.bbl
 *.blg
 *.out
 *.log
 *.synctex.gz
-*/content/*.pdf
-supplementary/
 *.fls
 *.fdb_latexmk
+
+# PDM
+.pdm.toml
+pdm.lock
+
+# Various
+.DS_Store
+.vscode
+__pycache__
 *.egg-info
 *.pyg
 *.spl
 .*venv
-mlruns
-.pdm.toml
-pdm.lock
+
+# Ignored manuscripts
+projects/gsmote-is/manuscript/*
+!projects/gsmote-is/manuscript/main.py

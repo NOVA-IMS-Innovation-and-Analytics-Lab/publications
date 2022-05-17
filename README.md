@@ -11,7 +11,10 @@ Initially, clone the project:
 git clone https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications.git
 ```
 
-Then from the root of the project you can use [pip](https://pip.pypa.io/en/stable):
+### Main installation
+
+
+From the root of the project you can use [pip](https://pip.pypa.io/en/stable):
 
 ```
 pip install .
@@ -23,16 +26,35 @@ Alternatively you can use [PDM](https://pdm.fming.dev):
 pdm install
 ```
 
+The main installation allows to use the CLI. Some of the commands require additional dependencies.
+
+### Optional dependencies
+
+You can install the optional dependencies using the `-G` flag:
+
+```
+pdm install -G [GROUP]
+```
+
+You may find the various groups of optional dependencies in the `pyproject.toml` file.
+
+### Optional dependencies
+
+You can install the development dependencies using the `-G` and `-d` flags:
+
+```
+pdm install -G -d [GROUP]
+```
+
+You may find the various groups of development dependencies in the `pyproject.toml` file.
+
 ## Command Line Interface
 
-You can use `experiment --help` to get the available projects and their options. To run an experiment for a paricular project:
+There four commands available to manage the project:
 
-```
-experiment [NAME]
-```
+- `create`
+- `datasets`
+- `experiment`
+- `manuscript`
 
-To run an analysis on the latest experiment of a project:
-
-```
-analysis [NAME]
-```
+You can use `--help` flag to get help about their usage and options.
