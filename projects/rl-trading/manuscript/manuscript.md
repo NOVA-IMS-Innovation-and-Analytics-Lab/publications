@@ -187,6 +187,6 @@ We conduct the empirical evaluation for our TIRL-Trader in
 
 ### Performance
 
-#### Analysis
+## Analysis
 
-#### Conclusions and Future Work
+## Conclusions and Future Work
