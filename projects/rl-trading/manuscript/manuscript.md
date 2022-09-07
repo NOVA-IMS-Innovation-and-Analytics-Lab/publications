@@ -190,3 +190,5 @@ We conduct the empirical evaluation for our TIRL-Trader in
 ## Analysis
 
 ## Conclusions and Future Work
+
+In this paper, we investigated the utilization of TI in building an end-to-end day-trade RL trader. Our model substantiate the profitability and robustness in the intraday trading task. Experiments reveal our QF-TraderNet outperforms other baselines. To perform intraday trading, we assumed the ground state in t- th day is available for QF-TraderNet in this work. One interesting future work will be combining QF-TraderNet with the state-of-the-art forecasters to perform real-time trading by a predictor-trader framework in which a forecaster predicts the opening price in t-th day for our QF- TraderNet to perform trading.
