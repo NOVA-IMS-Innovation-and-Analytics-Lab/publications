@@ -1,0 +1,3 @@
+entry_points:
+  main:
+    command: "python experiment/main.py"
