@@ -21,6 +21,7 @@ __pycache__
 *.spl
 .*venv
 
-# Ignored manuscripts
-projects/gsmote-is/manuscript/*
-!projects/gsmote-is/manuscript/main.py
+# Content
+supplementary
+**/manuscript/manuscript.pdf
+*.pptx

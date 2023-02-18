@@ -1,4 +1,4 @@
-## List of publications
+# List of publications
 
 A list of published articles sorted by date.
 
