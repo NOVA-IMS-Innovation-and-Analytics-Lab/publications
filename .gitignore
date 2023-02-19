@@ -23,5 +23,7 @@ __pycache__
 
 # Content
 supplementary
-**/manuscript/manuscript.pdf
-*.pptx
+**/manuscript/artifacts
+**/manuscript/manuscript.*
+**/manuscript/manuscript_files
+!**/manuscript/manuscript.qmd

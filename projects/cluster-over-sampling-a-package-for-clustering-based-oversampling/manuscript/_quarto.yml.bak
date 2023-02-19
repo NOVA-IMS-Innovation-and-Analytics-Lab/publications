@@ -1,0 +1,26 @@
+---
+author:
+  - name: Georgios Douzas
+    email: gdouzas@novaims.unl.pt
+    affiliations:
+      - name: NOVA IMS
+    roles:
+      - Software
+      - Methodology
+      - Data curation 
+      - Writing
+  - name: Fernando Bacao
+    email: fbacao@novaims.unl.pt
+    affiliations:
+      - name: NOVA IMS
+    roles:
+      - Conceptualization
+      - Supervision
+      - Project administration
+keywords:
+  - Machine learning Classification
+  - Imbalanced learning 
+  - Oversampling
+  - Clustering
+journal: "Journal of Open Research Software"
+---
