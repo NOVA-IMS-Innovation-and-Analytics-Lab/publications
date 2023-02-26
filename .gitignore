@@ -27,3 +27,6 @@ supplementary
 **/manuscript/manuscript.*
 **/manuscript/manuscript_files
 !**/manuscript/manuscript.qmd
+**/manuscript/*.cls
+**/manuscript/*.csl
+/.luarc.json

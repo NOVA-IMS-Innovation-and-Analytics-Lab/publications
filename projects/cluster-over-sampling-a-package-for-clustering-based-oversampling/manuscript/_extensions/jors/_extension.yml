@@ -1,0 +1,20 @@
+title: Jors
+author: georgedouzas
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  format:
+    common:
+      csl: harvard.csl
+    pdf:
+      documentclass: jors
+      biblio-config: false
+      template-partials:
+        - partials/title.tex
+        - partials/before-body.tex
+        - partials/after-body.tex
+      include-in-header: header.tex
+      format-resources:
+        - jors.cls
+        - harvard.csl
+

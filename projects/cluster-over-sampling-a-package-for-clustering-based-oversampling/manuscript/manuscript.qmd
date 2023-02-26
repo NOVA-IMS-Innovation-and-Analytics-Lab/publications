@@ -2,9 +2,34 @@
 title: "cluster-over-sampling: A Python package for clustering-based oversampling"
 jupyter: python3
 bibliography: references.bib
+format:
+  jors-pdf:
+    keep-tex: true
+filters:
+   - latex-environment
 ---
 
-## Abstract
+# (1) Overview \
+
+# Title
+
+cluster-over-sampling: A Python package for clustering-based oversampling
+
+# Paper authors
+
+1. Georgios, Douzas
+2. Fernando Bacao
+
+# Paper author roles and affiliations
+
+1. Georgios Douzas
+	- Roles: Software; Methodology; Data curation; Writing;
+	- Affiliation: NOVA IMS
+2. Fernando Bacao
+	- Roles: Conceptualization; Supervision; Project administration
+	- Affiliation: NOVA IMS
+
+# Abstract
 
 Learning from imbalanced data is a common and challenging problem in supervised learning. Standard classifiers are designed to
 handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial
@@ -18,7 +43,11 @@ In this paper, we describe `cluster-over-sampling` in detail and make it availab
 implementation integrates effortlessly with the Scikit-Learn ecosystem, so machine learning researchers and practitioners can
 incorporate it directly into any pre-existing work.
 
-## Introduction
+# Keywords
+
+Machine learning Classification; Imbalanced learning; Oversampling; Clustering; Scikit-Learn;
+
+# Introduction
 
 The imbalanced learning problem describes the case wherein a machine learning classification task, using datasets with binary or
 multi-class targets, one of the classes, called the majority class, has a significantly higher number of samples compared to the
@@ -33,21 +62,23 @@ important measure for the degree of data imbalance is the Imbalance Ratio ($IR$)
 samples of the majority class and each of the minority classes. Using a rare disease detection task as an example, with 1\% of
 positive cases corresponding to an $IR=\frac{0.99}{0.01}=99$, a trivial classifier that always labels a person as healthy will
 score a classification accuracy of 99\%. However, in this case, all positive cases remain undetected. The observed values of $IR$
-are often between 100 and 100.000 [@chawla_smote_2002], [@barua_mwmote_2014]. Figure @fig-imbalanced-problem an example
-of imbalanced data in two dimensions as well as the decision boundary identified by a typical classifier when they are used as a
-training set.
+are often between 100 and 100.000 [@chawla_smote_2002], [@barua_mwmote_2014]. @fig-imbalanced-problem presents an example of
+imbalanced data in two dimensions as well as the decision boundary identified by a typical classifier that uses them as training
+data.
 
 ![Imbalanced data in two dimensions. The decision boundary of a typical classifier shows a bias towards the majority
 class.](imbalanced_problem.png){#fig-imbalanced-problem}
 
 In this paper, we present `cluster-over-sampling`, a generic Python implementation of clustering-based oversampling. Any
-combination of a Scikit-Learn compatible clusterer and an Imbalanced-Learn compatible oversampler can be selected to produce an
-algorithm that identifies clusters on the input space and apply oversampling on each one of them.  
+combination of a [Scikit-Learn](https://scikit-learn.org/stable/) [@pedregosa_scikit-learn_2012] compatible clusterer and an
+[Imbalanced-Learn](https://imbalanced-learn.org/stable/) [@lemaitre_imbalanced-learn_2016] compatible oversampler can be selected
+to produce an algorithm that identifies clusters on the input space and apply oversampling on each one of them.
 
-In @sec-theoretical-background various concepts related to oversampling are presented, while in @sec-implementation-architecture a
-description of the software's implementation and architecture is presented.
+In [Theoretical background](#theoretical-background) section various concepts related to oversampling are presented, while in
+[Implementation and architecture](#implementation-and-architecture) section a description of the software's implementation and
+architecture is presented.
 
-## Theoretical background {#sec-theoretical-background}
+# Theoretical background
 
 Various approaches have been proposed to improve classification results when the training data are imbalanced, a case also known
 as a between-class imbalance. The most general approach, called oversampling, is the generation of artificial data for the
@@ -59,9 +90,8 @@ between minority class samples to generate synthetic instances as shown in figur
 
 ![Visual representation of the SMOTE data generation mechanism.](smote.png){#fig-smote}
 
-A Python implementation of SMOTE and several of its variants are available in the
-[Imbalanced-Learn](https://imbalanced-learn.org/stable/) [@lemaitre_imbalanced-learn_2016] library, which is fully compatible with
-the popular machine learning toolbox [Scikit-Learn](https://scikit-learn.org/stable/) [@pedregosa_scikit-learn_2012].
+A Python implementation of SMOTE and several of its variants are available in the Imbalanced-Learn library, which is fully
+compatible with the popular machine learning toolbox Scikit-Learn.
 
 In addition to between-class imbalance, within-class imbalance refers to the case where areas of sparse and dense minority class
 instances exist. As the first step of generating synthetic samples, the SMOTE data generation mechanism selects randomly, with
@@ -76,11 +106,11 @@ a threshold, of a particular cluster, is used as an indicator that it can be saf
 generation is avoided. Furthermore, sparse minority clusters are assigned more synthetic samples, which alleviates within-class
 imbalance.
 
-Specific realizations of the above approach are SOMO [@douzas_self-organizing_2017] and KMeans-SMOTE [@douzas_improving_2018]
-algorithms. Empirical studies have shown that both algorithms outperform SMOTE and its variants across multiple imbalanced
-datasets, classifiers and evaluation metrics. 
+Specific realizations of the above approach are SOMO [@douzas_self-organizing_2017], KMeans-SMOTE [@douzas_improving_2018] and
+G-SOMO [@douzas_gsomo_2021] algorithms. Empirical studies have shown that the three algorithms outperform SMOTE and its variants
+across multiple imbalanced datasets, classifiers and evaluation metrics. 
 
-## Implementation and architecture {#sec-implementation-architecture}
+# Implementation and architecture
 
 The `cluster-over-sampling` software project is written in Python 3.7. It contains an object-oriented implementation of the
 clustering-based oversampling procedure as well as detailed [online documentation](https://cluster-over-sampling.vercel.app). The
@@ -93,66 +123,72 @@ and `over_sampling`. The `distribution` module implements the functionality rela
 to the identified clusters, while `over_sampling` implements the functionality related to the generation of artificial samples.
 Both of them are presented in detail below.
 
-### Distribution {#sec-distribution}
+#### Distribution
 
 The module `distribution` contains the files `base.py` and `_density.py`. The former provides the implementation of the
 `BaseDistributor` class, the base class for distributors, while the latter includes the `DensityDistributor` class, a
 generalization of the density-based distributor presented in [@douzas_self-organizing_2017] and [@douzas_improving_2018], that
-inherits from \texttt{BaseDistributor}. Following the Scikit-Learn API,`BaseDistributor` includes the public methods `fit` and
-`fit_distribute`. The `fit_distribute` method calls the `fit` method and returns two Python dictionaries that describe the
-distribution of generated samples inside each cluster and between clusters, respectively. Specifically, the `fit` method
-calculates various statistics related to the distribution process, while it calls the `_fit` method to calculate the actual
-intra-cluster and inter-cluster distributions. This is achieved by invoking the `_intra_distribute` and `_inter_distribute`
-methods. The `BaseDistributor` class provides a trivial implementation of them, that should be overwritten when a realization of a
-distributor class is considered. Consequently, `DensityDistributor` overwrites both methods as well as the `_fit` method. The
-later calls the methods `_identify_filtered_clusters` and `_calculate_clusters_density` that identify the clusters used for data
-generation and calculate their density, respectively. Subsection @sec-software-funtionalities provides a detailed description
-of the initialization and functionality of the `DensityDistributor` class. @fig-distributor-class-diagram shows a visual
+inherits from `BaseDistributor`. Following the Scikit-Learn API, `BaseDistributor` includes the public method `fit`. Also the
+`fit_distribute` method is also implemented as the main method of the class.
+
+The `fit_distribute` method calls the `fit` method and returns two Python dictionaries that describe the distribution of generated
+samples inside each cluster and between clusters, respectively. Specifically, the `fit` method calculates various statistics
+related to the distribution process, while it calls the `_fit` method to calculate the actual intra-cluster and inter-cluster
+distributions. This is achieved by invoking the `_intra_distribute` and `_inter_distribute` methods. The `BaseDistributor` class
+provides a trivial implementation of them, that should be overwritten when a realization of a distributor class is considered.
+Therefore, `DensityDistributor` overwrites both methods as well as the `_fit` method. The later calls the methods
+`_identify_filtered_clusters` and `_calculate_clusters_density` that identify the clusters used for data generation and calculate
+their density, respectively. Subsection [Software funtionalities](#software-functionalities) provides a detailed description of
+the initialization and functionality of the `DensityDistributor` class. @fig-distributor-class-diagram shows a visual
 representation of the above classes and functions hierarchy.
 
 ![UML BaseDistributor and DensityDistributor class diagrams and callgraphs of main classes and
 methods.](distributor_class_diagram.png){#fig-distributor-class-diagram}
 
-### Oversampling {#sec-oversampling}
+#### Oversampling
 
 The module `over_sampling` contains the files `_cluster.py`, `_kmeans_smote.py`, `_somo.py` and `_gsomo.py`. The former provides
 the `ClusterOverSampler` class, an extension of the Imbalanced-Learn's `BaseOverSampler` class, and implements the functionality
 required by clustering-based oversampling. The rest of the files `_kmeans_smote.py`, `_somo.py` and `_gsomo.py` utilize the
-`ClusterOverSampler` class and provide implementations of KMeans SMOTE, SOMO and Geometric SOMO algorithms, respectively. The
-initializer of `ClusterOverSampler`, compared to `BaseOverSampler`, includes the extra parameters `clusterer` and `distributor`.
-Also following the Imbalanced-Learn API, `ClusterOverSampler` includes the public methods `fit` and `fit_resample`. It also
-inherits from `BaseOverSampler`, the base class of oversamplers that is implemented in Imbalanced-Learn. The `fit` method
-calculates various statistics related to the resampling process, while the `fit_resample` method returns an enhanced version of
-the input data by appending the artificially generated samples. Specifically, `fit_resample` calls the `_fit_resample` method that
-in turn calls the `_intra_sample` and `_inter_sample` methods to generate the intra-cluster and inter-cluster artificial samples,
-respectively. This is achieved by invoking the `_fit\_resample\_cluster` method that implements the data generation mechanism.
-Therefore every oversampler that inherits from the `ClusterOverSampler` class should overwrite `_fit_resample_cluster`, providing
-a concrete implementation of the oversampling process. @sec-software-funtionalities provides a detailed description of the
-initialization and functionality of the various oversamplers, enhanced by the clustering process. @fig-oversampler-class-diagram
-shows a visual representation of the above classes and functions hierarchy.
+`ClusterOverSampler` class to provide implementations of KMeans SMOTE, SOMO and Geometric SOMO algorithms, respectively. The
+initializer of `ClusterOverSampler`, compared to the base class of oversamplers that is implemented in Imbalanced-Learn
+`BaseOverSampler`, includes the extra parameters `clusterer` and `distributor` and inherits from it. Also following the
+Imbalanced-Learn API, `ClusterOverSampler` includes the public methods `fit` and `fit_resample`.
+
+The `fit` method calculates various statistics related to the resampling process, while the `fit_resample` method returns an
+enhanced version of the input data by appending the artificially generated samples. Specifically, `fit_resample` calls the
+`_fit_resample` method that in turn calls the `_intra_sample` and `_inter_sample` methods to generate the intra-cluster and
+inter-cluster artificial samples, respectively. This is achieved by invoking the `_fit_resample_cluster` method that implements
+the data generation mechanism. Therefore every oversampler that inherits from the `ClusterOverSampler` class should overwrite
+`_fit_resample_cluster`, providing a concrete implementation of the oversampling process. [Software
+functionalities](#software-functionalities) provides a detailed description of the initialization and functionality of the various
+oversamplers, enhanced by the clustering process. @fig-oversampler-class-diagram shows a visual representation of the above
+classes and functions hierarchy.
 
 ![UML BaseOverSampler and BaseClusterOversampler class diagrams and callgraphs of main classes and
 methods.](oversampler_class_diagram.png){#fig-oversampler-class-diagram}
 
-## Software Functionalities {#sec-software-funtionalities}
+# Software functionalities
 
-As it was mentioned in subsection @sec-theoretical-background, clustering-based oversampling initially applies a clustering
-algorithm to the input space before oversampling is applied to each cluster. This is achieved through the implementation of the
-`ClusterOverSampler` class, an extension of Imbalanced-Learn's `BaseOverSampler` class. Oversamplers that inherit from
-`ClusterOverSampler`, compared to oversamplers inheriting from `BaseOverSampler`, require two additional initialization
-parameters: `clusterer` and `distributor`. Their default values are for both parameters equal to `None`, a case that corresponds
-to the usual oversampling procedure i.e. no clustering applied to the input space. On the other hand if the parameter `clusterer`
-is equal to any Scikit-Learn compatible clustering algorithm then clustering of the input space is initially applied, followed by
-oversampling in each cluster with the distribution of generated samples calculated by the `distributor` parameter. The default
-`distributor` value is an instance of `DensityDistributor` class as described in subsection @sec-distribution. The initializer of
-`DensityDistributor` includes the following parameters: `filtering_threshold`, `distances_exponent`, `sparsity_based` and
-`distribution_factor`. The first parameter is used to identify the filtered clusters, i.e. clusters of samples that are included
-in the data generation process. The second parameter modifies the density calculation of the filtered clusters by increasing the
-effect of euclidean distances between samples. The third parameter selects whether generated samples are assigned to filtered
-clusters inversely proportional to their density. Finally, the last parameter adjusts the intra-cluster to the inter-cluster
-proportion of generated samples, while it applies only to clusterers that support a neighborhood structure. Once the
-`DensityDistributor` object is initialized with a specific parametrization, it can be used to distribute the generated samples to
-the clusters identified by any clustering algorithm.
+As it was mentioned in section [Theoretical background](#theoretical-background), clustering-based oversampling initially applies
+a clustering algorithm to the input space before oversampling is applied to each cluster. This is achieved through the
+implementation of the `ClusterOverSampler` class, an extension of Imbalanced-Learn's `BaseOverSampler` class. Oversamplers that
+inherit from `ClusterOverSampler`, compared to oversamplers inheriting from `BaseOverSampler`, require two additional
+initialization parameters: `clusterer` and `distributor`. Their default values are for both parameters equal to `None`, a case
+that corresponds to the usual oversampling procedure i.e. no clustering applied to the input space. On the other hand if the
+parameter `clusterer` is equal to any Scikit-Learn compatible clustering algorithm then clustering of the input space is initially
+applied, followed by oversampling in each cluster with the distribution of generated samples calculated by the `distributor`
+parameter. The default `distributor` value is an instance of `DensityDistributor` class as described in subsection
+[Distribution](#distribution). 
+
+The initializer of `DensityDistributor` includes the following parameters: `filtering_threshold`, `distances_exponent`,
+`sparsity_based` and `distribution_factor`. The first parameter is used to identify the filtered clusters, i.e. clusters of
+samples that are included in the data generation process. The second parameter modifies the density calculation of the filtered
+clusters by increasing the effect of euclidean distances between samples. The third parameter selects whether generated samples
+are assigned to filtered clusters inversely proportional to their density. Finally, the last parameter adjusts the intra-cluster
+to the inter-cluster proportion of generated samples, while it applies only to clusterers that support a neighborhood structure.
+Once the `DensityDistributor` object is initialized with a specific parametrization, it can be used to distribute the generated
+samples to the clusters identified by any clustering algorithm.
 
 Resampling is achieved by using the two main methods of `fit` and `fit_resample` of any oversampler inheriting from
 `ClusterOverSampler`. More specifically, both of them take as input parameters the input matrix `X` and target labels `y`.
@@ -161,17 +197,20 @@ statistics which are used to resample `X`, while the second method does the same
 `X` and `y`.
 
 The `cluster-over-sampling` project has been designed to integrate with the Imbalanced-Learn toolbox and the Scikit-Learn
-ecosystem. Therefore all oversamplers that inherits from `ClusterOverSampler` can be used in machine learning pipelines, through
+ecosystem. Therefore all oversamplers that inherit from `ClusterOverSampler` can be used in machine learning pipelines, through
 Imbalanced-Learn's class `Pipeline`, that automatically combines `samplers`, `transformers` and `estimators`. The next section
 provides examples of the above functionalities.
 
-## Usage examples
+# Usage examples
 
-### Basic example
+Examples of `cluster-over-sampling` usage are given below and include a basic example and a machine learning pipeline. Both use
+clustering-based oversamplers to generate artificial data.
+
+#### Basic example
 
 An example of resampling an imbalanced dataset using the `fit_resample` method is presented. Initially, a binary-class imbalanced
-dataset is generated. Next, `KMeansSMOTE` oversampler is initialized with the default parameters. This corresponds to
-the KMeans-SMOTE algorithm as presented in [@douzas_improving_2018]. Finally, the oversampler's `fit_resample` method is used to
+dataset is generated. Next, `KMeansSMOTE` oversampler is initialized with the default parameters. This corresponds to the
+KMeans-SMOTE algorithm as presented in [@douzas_improving_2018]. Finally, the oversampler's `fit_resample` method is used to
 resample the data. Printing the class distribution before and after resampling confirms that the resampled data `X_res`, `y_res`
 are perfectly balanced. `X_res`, `y_res` can be used as training data for any classifier in the place of `X`, `y`.
 
@@ -205,7 +244,7 @@ print(f'Initial class distribution: {init_count}.')
 print(f'Resampled class distribution: {resampled_count}.')
 ```
 
-### Machine learning pipeline
+#### Machine learning pipeline
 
 As mentioned before, any clustering-based oversampler can be used as a part of a machine learning pipeline. A a pipeline is
 presented, composed by the combination of Borderline SMOTE oversampler and hierarchical clustering, a PCA tranformation and a
@@ -253,27 +292,30 @@ test_score = f1_score(y_test, pip.predict(X_test), average='micro')
 print(f'F-score on hold-out set: {test_score:.2f}.')
 ```
 
-## Quality control
+# Quality control
 
-All functions have been unit-tested for functionality and usability. Each of the simulation parameters was tested by providing a
-range of valid and invalid inputs and examining the results obtained. Additionally, a regression test is performed on the uavnoma
-command against previously validated results. These tests are integrated into the GitHub Actions continuous integration pipeline.
-That way, tests are automatically run each time new commits are pushed to GitHub.
+All functions and classes have been tested for functionality and usability. These tests are integrated into the GitHub Actions
+continuous integration (CI) service and they are automatically run each time new commits are pushed to GitHub using all supported
+operating systems and Python versions. Checks in code quality, vulnerabilities in dependencies and type annotations are applied
+through external libraries. Various development scripts that automate the above tasks are provided and described in detail in the
+Contributing section of the online documentation and Github.
 
-### (2) Availability
+# (2) Availability \
 
-**Operating system**
+# Operating system
 
-Any system capable of running Python ≥ 3.8.
+Any system (GNU/Linux, Mac OSX, Windows) capable of running Python ≥ 3.10.
 
-**Programming language**
+# Programming language
 
-Python 3.8, or higher.
+Python 3.10, or higher.
 
 **Dependencies**
 
-- numpy
-- pandas
+- scipy >= 1.7.2
+- numpy >= 1.22
+- scikit-learn >= 1.1.1
+- imbalanced-learn >= 0.9.0
 
 **List of contributors**
 
@@ -281,39 +323,27 @@ The software was created by Georgios Douzas.
 
 **Software location**
 
-Zenodo
-- Name: cluster-over-sampling
-- Persistent identifier:
-- Licence: MIT License
-- Publisher:  Zenodo
-- Version published: 
-- Date published:] 
+**Zenodo**
 
-**Code repository**
+- **Name:** cluster-over-sampling
+- **Persistent identifier:** https://doi.org/10.5280/zenodo.3370372
+- **Licence:** MIT License
+- **Publisher:**  Zenodo
+- **Version published:** 0.4.0
+- **Date published:** 01/10/2021
 
-GitHub
-- Name: cluster-over-sampling
-- Persistent identifier: https://github.com/georgedouzas/cluster-over-sampling
-- Licence: MIT
-- Date published:
+**GitHub**
+
+- **Name:** cluster-over-sampling
+- **Persistent identifier:** https://github.com/georgedouzas/cluster-over-sampling
+- **Licence:** MIT
+- **Date published:** 01/10/2021
 
 **Language**
 
 English
 
-### (3) Reuse potential
-
-The classes and methods in cluster-over-sampling package are suitable for future extensions of the system model. One of the main
-utilities of the model is the possibility for users to manually modify the parameters to analyze other scenarios, such as an urban
-micro or macrocell. Other benchmark parameters formats can be specified in random_position_users and random_position_uav. The
-functions can be integrated into other scenarios in order to investigate specific issues of UAV-NOMA communication. The
-fading_rician and generate_channel functions can be used for the investigation of power allocation, energy efficiency, LoS
-designing, and control of residual impairments. Once the modelers calculate the users’ rate, the outage probability_function can
-be called to calculate the failure rate of the system for two users independently of the scenario.
-
-Classification of imbalanced datasets is a challenging task for standard machine learning algorithms. In addition to between-class
-imbalance, within-class imbalance refers to the case where areas of sparse and dense minority class instances exist.
-Clustering-based oversampling, aims to deal with both between-class and within-class imbalance problems.
+# (3) Reuse potential
 
 The `cluster-over-sampling` project provides the only Python implementation, to the best of our knowledge, that provides a generic
 way to construct any clustering-based oversampler. A significant advantage of this implementation is that it is built on top of
@@ -322,7 +352,8 @@ any clustering-based oversampler is an extension of the one provided in Imbalanc
 Imbalanced-Learn and Scikit-Learn, that apply oversampling on imbalanced data, can integrate `cluster-over-sampling` in their
 existing work in a straightforward manner.
 
-Users can request support by opening an issue on GitHub.
+Users can request support by opening an issue on GitHub. Additionally users may do Pull Requests and contribute to the development
+of `cluster-over-sampling`. The documentation of the projects describes in detail the API and provides various complete examples.
 
 **Funding statement**
 
@@ -333,5 +364,4 @@ Ciência e a Tecnologia”), DSAIPA/DS/0116/2019.
 
 The authors declare that they have no competing interests.
 
-## References
-
+# References \
