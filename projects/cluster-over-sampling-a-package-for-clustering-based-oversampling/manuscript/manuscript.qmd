@@ -326,7 +326,7 @@ The software was created by Georgios Douzas.
 **Zenodo**
 
 - **Name:** cluster-over-sampling
-- **Persistent identifier:** https://doi.org/10.5280/zenodo.3370372
+- **Persistent identifier:** https://doi.org/10.5281/zenodo.3370372
 - **Licence:** MIT License
 - **Publisher:**  Zenodo
 - **Version published:** 0.4.0
