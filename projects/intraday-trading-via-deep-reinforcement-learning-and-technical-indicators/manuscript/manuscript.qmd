@@ -1,194 +1,497 @@
-# Intraday trading via Deep Reinforcement Learning and technical indicators
+---
+title: "Intraday trading via Deep Reinforcement Learning and Technical Indicators"
+bibliography: references.bib
+format: pdf
+abstract: "Deep Reinforcement Learning algorithms (DRL) have been used with success to deal with previously hard problems. The
+automation of profit generation in the financial markets is possible using DRL, by combining the prediction and allocation steps
+of the portfolio in one unified step to produce fully autonomous systems that can interact with their environment in order to make
+optimal decisions through trial and error. However, previous research has shown that DRL algorithms in day-trading tasks tend to
+suffer from noisy financial signals and costly search of continuous-valued action spaces. By presenting a DRL model for generating
+profitable trades in the cryptocurrency market, this work effectively overcomes the limitations of conventional strategies and
+forecasting methods. We formulate the trading problem as a Markov Decision Process using Technical Indicators (TI), taking
+liquidity and transaction costs into consideration, as well as the constraints imposed by the market. The proposed method utilizes
+the DRL algorithm Twin Delayed Deep Deterministic Policy Gradients (TD3). Our model outperforms other popular strategies,
+reporting a Sharpe Ratio $2.36$ on unseen data."
+---
 
-## Abstract
+# Introduction
 
-Trading based on Reinforcement Learning (RL) has sparked a lot of attention. However, in previous research, RL 
-in the day-trade task has been found to suffer by noisy financial signals on a short time scale and a costly 
-search of a continuous-valued action space. Based on the use of Technical Indicators (TI) and 
-Deep Reinforcement Learning (DRL), this work introduces an end-to-end RL intraday trading agent. We 
-show that our model outperforms other popular strategies based on TI 
-using cryptocurrency data and a portfolio of multiple assets.
+Investors aim to minimize the risks involved in the trading process and maximize profits. Investing in market assets requires
+successful prediction of prices or trends, as well as optimal allocation of capital among the selected assets in order to meet
+this objective. For a human being, it is extremely difficult to consider all relevant factors in such a complex and dynamic
+environment. Thus, the development of adaptive automated trading systems that can meet investor objectives and create profitable
+trading strategies has been a significant research topic.
 
-## Introduction
+In the last decade, there have been numerous attempts to develop automated trading systems. Most of these efforts have been
+focused on using Supervised Learning (SL) techniques [@patel_predicting_2015], [@tsantekidis_forecasting_2017],
+[@ntakaris_mid-price_2020], [@hao_predicting_2020], [@vargas_deep_2018]]. Their focus is to create forecasting models trained
+on historical data. Even though these techniques have gained popularity, they suffer from various limitations, which has lead to
+suboptimal results [@lopez_de_prado_10_2018].
 
-Financial trading is an online decision-making process (Deng et al., 2016). Previous works (Moody and Saffell, 
-1998; Moody and Saffell, 2001; Dempster and Leemans, 2006) demonstrated the RL agent’s 
-promising profitability in trading activities. However, traditional RL algorithms face challenges for the intraday 
-trading problem in three aspects: 
+Online decision-making is a core component of financial trading [@deng_deep_2017]. Additionally, it is highly time-dependent in
+nature, making it an ideal candidate for Markov Decision Processes (MDP) [@puterman_markov_1994]. In MDP, all the available
+information is included in the agent's current state, [@chakraborty_capturing_2019]. By combining the prediction and allocation
+steps of trading activity into one unified process, RL deals with a major disadvantage of SL methods: There is no need to define
+an additional strategy on top of the prediction model since the trading agent interacts with the environment to make optimal
+decisions in order to optimize the investor's objective [@meng_reinforcement_2019]. As demonstrated in previous works
+[@moody_learning_2001], [@dempster_automated_2006], RL has the potential to be profitable in trading activities.
 
-- Short-term financial movement is often accompanied by noisy oscillations. 
-- The computational complexity for making decisions in daily continuous-value price range is high. 
-- The early stop of orders when applying the intraday strategy. 
+As the title suggests, we are focusing on intraday trading, or trading “within the day” where all positions are closed before the
+market closes. Intraday price fluctuations are used by day traders to determine when they should purchase a security and then sell
+it to take advantage of short-term price fluctuations. There are a variety of intraday trading strategies identified by
+practitioners, including scalping (high-speed trading), range trading (which utilizes support levels and resistance levels as
+indicators for buying and selling), and news-based trading (which capitalizes on market volatility resulting from news-based
+events). Trading strategies that utilize automated trading techniques face three challenges associated with intraday trading:
 
-In a typical scenario, the settlement of orders involves two hyperparameters: 
+- Short-term financial movements are sometimes associated with short-term noise oscillations.
 
-- Target Profit (TP)
+- There is a high computational complexity associated with making decisions in the daily continuous-value price range.
 
-- Stop Loss (SL) 
+- An early stop of an order when applying intraday trading strategies based on Target Profit (TP) or Stop Loss (SL) signals.
 
-TP refers to the price closing the activating order and collect the profit if the price moves as expected. 
-SL denotes the price to terminate the transaction and avoid a further loss if the price moves towards a loss direction. These two 
-hyperparameters are defined as a fixed threshold. If the price crosses these two-preset levels, the order will be closed deterministically. 
+The majority of works studying RL's applications in financial markets considered discrete action spaces, such as buying, holding,
+and selling a fixed amount to trade a single asset [@vargas_deep_2018], [@corazza_q-learning-based_2014], [@tan_stock_2011], and
+[@deng_deep_2017]. To achieve better agent-environment interaction and faster convergence, a continuous action space approach is
+adopted to gradually adjust the portfolio's positions with each time step. Additionally, the approach allows to manage multiple
+assets rather than just one. Based on market constraints, such as liquidity and transaction costs, we first formulate the trading
+problem as MDP. Specifically, we enhance the state representation with ten different TIs in order to use high-level signals often
+utilized by traders. The Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm is then used and a policy is learned in a
+high-dimensional and continuous action space. Finally, we evaluate our proposed approach by performing back-testing, which is the
+process traders and analysts use to test a trading strategy on historical data in order to determine its viability.
 
-Focusing on the mentioned challenges, we propose a DRL model, named TIRL-Trader. Our model directly generates the trading policy using TI 
-instead of using fixed TP and SL. TIRL-Trader comprises two neural networks with different functions: 
+In summary, our main contributions are the following:
 
-- A Long-short Term Memory (LSTM) networks for extracting the temporal feature in financial time series.
-- A policy generator network (PGN) for generating the distribution of actions (policy) in each state. 
+- We propose a novel end-to-end daytrade DRL model that directly learns the optimal trading strategy, thus dealing with the early
+stop of strategies based on TP and SL signals.
 
-Experiments on cryptocurrency financial datasets and comparisons with popular rule-based trading systems have been conducted. 
-Our TIRL-Trader outperforms some state-of-the-art baselines in the profitability evaluated by the cumulative return and the 
-risk-adjusted return (Sharpe ratio), showing adaptability in the unseen market environment. The generated policy of 
-TIRL-Trader also provides an explainable profit-and-loss order control strategy.
+- We constraint the DRL agent’s action space via the utilization of TI.
 
-Our main contributions could be summarized as:
+- Compared to state-of-the-art rule-based and SL-based strategies, our approach is more profitable and robust.
 
-- We propose a novel end-to-end daytrade model that directly learns the optimal trading strategy, thus solving the 
-early stop in an implicit stop-loss and target-profit setting.
-- We constraint the RL agent’s action space via the utilization of TI.
-- We achieve better profitability and robustness compared to state-of-the-art rule-based strategies.
+# Background and related work
 
-## Related Work
+This study focuses DRL-based trading agents as well as strategies that utilize TI. Therefore, we briefly review past studies and
+provide some background information on these topics.
 
-Our work is in line with trading based on DRL and strategies that utilize TI. Therefore, we shortly review past studies.
+## Background
 
-### Deep Reinforcement Learning in Trading
+MDP [@alagoz_markov_2010] is a framework that is used to model stochastic processes. They include random variables that transition
+from one state to another while certain assumptions and probabilistic rules apply. MDPs are used to define RL problems. In
+MDP, the agent interacts with the environment and the learning process ensues from this interaction. At each time step $t
+\in\{1,2,3, \ldots, T\}$ the agent receives information of its current state $S_{t} \in \mathcal{S}$, and selects an action $A_{t}
+\in \mathcal{A}$ to perform. As a result of its action, the agent finds itself in a new state, and the environment returns a
+reward $R_{t+1} \in \mathcal{R}$ to the agent as a feedback regarding the quality of its action [@sutton_reinforcement_2018].
 
-Algorithmic trading has been widely studied in its different subareas, including risk control (Pichler et al., 2021), portfolio 
-optimization (Giudici et al., 2020), and trading strategy (Marques and Gomes, 2010; Vella and Ng, 2015; Chen et al., 2021).
-Nowadays, the AI-based trading, especially, the RL approach, attracts the interest in both academia and 
-industry. Moody and Saffell (2001) proposed a direct RL algorithm to trade and performed a comprehensive comparison 
-between the Q-learning with the policy gradient. Huang et al. (2016) further propose a robust trading agent based on the 
-Deep-Q networks (DQN). Deng et al. (2016) utilized the fuzzy logic with a deep learning model to extract the financial 
-feature from noisy time series, which achieved state-of-the-art performance in a single asset trading. Xiong et al. 
-(2018) used the Deep Deterministic Policy Gradient (DDPG) based on the standard actor-critic framework for 
-stock trading. The experiments demonstrated their profitability over the baselines including the min-variance portfolio 
-allocation method and the technical approach based on the Dow Jones Industrial Average (DJIA) index. Wang et al. (2019) 
-used the RL algorithm to construct the winner and loser portfolio and traded in the buy-winner-sell-loser strategy. 
-However, the intraday trading for RL agents remains less addressed, which is mainly because of the complexity 
-in designing an action space for frequent trading strategies.
+In any RL problem, the goal is to maximize the cumulative reward it receives over time, rather than the immediate reward $R_{t}$:
 
-### Technical Indicators in Trading
+$$\mathbb{G}_{t} = R_{t+1}+R_{t+2}+R_{t+3}+\ldots+R_{T}$$
 
-Trading in practice involves analyzing different charts and making decisions based on patterns and indicators. Regardless of 
-a trader's proficiency, it is accepted among industry practitioners that TI play a pivotal role in market analysis. The financial 
-market is quite dynamic, current affairs and concurrent events also heavily influence the market situation. The TI 
-provide useful information about market trends and help maximize the returns. The provided information and the corresponding 
-TI can be categorized as follows:
+The term $R_{T}$ in the previous formula indicates the reward that is received at the terminal state $t=T$, which means
+the equation at hand is valid only if the problem is episodic, that is, it ends in a terminal state. In the case of continuous
+tasks that do not have terminal states, a discount factor known as gamma is introduced:
 
-- Trend. 
+$$\mathbb{G}_{t}=R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\ldots+\gamma^{k-1} R_{t+k}+\ldots =\sum_{0}^{\infty} \gamma^{k} R_{t+k+1}$$
 
-They indicate the trend of the market or the direction in which the market is moving. Typically, the trend indicators 
-are oscillators, i.e they tend to move between high and low values.
+Value functions are being used by RL methods to estimate evaluate states or to state-action pairs. This evaluation is based on the
+future expected sum of rewards. We call the selection of actions in a given state as s Policy $\pi$ [@sutton_reinforcement_2018]
+which maps states to probabilities of selecting each possible action.
 
-- Momentum. 
+Bellman equations [@bellman_dynamic_2010] define linear equations among value functions used in Dynamic Programming. They are
+fundamental to understand how RL algorithms work. The value function $v_{\pi}(s)$ of a state $s$ satisifies the following equation:
 
-They indicate the strength of the trend and also signal whether there is any likelihood of reversal. Relative Strength Index (RSI) 
-is one momentum indicator, used for indicating the top and bottom price.
+$v_{\pi}(s) = \sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} Pr\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]$
 
-- Volume. 
+Similarly, for the action-value function $q_{\pi}(s, a)$:
 
-They indicate how the volume changes with time. They also indicate the number of assets that are being bought 
-and sold over time. When the price changes, volume indicates how strong the move is.
+$q_{\pi}(s, a)=\sum_{s^{\prime}} \sum_{r} Pr\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \sum_{a^{\prime}} \pi\left(a^{\prime} \mid s^{\prime}\right) q_{\pi}\left(s^{\prime}, a^{\prime}\right)\right]$
 
-- Volatility. 
+Bellman equations can be used to derive what is referred to as the Bellman Optimality Equations. The Bellman optimality equation
+expresses the fact that the value of a state under an optimal policy $\pi_{*}$ must be equal the expected return for the best action
+from that state [@sutton_reinforcement_2018]. The optimal state-value function $v_{*}$ equals to:
 
-They indicate how much the price is changing in the given period. High volatility indicates large price moves 
-while lower volatility indicates price stability.
+$$v_{*}(s)=\max _{a} \sum_{s^{\prime}} \sum_{r} Pr\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{*}\left(s^{\prime}\right)\right]$$
 
-In the current work we utilize the following TI:
+Similarly, for the action-value function $q_{*}$ as:
 
-- Moving Averages
+$$q_{*}(s, a)=\max _{\pi} q_{\pi}(s, a)=\sum_{s^{\prime}} \sum_{r} Pr\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \max _{a^{\prime}} q_{*}\left(s^{\prime}, a^{\prime}\right)\right]$$
 
-Moving averages is a frequently used intraday trading indicator. It provides information about the momentum of the market, trends 
-in the market, the reversal of trends, and the stop loss points.
+It is possible to classify RL algorithms into three main categories:
 
-- Bollinger Bands
+### Critic-Only
 
-Bollinger bands indicate the volatility in the market. Bollinger bands are of 3 types: a middle band which is a 20-day simple moving 
-average, a +2 standard deviation upper band and a -2 lower deviation lower band.
+This family of algorithms learns to estimate the value function by utilizing a method called Generalized Policy Iteration (GPI).
+GPI includes two steps. The first one is the policy-evaluation. The primary goal of this step is to collect information under the
+given policy and evaluate it. The second step is to improve the policy by choosing greedy actions based on the value functions
+computed from the policy-evaluation step. Once the value functions and policies stabilize, the process has reached an optimal
+policy when the two steps alternate in a sequential manner.
 
-- Relative Strength Index (RSI)
+There are two different ways the agent learns the value function of the system. The first is the Tabular Solution Method that
+finds exact solutions: The value functions are represented as tables and updated after each iteration as the agent collects more
+experience. However, it requires that the state and action spaces must be small enough to be stored in tables. The second possible
+way in the critic-only approach is called Approximate Solution Method and it is capable of learning the value function of systems
+with large state and action spaces. Approximate methods achieve this generalization by combining RL with SL algorithms. DRL is an
+approximate method that combines Deep Neural Networks with RL [@mnih_playing_2013], [@mnih_human-level_2015].
 
-RSI is a momentum indicator. It is a single line ranging from 0 to 100 which indicates when the stock is overbought or oversold in the market.
+### Actor-Only
 
-- Commodity Channel Index
+Actor-Only methods, also known as Policy Gradient Methods, estimate the gradient of the objective, which is maximizing rewards
+with respect to the policy parameters and adjust the policy parameters $\theta$:
 
-Commodity Channel Index identifies new trends in the market. It has values of 0, +100, and -100.
+$$\theta_{t+1}=\theta_{t}+\alpha \nabla \ln \pi\left(a_{t} \mid s_{t}, \theta_{t}\right) G_{t}$$
 
-- Stochastic Oscillator
+In contrast to Critic-Only methods, the parameterized policy function takes state and action as an input and returns the
+probability of taking that action in that state.
 
-The stochastic oscillator is one of the momentum indicators. The oscillator compares the closing price of a stock to a range of prices over a 
-period of time.
+### Actor-Critic
 
-## TIRL-Trader
+An improvement of the original DQN [@van_hasselt_deep_2015] proposed to use two networks instead of one Q-network to choose the
+action and the other to evaluate the action taken to solve the deviation problem in DQN. The proposed architecture was called
+Double-DQN. In this approach, known as Actor-Critic, the actor selects actions at each time step to form the policy, whereas the
+critic evaluates these actions. In this approach, the policy parameters $\theta$ are gradually adjusting in order to maximize the
+total reward predicted by the critic. The error $\delta$ calculated by the critic to evaluate the action is as follows:
 
-The architecture of the TIRL-Trader has two main components:
+$$\delta=R_{t+1}+\gamma \hat{v}\left(s_{t+1}, w\right)-\hat{v}\left(s_{t}, w\right)$$
 
-### LSTM Network
+The value function estimation of the current state $\hat{v}\left(s_{t}, w\right)$ is added as a baseline to make the learning
+faster. The equation to update the gradient at each time step $t$ as the following:
 
-LSTM networks show promising performance in the sequential feature learning, as its structural adaptability (Gers et al., 2000). We use the 
-LSTM networks to extract the temporal features of the financial series. We apply the same look-back window in (Wang et al., 2019) with size W to 
-split the input sequence () from the completed series (), i.e., agent evaluates the market status by the time period with size W. Hence, the 
-input matrix of LSTM could be noted as ().
+$$\theta_{t+1}=\theta_{t}+\alpha \nabla \ln \pi\left(a_{t} \mid s_{t}, \theta_{t}\right)\left(R_{t+1}+\gamma \hat{v}\left(s_{t+1}, w\right)-\hat{v}\left(s_{t}, w\right)\right)$$
 
-The input vectors is constituted by: 
+[@lillicrap_continuous_2015] proposed a variation of Double-DQN, an algorithm based on the deterministic policy gradient (DDPG),
+for continuous action spaces. The Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm which we use this work, was
+proposed in [@fujimoto_addressing_2018] to tackle the problem of the approximation error in DDPG.
 
-- Opening, highest, lowest and closing prices as well as transaction volume for each trading day.
+### Deep Reinforcement Learning in trading
 
-- Per minute data of the following values:
+Algorithmic trading has been applied various subareas, including risk control, portfolio optimization [@giudici_network_2020], and
+trading strategies [@vella_dynamic_2015], [@chen_trading_2021]. Both academia and industry are increasingly interested in AI-based
+trading, particularly with the RL approach. Nevertheless, RL agents have not been adequately addressed in intraday trading,
+primarily due to the difficulty in designing an action space for frequent trading strategies. [@moody_learning_2001] proposed a RL
+algorithm as a trading agent and performed a detailed comparison between the Q-learning with the policy gradient method.
+[@bertoluzzo_testing_2012] evaluated the performance of different RL algorithms in day-trading for an Italian stock. Q-learning
+algorithm and Kernel-based RL were compared, concluding that Q-learning outperformed Kernel-based RL.
+[@corazza_q-learning-based_2014], explored the effect of various reward functions such as Sharpe ratio and average log return on
+the performance of Q-learning. [@huang_robust_2016] further proposed a robust trading agent based on the DQN architecture.
+[@deng_deep_2017] proposed a combination of Deep Learning (DL) with Recurrent Reinforcement Learning to directly approximate a
+policy function. Their method is called Deep Recurrent Reinforcement Learning (DRRL). The DL algorithm extracts 45 useful features
+from the market. Then a Recurrent Neural Network (RNN) is used as a trading agent to interact with the state features and make
+decisions. [@conegundes_beating_2020] used Deep Deterministic Policy Gradient (DDPG) algorithm to deal with the asset allocation
+problem. They back-tested their method on the Brazilian Stock Exchange datasets, considering different constraints such as
+liquidity, latency, slippage, and transaction costs, obtaining $311 \%$ cumulative return in three years with an annual average
+maximum drawdown around $19 \%$.
 
-    - Prices
+### Technical Indicators in trading
 
-    - Moving Averages
+Trading requires the analysis of various charts and the extraction of strategies based on patterns and indicators. It is accepted
+among industry practitioners that TI play an important role in market analysis since the financial market is dynamic. The
+hypothesis of technical analysis states that the future behavior of financial markets is conditioned on its past. Hence TI are
+being used to provide useful information about market trends and help maximize the returns. We selected the ten most popular TI
+used often by practitioners [@kirkpatrick_technical_2011]. The following is a brief description of them:
 
-    - Bollinger Bands
+1) Relative Strength Index (RSI): A momentum indicator to measure the speed and magnitude of an assets' recent price changes to evaluate overvalued or undervalued conditions in the price.
 
-    - RSI
+2) Simple Moving Average (SMA): An important indicator to identify current price trends and the potential for a change in an
+established trend.
 
-    - Commodity Channel Index
+3) Exponential Moving Average (EMA): EMA is considered an improved version of SMA by giving more weight to the recent prices
+considering old price history less relevant.
 
-    - Stochastic Oscillator (KDJ)
+4) Stochastic Oscillator (SO): A momentum indicator comparing the closing price of the asset to a range of its prices in a
+look-back window period.
 
-The above features are included multiple times with different parametrization. Additionally, indices are included that are extracted from the above features and 
-correspond to popular strategies. More details are provided in the sections below.
+5) Moving Average Convergence/Divergence (MACD): A popular momentum indicator to identify the relationship between
+two moving averages of the assets' price.
 
-### Policy Generator Networks
+6) Accumulation/Distribution Oscillator (AD): A volume-based cumulative momentum indicator that assess whether
+the asset is being accumulated or distributed.
 
-Given the learned feature vector, PGN directly produces the output policy, i.e., the probability of setting an order in each time interval. The 
-output policy at is calculated as follows:
+7) On-Balance Volume Indicator (OBVI): A volume-based momentum indicator that uses volume flow to predict the changes in
+assets's price.
 
-()
+8) Price Rate Of Change (ROC): A momentum based indicator that measures the speed of assets' price changes over the look-back
+window.
 
-In timestep t, model takes action () by sampling from the policy () comprised of only long positions.
+9) Williams Percent Range (WPR): A momentum indicator used to spot entry and exit points in the market by comparing the
+closing price of the asset to the high-low range of prices in the look-back window.
 
-We train the TIRL-Trader with standard RL techniques. The key idea is to maintain a loop with the successive steps: 
+10) Disparity Index (DI): It is the percentage equal to the relative position of the current closing price of the asset to a
+selected moving average.
 
-- The agent is aware of the environment through the state vector ().
+# Trading environment
 
-- The agent applies an action.
+We model the trading problem as a MDP, which can be formulated by describing its State Space, Action Space, and Reward Function.
+This formulation is known as the trading environment, and it is designed to simulate the real-world trading process.
 
-- The agent adjust its behavior to receive more reward until it has completed its learning goal (Sutton and Barto, 2018). 
+## States
 
-The objective is to maximize the expectation of reward (). Gradient descent is used during the optimization phase. To avoid the local 
-minimum problem caused by the multiple postive-reward actions, we use the state-dependent threshold method (Sutton and Barto, 2018).
+The state-space is designed to support multiple assets by representing the state as a $(1 + 12 \times \mathcal{N})$-dimensional
+vector, where $\mathcal{N}$ is the number of assets. Therefore, the state space increases linearly with the number of assets
+available to be traded. There are two main parts of the state presentation. The first part holds the current cash balance and
+shares owned by each asset in the portfolio and it is a $\mathbb{R}_{+}^{1+2\mathcal{N}}$ vector. The second part of the state is
+the TI information and it is represented by a $\mathbb{R}^{10 \times \mathcal{N}}$ vector. Therefore, the final state vector at
+each time step is provided to the agent as follows:
 
-The overall summary of TIRL-Trader architecture is shown in the next figure:
+$$S_t=\left[balance_t, share_t^1, \ldots, share_t^{\mathcal{N}}, price_t^1, \ldots, price_t^{\mathcal{N}}, TI_t^{1,1}, \ldots, TI_t^{\mathcal{N},10} \right]$$
 
-()
+Each component of the state vector is defined as follows:
 
-## Experiments
+- $balance_t \in \mathbb{R}_{+}$: The available cash balance in the portfolio at time step $t$.
 
-We conduct the empirical evaluation for our TIRL-Trader in 
+- $share_t^i \in \mathbb{Z}_{+}$: The number of shares owned for each asset $i \in \mathcal{N}$ at time step $t$.
 
-### Dataset
+- $price_t^i \in \mathbb{R}_{+}$: The close price for each asset $i \in \mathcal{N}$ at time step $t$.
 
-### Models
+- $TI_t^{i,j}$ : The $j$th Technical Indicator for asset $i$ in the portfolio at time step $t$ using the past prices of the asset
+in a specified look-back window.
 
-### Performance
+To provide and example of the state space, let's assume that we have three different assets $\mathcal{N}=3$ and an initial capital
+of $10000$ to be invested. Then the state vector would be a 37-dimensional vector with the following initial state:
 
-## Analysis
+$$S_t=\left[10000, 0, 0, 0, price_t^1, price_t^2, price_t^3, TI_t^{1,1}, \ldots, TI_t^{3,10} \right]$$
 
-## Conclusions and Future Work
+## Actions
 
-In this paper, we investigated the utilization of TI in building an end-to-end day-trade RL trader. Our model substantiate the profitability and robustness in the intraday trading task. Experiments reveal our QF-TraderNet outperforms other baselines. To perform intraday trading, we assumed the ground state in t- th day is available for QF-TraderNet in this work. One interesting future work will be combining QF-TraderNet with the state-of-the-art forecasters to perform real-time trading by a predictor-trader framework in which a forecaster predicts the opening price in t-th day for our QF- TraderNet to perform trading.
+The agent receives the state $S_{t}$ at each time step $t$ as input and selectes action in the range $A_{t}^i \in[-1,1]$. Then the
+action is re-scaled using a constrain $K_{\max }$, which represents the maximum allocation (buy/sell shares), transforming $A_t^i$
+to an integer $K \in\left[-K_{\max }, \ldots,-1,0,1, \ldots, K_{\max }\right]$, which stands for the number of shares to be
+executed, resulting in decreasing, increasing or holding of the current position of the corresponding asset. There are two
+important conditions regarding the action execution in our approach:
+
+- If the current capital in the portfolio is insufficient to execute the buy action, the action will be partially executed.
+
+- If the number of shares for a specific asset $share_{t}^{i}$ in the portfolio is less than the number of shares to be
+sold $K < 0$, the agent will sell all the remaining shares of this asset.
+
+The action vector is expressed as the follows:
+
+$$
+A_{t}=\left[A_{t}^{0}, A_{t}^{1}, \ldots, A_{t}^{\mathcal{N}}\right]
+$$
+
+The dimensionality of the action space depends on the number of assets available in the portfolio and it's given as $\left(2
+\times K_{\max}+1\right)^{\mathcal{N}}$. Hence its dimensionality increases exponentially by increasing $\mathcal{N}$.
+
+## Rewards
+
+The portfolio value $\mathcal{value}$ at each time step is calculated as follows:
+
+$$value_{t}=balance_{t} + \sum_i share_{t}^i \cdot price_{t}^i$$
+
+The difference between the portfolio value $\mathcal{value}_{t}$ at the end of period $t$ and the value at the end of previous
+period $t-1$ represents the immediate reward received by the agent after each action.
+
+The transaction cost varies from one broker to another. To simulate more accurately the trading process, transaction costs are
+included into the immediate reward calculation. We set the transaction cost as a fixed percentage of the total closed deal cash
+amount, where $d_{\text{buy}}$ represents the commission percentage when buying is performed, and $d_{\text{sell}}$ is the
+commission percentage for selling:
+
+$$
+\begin{gathered}
+d_{t}=\left[d_{t}^{0}, d_{t}^{1}, \ldots, d_{t}^{\mathcal{N}}\right] \\
+d_{t}^{i}= \begin{cases}d_{\text {buy }}, & \text { if } A_{t}^{i}>0 \\
+0, & \text { if } A_{t}^{i}=0 \\
+d_{\text {sell }}, & \text { if } A_{t}^{i}<0\end{cases}
+\end{gathered}
+$$
+
+The commission vector $d_{t}$ is incorporated into the immediate reward function by excluding the commission amount paid from the
+portfolio value. Consequently, the agent would avoid excessive trading that results in a high commission rate and therefore avoids
+a negative reward:
+
+$$value_{t}=balance_{t} + \sum_i share_{t}^i \cdot \left(price_{t}^i - price_{t-1}^i \cdot d_{t}^i\right)$$
+
+The action of buying/selling occurred in the previous state and therefore commission should be calculated using the closing prices
+on that state. Therefore in the above equation, the amount paid for the commission is calculated by taking the product of the
+commission vector and the closing price of the previous period. 
+
+## Assumptions
+
+In order to simulate as realistically as possible the trading process, we impose the following assumptions on the MDP environment:
+
+### Non-negative balance
+
+The cash balance in any state is not allowed to be negative. To achieve that, the environment prioritizes the execution of sell
+actions in the action vector. If the buy action still results in a negative balance, it is fulfilled partially as explained above.
+
+### Short-selling
+
+Short selling is prohibited in the designed environment, i.e. all portfolio's positions must be strictly non-negative.
+
+### Zero slippage
+
+When the market volatility is high, slippage occurs between the price at which the trade was ordered and the price at which it's
+completed. In this study, the market liquidity is assumed to be high enough to meet the transaction at the same price when it
+was ordered.
+
+### Zero market impact
+
+In financial markets, a market participant impacts the market when it buys or sells an asset which causes the price change. The
+impact provoked by the agent in this study is assumed to have no effect on the market when it performs its actions.
+
+## Trading agent
+
+Actor-Critic-based algorithms deal with the continuous action space by utilizing function approximation and policy gradient
+methods. Deep Deterministic Policy Gradient algorithm (DDPG) is a popular actor-critic, off-policy algorithm. Despite its
+excellent performance in continuous control problems, it has a significant drawback similar to many RL algorithms: it tends to
+overestimate the action values as a result of function approximation error. In this study, we use Twin Delayed Deep Deterministic
+Policy Gradient (TD3) [@fujimoto_addressing_2018] algorithm, which improves the overestimation problem if DDPG. TD3 introduces
+three main components into DDPG: 
+
+1) Clipped double critic networks: It is a variant of Double Q-learning [@van_hasselt_deep_2015] to replace the single critic. It
+utilizes two different critic networks to make an independent estimate of the value function.
+
+2) Delayed Updates: The second component delays the policy network update and allows the value network to stabilize before it can
+be used to update the policy gradient. This results in a lower variance of estimates and, therefore, better policy.
+
+3) Target Policy Smoothing Regularization: A regularization strategy is applied to the target policy by adding a small random
+noise and averaging over mini-batches. This reduces the variance of the target values when updating the critic.
+
+# Experimental procedure
+
+We conduct the empirical evaluation of the proposed DRL agent in the highly volatile cryptocurrency market. In our experiment, we
+select multiple cryptocurrencies over a testing period in which the crypto market crashed twice. The initial capital is set to
+$10.000$ at a transaction cost of $0.5\%$. The evaluation is conducted from the perspective of obtaining profits as well as
+robustness when agents face the unexpected change of market states. We also include various comparison methods as described below.
+An important issue is that the experiment results are stochastic: They may change at each run depending on different factors such
+as the actions the agent randomly starts with and uses to explore or the random weight initialization. Therefore, following
+[@henderson_deep_2017] we average multiple runs over different random seeds. While the recommended number of trials to evaluate an
+RL algorithm is still an open question in the field, we report the mean across five runs, which is the suggested number in many
+studies. For each trading strategy we use multiple hyperparameters and apply cross-validation on a rolling basis to select the
+optimal configuration. The scripts that run the experimental procedure can be found in
+[GitHub](https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications), while a detailed description of the process,
+formulas and hyperparameters space is presented in the Appendix. In the following subsections we provide a high-level description
+of the experiments and their results.
+
+## Data
+
+The following ten cryptocurrencies with high trading volumes are selected: 
+
+- AAVE
+- AVAX
+- BTC
+- NEAR 
+- LINK 
+- ETH
+- LTC
+- MATIC
+- UNI
+- SOL
+
+A five-minute-level data from 02/02/2022 to 06/27/2022 is used. We split it into a training period (from 02/02/2022 to 04/30/2022)
+and a testing period (from 05/01/2022 to 06/27/2022), corresponding to approximately 25000 and 16000 observations per asset,
+respectively. All datasets utilized in experiments are free to download and described in detail in Appendix.
+
+## Evaluation metrics
+
+We use two metrics to evaluate our results. The first metric is the cumulative price return (CPR):
+
+$\mathrm{CPR}=\sum \left(\mathrm{return}_{\mathrm{t}}^{\text {(holding) }}-\mathrm{return}_{\mathrm{t}}^{\text {(settlement) }}\right)$
+
+The second metric is the annualized Sharpe Ratio (SR) [@sharpe_sharpe_1994] which combines the return and the risk to give the
+average of the risk-free return by the portfolio's deviation: 
+
+$\mathrm{SR}=\frac{\text { Average }(CPR)}{\text { StandardDeviation }(CPR)}$
+
+In general, a SR above $1.0$ is considered to be "good" by investors because this suggests that the portfolio is offering excess
+returns relative to its volatility. A Sharpe ratio higher than $2.0$ is rated as "very good", while a ratio above $3.0$ is
+considered "excellent".
+
+## Comparison methods
+
+To compare the performance of the proposed DRL agent, various methods are selected:
+
+- MB: Market baseline performance. A strategy used to measure the overall performance of the market during the testing period, by
+holding the assets consistently. We assume a portfolio of equal assets allocation.
+
+- SLTP: Stop Loss and Take Profit strategy. A simple strategy that consists of using a fixed percentage to determine SL and TP
+levels.
+
+- MVP: Minimum Variance Portfolio. A popular strategy that aims to maximizes performance while minimizing risk. 
+
+- TI: Each one of the 10 TI is used to define a strategy i.e. entry, exit and trade management rules.
+
+- FCM: A SL forecasting model based on a Recurrent Neural Network, consisting of a multi-layer Long Short-Term Memory
+architecture. It utilizes the Buy-Winner-Sell-Loser strategy.
+
+- RF: Similar to FCM but uses as forecasting model the Random Forest algorithm.
+
+- FDRNN [@deng_deep_2017]: A state-of-the-art DRL trader as described above.
+
+A detailed description of each of the above comparison methods is presented in the Appendix.
+
+## Results
+
+The results below are presented for the unseen data of the testing period 05/01/2022 to 06/27/2022.
+
+@tbl-performance presents the evaluation of each methods performance, with the metrics of CPR and the SR:
+
+|Strategy|CPR|SR|
+|-|-|-|
+|MB|-42.53|-0.12|
+|SLTP|-10.91|-0.03|
+|MVP|-39.13|-0.07|
+|RSI|-13.23|-0.02|
+|SMA|-4.56|-0.03|
+|EMA|-6.23|-0.03|
+|SO|3.45|0.04|
+|MACD|1.56|0.06|
+|AD|2.89|0.05|
+|OBVI|-3.41|-0.01|
+|ROC|11.62|0.12|
+|WPR|5.34|0.08|
+|DI|-7.84|-0.13|
+|FCM|12.67|0.58|
+|RF|8.56|0.43|
+|FDRNN|13.45|0.64|
+|Proposed method|**76.34**|**2.36**|
+
+: CPR and SR of various strategies compared to proposed method. {#tbl-performance}
+
+@tbl-netprofit presents the net profit of each strategy:
+
+|Strategy|CPR|SR|
+|-|-|-|
+|MB|-4253.0|
+|SLTP|-1290.3|
+|MVP|-3913|
+|RSI|-1150.4|
+|SMA|-389.7|
+|EMA|-612.3|
+|SO|378.8|
+|MACD|136.4|
+|AD|293.2|
+|OBVI|-341.8|
+|ROC|1342.3|
+|WPR|504.2|
+|DI|-584.7|
+|FCM|1303.3|
+|RF|834.6|
+|FDRNN|1401.3|
+|Proposed method|**7348.1**|
+
+: Net profit of strategies compared to proposed method. {#tbl-netprofit}
+
+The CPR of the testing period for the market baseline and the three best methods is presented in @fig-cpr:
+
+![CPR of market baseline and best methods.](cpr.png){#fig-cpr}
+
+The result of MB and MVP strategies denote that the crypto market was in a downtrend and actually crashed twice during the testing
+period. Excluding SLTP, all day-trading strategies are less affected by this market trend. Particularly, the backtesting results
+of Table show the good generalization of the proposed method: It is the strategy with the highest CPR and SR. Although it uses the
+same information as TI, the proposed DRL trading agent seems to form a profitable strategy that utilizes the combined signals and
+outperforms strategies from single TI. Similarly it outperforms the SL-based strategies FCM and RF as well the state-of-the-art
+DRL trading agent FDRNN.
+
+# Conclusions and Future Work
+
+This work presented a DRL trading agent, based on the TD3 algorithm, that utilizes TI to find an optimal trading policy for assets
+in the cryptocurrency market. Results show that the addition of TI in the state representation has allowed to learn a profitable
+strategy. The proposed DRL agent outperforms all comparison methods and particularly utilized the TI signals to outperform
+standard strategies in the technical analysis field. Additionally, a possible advantage of using a continuous action space over a
+discrete one is presented. Our approach achieved a Sharpe ratio of \(2.36\) on test data, which is considered "Very good" by
+investors. The proposed method can be improved in future work by having more computational power to tune the available
+hyperparameters. In addition, including fundamental information, for instance an NLP algorithm to process the financial news
+content, may positively affect the agent performance.
+
+# References
+
