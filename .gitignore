@@ -29,4 +29,4 @@ supplementary
 !**/manuscript/manuscript.qmd
 **/manuscript/*.cls
 **/manuscript/*.csl
-/.luarc.json
+

@@ -1,0 +1,269 @@
+# geometric-smote: A package for flexible and efficient oversampling
+
+## Abstract
+
+Learning from class-imbalanced data continues to be a frequent and challenging
+problem in machine learning. Standard classification algorithms are designed
+under the assumption that the distribution of classes is balanced. To mitigate
+this problem several approaches have been proposed. The most general and popular
+approach is the generation of artificial data for the minority classes, known as
+oversampling. Geometric SMOTE is a state-of-the-art oversampling algorithm that
+has been shown to outperform other standard oversamplers in a large number of
+datasets. In order to make available Geometric SMOTE to the machine learning
+community, in this paper we provide a Python implementation. It is important to
+note that this implementation integrates seamlessly with the Scikit-Learn
+ecosystem. Therefore, machine learning researchers and practitioners can benefit
+from its use in a straightforward manner.
+
+### Introduction
+
+The imbalanced learning problem is defined as a machine learning classification
+task using datasets with binary or multi-class targets where one of the classes,
+called the majority class, outnumbers significantly the remaining classes,
+called the minority class(es) ([Chawla
+2003](:/0ad29a2551e6479cbb34feead5fb367e)). Learning from imbalanced data is a
+frequent and non-trivial problem for academic researchers and industry
+practitioners alike. The imbalance learning problem can be found in multiple
+domains such as chemical and biochemical engineering, financial management,
+information technology, security, business, agriculture or emergency management
+([Haixiang 2017](:/0ad29a2551e6479cbb34feead5fb367e)).
+
+Standard machine learning classification algorithms induce a bias towards the
+majority class during training. This results in low performance when metrics
+suitable for imbalanced data are used for the classifier's evaluation. An
+important characteristic of imbalanced data is the Imbalance Ratio ($IR$) which
+is defined as the ratio between the number of samples of the majority class and
+each of the minority classes. For example, in a fraud detection task with 1% of
+fraudulent transactions, corresponding to an $IR=\frac{0.99}{0.01}=99$, a
+trivial classifier that always labels a transaction as legit will score a
+classification accuracy of $99%$. However in this case, all fraud cases remain
+undetected. $IR$ values between $100$ and $100.000$ have been observed
+([Chawla2002](:/0ad29a2551e6479cbb34feead5fb367e),
+[Barua2014](:/0ad29a2551e6479cbb34feead5fb367e)). Figure 1 shows an example of
+imbalanced data in two dimensions and the resulting decision boundary of a
+typical classifier when they are used as a training set.
+
+![](imbalanced_problem.png)
+
+Imbalanced data in two dimensions. The decision boundary of a classifier shows a
+bias towards the majority class.
+
+
+### Oversampling algorithms
+
+Various approaches have been proposed to deal with the imbalanced learning
+problem. The most general approach is the modification at the data level by
+oversampling the minority class(es) ([Fernandez
+2013](:/0ad29a2551e6479cbb34feead5fb367e)). Synthetic Minority Oversampling
+Technique (SMOTE) was the first informed oversampling algorithm proposed and
+continuous to be extensively used  ([Chawla
+2002](:/0ad29a2551e6479cbb34feead5fb367e)). It generates synthetic instances
+along a line segment that joins minority class samples. Although SMOTE has been
+shown to be effective for generating artificial data, it also has some
+weaknesses ([He 2009](:/0ad29a2551e6479cbb34feead5fb367e)). In order to improve
+the quality of the generated data, many variants of SMOTE have been proposed.
+Nevertheless, all of these variations use the same data generation mechanism,
+i.e. linear interpolation between minority class samples as shown in figure 2.
+
+A Python implementation of SMOTE and several of its variants is available in the
+[Imbalanced-Learn](https://imbalanced-learn.org/stable/) library ([Lemaitre
+2016](:/0ad29a2551e6479cbb34feead5fb367e)), which is fully compatible with the
+popular machine learning toolbox
+[Scikit-Learn](https://scikit-learn.org/stable/)  ([Pedregosa
+2011](:/0ad29a2551e6479cbb34feead5fb367e)).
+
+### Geometric SMOTE
+
+The Geometric SMOTE (G-SMOTE) oversampling algorithm ([Douzas
+2019](:/0ad29a2551e6479cbb34feead5fb367e)) uses a different approach compared to
+existing SMOTE's variations. More specifically, G-SMOTE oversampling algorithm
+substitutes the data generation mechanism of SMOTE by defining a flexible
+geometric region around each minority class instance and generating synthetic
+instances inside the boundaries of this region. The algorithm requires the
+selection of the hyperparameters `truncation_factor` , `deformation_factor`,
+`selection_strategy` and `k_neighbors`. The first three of them, called
+geometric hyperparameters, control the shape of the geometric region while the
+later adjusts its size. Figure 3 presents a visual comparison between the data
+generation mechanisms of SMOTE and G-SMOTE.
+
+<figure><img src=":/51ea6ff43cf244ce9a169abf913d67fc" alt="" width="1211"
+height="681" class="jop-noMdConv"><figcaption>Comparison between the data
+generation mechanisms of SMOTE and G-SMOTE. SMOTE uses linear interpolation,
+while G-SMOTE defines a circle as the permissible data generation
+area.</figcaption></figure>
+
+G-SMOTE algorithm has been shown to outperform SMOTE and its variants across
+$69$ imbalanced datasets for various classifiers and evaluation metrics ([Douzas
+2019](:/0ad29a2551e6479cbb34feead5fb367e)). In this paper, we present a Python
+implementation of G-SMOTE. In section 2, the software description is given while
+section 3 provides a demonstrative example of its functionalities.
+
+### Software description
+
+The `geometric-smote` software project is written in Python 3.7. It contains an
+object-oriented implementation of the G-SMOTE algorithm as well as an extensive
+[online documentation](https://geometric-smote.readthedocs.io/). The
+implementation provides an API that is compatible with Imbalanced-Learn and
+Scikit-Learn libraries, therefore it makes full use of various features that
+support standard machine learning functionalities.
+
+#### Software Architecture
+
+The `geometric-smote` project contains the Python package `gsmote`. The main
+module of `gsmote` is called `geometric-smote.py`. It contains the class
+`GeometricSMOTE` that implements the G-SMOTE algorithm. The initialization of a
+`GeometricSMOTE` instance includes G-SMOTE's hyperparameters that control the
+generation of synthetic data. Additionally, `GeometricSMOTE` inherits from the
+`BaseOverSampler` class of Imbalanced-Learn library. Therefore, an instance of
+`GeometricSMOTE` class provides the `fit` and `fit_resample` methods, the two
+main methods for resampling as explained in subsection. This is achieved by
+implementing the `fit_resample` abstract method of the parent class
+`BaseOverSampler`. More specifically, the function `_make_geometric_sample`
+implements the data generation mechanism of G-SMOTE as shortly described in
+subsection. This function is called in the `_make_geometric_samples` method of
+the `GeometricSMOTE` class in order to generate the appropriate number of
+synthetic data for a particular minority class. Finally, the method
+`_make_geometric_samples` is called in `_fit_resample` method to generate
+synthetic data for all minority classes. Figure 3 provides a visual
+representation of the above classes and functions hierarchy.
+
+<figure><img src=":/9719d8354dbd4bd784a620d3c20a1a53" alt="" width="1211"
+height="681" class="jop-noMdConv"><figcaption>UML class diagrams and callgraphs
+of main classes and methods.</figcaption></figure>
+
+#### Software Functionalities
+
+As it was mentioned in subsection, the class `GeometricSMOTE` represents the
+G-SMOTE oversampler. The intializer of `GeometricSMOTE` includes the following
+G-SMOTE's hyperparameters: `truncation_factor`, `deformation_factor`,
+`selection_strategy` and `k_neighbors` as explained in subsection. Once the
+`GeometricSMOTE` object is initialized with a specific parametrization, it can
+be used to resample the imbalanced data represented by the input matrix `X` and
+the target labels `y`. Following the Scikit-Learn API, both `X`, `y` are
+array-like objects of appropriate shape.
+
+Resampling is achieved by using the two main methods of `fit` and `fit_resample`
+of the `GeometricSMOTE` object. More specifically, both of them take as input
+parameters the `X` and `y`. The first method computes various statistics which
+are used to resample `X` while the second method does the same but additionally
+returns a resampled version of `X` and `y`.
+
+The `geometric-smote` project has been designed to integrate with the
+Imbalanced-Learn toolbox and Scikit-Learn ecosystem. Therefore the
+`GeometricSMOTE` object can be used in a machine learning pipeline, through
+Imbalanced-Learn's class `Pipeline`, that automatically combines `samplers`,
+`transformers` and `estimators`. The next section provides examples of the above
+functionalities.
+
+### Illustrative Examples
+
+#### Basic example
+
+An example of resampling multi-class imbalanced data using the `fit_resample`
+method is presented in Listing 1. Initially, a 3-class imbalanced dataset is
+generated. Next, `GeometricSMOTE` object is initialized with default values for
+the hyperparameters, i.e. `truncation_factor=1.0`, `deformation_factor=0.0`,
+`selection_strategy='combined'`. Finally, the object's `fit_resample` method is
+used to resample the data. Printing the class distribution before and after
+resampling confirms that the resampled data `X_res`, `y_res` are perfectly
+balanced. `X_res`, `y_res` can be used as training data for any classifier in
+the place of `X`, `y`.
+
+```python # Import classes and functions.
+
+from collections import Counter from gsmote import GeometricSMOTE from
+sklearn.datasets import make_classification
+
+# Generate an imbalanced 3-class dataset.
+
+X, y = make_classification( random_state=23, n_classes=3, n_informative=5,
+n_samples=500, weights=\[0.8, 0.15, 0.05\] )
+
+# Create a GeometricSMOTE object with default hyperparameters.
+
+gsmote = GeometricSMOTE(random_state=10)
+
+# Resample the imbalanced dataset.
+
+X\_res, y\_res = gsmote.fit_resample(X, y)
+
+# Print number of samples per class for initial and resampled data.
+
+init_count = list(Counter(y).values()) resampled\_count =
+list(Counter(y\_res).values())
+
+print(f'Initial class distribution: {init_count}.')
+
+# Initial class distribution: \[400, 75, 25\].
+
+print(f'Resampled class distribution: {resampled_count}.')
+
+# Resampled class distribution: \[400, 400, 400\]. ```
+
+#### Machine learning pipeline
+
+As mentioned before, the `GeometricSMOTE` object can be used as a part of a
+machine learning pipeline. Listing \\ref{lst:pipeline} presents a pipeline
+composed by a G-SMOTE oversampler, a PCA tranformation and a decision tree
+classifier. The pipeline is trained on imbalanced binary-class data and
+evaluated on a hold-out set. The user applies the process in a simple way while
+the internal details of the calculations are hidden.
+
+```python # Import classes and functions.
+
+from gsmote import GeometricSMOTE from sklearn.datasets import
+make_classification from sklearn.decomposition import PCA from sklearn.tree
+import DecisionTreeClassifier from sklearn.model\_selection import
+train\_test_split from sklearn.metrics import f1_score from imblearn.pipeline
+import make_pipeline
+
+# Generate an imbalanced binary-class dataset.
+
+X, y = make_classification( random_state=23, n_classes=2, n_samples=500,
+weights=\[0.8, 0.2\] )
+
+# Split the data to training and hold-out sets.
+
+X\_train, X\_test, y\_train, y\_test = train\_test\_split(X, y, random_state=0)
+
+# Create the pipeline's objects with default hyperparameters.
+
+gsmote = GeometricSMOTE(random_state=11) pca = PCA() clf =
+DecisionTreeClassifier(random_state=3)
+
+# Create the pipeline.
+
+pip = make_pipeline(gsmote, pca, clf)
+
+# Fit the pipeline to the training set.
+
+pip.fit(X\_train, y\_train)
+
+# Evaluate the pipeline on the hold-out set using the F-score.
+
+test\_score = f1\_score(y\_test, pip.predict(X\_test))
+
+print(f'F-score on hold-out set: {test_score}.')
+
+# F-score on hold-out set: 0.7. ```
+
+### Impact and conclusions
+
+Classification of imbalanced datasets is a challenging task for standard machine
+learning algorithms. G-SMOTE, as a enhancement of the SMOTE data generation
+mechanism, provides a flexible and effective way for resampling the imbalanced
+data. G-SMOTE's emprical results prove that it outperforms SMOTE and its
+variants. Machine learning researchers and industry practitioners can benefit
+from using G-SMOTE in their work since the imbalanced learning problem is a
+common characteristic of many real-world applications.
+
+The `geometric-smote` project provides the only Python implementation, to the
+best of our knowledge, of the state-of-the-art oversampling algorithm G-SMOTE. A
+significant advantage of this implementation is that it is built on top of the
+Scikit-Learn's ecosystem. Therefore, using the G-SMOTE oversampler in typical
+machine learning workflows is an effortless task for the user. Also, the public
+API of the main class `GeometricSMOTE` is identical to the one implemented in
+Imbalanced-Learn for all oversamplers. This means that users of Imbalanced-Learn
+and Scikit-Learn, that apply oversampling on imbalanced data, can integrate the
+`gsmote` package in their existing work in a straightforward manner or even
+replace directly any Imbalanced-Learn's oversampler with `GeometricSMOTE`.

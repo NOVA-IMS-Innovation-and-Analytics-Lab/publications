@@ -1,61 +1,24 @@
-# Publications
+# Introduction
 
-The repository contains the published work of the **NOVA IMS Innovation and Analytics Lab**. The `projects` directory contains
-each of the publications as an MLFlow project. Installation of the projects provides a CLI and allows to download the data and run
-the experiments.
+The repository contains the published work of the **NOVA IMS Innovation and Analytics Lab**. Each publication corresponds to a
+[Kedro](https://kedro.org/) project.
 
-## Installation
+## Publications
 
-Initially, clone the project:
+- [Geometric SMOTE for regression](https://www.sciencedirect.com/science/article/abs/pii/S095741742101678X)
+- [Improving the quality of predictive models in small data GSDOT: A new algorithm for generating synthetic data](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0265626)
+- [G-SOMO: An oversampling approach based on self-organized maps and geometric SMOTE](https://www.sciencedirect.com/science/article/abs/pii/S095741742100662X)
+- [Increasing the effectiveness of active learning: Introducing artificial data generation in active learning for land use/land cover classification](https://www.mdpi.com/2072-4292/13/13/2619)
+- [Improving imbalanced land cover classification with k-means smote: Detecting and oversampling distinctive minority spectral signatures](https://www.mdpi.com/2078-2489/12/7/266)
+- [Geometric SMOTE a geometrically enhanced drop-in replacement for SMOTE](https://www.sciencedirect.com/science/article/abs/pii/S0020025519305353)
+- [Imbalanced learning in land cover classification: Improving minority classes’ prediction accuracy using the geometric SMOTE algorithm](https://www.mdpi.com/2072-4292/11/24/3040)
+- [Effective data generation for imbalanced learning using conditional generative adversarial networks](https://www.sciencedirect.com/science/article/abs/pii/S0957417417306346)
+- [Improving imbalanced learning through a heuristic oversampling method based on k-means and SMOTE](https://www.sciencedirect.com/science/article/abs/pii/S0020025518304997)
+- [Self-Organizing Map Oversampling (SOMO) for imbalanced data set learning](https://www.sciencedirect.com/science/article/abs/pii/S0957417417302324)
 
-```
-git clone https://github.com/NOVA-IMS-Innovation-and-Analytics-Lab/publications.git
-```
+## Work in progress
 
-### Main installation
-
-
-From the root of the project you can use [pip](https://pip.pypa.io/en/stable):
-
-```
-pip install .
-```
-
-Alternatively you can use [PDM](https://pdm.fming.dev):
-
-```
-pdm install
-```
-
-The main installation allows to use the CLI. Some of the commands require additional dependencies.
-
-### Optional dependencies
-
-You can install the optional dependencies using the `-G` flag:
-
-```
-pdm install -G [GROUP]
-```
-
-You may find the various groups of optional dependencies in the `pyproject.toml` file.
-
-### Optional dependencies
-
-You can install the development dependencies using the `-G` and `-d` flags:
-
-```
-pdm install -G -d [GROUP]
-```
-
-You may find the various groups of development dependencies in the `pyproject.toml` file.
-
-## Command Line Interface
-
-There four commands available to manage the project:
-
-- `create`
-- `datasets`
-- `experiment`
-- `manuscript`
-
-You can use `--help` flag to get help about their usage and options.
+- Imbalanced text classification using Geometric SMOTE oversampling algorithm
+- cluster-over-sampling: A Python package for clustering-based oversampling
+- geometric-smote: A package for flexible and efficient oversampling
+- Intraday trading via Deep Reinforcement Learning and technical indicators
