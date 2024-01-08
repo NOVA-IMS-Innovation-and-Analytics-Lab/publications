@@ -38,7 +38,6 @@ package_name = "cluster_over_sampling_a_package_for_clustering_based_oversamplin
 project_name = "cluster-over-sampling-a-package-for-clustering-based-oversampling"
 kedro_init_version = "0.19.1"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "True"
 
 [tool.pytest.ini_options]
 addopts = """

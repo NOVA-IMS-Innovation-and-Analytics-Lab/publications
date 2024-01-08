@@ -1,51 +1,43 @@
 ---
 title: "cluster-over-sampling: A Python package for clustering-based oversampling"
 jupyter: python3
-bibliography: references.bib
-format:
-  jors-pdf:
+format: 
+  pdf:
     keep-tex: true
-filters:
-   - latex-environment
+author:
+  - name: Georgios Douzas
+    role:
+      - Software
+      - Methodology
+      - Data curation
+      - Writing
+    affiliation: NOVA IMS
+  - name: Fernando Bacao
+    role:
+      - Conceptualization
+      - Supervision
+      - Project administration
+    affiliation: NOVA IMS
+bibliography: references.bib
+keywords:
+  - Machine learning Classification
+  - Imbalanced learning
+  - Oversampling
+  - Clustering
+  - Scikit-Learn
+abstract: >
+  Learning from imbalanced data is a common and challenging problem in supervised learning. Standard classifiers are designed to
+  handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial
+  data to achieve a balanced class distribution, called oversampling algorithms, are more versatile than modifications to the
+  classification algorithms. SMOTE algorithm, the most popular oversampler, and its variations generate synthetic samples along line
+  segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, the
+  within-classes imbalanced issues can be addressed by clustering the input space and applying any oversampling algorithm for each
+  resulting cluster with an appropriate resampling ratio. This approach, implemented in the `cluster-over-sampling` Python open
+  source project, has been shown in multiple publications, using a variety of datasets, to outperform other standard oversamplers.
+  In this paper, we describe `cluster-over-sampling` in detail and make it available to the machine learning community. The
+  implementation integrates effortlessly with the Scikit-Learn ecosystem, so machine learning researchers and practitioners can
+  incorporate it directly into any pre-existing work.
 ---
-
-# (1) Overview \
-
-# Title
-
-cluster-over-sampling: A Python package for clustering-based oversampling
-
-# Paper authors
-
-1. Georgios, Douzas
-2. Fernando Bacao
-
-# Paper author roles and affiliations
-
-1. Georgios Douzas
-	- Roles: Software; Methodology; Data curation; Writing;
-	- Affiliation: NOVA IMS
-2. Fernando Bacao
-	- Roles: Conceptualization; Supervision; Project administration
-	- Affiliation: NOVA IMS
-
-# Abstract
-
-Learning from imbalanced data is a common and challenging problem in supervised learning. Standard classifiers are designed to
-handle balanced class distributions. While different strategies exist to tackle this problem, methods that generate artificial
-data to achieve a balanced class distribution, called oversampling algorithms, are more versatile than modifications to the
-classification algorithms. SMOTE algorithm, the most popular oversampler, and its variations generate synthetic samples along line
-segments that join minority class instances. SMOTE addresses only the issue of between-classes imbalance. On the other hand, the
-within-classes imbalanced issues can be addressed by clustering the input space and applying any oversampling algorithm for each
-resulting cluster with an appropriate resampling ratio. This approach, implemented in the `cluster-over-sampling` Python open
-source project, has been shown in multiple publications, using a variety of datasets, to outperform other standard oversamplers.
-In this paper, we describe `cluster-over-sampling` in detail and make it available to the machine learning community. The
-implementation integrates effortlessly with the Scikit-Learn ecosystem, so machine learning researchers and practitioners can
-incorporate it directly into any pre-existing work.
-
-# Keywords
-
-Machine learning Classification; Imbalanced learning; Oversampling; Clustering; Scikit-Learn;
 
 # Introduction
 
@@ -123,7 +115,7 @@ and `over_sampling`. The `distribution` module implements the functionality rela
 to the identified clusters, while `over_sampling` implements the functionality related to the generation of artificial samples.
 Both of them are presented in detail below.
 
-#### Distribution
+## Distribution
 
 The module `distribution` contains the files `base.py` and `_density.py`. The former provides the implementation of the
 `BaseDistributor` class, the base class for distributors, while the latter includes the `DensityDistributor` class, a
@@ -145,7 +137,7 @@ representation of the above classes and functions hierarchy.
 ![UML BaseDistributor and DensityDistributor class diagrams and callgraphs of main classes and
 methods.](distributor_class_diagram.png){#fig-distributor-class-diagram}
 
-#### Oversampling
+## Oversampling
 
 The module `over_sampling` contains the files `_cluster.py`, `_kmeans_smote.py`, `_somo.py` and `_gsomo.py`. The former provides
 the `ClusterOverSampler` class, an extension of the Imbalanced-Learn's `BaseOverSampler` class, and implements the functionality
@@ -206,7 +198,7 @@ provides examples of the above functionalities.
 Examples of `cluster-over-sampling` usage are given below and include a basic example and a machine learning pipeline. Both use
 clustering-based oversamplers to generate artificial data.
 
-#### Basic example
+## Basic example
 
 An example of resampling an imbalanced dataset using the `fit_resample` method is presented. Initially, a binary-class imbalanced
 dataset is generated. Next, `KMeansSMOTE` oversampler is initialized with the default parameters. This corresponds to the
@@ -244,7 +236,7 @@ print(f'Initial class distribution: {init_count}.')
 print(f'Resampled class distribution: {resampled_count}.')
 ```
 
-#### Machine learning pipeline
+## Machine learning pipeline
 
 As mentioned before, any clustering-based oversampler can be used as a part of a machine learning pipeline. A a pipeline is
 presented, composed by the combination of Borderline SMOTE oversampler and hierarchical clustering, a PCA tranformation and a
@@ -300,30 +292,30 @@ operating systems and Python versions. Checks in code quality, vulnerabilities i
 through external libraries. Various development scripts that automate the above tasks are provided and described in detail in the
 Contributing section of the online documentation and Github.
 
-# (2) Availability \
+# Availability
 
-# Operating system
+## Operating system
 
 Any system (GNU/Linux, Mac OSX, Windows) capable of running Python ≥ 3.10.
 
-# Programming language
+## Programming language
 
 Python 3.10, or higher.
 
-**Dependencies**
+### Dependencies
 
 - scipy >= 1.7.2
 - numpy >= 1.22
 - scikit-learn >= 1.1.1
 - imbalanced-learn >= 0.9.0
 
-**List of contributors**
+### List of contributors
 
 The software was created by Georgios Douzas.
 
-**Software location**
+### Software location
 
-**Zenodo**
+#### Zenodo
 
 - **Name:** cluster-over-sampling
 - **Persistent identifier:** https://doi.org/10.5281/zenodo.3370372
@@ -332,18 +324,18 @@ The software was created by Georgios Douzas.
 - **Version published:** 0.4.0
 - **Date published:** 01/10/2021
 
-**GitHub**
+#### GitHub
 
 - **Name:** cluster-over-sampling
 - **Persistent identifier:** https://github.com/georgedouzas/cluster-over-sampling
 - **Licence:** MIT
 - **Date published:** 01/10/2021
 
-**Language**
+### Language
 
 English
 
-# (3) Reuse potential
+# Reuse potential
 
 The `cluster-over-sampling` project provides the only Python implementation, to the best of our knowledge, that provides a generic
 way to construct any clustering-based oversampler. A significant advantage of this implementation is that it is built on top of
@@ -355,13 +347,13 @@ existing work in a straightforward manner.
 Users can request support by opening an issue on GitHub. Additionally users may do Pull Requests and contribute to the development
 of `cluster-over-sampling`. The documentation of the projects describes in detail the API and provides various complete examples.
 
-**Funding statement**
+# Funding statement
 
 Funding: This research was supported by a grant from the Portuguese Foundation for Science and Technology (“Fundação para a
 Ciência e a Tecnologia”), DSAIPA/DS/0116/2019.
 
-**Competing interests**
+# Competing interests
 
 The authors declare that they have no competing interests.
 
-# References \
+# References
