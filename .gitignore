@@ -22,11 +22,5 @@ __pycache__
 .*venv
 
 # Content
-supplementary
-**/manuscript/artifacts
-**/manuscript/manuscript.*
-**/manuscript/manuscript_files
-!**/manuscript/manuscript.qmd
-**/manuscript/*.cls
-**/manuscript/*.csl
-
+*.tex
+*.pdf
