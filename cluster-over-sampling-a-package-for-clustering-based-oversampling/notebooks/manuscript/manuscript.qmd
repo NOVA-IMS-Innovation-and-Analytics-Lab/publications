@@ -20,8 +20,8 @@ author:
     affiliation: NOVA IMS
 bibliography: references.bib
 keywords:
-  - Machine learning Classification
-  - Imbalanced learning
+  - Machine Learning Classification
+  - Imbalanced Learning
   - Oversampling
   - Clustering
   - Scikit-Learn
@@ -82,8 +82,9 @@ between minority class samples to generate synthetic instances as shown in figur
 
 ![Visual representation of the SMOTE data generation mechanism.](smote.png){#fig-smote}
 
-A Python implementation of SMOTE and several of its variants are available in the Imbalanced-Learn library, which is fully
-compatible with the popular machine learning toolbox Scikit-Learn.
+A Python implementation of SMOTE and several of its variants is available in the
+[Imbalanced-Learn](https://imbalanced-learn.org/stable/) library [@lemaitre_imbalanced-learn_2016], which is fully compatible with
+the popular machine learning toolbox [Scikit-Learn](https://scikit-learn.org/stable/) [@pedregosa_scikit-learn_2012].
 
 In addition to between-class imbalance, within-class imbalance refers to the case where areas of sparse and dense minority class
 instances exist. As the first step of generating synthetic samples, the SMOTE data generation mechanism selects randomly, with
@@ -104,11 +105,12 @@ across multiple imbalanced datasets, classifiers and evaluation metrics.
 
 # Implementation and architecture
 
-The `cluster-over-sampling` software project is written in Python 3.7. It contains an object-oriented implementation of the
-clustering-based oversampling procedure as well as detailed [online documentation](https://cluster-over-sampling.vercel.app). The
-implementation provides an API that is compatible with Imbalanced-Learn and Scikit-Learn libraries. Therefore, standard machine
-learning functionalities are supported while the generated clustering-based oversampling algorithm, composed of a clusterer and an
-oversampler, contains the original oversampler functionality as a special case.
+The `cluster-over-sampling` software project is compatible with Python 3.10 or greater. It contains an object-oriented
+implementation of the clustering-based oversampling procedure as well as detailed [online
+documentation](https://cluster-over-sampling.vercel.app). The implementation provides an API that is compatible with
+Imbalanced-Learn and Scikit-Learn libraries. Therefore, standard machine learning functionalities are supported while the
+generated clustering-based oversampling algorithm, composed of a clusterer and an oversampler, contains the original oversampler
+functionality as a special case.
 
 The `cluster-over-sampling` project contains the Python package `clover`. The main modules of `clover` are called `distribution`
 and `over_sampling`. The `distribution` module implements the functionality related to the distribution of the generated samples
