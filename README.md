@@ -25,12 +25,12 @@ A list of published papers and work in progress.
 - cluster-over-sampling: A Python package for clustering-based oversampling
 - geometric-smote: A package for flexible and efficient oversampling
 - Intraday trading via Deep Reinforcement Learning and technical indicators
+- Genetic Programming for Offline Reinforcement Learning
 
 ## Projects
 
 Each publication corresponds to a [Kedro](https://kedro.org/) project. Take a look at the [Kedro
 documentation](https://docs.kedro.org) to get started.
-
 
 ### How to install dependencies
 

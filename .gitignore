@@ -22,5 +22,6 @@ __pycache__
 .*venv
 
 # Content
-*.tex
-*.pdf
+manuscript/
+*-submission/
+publication.pdf
