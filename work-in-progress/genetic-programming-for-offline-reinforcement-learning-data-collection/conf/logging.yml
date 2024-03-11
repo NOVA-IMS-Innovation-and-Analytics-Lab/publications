@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  genetic_programming_for_offline_reinforcement_learning_data_collection:
+  pub:
     level: INFO
 
 root:

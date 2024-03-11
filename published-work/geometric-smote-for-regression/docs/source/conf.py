@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# geometric_smote_for_regression documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from geometric_smote_for_regression import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "geometric_smote_for_regression"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "geometric_smote_for_regressiondoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "geometric_smote_for_regression.tex",
-        "geometric_smote_for_regression Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "geometric_smote_for_regression",
-        "geometric_smote_for_regression Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "geometric_smote_for_regression",
-        "geometric_smote_for_regression Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "geometric_smote_for_regression",
-        "Project geometric_smote_for_regression codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

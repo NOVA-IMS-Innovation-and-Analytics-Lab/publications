@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classificationdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification.tex",
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification",
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification",
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification",
-        "Project increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

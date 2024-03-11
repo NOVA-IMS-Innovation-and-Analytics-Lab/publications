@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning:
+  pub:
     level: INFO
 
 root:

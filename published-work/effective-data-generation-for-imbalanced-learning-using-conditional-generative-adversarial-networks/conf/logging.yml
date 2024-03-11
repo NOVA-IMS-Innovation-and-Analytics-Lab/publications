@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks:
+  pub:
     level: INFO
 
 root:

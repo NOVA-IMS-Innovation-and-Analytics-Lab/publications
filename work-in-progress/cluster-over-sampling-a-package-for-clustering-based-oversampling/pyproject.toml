@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cluster_over_sampling_a_package_for_clustering_based_oversampling"
+name = "pub"
 readme = "README.md"
 dynamic = ["dependencies", "version"]
 
 [project.scripts]
-cluster-over-sampling-a-package-for-clustering-based-oversampling = "cluster_over_sampling_a_package_for_clustering_based_oversampling.__main__:main"
+cluster-over-sampling-a-package-for-clustering-based-oversampling = "pub.__main__:main"
 
 [project.entry-points."kedro.hooks"]
 
@@ -27,27 +27,32 @@ docs = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = "cluster_over_sampling_a_package_for_clustering_based_oversampling.__version__"}
+version = {attr = "pub.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
 
 [tool.kedro]
-package_name = "cluster_over_sampling_a_package_for_clustering_based_oversampling"
+package_name = "pub"
 project_name = "cluster-over-sampling-a-package-for-clustering-based-oversampling"
-kedro_init_version = "0.19.1"
+kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
+example_pipeline = "False"
+source_dir = "src"
 
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/cluster_over_sampling_a_package_for_clustering_based_oversampling -ra"""
+--cov src/pub -ra"""
 
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff]
 line-length = 88
@@ -61,4 +66,4 @@ select = [
     "PL",  # Pylint
     "T201", # Print Statement
 ]
-ignore = ["E501"]  # Black takes care of line-too-long
+ignore = ["E501"]  # Ruff format takes care of line-too-long

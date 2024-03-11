@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  intraday_trading_via_deep_reinforcement_learning_and_technical_indicators:
+  pub:
     level: INFO
 
 root:

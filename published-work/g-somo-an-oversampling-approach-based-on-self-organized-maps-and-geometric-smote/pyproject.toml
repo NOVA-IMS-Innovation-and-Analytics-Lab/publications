@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote"
+name = "pub"
 readme = "README.md"
 dynamic = ["dependencies", "version"]
 
 [project.scripts]
-g-somo-an-oversampling-approach-based-on-self-organized-maps-and-geometric-smote = "g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote.__main__:main"
+g-somo-an-oversampling-approach-based-on-self-organized-maps-and-geometric-smote = "pub.__main__:main"
 
 [project.entry-points."kedro.hooks"]
 
@@ -27,28 +27,32 @@ docs = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = "g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote.__version__"}
+version = {attr = "pub.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
 
 [tool.kedro]
-package_name = "g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote"
+package_name = "pub"
 project_name = "g-somo-an-oversampling-approach-based-on-self-organized-maps-and-geometric-smote"
-kedro_init_version = "0.19.1"
+kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "True"
+example_pipeline = "False"
+source_dir = "src"
 
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote -ra"""
+--cov src/pub -ra"""
 
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff]
 line-length = 88
@@ -62,4 +66,4 @@ select = [
     "PL",  # Pylint
     "T201", # Print Statement
 ]
-ignore = ["E501"]  # Black takes care of line-too-long
+ignore = ["E501"]  # Ruff format takes care of line-too-long

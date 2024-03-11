@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  g_somo_an_oversampling_approach_based_on_self_organized_maps_and_geometric_smote:
+  pub:
     level: INFO
 
 root:

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# geometric_smote_a_package_for_flexible_and_efficient_oversampling documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from geometric_smote_a_package_for_flexible_and_efficient_oversampling import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "geometric_smote_a_package_for_flexible_and_efficient_oversampling"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "geometric_smote_a_package_for_flexible_and_efficient_oversamplingdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling.tex",
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling",
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling",
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "geometric_smote_a_package_for_flexible_and_efficient_oversampling",
-        "Project geometric_smote_a_package_for_flexible_and_efficient_oversampling codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

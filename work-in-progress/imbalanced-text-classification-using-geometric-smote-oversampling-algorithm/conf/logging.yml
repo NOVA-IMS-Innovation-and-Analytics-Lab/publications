@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  imbalanced_text_classification_using_geometric_smote_oversampling_algorithm:
+  pub:
     level: INFO
 
 root:

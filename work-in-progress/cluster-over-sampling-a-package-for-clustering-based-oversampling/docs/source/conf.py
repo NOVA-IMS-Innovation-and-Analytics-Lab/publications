@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# cluster_over_sampling_a_package_for_clustering_based_oversampling documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from cluster_over_sampling_a_package_for_clustering_based_oversampling import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "cluster_over_sampling_a_package_for_clustering_based_oversampling"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "cluster_over_sampling_a_package_for_clustering_based_oversamplingdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling.tex",
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling",
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling",
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "cluster_over_sampling_a_package_for_clustering_based_oversampling",
-        "Project cluster_over_sampling_a_package_for_clustering_based_oversampling codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

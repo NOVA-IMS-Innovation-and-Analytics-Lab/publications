@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  increasing_the_effectiveness_of_active_learning_introducing_artificial_data_generation_in_active_learning_for_land_use_land_cover_classification:
+  pub:
     level: INFO
 
 root:

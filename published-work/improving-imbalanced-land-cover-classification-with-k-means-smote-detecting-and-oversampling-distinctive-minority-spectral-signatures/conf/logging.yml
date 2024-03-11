@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  improving_imbalanced_land_cover_classification_with_k_means_smote_detecting_and_oversampling_distinctive_minority_spectral_signatures:
+  pub:
     level: INFO
 
 root:

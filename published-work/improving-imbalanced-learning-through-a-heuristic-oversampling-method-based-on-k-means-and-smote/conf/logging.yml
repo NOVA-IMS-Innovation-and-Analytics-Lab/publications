@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  improving_imbalanced_learning_through_a_heuristic_oversampling_method_based_on_k_means_and_smote:
+  pub:
     level: INFO
 
 root:

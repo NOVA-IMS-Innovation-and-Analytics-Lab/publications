@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  geometric_smote_a_geometrically_enhanced_drop_in_replacement_for_smote:
+  pub:
     level: INFO
 
 root:

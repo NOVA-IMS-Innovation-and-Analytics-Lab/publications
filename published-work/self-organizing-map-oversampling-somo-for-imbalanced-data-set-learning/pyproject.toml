@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning"
+name = "pub"
 readme = "README.md"
 dynamic = ["dependencies", "version"]
 
 [project.scripts]
-self-organizing-map-oversampling-somo-for-imbalanced-data-set-learning = "self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning.__main__:main"
+self-organizing-map-oversampling-somo-for-imbalanced-data-set-learning = "pub.__main__:main"
 
 [project.entry-points."kedro.hooks"]
 
@@ -27,28 +27,32 @@ docs = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = "self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning.__version__"}
+version = {attr = "pub.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
 
 [tool.kedro]
-package_name = "self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning"
+package_name = "pub"
 project_name = "self-organizing-map-oversampling-somo-for-imbalanced-data-set-learning"
-kedro_init_version = "0.19.1"
+kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "True"
+example_pipeline = "False"
+source_dir = "src"
 
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/self_organizing_map_oversampling_somo_for_imbalanced_data_set_learning -ra"""
+--cov src/pub -ra"""
 
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff]
 line-length = 88
@@ -62,4 +66,4 @@ select = [
     "PL",  # Pylint
     "T201", # Print Statement
 ]
-ignore = ["E501"]  # Black takes care of line-too-long
+ignore = ["E501"]  # Ruff format takes care of line-too-long

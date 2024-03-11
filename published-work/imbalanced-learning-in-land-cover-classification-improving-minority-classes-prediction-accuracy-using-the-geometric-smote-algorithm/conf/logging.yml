@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm:
+  pub:
     level: INFO
 
 root:

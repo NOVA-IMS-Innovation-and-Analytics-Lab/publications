@@ -1,8 +1,8 @@
-.. effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks documentation master file, created by sphinx-quickstart.
+.. pub documentation master file, created by sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to project effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks's API docs!
+Welcome to project pub's API docs!
 =============================================
 
 .. toctree::

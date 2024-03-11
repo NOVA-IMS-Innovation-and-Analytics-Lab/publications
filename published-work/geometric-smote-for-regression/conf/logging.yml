@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  geometric_smote_for_regression:
+  pub:
     level: INFO
 
 root:

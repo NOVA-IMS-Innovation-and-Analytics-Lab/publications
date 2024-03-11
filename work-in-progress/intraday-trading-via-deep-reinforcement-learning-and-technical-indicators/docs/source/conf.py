@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# intraday_trading_via_deep_reinforcement_learning_and_technical_indicators documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from intraday_trading_via_deep_reinforcement_learning_and_technical_indicators import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "intraday_trading_via_deep_reinforcement_learning_and_technical_indicatorsdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators.tex",
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators",
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators",
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "intraday_trading_via_deep_reinforcement_learning_and_technical_indicators",
-        "Project intraday_trading_via_deep_reinforcement_learning_and_technical_indicators codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

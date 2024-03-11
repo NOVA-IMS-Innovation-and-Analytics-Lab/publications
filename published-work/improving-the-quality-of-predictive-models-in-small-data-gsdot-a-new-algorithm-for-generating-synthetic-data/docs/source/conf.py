@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_datadoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data.tex",
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data",
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data",
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data",
-        "Project improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

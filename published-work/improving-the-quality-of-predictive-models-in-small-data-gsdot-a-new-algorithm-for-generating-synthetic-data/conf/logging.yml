@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data:
+  pub:
     level: INFO
 
 root:

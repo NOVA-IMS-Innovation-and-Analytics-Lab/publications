@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithmdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm.tex",
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm",
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm",
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm",
-        "Project imbalanced_learning_in_land_cover_classification_improving_minority_classes_prediction_accuracy_using_the_geometric_smote_algorithm codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

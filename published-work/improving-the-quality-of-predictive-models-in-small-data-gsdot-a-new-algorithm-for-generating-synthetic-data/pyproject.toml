@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data"
+name = "pub"
 readme = "README.md"
 dynamic = ["dependencies", "version"]
 
 [project.scripts]
-improving-the-quality-of-predictive-models-in-small-data-gsdot-a-new-algorithm-for-generating-synthetic-data = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data.__main__:main"
+improving-the-quality-of-predictive-models-in-small-data-gsdot-a-new-algorithm-for-generating-synthetic-data = "pub.__main__:main"
 
 [project.entry-points."kedro.hooks"]
 
@@ -27,28 +27,32 @@ docs = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data.__version__"}
+version = {attr = "pub.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
 
 [tool.kedro]
-package_name = "improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data"
+package_name = "pub"
 project_name = "improving-the-quality-of-predictive-models-in-small-data-gsdot-a-new-algorithm-for-generating-synthetic-data"
-kedro_init_version = "0.19.1"
+kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "True"
+example_pipeline = "False"
+source_dir = "src"
 
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/improving_the_quality_of_predictive_models_in_small_data_gsdot_a_new_algorithm_for_generating_synthetic_data -ra"""
+--cov src/pub -ra"""
 
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff]
 line-length = 88
@@ -62,4 +66,4 @@ select = [
     "PL",  # Pylint
     "T201", # Print Statement
 ]
-ignore = ["E501"]  # Black takes care of line-too-long
+ignore = ["E501"]  # Ruff format takes care of line-too-long

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networksdoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks.tex",
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks",
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks",
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks",
-        "Project effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

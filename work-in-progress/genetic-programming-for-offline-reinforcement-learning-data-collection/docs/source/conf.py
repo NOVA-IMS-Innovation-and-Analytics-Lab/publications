@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# genetic_programming_for_offline_reinforcement_learning_data_collection documentation build
+# pub documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,11 +21,11 @@
 import re
 
 from kedro.framework.cli.utils import find_stylesheets
-from genetic_programming_for_offline_reinforcement_learning_data_collection import __version__ as release
+from pub import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "genetic_programming_for_offline_reinforcement_learning_data_collection"
+project = "pub"
 author = "Kedro"
 
 # The short X.Y version.
@@ -121,7 +121,7 @@ html_show_copyright = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "genetic_programming_for_offline_reinforcement_learning_data_collectiondoc"
+htmlhelp_basename = "pubdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -149,8 +149,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "genetic_programming_for_offline_reinforcement_learning_data_collection.tex",
-        "genetic_programming_for_offline_reinforcement_learning_data_collection Documentation",
+        "pub.tex",
+        "pub Documentation",
         "Kedro",
         "manual",
     )
@@ -163,8 +163,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "genetic_programming_for_offline_reinforcement_learning_data_collection",
-        "genetic_programming_for_offline_reinforcement_learning_data_collection Documentation",
+        "pub",
+        "pub Documentation",
         [author],
         1,
     )
@@ -178,11 +178,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "genetic_programming_for_offline_reinforcement_learning_data_collection",
-        "genetic_programming_for_offline_reinforcement_learning_data_collection Documentation",
+        "pub",
+        "pub Documentation",
         author,
-        "genetic_programming_for_offline_reinforcement_learning_data_collection",
-        "Project genetic_programming_for_offline_reinforcement_learning_data_collection codebase.",
+        "pub",
+        "Project pub codebase.",
         "Data-Science",
     )
 ]

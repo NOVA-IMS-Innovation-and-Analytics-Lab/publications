@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks"
+name = "pub"
 readme = "README.md"
 dynamic = ["dependencies", "version"]
 
 [project.scripts]
-effective-data-generation-for-imbalanced-learning-using-conditional-generative-adversarial-networks = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks.__main__:main"
+effective-data-generation-for-imbalanced-learning-using-conditional-generative-adversarial-networks = "pub.__main__:main"
 
 [project.entry-points."kedro.hooks"]
 
@@ -27,28 +27,32 @@ docs = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks.__version__"}
+version = {attr = "pub.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
 
 [tool.kedro]
-package_name = "effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks"
+package_name = "pub"
 project_name = "effective-data-generation-for-imbalanced-learning-using-conditional-generative-adversarial-networks"
-kedro_init_version = "0.19.1"
+kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "True"
+example_pipeline = "False"
+source_dir = "src"
 
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/effective_data_generation_for_imbalanced_learning_using_conditional_generative_adversarial_networks -ra"""
+--cov src/pub -ra"""
 
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.ruff]
 line-length = 88
@@ -62,4 +66,4 @@ select = [
     "PL",  # Pylint
     "T201", # Print Statement
 ]
-ignore = ["E501"]  # Black takes care of line-too-long
+ignore = ["E501"]  # Ruff format takes care of line-too-long

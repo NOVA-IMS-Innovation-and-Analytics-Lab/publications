@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.1`.
+This is your new Kedro project with Kedro-Viz setup, which was generated using `kedro 0.19.3`.
 
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
