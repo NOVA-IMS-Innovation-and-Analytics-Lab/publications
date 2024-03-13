@@ -38,7 +38,6 @@ package_name = "pub"
 project_name = "genetic-programming-for-offline-reinforcement-learning-data-collection"
 kedro_init_version = "0.19.3"
 tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
-example_pipeline = "False"
 source_dir = "src"
 
 [tool.pytest.ini_options]

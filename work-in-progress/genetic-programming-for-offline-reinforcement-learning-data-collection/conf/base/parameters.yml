@@ -1,0 +1,9 @@
+
+exp_params:
+  collect_steps: 10000
+  training_steps: 100000
+  test_eps: 100
+  env_str: "CartPole-v1"
+  generations: 200
+  sel_ep: 2
+  pop_size: 60
