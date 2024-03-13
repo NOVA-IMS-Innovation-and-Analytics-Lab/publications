@@ -1,0 +1,17 @@
+rnd_coll_data:
+  type:  pickle.PickleDataset
+  filepath: data/datasets/random_policy_dataset.h5
+
+rnd_dqn_param:
+  type: pickle.PickleDataset
+  filepath: data/model_params/01_rnd_dqn.d3
+
+#Tangled Program Graphs
+tpg_coll_data:
+  type:  pickle.PickleDataset
+  filepath: data/datasets/random_policy_dataset.h5
+
+tpg_dqn_param:
+  type: pickle.PickleDataset
+  filepath: data/model_params/02_tpg_dqn.d3
+
