@@ -18,6 +18,7 @@ A list of published papers and work in progress.
 - [Effective data generation for imbalanced learning using conditional generative adversarial networks](https://www.sciencedirect.com/science/article/abs/pii/S0957417417306346)
 - [Improving imbalanced learning through a heuristic oversampling method based on k-means and SMOTE](https://www.sciencedirect.com/science/article/abs/pii/S0020025518304997)
 - [Self-Organizing Map Oversampling (SOMO) for imbalanced data set learning](https://www.sciencedirect.com/science/article/abs/pii/S0957417417302324)
+- [Genetic Programming for Offline Reinforcement Learning](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4980054)
 
 ### Work in progress
 
@@ -25,37 +26,3 @@ A list of published papers and work in progress.
 - cluster-over-sampling: A Python package for clustering-based oversampling
 - geometric-smote: A package for flexible and efficient oversampling
 - Intraday trading via Deep Reinforcement Learning and technical indicators
-- Genetic Programming for Offline Reinforcement Learning
-
-## Projects
-
-Each publication corresponds to a [Kedro](https://kedro.org/) project. Take a look at the [Kedro
-documentation](https://docs.kedro.org) to get started.
-
-### How to install dependencies
-
-Declare any dependencies in `requirements.txt` for `pip` installation.
-
-To install them, run:
-
-```
-pip install -r requirements.txt
-```
-
-### How to run your Kedro pipeline
-
-You can run your Kedro project with:
-
-```
-kedro run
-```
-
-### How to test your Kedro project
-
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/test_data_science.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-pytest
-```
-
-To configure the coverage threshold, look at the `.coveragerc` file.
